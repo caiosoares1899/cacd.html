@@ -10,12 +10,12 @@
 <style>
 :root{--bg:#f5f0e8;--surface:#faf7f2;--dark:#1a1208;--border:#c8b89a;--accent:#8b3a0f;--gold:#b8860b;--text:#2a1f0e;--muted:#7a6a52}
 *{box-sizing:border-box;margin:0;padding:0}
-body{background:#1a1208;color:var(--text);font-family:'Crimson Pro',serif;min-height:100vh;display:flex;flex-direction:column;height:100vh;overflow:hidden}
+body{background:#1a1208;color:var(--text);font-family:'Crimson Pro',serif;height:100vh;display:flex;flex-direction:column;overflow:hidden}
 header{background:#0f0c06;padding:.9rem 1.6rem;display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;border-bottom:2px solid var(--gold);flex-shrink:0}
 .hl h1{font-family:'Playfair Display',serif;font-size:clamp(.95rem,2vw,1.4rem);font-weight:900;color:#f5f0e8;line-height:1.2}
 .hl h1 em{color:var(--gold);font-style:normal}
 .hl p{font-family:'IBM Plex Mono',monospace;font-size:.58rem;color:#7a6a52;margin-top:.2rem;letter-spacing:.1em;text-transform:uppercase}
-.legend-bar{background:#13100a;border-bottom:1px solid rgba(184,134,11,.2);padding:.4rem 1.6rem;display:flex;flex-wrap:wrap;gap:.5rem 1.2rem;align-items:center;flex-shrink:0}
+.legend-bar{background:#13100a;border-bottom:1px solid rgba(184,134,11,.2);padding:.4rem 1.6rem;display:flex;flex-wrap:wrap;gap:.5rem 1.2rem;align-items:center;flex-shrink:0;max-height:70px;overflow-y:auto}
 .leg-item{display:flex;align-items:center;gap:.35rem;font-family:'IBM Plex Mono',monospace;font-size:.56rem;color:#8a7a62;letter-spacing:.05em;text-transform:uppercase;cursor:pointer;transition:color .2s}
 .leg-item:hover{color:#f5f0e8}
 .leg-sw{width:13px;height:13px;border-radius:2px;flex-shrink:0}
@@ -64,10 +64,6 @@ header{background:#0f0c06;padding:.9rem 1.6rem;display:flex;align-items:center;j
 .ln{font-size:.74rem;font-weight:600;color:var(--dark);line-height:1.25}
 .tord-btn{display:flex;align-items:center;gap:.5rem;padding:.55rem 1.1rem;background:transparent;border:1.5px solid var(--gold);color:var(--gold);font-family:'IBM Plex Mono',monospace;font-size:.68rem;font-weight:600;letter-spacing:.1em;cursor:pointer;text-transform:uppercase;transition:all .25s;white-space:nowrap}
 .tord-btn:hover,.tord-btn.active{background:var(--gold);color:#0f0c06}
-.tord-line{stroke:#b8860b;stroke-width:3;stroke-dasharray:8,4;fill:none;opacity:0;transition:opacity .3s}
-.tord-line.on{opacity:1}
-.tord-label{font-family:'IBM Plex Mono',monospace;font-size:11px;fill:#b8860b;opacity:0;transition:opacity .3s}
-.tord-label.on{opacity:1}
 @media(max-width:900px){.layout{flex-direction:column}.panel{width:100%;border-left:none;border-top:2px solid var(--border);max-height:50vh}}
 </style>
 </head>
@@ -75,25 +71,12 @@ header{background:#0f0c06;padding:.9rem 1.6rem;display:flex;align-items:center;j
 <header>
   <div class="hl">
     <h1>Brasil — <em>Expansão Territorial</em> &amp; Diplomacia na América do Sul</h1>
-    <p>Clique nas áreas coloridas do mapa • Sécs. XVI–XXI</p>
+    <p>Clique nos estados • Cores indicam origem histórica do território</p>
   </div>
   <button class="tord-btn" id="tordBtn">⚖️ &nbsp;Linha de Tordesilhas (1494)</button>
 </header>
 
-<div class="legend-bar">
-  <div class="leg-item" data-region="original"><div class="leg-sw" style="background:#c8685a"></div>Território Original</div>
-  <div class="leg-item" data-region="espanha1494"><div class="leg-sw" style="background:#d4956a"></div>Ced. Espanha (1494)</div>
-  <div class="leg-item" data-region="peru1600"><div class="leg-sw" style="background:#e8a850"></div>Ced. Peru/Esp. (1600)</div>
-  <div class="leg-item" data-region="peru1650"><div class="leg-sw" style="background:#d4c060"></div>Ced. Peru/Esp. (1650)</div>
-  <div class="leg-item" data-region="colombia1750"><div class="leg-sw" style="background:#88c858"></div>Ced. Colômbia (1750)</div>
-  <div class="leg-item" data-region="colombia1860"><div class="leg-sw" style="background:#5aaa38"></div>Ced. Colômbia (1860)</div>
-  <div class="leg-item" data-region="bolivia1860"><div class="leg-sw" style="background:#78b468"></div>Ced. Bolívia (1860)</div>
-  <div class="leg-item" data-region="bolivia1903"><div class="leg-sw" style="background:#b888c8"></div>Ced. Bolívia/Acre (1903)</div>
-  <div class="leg-item" data-region="paraguai1870"><div class="leg-sw" style="background:#8ab4d8"></div>Ced. Paraguai (1870)</div>
-  <div class="leg-item" data-region="argentina1801"><div class="leg-sw" style="background:#90b878"></div>Ced. Argentina (1801)</div>
-  <div class="leg-item" data-region="argentina1816"><div class="leg-sw" style="background:#58c888"></div>Ced. Argentina (1816)</div>
-  <div class="leg-item" data-region="franca1816"><div class="leg-sw" style="background:#78c8d8"></div>Ced. França (1816)</div>
-</div>
+<div class="legend-bar" id="legendBar"></div>
 
 <div class="layout">
   <div id="map"></div>
@@ -101,7 +84,7 @@ header{background:#0f0c06;padding:.9rem 1.6rem;display:flex;align-items:center;j
     <div class="p-empty" id="pEmpty">
       <div class="d">🗺</div>
       <h3>Selecione uma Região</h3>
-      <p>Clique em qualquer área colorida do mapa ou nos itens da legenda para ver os eventos históricos e diplomáticos detalhados.</p>
+      <p>Clique em qualquer estado do mapa ou nos itens da legenda para ver os eventos históricos e diplomáticos detalhados.</p>
     </div>
     <div class="p-content" id="pContent">
       <div class="p-header">
@@ -117,131 +100,197 @@ header{background:#0f0c06;padding:.9rem 1.6rem;display:flex;align-items:center;j
 
 <script>
 // Mapa base
-const map = L.map('map').setView([-15, -55], 4);
+const map = L.map('map').setView([-14, -55], 4);
 L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
   subdomains: 'abcd',
   maxZoom: 19,
   attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OSM</a> &copy; CartoDB'
 }).addTo(map);
 
-// Cores por região
+// Cores por região histórica (baseadas na sua imagem)
 const regionColors = {
-  original: '#c8685a',
-  espanha1494: '#d4956a',
-  peru1600: '#e8a850',
-  peru1650: '#d4c060',
-  colombia1750: '#88c858',
-  colombia1860: '#5aaa38',
-  bolivia1860: '#78b468',
-  bolivia1903: '#b888c8',
-  paraguai1870: '#8ab4d8',
-  argentina1801: '#90b878',
-  argentina1816: '#58c888',
-  franca1816: '#78c8d8'
+  'Território Original': '#c8685a',
+  'Cedido pela Espanha (1494)': '#d4956a',
+  'Cedido pelo Peru/Espanha (1600)': '#e8a850',
+  'Cedido pelo Peru/Espanha (1650)': '#d4c060',
+  'Cedido pela Colômbia/Espanha (1750)': '#88c858',
+  'Cedido pela Colômbia (1860)': '#5aaa38',
+  'Cedido pela Bolívia (1860)': '#78b468',
+  'Cedido pela Bolívia (1903) — Acre': '#b888c8',
+  'Cedido pelo Paraguai (1870)': '#8ab4d8',
+  'Cedido pela Argentina/Espanha (1801)': '#90b878',
+  'Cedido pela Argentina (1816)': '#58c888',
+  'Cedido pela França (1816)': '#78c8d8'
 };
 
-// Dados por região
-const regionData = {
-  original: { name: "Território Original Português", sub: "A leste da Linha de Tordesilhas · A partir de 1494" },
-  espanha1494: { name: "Cedido pela Espanha (1494)", sub: "Faixa entre Tordesilhas e a fronteira colonial efetiva" },
-  peru1600: { name: "Cedido pelo Peru/Espanha (1600)", sub: "Expansão precoce no Amazonas central" },
-  peru1650: { name: "Cedido pelo Peru/Espanha (1650)", sub: "Grande expansão central e norte — Amazônia" },
-  colombia1750: { name: "Cedido pela Colômbia/Espanha (1750)", sub: "Alto Rio Negro / Noroeste Amazônico" },
-  colombia1860: { name: "Cedido pela Colômbia (1860)", sub: "Região do Javari / Fronteira Oeste" },
-  bolivia1860: { name: "Cedido pela Bolívia (1860)", sub: "Alto Madeira / Guaporé / Fronteira MT" },
-  bolivia1903: { name: "Cedido pela Bolívia (1903) — Acre", sub: "Tratado de Petrópolis · Revolução Acreana" },
-  paraguai1870: { name: "Cedido pelo Paraguai (1870)", sub: "Guerra da Tríplice Aliança · Ganhos Territoriais" },
-  argentina1801: { name: "Cedido pela Argentina/Espanha (1801)", sub: "Missões Orientais · Noroeste do Rio Grande do Sul" },
-  argentina1816: { name: "Cedido pela Argentina (1816)", sub: "Cisplatina · Banda Oriental" },
-  franca1816: { name: "Cedido pela França (1816)", sub: "Amapá / Questão do Oiapoque" }
-};
-
-// GeoJSON simplificado das regiões (polígonos aproximados)
-// Baseado nas coordenadas aproximadas do território brasileiro
-const geojsonRegions = {
-  type: "FeatureCollection",
-  features: [
-    { type: "Feature", properties: { id: "original", name: "Território Original" }, geometry: { type: "Polygon", coordinates: [[[-34, -4], [-38, -8], [-40, -12], [-38, -18], [-42, -22], [-44, -28], [-48, -30], [-50, -28], [-48, -22], [-44, -18], [-42, -14], [-40, -10], [-38, -6], [-34, -4]]] } },
-    { type: "Feature", properties: { id: "espanha1494", name: "Cedido pela Espanha" }, geometry: { type: "Polygon", coordinates: [[[-50, -5], [-54, -8], [-56, -12], [-58, -16], [-60, -20], [-58, -24], [-56, -28], [-54, -30], [-52, -28], [-50, -24], [-48, -20], [-48, -16], [-46, -12], [-48, -8], [-50, -5]]] } },
-    { type: "Feature", properties: { id: "peru1650", name: "Cedido pelo Peru" }, geometry: { type: "Polygon", coordinates: [[[-60, -2], [-65, -4], [-68, -8], [-70, -12], [-68, -16], [-65, -18], [-62, -16], [-60, -12], [-58, -8], [-60, -2]]] } },
-    { type: "Feature", properties: { id: "colombia1750", name: "Cedido pela Colômbia" }, geometry: { type: "Polygon", coordinates: [[[-70, -2], [-72, -4], [-70, -8], [-68, -10], [-66, -8], [-65, -5], [-67, -2], [-70, -2]]] } },
-    { type: "Feature", properties: { id: "bolivia1903", name: "Acre" }, geometry: { type: "Polygon", coordinates: [[[-72, -8], [-74, -10], [-72, -12], [-70, -11], [-68, -9], [-69, -7], [-72, -8]]] } },
-    { type: "Feature", properties: { id: "paraguai1870", name: "Cedido pelo Paraguai" }, geometry: { type: "Polygon", coordinates: [[[-56, -20], [-58, -22], [-56, -24], [-54, -23], [-52, -22], [-54, -20], [-56, -20]]] } },
-    { type: "Feature", properties: { id: "argentina1801", name: "Missões" }, geometry: { type: "Polygon", coordinates: [[[-56, -26], [-58, -28], [-56, -30], [-54, -28], [-54, -26], [-56, -26]]] } },
-    { type: "Feature", properties: { id: "argentina1816", name: "Cisplatina" }, geometry: { type: "Polygon", coordinates: [[[-54, -32], [-56, -34], [-54, -35], [-52, -34], [-52, -32], [-54, -32]]] } },
-    { type: "Feature", properties: { id: "franca1816", name: "Amapá" }, geometry: { type: "Polygon", coordinates: [[[-52, 2], [-54, 0], [-52, -2], [-50, -1], [-50, 1], [-52, 2]]] } }
-  ]
-};
-
-// Camada de regiões
-const regionLayer = L.geoJSON(geojsonRegions, {
-  style: function(feature) {
-    const id = feature.properties.id;
-    return {
-      fillColor: regionColors[id] || '#888',
-      fillOpacity: 0.6,
-      color: '#fff',
-      weight: 1,
-      opacity: 0.8
-    };
-  },
-  onEachFeature: function(feature, layer) {
-    const id = feature.properties.id;
-    layer.on('click', () => openRegion(id));
-    layer.on('mouseover', () => layer.setStyle({ fillOpacity: 0.85, weight: 2 }));
-    layer.on('mouseout', () => layer.setStyle({ fillOpacity: 0.6, weight: 1 }));
-  }
-}).addTo(map);
-
-// Linha de Tordesilhas (aproximada - meridianos)
-const tordesilhasPoints = [
-  [-33, 5], [-32, 0], [-31, -5], [-30, -10], [-29, -15], [-28, -20], [-27, -25], [-26, -30], [-25, -35]
-];
-const tordesilhasLine = L.polyline(tordesilhasPoints, {
-  color: '#b8860b',
-  weight: 3,
-  dashArray: '8, 6',
-  opacity: 0
-}).addTo(map);
-
-// Botão Tordesilhas
-let tordesilhasOn = false;
-document.getElementById('tordBtn').addEventListener('click', () => {
-  tordesilhasOn = !tordesilhasOn;
-  tordesilhasLine.setStyle({ opacity: tordesilhasOn ? 1 : 0 });
-  document.getElementById('tordBtn').classList.toggle('active', tordesilhasOn);
-});
-
-// Legenda clicável
-document.querySelectorAll('.leg-item').forEach(item => {
-  item.addEventListener('click', () => {
-    const region = item.getAttribute('data-region');
-    if (region) openRegion(region);
-  });
-});
-
-function openRegion(regionId) {
-  const data = regionData[regionId];
-  if (!data) return;
+// Mapeamento de cada estado para sua região histórica
+// Baseado na história territorial do Brasil
+const stateToRegion = {
+  // Território Original (litoral do Nordeste e Sudeste)
+  'PE': 'Território Original', 'PB': 'Território Original', 'RN': 'Território Original',
+  'CE': 'Território Original', 'PI': 'Território Original', 'AL': 'Território Original',
+  'SE': 'Território Original', 'BA': 'Território Original', 'ES': 'Território Original',
+  'RJ': 'Território Original', 'SP': 'Território Original',
   
-  document.getElementById('pEy').textContent = 'Região Territorial';
-  document.getElementById('pTit').textContent = data.name;
-  document.getElementById('pSub').textContent = data.sub;
-  document.getElementById('pScroll').innerHTML = getEventsForRegion(regionId);
+  // Cedido pela Espanha (área central)
+  'MG': 'Cedido pela Espanha (1494)', 'GO': 'Cedido pela Espanha (1494)',
+  'DF': 'Cedido pela Espanha (1494)', 'TO': 'Cedido pela Espanha (1494)',
+  
+  // Peru/Espanha (Amazonas)
+  'AM': 'Cedido pelo Peru/Espanha (1650)', 'PA': 'Cedido pelo Peru/Espanha (1650)',
+  'RR': 'Cedido pelo Peru/Espanha (1650)', 'AP': 'Cedido pela França (1816)',
+  
+  // Colômbia
+  'AC': 'Cedido pela Bolívia (1903) — Acre',
+  
+  // Bolívia
+  'RO': 'Cedido pela Bolívia (1860)', 'MT': 'Cedido pela Bolívia (1860)',
+  
+  // Paraguai
+  'MS': 'Cedido pelo Paraguai (1870)', 'PR': 'Cedido pelo Paraguai (1870)',
+  
+  // Argentina
+  'SC': 'Cedido pela Argentina (1816)', 'RS': 'Cedido pela Argentina (1801)'
+};
+
+// Dados detalhados por região (para o painel)
+const regionDetails = {
+  'Território Original': {
+    sub: 'A leste da Linha de Tordesilhas · A partir de 1494',
+    events: [
+      { n: "Tratado de Tordesilhas", b: "bt", bl: "Tratado", d: "7 de junho de 1494", l: [{ f: "🇵🇹", r: "Rei de Portugal", n: "D. João II" }, { f: "🇪🇸", r: "Reis de Castela", n: "Fernando II e Isabel I" }], re: "Divisão do mundo a 370 léguas a oeste de Cabo Verde. Apenas o litoral nordeste/leste do Brasil ficava do lado português.", mo: "Resolver a disputa sobre as terras descobertas por Colombo (1492).", co: "Portugal reivindicou legitimidade sobre o Brasil.", le: "Nunca foi efetivamente respeitada. O Tratado de Madri (1750) a substituiu.", rp: "Fundamento do direito colonial português." },
+      { n: "Chegada de Pedro Álvares Cabral", b: "br", bl: "Evento", d: "22 de abril de 1500", l: [{ f: "🇵🇹", r: "Rei de Portugal", n: "D. Manuel I" }], re: "Cabral chega ao atual Porto Seguro (BA) e reivindica o território para Portugal.", mo: "Expedição rumo à Índia desvia-se para o oeste.", co: "Início da colonização portuguesa.", le: "Fundamento jurídico da soberania brasileira.", rp: "Definiu o Brasil como possessão lusitana." }
+    ]
+  },
+  'Cedido pela Espanha (1494)': {
+    sub: 'Faixa entre Tordesilhas e a fronteira colonial efetiva',
+    events: [
+      { n: "Expansão Bandeirante Além de Tordesilhas", b: "br", bl: "Expansão", d: "Sécs. XVII–XVIII", l: [{ f: "🇧🇷", r: "Bandeirantes", n: "Borba Gato, Anhanguera" }], re: "As bandeiras paulistas avançam centenas de léguas ignorando Tordesilhas.", mo: "Busca por escravos indígenas, ouro e pedras preciosas.", co: "Criou o princípio do uti possidetis.", le: "Brasil conquistou ~4 milhões de km² além de Tordesilhas.", rp: "Alexandre de Gusmão usou no Tratado de Madri (1750)." }
+    ]
+  },
+  'Cedido pelo Peru/Espanha (1650)': {
+    sub: 'Grande expansão central e norte — Amazônia',
+    events: [
+      { n: "Expedição de Pedro Teixeira", b: "br", bl: "Expansão", d: "1637–1638", l: [{ f: "🇧🇷", r: "Capitão", n: "Pedro Teixeira" }], re: "Navegou todo o Amazonas até Quito.", mo: "Afirmar posse portuguesa durante a União Ibérica.", co: "Precedente de controle lusitano sobre o Amazonas.", le: "Primeira demarcação efetiva do Amazonas.", rp: "Afastou Peru/Espanha da bacia amazônica." }
+    ]
+  },
+  'Cedido pela Bolívia (1903) — Acre': {
+    sub: 'Tratado de Petrópolis · Revolução Acreana',
+    events: [
+      { n: "Revolução Acreana e Tratado de Petrópolis", b: "bc", bl: "Conflito/Tratado", d: "1899–1903", l: [{ f: "🇧🇷", r: "Presidente", n: "Rodrigues Alves/Rio Branco" }, { f: "🇧🇴", r: "Presidente", n: "José Manuel Pando" }], re: "Seringueiros brasileiros no Acre boliviano se rebelaram. O Brasil interveio e o Tratado de Petrópolis (1903) cedeu o Acre ao Brasil.", mo: "Riqueza da borracha. ~60.000 brasileiros viviam no Acre.", co: "Brasil obteve 191.000 km².", le: "Símbolo máximo da diplomacia Rio Branco.", rp: "Causou ressentimento duradouro na Bolívia." }
+    ]
+  },
+  'Cedido pela Bolívia (1860)': {
+    sub: 'Alto Madeira / Guaporé / Fronteira MT',
+    events: [
+      { n: "Tratado de Ayacucho", b: "bt", bl: "Tratado", d: "1867", l: [{ f: "🇧🇷", r: "Imperador", n: "D. Pedro II" }, { f: "🇧🇴", r: "Presidente", n: "Mariano Melgarejo" }], re: "Fixou fronteira pelo paralelo 10°20'.", mo: "Demarcação após independência boliviana.", co: "Acre ficou em zona ambígua.", le: "Semente da crise de 1903.", rp: "Exemplo de acordos vagos que criam conflitos." }
+    ]
+  },
+  'Cedido pelo Paraguai (1870)': {
+    sub: 'Guerra da Tríplice Aliança · Ganhos Territoriais',
+    events: [
+      { n: "Guerra do Paraguai", b: "bc", bl: "Guerra", d: "1864–1870", l: [{ f: "🇧🇷", r: "Imperador", n: "D. Pedro II" }, { f: "🇵🇾", r: "Ditador", n: "Francisco Solano López" }], re: "Maior guerra da América do Sul. Paraguai invadiu RS e MT.", mo: "Solano López buscava hegemonia regional.", co: "Paraguai perdeu 140.000 km² para Brasil e Argentina.", le: "Brasil emergiu como potência militar regional.", rp: "Acelerou a Proclamação da República (1889)." }
+    ]
+  },
+  'Cedido pela Argentina/Espanha (1801)': {
+    sub: 'Missões Orientais · Noroeste do Rio Grande do Sul',
+    events: [
+      { n: "Tomada das Missões Orientais", b: "bc", bl: "Conflito", d: "1801", l: [{ f: "🇧🇷", r: "Capitania do RS", n: "Borges do Canto" }], re: "Tropas luso-brasileiras tomaram os Sete Povos das Missões.", mo: "Guerra das Laranjas na Europa.", co: "Brasil incorporou o NW do RS.", le: "Definiu o extremo noroeste do RS.", rp: "Argentina reconheceu em 1857." },
+      { n: "Questão de Palmas — Arbitragem Cleveland", b: "bd", bl: "Arbitragem", d: "1893–1895", l: [{ f: "🇧🇷", r: "Presidente", n: "Floriano Peixoto" }, { f: "🇦🇷", r: "Presidente", n: "Luis Sáenz Peña" }], re: "EUA arbitrou a favor do Brasil.", mo: "Região rica em erva-mate.", co: "Brasil ganhou 30.621 km² (SW do Paraná).", le: "Primeira grande vitória de Rio Branco.", rp: "Consagrou a arbitragem internacional." }
+    ]
+  },
+  'Cedido pela Argentina (1816)': {
+    sub: 'Cisplatina · Banda Oriental',
+    events: [
+      { n: "Província Cisplatina", b: "bc", bl: "Conflito", d: "1816–1821", l: [{ f: "🇧🇷", r: "Rei", n: "D. João VI" }, { f: "🇺🇾", r: "Revolucionário", n: "José Artigas" }], re: "Banda Oriental incorporada como Cisplatina.", mo: "Conter a revolução artiguista.", co: "Artigas exilado no Paraguai.", le: "Gerou nacionalismo uruguaio.", rp: "Contribuiu para instabilidade do Império." },
+      { n: "Independência do Uruguai", b: "bc", bl: "Guerra", d: "1825–1828", l: [{ f: "🇧🇷", r: "Imperador", n: "D. Pedro I" }, { f: "🇺🇾", r: "Líderes", n: "Lavalleja/Rivera" }], re: "Criação do Uruguai como Estado-tampão.", mo: "Grã-Bretanha não queria hegemonia no Prata.", co: "Brasil perdeu a Cisplatina.", le: "Uruguai nasceu por interesse britânico.", rp: "Contribuiu para abdicação de D. Pedro I." }
+    ]
+  },
+  'Cedido pela França (1816)': {
+    sub: 'Amapá · Questão do Oiapoque',
+    events: [
+      { n: "Questão do Amapá — Arbitragem de Berna", b: "bd", bl: "Arbitragem", d: "1895–1900", l: [{ f: "🇧🇷", r: "Presidente", n: "Prudente de Morais" }, { f: "🇫🇷", r: "Presidente", n: "Félix Faure" }], re: "Suíça decidiu a favor do Brasil.", mo: "Descoberta de ouro na região.", co: "Brasil garantiu o Amapá.", le: "Primeira grande vitória de Rio Branco.", rp: "Lançou Rio Branco à cena nacional." }
+    ]
+  }
+};
+
+// Construir legenda
+const legendBar = document.getElementById('legendBar');
+Object.entries(regionColors).forEach(([name, color]) => {
+  const item = document.createElement('div');
+  item.className = 'leg-item';
+  item.setAttribute('data-region', name);
+  item.innerHTML = `<div class="leg-sw" style="background:${color}"></div>${name}`;
+  item.onclick = () => openRegionDetail(name);
+  legendBar.appendChild(item);
+});
+
+let currentLayer = null;
+
+// Carregar GeoJSON dos estados do Brasil
+fetch('https://raw.githubusercontent.com/codeforgermany/click-here/main/brazil-states.json')
+  .then(response => response.json())
+  .then(data => {
+    // Fallback: tentar IBGE
+    if (!data || !data.features) {
+      return fetch('https://servicodados.ibge.gov.br/api/v3/malhas/estados?formato=application/vnd.geo+json&qualidade=minima')
+        .then(r => r.json());
+    }
+    return data;
+  })
+  .then(geojson => {
+    currentLayer = L.geoJSON(geojson, {
+      style: function(feature) {
+        const sigla = feature.properties.sigla || feature.properties.SIGLA || feature.properties.UF;
+        const region = stateToRegion[sigla] || 'Território Original';
+        return {
+          fillColor: regionColors[region] || '#666',
+          fillOpacity: 0.7,
+          color: '#fff',
+          weight: 1,
+          opacity: 0.8
+        };
+      },
+      onEachFeature: function(feature, layer) {
+        const sigla = feature.properties.sigla || feature.properties.SIGLA || feature.properties.UF;
+        const nome = feature.properties.nome || feature.properties.NM_ESTADO || feature.properties.Nome || sigla;
+        const region = stateToRegion[sigla] || 'Território Original';
+        
+        layer.bindTooltip(`${nome} — ${region}`);
+        
+        layer.on('click', () => {
+          openRegionDetail(region);
+        });
+        
+        layer.on('mouseover', function() {
+          this.setStyle({ fillOpacity: 0.9, weight: 2 });
+        });
+        
+        layer.on('mouseout', function() {
+          this.setStyle({ fillOpacity: 0.7, weight: 1 });
+        });
+      }
+    }).addTo(map);
+  })
+  .catch(error => {
+    console.error('Erro ao carregar GeoJSON:', error);
+    document.getElementById('pEmpty').innerHTML = `
+      <div class="d">⚠️</div>
+      <h3>Erro ao carregar mapa</h3>
+      <p>Não foi possível carregar os dados dos estados.<br>Verifique sua conexão e tente novamente.</p>
+    `;
+  });
+
+function openRegionDetail(regionName) {
+  const details = regionDetails[regionName];
+  if (!details) return;
+  
+  document.getElementById('pEy').textContent = 'Região Histórica';
+  document.getElementById('pTit').textContent = regionName;
+  document.getElementById('pSub').textContent = details.sub;
+  document.getElementById('pScroll').innerHTML = details.events.map((e, i) => renderCard(e, regionName + i)).join('');
   document.getElementById('pEmpty').style.display = 'none';
   document.getElementById('pContent').style.display = 'flex';
-  
-  // Centralizar mapa na região
-  const feature = geojsonRegions.features.find(f => f.properties.id === regionId);
-  if (feature) {
-    const bounds = L.geoJSON(feature).getBounds();
-    map.fitBounds(bounds);
-  }
-}
-
-function getEventsForRegion(regionId) {
-  const events = eventsData[regionId] || [];
-  return events.map((e, i) => renderCard(e, regionId + i)).join('');
 }
 
 function renderCard(e, id) {
@@ -289,37 +338,39 @@ function closePanel() {
   document.getElementById('pContent').style.display = 'none';
 }
 
-// Dados dos eventos por região
-const eventsData = {
-  original: [
-    { n: "Tratado de Tordesilhas", b: "bt", bl: "Tratado", d: "7 de junho de 1494", l: [{ f: "🇵🇹", r: "Rei de Portugal", n: "D. João II" }, { f: "🇪🇸", r: "Reis de Castela", n: "Fernando II e Isabel I" }], re: "Divisão do mundo a 370 léguas a oeste de Cabo Verde. Apenas o litoral nordeste/leste do Brasil ficava do lado português.", mo: "Resolver a disputa sobre as terras descobertas por Colombo (1492).", co: "Portugal reivindicou legitimidade sobre o Brasil.", le: "Nunca foi efetivamente respeitada. O Tratado de Madri (1750) a substituiu.", rp: "Fundamento do direito colonial português." },
-    { n: "Chegada de Pedro Álvares Cabral", b: "br", bl: "Evento", d: "22 de abril de 1500", l: [{ f: "🇵🇹", r: "Rei de Portugal", n: "D. Manuel I" }], re: "Cabral chega ao atual Porto Seguro (BA) e reivindica o território para Portugal.", mo: "Expedição rumo à Índia desvia-se para o oeste.", co: "Início da colonização portuguesa.", le: "Fundamento jurídico da soberania brasileira.", rp: "Definiu o Brasil como possessão lusitana." }
-  ],
-  bolivia1903: [
-    { n: "Revolução Acreana e Tratado de Petrópolis", b: "bc", bl: "Conflito/Tratado", d: "1899–1903", l: [{ f: "🇧🇷", r: "Presidente", n: "Rodrigues Alves/Rio Branco" }, { f: "🇧🇴", r: "Presidente", n: "José Manuel Pando" }], re: "Seringueiros brasileiros no Acre boliviano se rebelaram. O Brasil interveio militarmente e o Tratado de Petrópolis (1903) cedeu o Acre ao Brasil.", mo: "Riqueza da borracha. ~60.000 brasileiros viviam no Acre.", co: "Brasil obteve 191.000 km².", le: "Símbolo máximo da diplomacia Rio Branco.", rp: "Causou ressentimento duradouro na Bolívia." }
-  ],
-  paraguai1870: [
-    { n: "Guerra do Paraguai", b: "bc", bl: "Guerra", d: "1864–1870", l: [{ f: "🇧🇷", r: "Imperador", n: "D. Pedro II" }, { f: "🇵🇾", r: "Ditador", n: "Francisco Solano López" }], re: "Maior guerra da América do Sul. Paraguai invadiu RS e MT.", mo: "Solano López buscava hegemonia regional.", co: "Paraguai perdeu 140.000 km² para Brasil e Argentina.", le: "Brasil emergiu como potência militar regional.", rp: "Acelerou a Proclamação da República (1889)." }
-  ],
-  argentina1801: [
-    { n: "Tomada das Missões Orientais", b: "bc", bl: "Conflito", d: "1801", l: [{ f: "🇧🇷", r: "Capitania do RS", n: "Borges do Canto" }, { f: "🇪🇸", r: "Vice-reinado", n: "Joaquín del Pino" }], re: "Tropas luso-brasileiras tomaram os Sete Povos das Missões.", mo: "Guerra das Laranjas na Europa.", co: "Brasil incorporou o NW do RS.", le: "Definiu o extremo noroeste do RS.", rp: "Argentina reconheceu em 1857." },
-    { n: "Questão de Palmas — Arbitragem Cleveland", b: "bd", bl: "Arbitragem", d: "1893–1895", l: [{ f: "🇧🇷", r: "Presidente", n: "Floriano Peixoto" }, { f: "🇦🇷", r: "Presidente", n: "Luis Sáenz Peña" }], re: "EUA arbitrou a favor do Brasil.", mo: "Região rica em erva-mate.", co: "Brasil ganhou 30.621 km² (SW do Paraná).", le: "Primeira grande vitória de Rio Branco.", rp: "Consagrou a arbitragem internacional." }
-  ],
-  argentina1816: [
-    { n: "Província Cisplatina", b: "bc", bl: "Conflito", d: "1816–1821", l: [{ f: "🇧🇷", r: "Rei", n: "D. João VI" }, { f: "🇺🇾", r: "Revolucionário", n: "José Artigas" }], re: "Banda Oriental incorporada como Cisplatina.", mo: "Conter a revolução artiguista.", co: "Artigas exilado no Paraguai.", le: "Gerou nacionalismo uruguaio.", rp: "Contribuiu para instabilidade do Império." },
-    { n: "Independência do Uruguai", b: "bc", bl: "Guerra", d: "1825–1828", l: [{ f: "🇧🇷", r: "Imperador", n: "D. Pedro I" }, { f: "🇺🇾", r: "Líderes", n: "Lavalleja/Rivera" }], re: "Criação do Uruguai como Estado-tampão.", mo: "Grã-Bretanha não queria hegemonia no Prata.", co: "Brasil perdeu a Cisplatina.", le: "Uruguai nasceu por interesse britânico.", rp: "Contribuiu para abdicação de D. Pedro I." }
-  ],
-  franca1816: [
-    { n: "Questão do Amapá — Arbitragem de Berna", b: "bd", bl: "Arbitragem", d: "1895–1900", l: [{ f: "🇧🇷", r: "Presidente", n: "Prudente de Morais" }, { f: "🇫🇷", r: "Presidente", n: "Félix Faure" }], re: "Suíça decidiu a favor do Brasil.", mo: "Descoberta de ouro na região.", co: "Brasil garantiu o Amapá.", le: "Primeira grande vitória de Rio Branco.", rp: "Lançou Rio Branco à cena nacional." }
-  ]
-};
+// Linha de Tordesilhas
+let tordesilhasOn = false;
+const tordesilhasPoints = [[-33, -50], [-5, -45], [5, -35]];
+const tordesilhasLine = L.polyline(tordesilhasPoints, {
+  color: '#b8860b',
+  weight: 3,
+  dashArray: '8, 6',
+  opacity: 0
+}).addTo(map);
 
-// Adicionar eventos para outras regiões vazias
-for (let reg of ['espanha1494', 'peru1600', 'peru1650', 'colombia1750', 'colombia1860', 'bolivia1860']) {
-  if (!eventsData[reg]) eventsData[reg] = [
-    { n: "Expansão Territorial via Uti Possidetis", b: "br", bl: "Expansão", d: "Sécs. XVII–XVIII", l: [{ f: "🇧🇷", r: "Bandeirantes", n: "Borba Gato, Anhanguera" }], re: "Ocupação efetiva do território pelas bandeiras paulistas.", mo: "Busca por ouro e escravos indígenas.", co: "Criação do princípio do uti possidetis.", le: "Moldou as fronteiras atuais do Brasil.", rp: "Consagrado no Tratado de Madri (1750)." }
-  ];
-}
+document.getElementById('tordBtn').addEventListener('click', () => {
+  tordesilhasOn = !tordesilhasOn;
+  tordesilhasLine.setStyle({ opacity: tordesilhasOn ? 1 : 0 });
+  document.getElementById('tordBtn').classList.toggle('active', tordesilhasOn);
+});
+
+// Adicionar fallback manual
+setTimeout(() => {
+  if (!currentLayer) {
+    console.log('Tentando carregar GeoJSON alternativo...');
+    fetch('https://servicodados.ibge.gov.br/api/v3/malhas/estados?formato=application/vnd.geo+json&qualidade=minima')
+      .then(r => r.json())
+      .then(geojson => {
+        L.geoJSON(geojson, {
+          style: { fillColor: '#666', fillOpacity: 0.5, color: '#fff', weight: 1 },
+          onEachFeature: (f, l) => {
+            const nome = f.properties.NM_ESTADO || 'Estado';
+            l.bindTooltip(nome);
+          }
+        }).addTo(map);
+      });
+  }
+}, 2000);
 </script>
 </body>
 </html>
