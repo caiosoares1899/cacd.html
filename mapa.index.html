@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Brasil — Expansão Territorial & Diplomacia na América do Sul</title>
+<title>Brasil — Expansão Territorial & Diplomacia</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=IBM+Plex+Mono:wght@300;400;600&family=Crimson+Pro:wght@300;400;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css"/>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
@@ -11,296 +11,246 @@
 :root{--bg:#f5f0e8;--surface:#faf7f2;--dark:#1a1208;--border:#c8b89a;--accent:#8b3a0f;--gold:#b8860b;--text:#2a1f0e;--muted:#7a6a52}
 *{box-sizing:border-box;margin:0;padding:0}
 body{background:#1a1208;color:var(--text);font-family:'Crimson Pro',serif;height:100vh;display:flex;flex-direction:column;overflow:hidden}
-header{background:#0f0c06;padding:.9rem 1.6rem;display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;border-bottom:2px solid var(--gold);flex-shrink:0}
-.hl h1{font-family:'Playfair Display',serif;font-size:clamp(.95rem,2vw,1.4rem);font-weight:900;color:#f5f0e8;line-height:1.2}
+header{background:#0f0c06;padding:.7rem 1.2rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;border-bottom:2px solid var(--gold);flex-shrink:0}
+.hl h1{font-family:'Playfair Display',serif;font-size:clamp(.85rem,2vw,1.2rem);font-weight:900;color:#f5f0e8}
 .hl h1 em{color:var(--gold);font-style:normal}
-.hl p{font-family:'IBM Plex Mono',monospace;font-size:.58rem;color:#7a6a52;margin-top:.2rem;letter-spacing:.1em;text-transform:uppercase}
-.legend-bar{background:#13100a;border-bottom:1px solid rgba(184,134,11,.2);padding:.4rem 1.6rem;display:flex;flex-wrap:wrap;gap:.5rem 1.2rem;align-items:center;flex-shrink:0;max-height:80px;overflow-y:auto}
-.leg-item{display:flex;align-items:center;gap:.35rem;font-family:'IBM Plex Mono',monospace;font-size:.56rem;color:#8a7a62;letter-spacing:.05em;text-transform:uppercase;cursor:pointer;transition:color .2s}
-.leg-item:hover{color:#f5f0e8}
-.leg-sw{width:13px;height:13px;border-radius:2px;flex-shrink:0}
-.layout{display:flex;flex:1;overflow:hidden;min-height:0}
-#map{flex:1;background:#1a2a3a !important}
+.hl p{font-family:'IBM Plex Mono',monospace;font-size:.5rem;color:#7a6a52;margin-top:.1rem}
+.layout{display:flex;flex:1;overflow:hidden;min-height:0;flex-direction:column}
+#map{flex:1;background:#1a2a3a !important;min-height:300px}
 .leaflet-container{background:#1a2a3a !important}
-.leaflet-control-zoom a{background:#0f0c06 !important;color:var(--gold) !important;border-color:var(--border) !important}
-.panel{width:380px;flex-shrink:0;background:var(--surface);border-left:2px solid var(--border);display:flex;flex-direction:column;overflow:hidden}
-.p-empty{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:2rem 1.5rem;text-align:center;gap:.7rem;color:var(--muted)}
-.p-empty .d{font-size:2.8rem;opacity:.12}
-.p-empty h3{font-family:'Playfair Display',serif;font-size:1rem;color:var(--muted);font-weight:400}
-.p-empty p{font-size:.82rem;line-height:1.6;opacity:.8}
-.p-content{display:none;flex-direction:column;height:100%;overflow:hidden}
-.p-content.active{display:flex}
-.p-header{padding:.9rem 1.2rem .8rem;border-bottom:1px solid var(--border);background:var(--dark);flex-shrink:0;position:relative}
-.p-ey{font-family:'IBM Plex Mono',monospace;font-size:.57rem;color:var(--gold);letter-spacing:.12em;text-transform:uppercase;margin-bottom:.2rem}
-.p-tit{font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:700;color:#f5f0e8;line-height:1.25}
-.p-sub{font-family:'IBM Plex Mono',monospace;font-size:.6rem;color:#8a7a62;margin-top:.18rem}
-.p-close{position:absolute;top:.7rem;right:.8rem;width:24px;height:24px;border:1px solid rgba(184,134,11,.4);background:transparent;color:var(--gold);cursor:pointer;font-size:.8rem;display:flex;align-items:center;justify-content:center;transition:all .2s}
-.p-close:hover{background:var(--gold);color:var(--dark)}
-.p-scroll{flex:1;overflow-y:auto;padding:.8rem 1rem;scrollbar-width:thin}
-.ev-card{border:1px solid var(--border);margin-bottom:.65rem;background:#fff;transition:border-color .2s}
-.ev-card:hover{border-color:var(--accent)}
-.ev-top{padding:.65rem .85rem;cursor:pointer;display:flex;flex-direction:column;gap:.22rem}
-.ev-row{display:flex;align-items:flex-start;justify-content:space-between;gap:.4rem}
-.badge{font-family:'IBM Plex Mono',monospace;font-size:.52rem;font-weight:600;padding:.14rem .38rem;text-transform:uppercase;letter-spacing:.07em;white-space:nowrap;border:1px solid;flex-shrink:0}
-.bc{background:#fdecea;color:#b71c1c;border-color:#ef9a9a}
-.bd{background:#e3f0fb;color:#0d47a1;border-color:#90caf9}
-.bt{background:#fff8e1;color:#e65100;border-color:#ffcc02}
-.be{background:#e8f5e9;color:#1b5e20;border-color:#a5d6a7}
-.bn{background:#fff3e0;color:#bf360c;border-color:#ffcc80}
-.br{background:#f3e5f5;color:#4a148c;border-color:#ce93d8}
-.ev-name{font-family:'Playfair Display',serif;font-size:.9rem;font-weight:700;color:var(--dark);line-height:1.3;flex:1}
-.ev-date{font-family:'IBM Plex Mono',monospace;font-size:.63rem;color:var(--muted)}
-.ev-ch{font-size:.56rem;color:var(--muted);transition:transform .2s;margin-left:.2rem;flex-shrink:0}
-.ev-card.open .ev-ch{transform:rotate(90deg)}
-.ev-body{display:none;padding:0 .85rem .85rem;border-top:1px solid #eee}
+.leaflet-control-zoom a{background:#0f0c06 !important;color:var(--gold) !important}
+
+/* Timeline */
+.timeline-container{background:#0f0c06;border-top:2px solid var(--gold);padding:.5rem 1rem;flex-shrink:0}
+.timeline-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:.3rem}
+.timeline-header h3{font-family:'IBM Plex Mono',monospace;font-size:.6rem;color:var(--gold)}
+.timeline-value{font-family:'IBM Plex Mono',monospace;font-size:.7rem;color:#f5f0e8;background:rgba(184,134,11,.2);padding:.1rem .5rem;border-radius:20px}
+.timeline-labels{display:flex;justify-content:space-between;margin-top:.3rem}
+.timeline-labels span{font-family:'IBM Plex Mono',monospace;font-size:.5rem;color:#8a7a62;cursor:pointer}
+.timeline-labels span:hover{color:var(--gold)}
+#timeline{height:6px;margin:.5rem 0 .2rem}
+.noUi-connect{background:var(--gold)}
+.noUi-handle{width:16px;height:16px;right:-8px;top:-5px;background:#f5f0e8;border:2px solid var(--gold);border-radius:50%;box-shadow:none;cursor:pointer}
+.noUi-handle:before,.noUi-handle:after{display:none}
+
+.legend-bar{background:#13100a;padding:.2rem 1rem;display:flex;flex-wrap:wrap;gap:.3rem .8rem;align-items:center;flex-shrink:0;max-height:45px;overflow-y:auto}
+.leg-item{display:flex;align-items:center;gap:.25rem;font-family:'IBM Plex Mono',monospace;font-size:.45rem;color:#8a7a62;cursor:pointer}
+.leg-item:hover{color:#f5f0e8}
+.leg-sw{width:10px;height:10px;border-radius:2px}
+
+.panel{position:fixed;bottom:140px;right:15px;width:300px;background:var(--surface);border:1px solid var(--border);border-radius:6px;display:none;z-index:1000;max-height:50vh}
+.panel.active{display:flex;flex-direction:column}
+.p-header{padding:.5rem .8rem;background:var(--dark);border-radius:6px 6px 0 0}
+.p-tit{font-family:'Playfair Display',serif;font-size:.8rem;font-weight:700;color:#f5f0e8}
+.p-sub{font-size:.6rem;color:var(--gold)}
+.p-close{float:right;background:transparent;border:none;color:var(--muted);cursor:pointer}
+.p-scroll{flex:1;overflow-y:auto;padding:.5rem;font-size:.7rem}
+.ev-card{border:1px solid var(--border);margin-bottom:.4rem;background:#fff;border-radius:4px}
+.ev-top{padding:.4rem .6rem;cursor:pointer}
+.ev-name{font-weight:600;font-size:.75rem}
+.ev-date{font-size:.6rem;color:var(--muted)}
+.ev-body{display:none;padding:.4rem .6rem;border-top:1px solid #eee}
 .ev-body.open{display:block}
-.ev-s{margin-top:.65rem}
-.ev-l{font-family:'IBM Plex Mono',monospace;font-size:.55rem;font-weight:600;color:var(--accent);letter-spacing:.12em;text-transform:uppercase;margin-bottom:.16rem}
-.ev-t{font-size:.79rem;line-height:1.65;color:#3a2a18}
-.ldrs{display:grid;grid-template-columns:1fr 1fr;gap:.4rem;margin-top:.18rem}
-.ldr{background:var(--bg);border:1px solid var(--border);padding:.38rem .52rem}
-.lf{font-size:.9rem;display:block;margin-bottom:.08rem}
-.lr{font-family:'IBM Plex Mono',monospace;font-size:.52rem;color:var(--muted);letter-spacing:.05em;text-transform:uppercase}
-.ln{font-size:.74rem;font-weight:600;color:var(--dark);line-height:1.25}
-.tord-btn{display:flex;align-items:center;gap:.5rem;padding:.55rem 1.1rem;background:transparent;border:1.5px solid var(--gold);color:var(--gold);font-family:'IBM Plex Mono',monospace;font-size:.68rem;font-weight:600;letter-spacing:.1em;cursor:pointer;text-transform:uppercase;transition:all .25s;white-space:nowrap}
-.tord-btn:hover,.tord-btn.active{background:var(--gold);color:#0f0c06}
-@media(max-width:900px){.layout{flex-direction:column}.panel{width:100%;border-left:none;border-top:2px solid var(--border);max-height:50vh}}
+.badge{display:inline-block;font-size:.45rem;padding:.1rem .3rem;border-radius:2px;margin-bottom:.2rem}
+.bc{background:#fdecea;color:#b71c1c}
+.bt{background:#fff8e1;color:#e65100}
+.bd{background:#e3f0fb;color:#0d47a1}
 </style>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.7.1/nouislider.min.css"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.7.1/nouislider.min.js"></script>
 </head>
 <body>
 <header>
   <div class="hl">
-    <h1>Brasil — <em>Expansão Territorial</em> &amp; Diplomacia na América do Sul</h1>
-    <p>Clique nos estados • Cores indicam origem histórica do território</p>
+    <h1>Brasil — <em>Expansão Territorial</em> &amp; Diplomacia</h1>
+    <p>Arraste a linha do tempo • Clique nos estados</p>
   </div>
-  <button class="tord-btn" id="tordBtn">⚖️ &nbsp;Linha de Tordesilhas (1494)</button>
 </header>
-
-<div class="legend-bar" id="legendBar"></div>
 
 <div class="layout">
   <div id="map"></div>
-  <div class="panel">
-    <div class="p-empty" id="pEmpty">
-      <div class="d">🗺</div>
-      <h3>Selecione uma Região</h3>
-      <p>Clique em qualquer estado do mapa ou nos itens da legenda para ver os eventos históricos e diplomáticos detalhados.</p>
+  
+  <div class="timeline-container">
+    <div class="timeline-header">
+      <h3>📜 EVOLUÇÃO TERRITORIAL — ARRASTE</h3>
+      <div class="timeline-value" id="yearDisplay">1494</div>
     </div>
-    <div class="p-content" id="pContent">
-      <div class="p-header">
-        <div class="p-ey" id="pEy">Região</div>
-        <div class="p-tit" id="pTit">—</div>
-        <div class="p-sub" id="pSub"></div>
-        <button class="p-close" onclick="closePanel()">✕</button>
-      </div>
-      <div class="p-scroll" id="pScroll"></div>
-    </div>
+    <div id="timeline"></div>
+    <div class="timeline-labels" id="timelineLabels"></div>
   </div>
+  
+  <div class="legend-bar" id="legendBar"></div>
+</div>
+
+<div class="panel" id="panel">
+  <div class="p-header">
+    <button class="p-close" onclick="closePanel()">✕</button>
+    <div class="p-tit" id="panelTitle">Tratado</div>
+    <div class="p-sub" id="panelSub"></div>
+  </div>
+  <div class="p-scroll" id="panelContent"></div>
 </div>
 
 <script>
-// Mapa base
+// ============================================
+// MAPA
+// ============================================
 const map = L.map('map').setView([-14, -55], 4);
 L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-  subdomains: 'abcd',
-  maxZoom: 19,
-  attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OSM</a> &copy; CartoDB'
+  subdomains: 'abcd', maxZoom: 19, attribution: '&copy; OSM & CartoDB'
 }).addTo(map);
 
-// CORES POR REGIÃO
+// ============================================
+// TRATADOS
+// ============================================
+const tratados = [
+  { year: 1494, name: "Tratado de Tordesilhas", sub: "Divisão Portugal/Espanha", color: "#c8685a", region: "original",
+    desc: "7 de junho de 1494: divisão do mundo a 370 léguas de Cabo Verde.",
+    leaders: "🇵🇹 D. João II | 🇪🇸 Fernando II e Isabel I", consequence: "Portugal reivindicou o Brasil.", legacy: "Fundamento do colonialismo português." },
+  { year: 1750, name: "Tratado de Madri", sub: "Uti possidetis", color: "#d4956a", region: "espanha",
+    desc: "13 de janeiro de 1750: substituiu Tordesilhas pelo uti possidetis.", leaders: "🇵🇹 D. João V | 🇪🇸 Fernando VI", consequence: "Brasil incorporou milhões de km².", legacy: "Maior ganho territorial da história." },
+  { year: 1777, name: "Santo Ildefonso", sub: "Ajuste no sul", color: "#e8a850", region: "espanha",
+    desc: "1º de outubro de 1777: ajuste de fronteiras no sul.", leaders: "🇵🇹 D. Maria I | 🇪🇸 Carlos III", consequence: "Portugal manteve o Rio Grande do Sul.", legacy: "Última demarcação colonial." },
+  { year: 1801, name: "Missões Orientais", sub: "Anexação do noroeste do RS", color: "#90b878", region: "argentina1801",
+    desc: "Tomada dos Sete Povos das Missões.", leaders: "🇧🇷 Borges do Canto", consequence: "Brasil incorporou o noroeste gaúcho.", legacy: "Definiu a fronteira do RS." },
+  { year: 1816, name: "Cisplatina", sub: "Banda Oriental", color: "#58c888", region: "argentina1816",
+    desc: "Invasão da Banda Oriental (atual Uruguai).", leaders: "🇧🇷 D. João VI | 🇺🇾 José Artigas", consequence: "Cisplatina tornou-se Uruguai (1828).", legacy: "Estado-tampão britânico." },
+  { year: 1867, name: "Tratado de Ayacucho", sub: "Fronteira com a Bolívia", color: "#78b468", region: "bolivia1860",
+    desc: "Fronteira no paralelo 10°20' e rio Madeira.", leaders: "🇧🇷 D. Pedro II | 🇧🇴 Mariano Melgarejo", consequence: "Acre ficou em zona ambígua.", legacy: "Semente da crise de 1903." },
+  { year: 1870, name: "Guerra do Paraguai", sub: "Anexação de territórios", color: "#8ab4d8", region: "paraguai",
+    desc: "Paraguai perdeu 140.000 km².", leaders: "🇧🇷 D. Pedro II | 🇵🇾 Solano López", consequence: "Brasil consolidou-se como potência.", legacy: "Acelerou o fim do Império." },
+  { year: 1900, name: "Questão do Amapá", sub: "Arbitragem de Berna", color: "#78c8d8", region: "franca",
+    desc: "Suíça decidiu a favor do Brasil.", leaders: "🇧🇷 Prudente de Morais | 🇫🇷 Félix Faure", consequence: "Brasil garantiu o Amapá.", legacy: "Vitória de Rio Branco." },
+  { year: 1903, name: "Tratado de Petrópolis", sub: "Anexação do Acre", color: "#b888c8", region: "acre",
+    desc: "Brasil anexou 191.000 km² da Bolívia.", leaders: "🇧🇷 Rio Branco | 🇧🇴 José Manuel Pando", consequence: "Acre foi incorporado.", legacy: "Símbolo da diplomacia de Rio Branco." }
+];
+
+// Cores
 const regionColors = {
-  'Território Original (Portugal)': '#c8685a',
-  'Cedido pela Espanha (1494)': '#d4956a',
-  'Cedido pelo Peru/Espanha (1650)': '#e8a850',
-  'Cedido pela Bolívia (1860)': '#78b468',
-  'Cedido pela Bolívia (1903) — Acre': '#b888c8',
-  'Cedido pelo Paraguai (1870)': '#8ab4d8',
-  'Cedido pela Argentina/Espanha (1801)': '#90b878',
-  'Cedido pela Argentina (1816)': '#58c888',
-  'Cedido pela França (1816)': '#78c8d8'
+  'original': '#c8685a', 'espanha': '#d4956a', 'argentina1801': '#90b878',
+  'argentina1816': '#58c888', 'bolivia1860': '#78b468', 'acre': '#b888c8',
+  'paraguai': '#8ab4d8', 'franca': '#78c8d8'
 };
 
-// MAPEAMENTO POR SIGLA - VERSÃO CORRIGIDA
-const stateToRegion = {
-  'AC': 'Cedido pela Bolívia (1903) — Acre',
-  'AL': 'Território Original (Portugal)',
-  'AP': 'Cedido pela França (1816)',
-  'AM': 'Cedido pelo Peru/Espanha (1650)',
-  'BA': 'Território Original (Portugal)',
-  'CE': 'Território Original (Portugal)',
-  'DF': 'Cedido pela Espanha (1494)',
-  'ES': 'Território Original (Portugal)',
-  'GO': 'Cedido pela Espanha (1494)',
-  'MA': 'Território Original (Portugal)',
-  'MT': 'Cedido pela Espanha (1494)',
-  'MS': 'Cedido pelo Paraguai (1870)',
-  'MG': 'Cedido pela Espanha (1494)',
-  'PA': 'Cedido pelo Peru/Espanha (1650)',
-  'PB': 'Território Original (Portugal)',
-  'PR': 'Território Original (Portugal)',
-  'PE': 'Território Original (Portugal)',
-  'PI': 'Território Original (Portugal)',
-  'RJ': 'Território Original (Portugal)',
-  'RN': 'Território Original (Portugal)',
-  'RS': 'Cedido pela Argentina/Espanha (1801)',
-  'RO': 'Cedido pela Bolívia (1860)',
-  'RR': 'Cedido pelo Peru/Espanha (1650)',
-  'SC': 'Cedido pela Argentina (1816)',
-  'SP': 'Território Original (Portugal)',
-  'SE': 'Território Original (Portugal)',
-  'TO': 'Cedido pela Espanha (1494)'
+// Estado base
+const baseRegion = {
+  'AC':'original','AL':'original','AP':'original','AM':'original','BA':'original',
+  'CE':'original','DF':'original','ES':'original','GO':'original','MA':'original',
+  'MG':'original','MS':'original','MT':'original','PA':'original','PB':'original',
+  'PE':'original','PI':'original','PR':'original','RJ':'original','RN':'original',
+  'RO':'original','RR':'original','RS':'original','SC':'original','SE':'original',
+  'SP':'original','TO':'original'
 };
 
-// Nomes dos estados
-const stateNames = {
-  'AC': 'Acre', 'AL': 'Alagoas', 'AP': 'Amapá', 'AM': 'Amazonas', 'BA': 'Bahia',
-  'CE': 'Ceará', 'DF': 'Distrito Federal', 'ES': 'Espírito Santo', 'GO': 'Goiás',
-  'MA': 'Maranhão', 'MT': 'Mato Grosso', 'MS': 'Mato Grosso do Sul', 'MG': 'Minas Gerais',
-  'PA': 'Pará', 'PB': 'Paraíba', 'PR': 'Paraná', 'PE': 'Pernambuco', 'PI': 'Piauí',
-  'RJ': 'Rio de Janeiro', 'RN': 'Rio Grande do Norte', 'RS': 'Rio Grande do Sul',
-  'RO': 'Rondônia', 'RR': 'Roraima', 'SC': 'Santa Catarina', 'SP': 'São Paulo',
-  'SE': 'Sergipe', 'TO': 'Tocantins'
-};
+let stateRegions = {...baseRegion};
 
-// DADOS DETALHADOS DAS REGIÕES
-const regionDetails = {
-  'Território Original (Portugal)': {
-    sub: 'A leste da Linha de Tordesilhas · Séc. XVI',
-    events: [{ n: "Tratado de Tordesilhas", b: "bt", bl: "Tratado", d: "7 de junho de 1494", l: [{ f: "🇵🇹", r: "Rei de Portugal", n: "D. João II" }, { f: "🇪🇸", r: "Reis de Castela", n: "Fernando II e Isabel I" }], re: "Divisão do mundo a 370 léguas a oeste de Cabo Verde.", mo: "Resolver a disputa sobre as terras descobertas por Colombo.", co: "Portugal reivindicou legitimidade sobre o Brasil.", le: "Nunca foi efetivamente respeitada.", rp: "Fundamento do direito colonial português." }]
-  },
-  'Cedido pela Espanha (1494)': {
-    sub: 'Faixa central adquirida pelo Tratado de Madri (1750)',
-    events: [{ n: "Expansão Bandeirante", b: "br", bl: "Expansão Territorial", d: "Sécs. XVII–XVIII", l: [{ f: "🇧🇷", r: "Bandeirantes", n: "Borba Gato, Anhanguera" }], re: "As bandeiras paulistas avançaram ignorando Tordesilhas.", mo: "Busca por ouro e indígenas.", co: "Criou o princípio do uti possidetis.", le: "O Brasil conquistou milhões de km².", rp: "Fundamento do Tratado de Madri (1750)." }]
-  },
-  'Cedido pelo Peru/Espanha (1650)': {
-    sub: 'Expansão portuguesa na Amazônia',
-    events: [{ n: "Expedição de Pedro Teixeira", b: "br", bl: "Expansão", d: "1637–1639", l: [{ f: "🇧🇷", r: "Capitão-mor", n: "Pedro Teixeira" }], re: "Subiu o Amazonas até Quito.", mo: "Afirmar soberania portuguesa.", co: "Portugal controlou a bacia amazônica.", le: "Primeira demarcação do Amazonas.", rp: "Afirmou o Brasil como potência amazônica." }]
-  },
-  'Cedido pela Bolívia (1903) — Acre': {
-    sub: 'Tratado de Petrópolis • Revolução Acreana',
-    events: [{ n: "Revolução Acreana", b: "bc", bl: "Conflito", d: "1899–1903", l: [{ f: "🇧🇷", r: "Presidente", n: "Rodrigues Alves" }, { f: "🇧🇴", r: "Presidente", n: "José Manuel Pando" }], re: "Seringueiros se rebelaram contra a Bolívia.", mo: "Riqueza da borracha.", co: "Brasil anexou 191.000 km².", le: "Maior vitória da diplomacia de Rio Branco.", rp: "Criou ressentimento na Bolívia." }]
-  },
-  'Cedido pela Bolívia (1860)': {
-    sub: 'Tratado de Ayacucho (1867)',
-    events: [{ n: "Tratado de Ayacucho", b: "bt", bl: "Tratado", d: "1867", l: [{ f: "🇧🇷", r: "Imperador", n: "D. Pedro II" }, { f: "🇧🇴", r: "Presidente", n: "Mariano Melgarejo" }], re: "Fixou fronteira no paralelo 10°20'.", mo: "Demarcar a fronteira pós-independência.", co: "Acre ficou em zona ambígua.", le: "Semente da crise de 1903.", rp: "Exemplo de acordos vagos." }]
-  },
-  'Cedido pelo Paraguai (1870)': {
-    sub: 'Guerra da Tríplice Aliança',
-    events: [{ n: "Guerra do Paraguai", b: "bc", bl: "Guerra", d: "1864–1870", l: [{ f: "🇧🇷", r: "Imperador", n: "D. Pedro II" }, { f: "🇵🇾", r: "Ditador", n: "Solano López" }], re: "Paraguai perdeu 140.000 km².", mo: "Solano López invadiu o Brasil.", co: "Brasil anexou terras ao sul do MT.", le: "Brasil consolidou-se como potência.", rp: "Custos da guerra aceleraram o fim do Império." }]
-  },
-  'Cedido pela Argentina/Espanha (1801)': {
-    sub: 'Missões Orientais (Noroeste do RS)',
-    events: [{ n: "Tomada das Missões", b: "bc", bl: "Conflito", d: "1801", l: [{ f: "🇧🇷", r: "Comandante", n: "Borges do Canto" }], re: "Tomada dos Sete Povos das Missões.", mo: "Aproveitar a Guerra das Laranjas.", co: "Brasil incorporou o noroeste gaúcho.", le: "Definiu a atual fronteira do RS.", rp: "Argentina reconheceu em 1857." }]
-  },
-  'Cedido pela Argentina (1816)': {
-    sub: 'Cisplatina (atual Uruguai)',
-    events: [{ n: "Província Cisplatina", b: "bc", bl: "Conflito", d: "1816–1820", l: [{ f: "🇧🇷", r: "Rei", n: "D. João VI" }, { f: "🇺🇾", r: "Revolucionário", n: "José Artigas" }], re: "Brasil incorporou a Banda Oriental.", mo: "Neutralizar Artigas.", co: "Cisplatina tornou-se Uruguai (1828).", le: "Estado-tampão britânico.", rp: "A perda desgastou o Império." }]
-  },
-  'Cedido pela França (1816)': {
-    sub: 'Amapá (Questão do Oiapoque)',
-    events: [{ n: "Questão do Amapá", b: "bd", bl: "Arbitragem", d: "1900", l: [{ f: "🇧🇷", r: "Presidente", n: "Prudente de Morais" }, { f: "🇫🇷", r: "Presidente", n: "Félix Faure" }], re: "Suíça decidiu a favor do Brasil.", mo: "Disputa por território rico em ouro.", co: "Brasil garantiu o Amapá.", le: "Vitória diplomática de Rio Branco.", rp: "Lançou Rio Branco à cena nacional." }]
+// Atualiza cores pelo ano
+function updateMapByYear(year) {
+  stateRegions = {...baseRegion};
+  tratados.forEach(t => {
+    if (t.year <= year) {
+      if (t.region === 'espanha') ['MG','GO','DF','TO','MT'].forEach(s => stateRegions[s] = 'espanha');
+      if (t.region === 'argentina1801') stateRegions['RS'] = 'argentina1801';
+      if (t.region === 'argentina1816') stateRegions['SC'] = 'argentina1816';
+      if (t.region === 'bolivia1860') stateRegions['RO'] = 'bolivia1860';
+      if (t.region === 'acre') stateRegions['AC'] = 'acre';
+      if (t.region === 'paraguai') stateRegions['MS'] = 'paraguai';
+      if (t.region === 'franca') stateRegions['AP'] = 'franca';
+    }
+  });
+  if (stateLayer) {
+    stateLayer.eachLayer(layer => {
+      const sigla = layer.feature?.properties?.sigla;
+      if (sigla) layer.setStyle({ fillColor: regionColors[stateRegions[sigla]] || '#666' });
+    });
   }
-};
-
-// Construir legenda
-const legendBar = document.getElementById('legendBar');
-Object.entries(regionColors).forEach(([name, color]) => {
-  const item = document.createElement('div');
-  item.className = 'leg-item';
-  item.innerHTML = `<div class="leg-sw" style="background:${color}"></div>${name}`;
-  item.onclick = () => openRegionDetail(name);
-  legendBar.appendChild(item);
-});
-
-function openRegionDetail(regionName) {
-  const details = regionDetails[regionName];
-  if (!details) return;
-  document.getElementById('pEy').textContent = 'Região Histórica';
-  document.getElementById('pTit').textContent = regionName;
-  document.getElementById('pSub').textContent = details.sub;
-  document.getElementById('pScroll').innerHTML = details.events.map((e, i) => renderCard(e, regionName + i)).join('');
-  document.getElementById('pEmpty').style.display = 'none';
-  document.getElementById('pContent').style.display = 'flex';
+  document.getElementById('yearDisplay').innerHTML = year;
 }
-
-function renderCard(e, id) {
-  const leadersHtml = e.l.map(l => `<div class="ldr"><span class="lf">${l.f}</span><div class="lr">${l.r}</div><div class="ln">${l.n}</div></div>`).join('');
-  return `<div class="ev-card" id="c${id}"><div class="ev-top" onclick="toggleCard('${id}')"><div class="ev-row"><span class="badge ${e.b}">${e.bl}</span><span class="ev-ch">▶</span></div><div class="ev-name">${e.n}</div><div class="ev-date">📅 ${e.d}</div></div><div class="ev-body" id="b${id}"><div class="ev-s"><div class="ev-l">Líderes</div><div class="ldrs">${leadersHtml}</div></div>${e.re ? `<div class="ev-s"><div class="ev-l">Resumo</div><p class="ev-t">${e.re}</p></div>` : ''}${e.mo ? `<div class="ev-s"><div class="ev-l">Motivação</div><p class="ev-t">${e.mo}</p></div>` : ''}${e.co ? `<div class="ev-s"><div class="ev-l">Consequências</div><p class="ev-t">${e.co}</p></div>` : ''}${e.le ? `<div class="ev-s"><div class="ev-l">Legado</div><p class="ev-t">${e.le}</p></div>` : ''}${e.rp ? `<div class="ev-s"><div class="ev-l">Repercussão na Política Externa</div><p class="ev-t">${e.rp}</p></div>` : ''}</div></div>`;
-}
-
-function toggleCard(id) {
-  const card = document.getElementById('c' + id);
-  const body = document.getElementById('b' + id);
-  if (!card || !body) return;
-  card.classList.toggle('open');
-  body.classList.toggle('open');
-}
-
-function closePanel() {
-  document.getElementById('pEmpty').style.display = 'flex';
-  document.getElementById('pContent').style.display = 'none';
-}
-
-// LINHA DE TORDESILHAS (meridiano 46° W)
-const tordesilhasLine = L.polyline([
-  [5, -46], [0, -46], [-5, -46], [-10, -46], [-15, -46], [-20, -46], [-25, -46], [-30, -46], [-33, -46]
-], { color: '#b8860b', weight: 4, dashArray: '10, 8', opacity: 0 }).addTo(map);
-
-const tordesilhasLabel = L.marker([-16, -46], {
-  icon: L.divIcon({ html: '<div style="background:#0f0c06;color:#b8860b;padding:4px 8px;border-radius:4px;font-family:monospace;font-size:11px;border:1px solid #b8860b;white-space:nowrap;">⚖️ Linha de Tordesilhas<br><span style="font-size:9px;">Meridiano ~46° W</span></div>', iconSize: [140, 40], iconAnchor: [70, 20] })
-}).addTo(map);
-tordesilhasLabel.setOpacity(0);
-
-let tordesilhasOn = false;
-document.getElementById('tordBtn').onclick = () => {
-  tordesilhasOn = !tordesilhasOn;
-  tordesilhasLine.setStyle({ opacity: tordesilhasOn ? 1 : 0 });
-  tordesilhasLabel.setOpacity(tordesilhasOn ? 1 : 0);
-  document.getElementById('tordBtn').classList.toggle('active', tordesilhasOn);
-};
 
 // ============================================
-// GEOJSON OFICIAL DO IBGE (via proxy CORS)
+// GEOJSON (USANDO O MESMO DO SEU MAPA DE CONFLITOS)
 // ============================================
-fetch('https://corsproxy.io/?https://servicodados.ibge.gov.br/api/v3/malhas/estados?formato=application/vnd.geo+json&qualidade=minima')
-  .then(response => response.json())
+let stateLayer = null;
+
+fetch('https://raw.githubusercontent.com/codeforgermany/click-here/main/brazil-states.json')
+  .then(r => r.json())
   .then(geojson => {
-    console.log('GeoJSON carregado com sucesso!', geojson.features.length, 'estados');
-    
-    L.geoJSON(geojson, {
-      style: function(feature) {
-        const sigla = feature.properties.SIGLA;
-        const region = stateToRegion[sigla] || 'Território Original (Portugal)';
-        return {
-          fillColor: regionColors[region] || '#666',
-          fillOpacity: 0.75,
-          color: '#ffffff',
-          weight: 1.5,
-          opacity: 0.9
-        };
-      },
-      onEachFeature: function(feature, layer) {
-        const sigla = feature.properties.SIGLA;
-        const nome = feature.properties.NM_ESTADO || stateNames[sigla] || sigla;
-        const region = stateToRegion[sigla] || 'Território Original (Portugal)';
-        
-        layer.bindTooltip(`${nome}<br><span style="font-size:10px;color:#b8860b">${region}</span>`);
-        layer.on('click', () => openRegionDetail(region));
-        layer.on('mouseover', function() { this.setStyle({ fillOpacity: 0.95, weight: 2.5 }); });
-        layer.on('mouseout', function() { this.setStyle({ fillOpacity: 0.75, weight: 1.5 }); });
+    stateLayer = L.geoJSON(geojson, {
+      style: f => ({ fillColor: regionColors[stateRegions[f.properties.sigla]||'original'], fillOpacity: 0.7, color: '#fff', weight: 1 }),
+      onEachFeature: (f, l) => {
+        const nome = f.properties.name;
+        const sigla = f.properties.sigla;
+        l.bindTooltip(nome);
+        l.on('click', () => {
+          const treaty = tratados.slice().reverse().find(t => {
+            if (t.region === 'espanha') return ['MG','GO','DF','TO','MT'].includes(sigla);
+            if (t.region === 'argentina1801') return sigla === 'RS';
+            if (t.region === 'argentina1816') return sigla === 'SC';
+            if (t.region === 'bolivia1860') return sigla === 'RO';
+            if (t.region === 'acre') return sigla === 'AC';
+            if (t.region === 'paraguai') return sigla === 'MS';
+            if (t.region === 'franca') return sigla === 'AP';
+            return false;
+          }) || tratados[0];
+          showPanel(treaty, nome);
+        });
+        l.on('mouseover', () => l.setStyle({ fillOpacity: 0.9, weight: 2 }));
+        l.on('mouseout', () => l.setStyle({ fillOpacity: 0.7, weight: 1 }));
       }
     }).addTo(map);
-    
     map.fitBounds([[-33, -73], [5, -34]]);
+    updateMapByYear(1494);
   })
-  .catch(error => {
-    console.error('Erro ao carregar GeoJSON:', error);
-    document.getElementById('pEmpty').innerHTML = `
-      <div class="d">⚠️</div>
-      <h3>Erro ao carregar mapa</h3>
-      <p>Não foi possível carregar os dados dos estados.<br>Tente novamente mais tarde.</p>
-    `;
-  });
+  .catch(e => { console.error(e); document.getElementById('timeline-container').innerHTML += '<p style="color:red">Erro ao carregar mapa</p>'; });
+
+// ============================================
+// TIMELINE
+// ============================================
+const years = tratados.map(t => t.year);
+const timeline = document.getElementById('timeline');
+noUiSlider.create(timeline, { start: [1494], connect: [true, false], step: 1, range: { min: 1494, max: 1903 } });
+timeline.noUiSlider.on('update', (v) => updateMapByYear(Math.round(v[0])));
+
+const labelsDiv = document.getElementById('timelineLabels');
+years.forEach(y => { let s = document.createElement('span'); s.textContent = y; s.onclick = () => timeline.noUiSlider.set(y); labelsDiv.appendChild(s); });
+
+// ============================================
+// LEGENDA
+// ============================================
+const legendBar = document.getElementById('legendBar');
+tratados.forEach(t => {
+  const div = document.createElement('div');
+  div.className = 'leg-item';
+  div.innerHTML = `<div class="leg-sw" style="background:${t.color}"></div>${t.name}`;
+  div.onclick = () => { timeline.noUiSlider.set(t.year); showPanel(t); };
+  legendBar.appendChild(div);
+});
+
+// ============================================
+// PAINEL
+// ============================================
+function showPanel(t, state = '') {
+  document.getElementById('panelTitle').innerHTML = `📜 ${t.name}`;
+  document.getElementById('panelSub').innerHTML = t.sub;
+  document.getElementById('panelContent').innerHTML = `
+    <div class="ev-card"><div class="ev-top" onclick="this.nextElementSibling.classList.toggle('open')">
+      <span class="badge ${t.year>=1900?'bc':(t.year>=1800?'bt':'bd')}">${t.year}</span>
+      <div class="ev-name">${t.name}</div><div class="ev-date">📅 ${t.year}</div>
+    </div><div class="ev-body">
+      <div><strong>📝 Descrição</strong><br>${t.desc}</div><br>
+      <div><strong>👑 Líderes</strong><br>${t.leaders}</div><br>
+      <div><strong>⚡ Consequências</strong><br>${t.consequence}</div><br>
+      <div><strong>🏛️ Legado</strong><br>${t.legacy}</div>
+      ${state ? `<br><div><strong>📍 ${state}</strong> foi incorporado por este tratado.</div>` : ''}
+    </div></div>`;
+  document.getElementById('panel').classList.add('active');
+}
+
+function closePanel() { document.getElementById('panel').classList.remove('active'); }
+
+// Linha de Tordesilhas
+L.polyline([[5,-46],[0,-46],[-5,-46],[-10,-46],[-15,-46],[-20,-46],[-25,-46],[-30,-46],[-33,-46]],
+  { color: '#b8860b', weight: 3, dashArray: '8,6', opacity: 0.8 }).addTo(map);
 </script>
 </body>
 </html>
