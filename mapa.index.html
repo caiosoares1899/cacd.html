@@ -107,22 +107,21 @@ L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
   attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OSM</a> &copy; CartoDB'
 }).addTo(map);
 
-// CORES POR REGIÃO (bem distintas para visualização)
+// CORES POR REGIÃO
 const regionColors = {
-  'Território Original (Portugal)': '#c8685a',      // vermelho terroso
-  'Cedido pela Espanha (1494)': '#d4956a',         // laranja
-  'Cedido pelo Peru/Espanha (1650)': '#e8a850',    // dourado
-  'Cedido pela Bolívia (1860)': '#78b468',         // verde claro
-  'Cedido pela Bolívia (1903) — Acre': '#b888c8',  // lilás
-  'Cedido pelo Paraguai (1870)': '#8ab4d8',        // azul
-  'Cedido pela Argentina/Espanha (1801)': '#90b878', // verde oliva
-  'Cedido pela Argentina (1816)': '#58c888',       // verde
-  'Cedido pela França (1816)': '#78c8d8'           // azul claro
+  'Território Original (Portugal)': '#c8685a',
+  'Cedido pela Espanha (1494)': '#d4956a',
+  'Cedido pelo Peru/Espanha (1650)': '#e8a850',
+  'Cedido pela Bolívia (1860)': '#78b468',
+  'Cedido pela Bolívia (1903) — Acre': '#b888c8',
+  'Cedido pelo Paraguai (1870)': '#8ab4d8',
+  'Cedido pela Argentina/Espanha (1801)': '#90b878',
+  'Cedido pela Argentina (1816)': '#58c888',
+  'Cedido pela França (1816)': '#78c8d8'
 };
 
-// MAPEAMENTO POR ESTADO (IMPORTANTE - cada estado com sua região histórica)
+// MAPEAMENTO POR SIGLA DO ESTADO
 const stateToRegion = {
-  // Território Original (litoral leste)
   'AC': 'Cedido pela Bolívia (1903) — Acre',
   'AL': 'Território Original (Portugal)',
   'AP': 'Cedido pela França (1816)',
@@ -133,37 +132,35 @@ const stateToRegion = {
   'ES': 'Território Original (Portugal)',
   'GO': 'Cedido pela Espanha (1494)',
   'MA': 'Território Original (Portugal)',
-  'MT': 'Cedido pela Espanha (1494)',
-  'MS': 'Cedido pelo Paraguai (1870)',
   'MG': 'Cedido pela Espanha (1494)',
+  'MS': 'Cedido pelo Paraguai (1870)',
+  'MT': 'Cedido pela Espanha (1494)',
   'PA': 'Cedido pelo Peru/Espanha (1650)',
   'PB': 'Território Original (Portugal)',
-  'PR': 'Território Original (Portugal)',
   'PE': 'Território Original (Portugal)',
   'PI': 'Território Original (Portugal)',
+  'PR': 'Território Original (Portugal)',
   'RJ': 'Território Original (Portugal)',
   'RN': 'Território Original (Portugal)',
-  'RS': 'Cedido pela Argentina/Espanha (1801)',
   'RO': 'Cedido pela Bolívia (1860)',
   'RR': 'Cedido pelo Peru/Espanha (1650)',
+  'RS': 'Cedido pela Argentina/Espanha (1801)',
   'SC': 'Cedido pela Argentina (1816)',
-  'SP': 'Território Original (Portugal)',
   'SE': 'Território Original (Portugal)',
+  'SP': 'Território Original (Portugal)',
   'TO': 'Cedido pela Espanha (1494)'
 };
 
-// Nomes dos estados
 const stateNames = {
   'AC': 'Acre', 'AL': 'Alagoas', 'AP': 'Amapá', 'AM': 'Amazonas', 'BA': 'Bahia',
   'CE': 'Ceará', 'DF': 'Distrito Federal', 'ES': 'Espírito Santo', 'GO': 'Goiás',
-  'MA': 'Maranhão', 'MT': 'Mato Grosso', 'MS': 'Mato Grosso do Sul', 'MG': 'Minas Gerais',
-  'PA': 'Pará', 'PB': 'Paraíba', 'PR': 'Paraná', 'PE': 'Pernambuco', 'PI': 'Piauí',
-  'RJ': 'Rio de Janeiro', 'RN': 'Rio Grande do Norte', 'RS': 'Rio Grande do Sul',
-  'RO': 'Rondônia', 'RR': 'Roraima', 'SC': 'Santa Catarina', 'SP': 'São Paulo',
-  'SE': 'Sergipe', 'TO': 'Tocantins'
+  'MA': 'Maranhão', 'MG': 'Minas Gerais', 'MS': 'Mato Grosso do Sul', 'MT': 'Mato Grosso',
+  'PA': 'Pará', 'PB': 'Paraíba', 'PE': 'Pernambuco', 'PI': 'Piauí', 'PR': 'Paraná',
+  'RJ': 'Rio de Janeiro', 'RN': 'Rio Grande do Norte', 'RO': 'Rondônia', 'RR': 'Roraima',
+  'RS': 'Rio Grande do Sul', 'SC': 'Santa Catarina', 'SE': 'Sergipe', 'SP': 'São Paulo', 'TO': 'Tocantins'
 };
 
-// DADOS DETALHADOS DAS REGIÕES
+// DADOS DETALHADOS
 const regionDetails = {
   'Território Original (Portugal)': {
     sub: 'A leste da Linha de Tordesilhas · Séc. XVI',
@@ -172,51 +169,52 @@ const regionDetails = {
     ]
   },
   'Cedido pela Espanha (1494)': {
-    sub: 'Faixa entre Tordesilhas e a fronteira colonial',
+    sub: 'Faixa central adquirida pelo Tratado de Madri (1750)',
     events: [
-      { n: "Expansão Bandeirante", b: "br", bl: "Expansão", d: "Sécs. XVII–XVIII", l: [{ f: "🇧🇷", r: "Bandeirantes", n: "Borba Gato, Anhanguera" }], re: "Bandeiras avançam ignorando Tordesilhas.", mo: "Busca por ouro e escravos.", co: "Criou o princípio do uti possidetis.", le: "Brasil conquistou milhões de km².", rp: "Usado no Tratado de Madri (1750)." }
+      { n: "Expansão Bandeirante", b: "br", bl: "Expansão Territorial", d: "Sécs. XVII–XVIII", l: [{ f: "🇧🇷", r: "Bandeirantes", n: "Borba Gato, Anhanguera" }], re: "As bandeiras paulistas avançaram ignorando Tordesilhas.", mo: "Busca por ouro e indígenas para escravizar.", co: "Criou o princípio do uti possidetis.", le: "O Brasil conquistou milhões de km².", rp: "Fundamento do Tratado de Madri (1750)." },
+      { n: "Tratado de Madri", b: "bt", bl: "Tratado", d: "13 de janeiro de 1750", l: [{ f: "🇵🇹", r: "Rei de Portugal", n: "D. João V" }, { f: "🇪🇸", r: "Rei da Espanha", n: "Fernando VI" }], re: "Espanha reconheceu as posses portuguesas.", mo: "Tordesilhas já havia sido ultrapassada.", co: "Brasil incorporou legalmente milhões de km².", le: "Maior ganho territorial da história brasileira.", rp: "Consagrou o uti possidetis no direito internacional." }
     ]
   },
   'Cedido pelo Peru/Espanha (1650)': {
-    sub: 'Expansão na Amazônia',
+    sub: 'Expansão portuguesa na Amazônia',
     events: [
-      { n: "Expedição de Pedro Teixeira", b: "br", bl: "Expansão", d: "1637–1638", l: [{ f: "🇧🇷", r: "Capitão", n: "Pedro Teixeira" }], re: "Navegou o Amazonas até Quito.", mo: "Afirmar posse portuguesa.", co: "Controle lusitano sobre o Amazonas.", le: "Primeira demarcação efetiva.", rp: "Afastou Peru da bacia amazônica." }
+      { n: "Expedição de Pedro Teixeira", b: "br", bl: "Expansão Territorial", d: "1637–1639", l: [{ f: "🇧🇷", r: "Capitão-mor", n: "Pedro Teixeira" }], re: "Subiu o Amazonas até Quito, plantando marcos de posse.", mo: "Afirmar a soberania portuguesa durante a União Ibérica.", co: "Portugal assumiu o controle da bacia amazônica.", le: "Primeira demarcação efetiva do Amazonas.", rp: "Afirmou o Brasil como potência amazônica." }
     ]
   },
   'Cedido pela Bolívia (1903) — Acre': {
-    sub: 'Tratado de Petrópolis',
+    sub: 'Tratado de Petrópolis e Revolução Acreana',
     events: [
-      { n: "Revolução Acreana", b: "bc", bl: "Conflito", d: "1899–1903", l: [{ f: "🇧🇷", r: "Presidente", n: "Rio Branco" }, { f: "🇧🇴", r: "Presidente", n: "José Manuel Pando" }], re: "Seringueiros se rebelaram. Brasil anexou o Acre.", mo: "Riqueza da borracha.", co: "Brasil obteve 191.000 km².", le: "Símbolo da diplomacia Rio Branco.", rp: "Ressentimento na Bolívia." }
+      { n: "Revolução Acreana", b: "bc", bl: "Conflito Armado", d: "1899–1903", l: [{ f: "🇧🇷", r: "Presidente", n: "Rodrigues Alves" }, { f: "🇧🇴", r: "Presidente", n: "José Manuel Pando" }], re: "Seringueiros brasileiros se rebelaram contra a Bolívia.", mo: "Riqueza da borracha e presença brasileira majoritária.", co: "Brasil anexou 191.000 km².", le: "Maior vitória da diplomacia do Barão do Rio Branco.", rp: "Criou ressentimento duradouro na Bolívia." }
     ]
   },
   'Cedido pela Bolívia (1860)': {
-    sub: 'Tratado de Ayacucho',
+    sub: 'Tratado de Ayacucho (1867)',
     events: [
-      { n: "Tratado de Ayacucho", b: "bt", bl: "Tratado", d: "1867", l: [{ f: "🇧🇷", r: "Imperador", n: "D. Pedro II" }, { f: "🇧🇴", r: "Presidente", n: "Mariano Melgarejo" }], re: "Fixou fronteira pelo paralelo 10°20'.", mo: "Demarcação pós-independência.", co: "Acre ficou em zona ambígua.", le: "Semente da crise de 1903.", rp: "Exemplo de acordos vagos." }
+      { n: "Tratado de Ayacucho", b: "bt", bl: "Tratado de Limites", d: "23 de novembro de 1867", l: [{ f: "🇧🇷", r: "Imperador", n: "D. Pedro II" }, { f: "🇧🇴", r: "Presidente", n: "Mariano Melgarejo" }], re: "Fixou a fronteira pelo paralelo 10°20' e o rio Madeira.", mo: "Demarcar a fronteira após a independência boliviana.", co: "O Acre ficou em uma zona ambígua.", le: "A imprecisão gerou a crise de 1903.", rp: "Exemplo de como acordos vagos criam conflitos futuros." }
     ]
   },
   'Cedido pelo Paraguai (1870)': {
     sub: 'Guerra da Tríplice Aliança',
     events: [
-      { n: "Guerra do Paraguai", b: "bc", bl: "Guerra", d: "1864–1870", l: [{ f: "🇧🇷", r: "Imperador", n: "D. Pedro II" }, { f: "🇵🇾", r: "Ditador", n: "Solano López" }], re: "Paraguai perdeu 140.000 km².", mo: "Solano López buscava hegemonia.", co: "Brasil ganhou territórios.", le: "Brasil como potência militar.", rp: "Acelerou a Proclamação da República." }
+      { n: "Guerra do Paraguai", b: "bc", bl: "Guerra", d: "1864–1870", l: [{ f: "🇧🇷", r: "Imperador", n: "D. Pedro II" }, { f: "🇵🇾", r: "Ditador", n: "Francisco Solano López" }], re: "Paraguai perdeu 140.000 km² para Brasil e Argentina.", mo: "Solano López invadiu o Brasil e a Argentina.", co: "Brasil anexou terras ao sul do Mato Grosso.", le: "Brasil consolidou-se como potência militar sul-americana.", rp: "O custo humano da guerra acelerou o fim do Império." }
     ]
   },
   'Cedido pela Argentina/Espanha (1801)': {
-    sub: 'Missões Orientais',
+    sub: 'Missões Orientais (Noroeste do RS)',
     events: [
-      { n: "Tomada das Missões", b: "bc", bl: "Conflito", d: "1801", l: [{ f: "🇧🇷", r: "Comandante", n: "Borges do Canto" }], re: "Tomada dos Sete Povos das Missões.", mo: "Guerra das Laranjas.", co: "Brasil incorporou NW do RS.", le: "Definiu fronteira do RS.", rp: "Argentina reconheceu em 1857." }
+      { n: "Tomada das Missões Orientais", b: "bc", bl: "Conflito Armado", d: "1801", l: [{ f: "🇧🇷", r: "Capitão-mor", n: "Borges do Canto" }], re: "Tomada dos Sete Povos das Missões.", mo: "Aproveitar a Guerra das Laranjas na Europa.", co: "Brasil incorporou definitivamente o noroeste gaúcho.", le: "Definiu a atual fronteira do Rio Grande do Sul.", rp: "A Argentina reconheceu a posse em 1857." }
     ]
   },
   'Cedido pela Argentina (1816)': {
-    sub: 'Cisplatina',
+    sub: 'Cisplatina (atual Uruguai) — depois perdida',
     events: [
-      { n: "Província Cisplatina", b: "bc", bl: "Conflito", d: "1816–1821", l: [{ f: "🇧🇷", r: "Rei", n: "D. João VI" }, { f: "🇺🇾", r: "Líder", n: "José Artigas" }], re: "Banda Oriental incorporada.", mo: "Conter a revolução artiguista.", co: "Artigas exilado.", le: "Gerou nacionalismo uruguaio.", rp: "Contribuiu para instabilidade." }
+      { n: "Invasão da Banda Oriental", b: "bc", bl: "Conflito Armado", d: "1816–1820", l: [{ f: "🇧🇷", r: "Rei", n: "D. João VI" }, { f: "🇺🇾", r: "Revolucionário", n: "José Artigas" }], re: "Brasil incorporou a Banda Oriental como Província Cisplatina.", mo: "Neutralizar Artigas e dominar o estuário do Prata.", co: "Cisplatina tornou-se o Uruguai independente (1828).", le: "O Uruguai nasceu como Estado-tampão britânico.", rp: "A perda da Cisplatina desgastou o Império." }
     ]
   },
   'Cedido pela França (1816)': {
-    sub: 'Amapá',
+    sub: 'Amapá (Questão do Oiapoque)',
     events: [
-      { n: "Questão do Amapá", b: "bd", bl: "Arbitragem", d: "1900", l: [{ f: "🇧🇷", r: "Presidente", n: "Prudente de Morais" }, { f: "🇫🇷", r: "Presidente", n: "Félix Faure" }], re: "Suíça decidiu a favor do Brasil.", mo: "Descoberta de ouro.", co: "Brasil garantiu o Amapá.", le: "Vitória de Rio Branco.", rp: "Lançou Rio Branco à cena nacional." }
+      { n: "Questão do Amapá", b: "bd", bl: "Arbitragem Internacional", d: "1895–1900", l: [{ f: "🇧🇷", r: "Presidente", n: "Prudente de Morais" }, { f: "🇫🇷", r: "Presidente", n: "Félix Faure" }], re: "O Conselho Federal Suíço decidiu a favor do Brasil.", mo: "Disputa por território rico em ouro.", co: "Brasil garantiu o Amapá.", le: "Primeira grande vitória diplomática do Barão do Rio Branco.", rp: "Lançou Rio Branco como o maior diplomata brasileiro." }
     ]
   }
 };
@@ -224,13 +222,11 @@ const regionDetails = {
 // Construir legenda
 const legendBar = document.getElementById('legendBar');
 Object.entries(regionColors).forEach(([name, color]) => {
-  if (regionDetails[name]) {
-    const item = document.createElement('div');
-    item.className = 'leg-item';
-    item.innerHTML = `<div class="leg-sw" style="background:${color}; border:1px solid rgba(255,255,255,0.3)"></div>${name}`;
-    item.onclick = () => openRegionDetail(name);
-    legendBar.appendChild(item);
-  }
+  const item = document.createElement('div');
+  item.className = 'leg-item';
+  item.innerHTML = `<div class="leg-sw" style="background:${color}; border:1px solid rgba(255,255,255,0.3)"></div>${name}`;
+  item.onclick = () => openRegionDetail(name);
+  legendBar.appendChild(item);
 });
 
 function openRegionDetail(regionName) {
@@ -290,96 +286,100 @@ function closePanel() {
   document.getElementById('pContent').style.display = 'none';
 }
 
-// ============================================
 // LINHA DE TORDESILHAS
-// ============================================
-const tordesilhasPoints = [
-  [5.5, -46], [2, -46], [0, -46], [-3, -46], [-6, -46],
-  [-9, -46], [-12, -46], [-15, -46], [-18, -46], [-21, -46],
-  [-24, -46], [-27, -46], [-30, -46], [-33, -46]
-];
-
-const tordesilhasLine = L.polyline(tordesilhasPoints, {
-  color: '#b8860b',
-  weight: 4,
-  dashArray: '10, 8',
-  opacity: 0
-}).addTo(map);
+const tordesilhasLine = L.polyline([
+  [5, -46], [0, -46], [-5, -46], [-10, -46], [-15, -46], [-20, -46], [-25, -46], [-30, -46], [-33, -46]
+], { color: '#b8860b', weight: 4, dashArray: '10, 8', opacity: 0 }).addTo(map);
 
 const tordesilhasLabel = L.marker([-16, -46], {
-  icon: L.divIcon({
-    className: 'tordesilhas-label',
-    html: '<div style="background:#0f0c06;color:#b8860b;padding:4px 8px;border-radius:4px;font-family:monospace;font-size:11px;border:1px solid #b8860b;white-space:nowrap;">⚖️ Linha de Tordesilhas<br><span style="font-size:9px;">Meridiano ~46° W</span></div>',
-    iconSize: [140, 40],
-    iconAnchor: [70, 20]
-  })
+  icon: L.divIcon({ html: '<div style="background:#0f0c06;color:#b8860b;padding:4px 8px;border-radius:4px;font-family:monospace;font-size:11px;border:1px solid #b8860b;white-space:nowrap;">⚖️ Linha de Tordesilhas<br><span style="font-size:9px;">Meridiano ~46° W</span></div>', iconSize: [140, 40], iconAnchor: [70, 20] })
 }).addTo(map);
 tordesilhasLabel.setOpacity(0);
 
 let tordesilhasOn = false;
-document.getElementById('tordBtn').addEventListener('click', () => {
+document.getElementById('tordBtn').onclick = () => {
   tordesilhasOn = !tordesilhasOn;
   tordesilhasLine.setStyle({ opacity: tordesilhasOn ? 1 : 0 });
   tordesilhasLabel.setOpacity(tordesilhasOn ? 1 : 0);
   document.getElementById('tordBtn').classList.toggle('active', tordesilhasOn);
-});
+};
 
 // ============================================
-// CARREGAR GEOJSON DOS ESTADOS COM CORES
+// GEOJSON ALTERNATIVO (EMBEDDED - SEM API EXTERNA)
 // ============================================
-console.log('Carregando mapa dos estados...');
+// Vou criar um GeoJSON simplificado com os polígonos dos estados
+// Usando coordenadas aproximadas para cada estado
 
-fetch('https://servicodados.ibge.gov.br/api/v3/malhas/estados?formato=application/vnd.geo+json&qualidade=minima')
-  .then(response => response.json())
-  .then(geojson => {
-    console.log('GeoJSON carregado com sucesso!', geojson.features.length, 'estados');
+const geojsonBrasil = {
+  "type": "FeatureCollection",
+  "features": [
+    // Norte
+    {"type":"Feature","properties":{"SIGLA":"AC","NM_ESTADO":"Acre"},"geometry":{"type":"Polygon","coordinates":[[[-73.5,-7.5],[-70.5,-7.5],[-69.5,-9],[-70.5,-11],[-73,-11],[-73.5,-7.5]]]}},
+    {"type":"Feature","properties":{"SIGLA":"AM","NM_ESTADO":"Amazonas"},"geometry":{"type":"Polygon","coordinates":[[[-70.5,-6],[-65,-6],[-63,-4],[-60,-2],[-60,-5],[-62,-8],[-65,-8],[-68,-8],[-70.5,-7],[-70.5,-6]]]}},
+    {"type":"Feature","properties":{"SIGLA":"AP","NM_ESTADO":"Amapá"},"geometry":{"type":"Polygon","coordinates":[[[-54,-2],[-51,-1],[-51,-4],[-54,-4],[-54,-2]]]}},
+    {"type":"Feature","properties":{"SIGLA":"PA","NM_ESTADO":"Pará"},"geometry":{"type":"Polygon","coordinates":[[[-56,-1],[-51,-1],[-48,-2],[-48,-6],[-52,-8],[-56,-6],[-56,-1]]]}},
+    {"type":"Feature","properties":{"SIGLA":"RO","NM_ESTADO":"Rondônia"},"geometry":{"type":"Polygon","coordinates":[[[-64,-10],[-61,-10],[-61,-13],[-64,-13],[-64,-10]]]}},
+    {"type":"Feature","properties":{"SIGLA":"RR","NM_ESTADO":"Roraima"},"geometry":{"type":"Polygon","coordinates":[[[-61,2],[-59,2],[-59,-2],[-62,-2],[-61,2]]]}},
+    {"type":"Feature","properties":{"SIGLA":"TO","NM_ESTADO":"Tocantins"},"geometry":{"type":"Polygon","coordinates":[[[-50,-6],[-47,-6],[-46,-9],[-48,-11],[-50,-10],[-50,-6]]]}},
+    // Nordeste
+    {"type":"Feature","properties":{"SIGLA":"AL","NM_ESTADO":"Alagoas"},"geometry":{"type":"Polygon","coordinates":[[[-37,-9],[-35,-9],[-35.5,-10],[-37,-10],[-37,-9]]]}},
+    {"type":"Feature","properties":{"SIGLA":"BA","NM_ESTADO":"Bahia"},"geometry":{"type":"Polygon","coordinates":[[[-46,-9],[-38,-9],[-38,-18],[-46,-18],[-46,-9]]]}},
+    {"type":"Feature","properties":{"SIGLA":"CE","NM_ESTADO":"Ceará"},"geometry":{"type":"Polygon","coordinates":[[[-41,-3],[-37,-3],[-37,-7],[-41,-7],[-41,-3]]]}},
+    {"type":"Feature","properties":{"SIGLA":"MA","NM_ESTADO":"Maranhão"},"geometry":{"type":"Polygon","coordinates":[[[-48,-2],[-43,-2],[-43,-6],[-47,-7],[-48,-2]]]}},
+    {"type":"Feature","properties":{"SIGLA":"PB","NM_ESTADO":"Paraíba"},"geometry":{"type":"Polygon","coordinates":[[[-38,-6],[-35,-6],[-35,-8],[-38,-8],[-38,-6]]]}},
+    {"type":"Feature","properties":{"SIGLA":"PE","NM_ESTADO":"Pernambuco"},"geometry":{"type":"Polygon","coordinates":[[[-40,-7],[-35,-7],[-35,-9],[-40,-9],[-40,-7]]]}},
+    {"type":"Feature","properties":{"SIGLA":"PI","NM_ESTADO":"Piauí"},"geometry":{"type":"Polygon","coordinates":[[[-45,-3],[-41,-3],[-41,-10],[-45,-10],[-45,-3]]]}},
+    {"type":"Feature","properties":{"SIGLA":"RN","NM_ESTADO":"Rio Grande do Norte"},"geometry":{"type":"Polygon","coordinates":[[[-38,-5],[-35,-5],[-35,-6],[-38,-6],[-38,-5]]]}},
+    {"type":"Feature","properties":{"SIGLA":"SE","NM_ESTADO":"Sergipe"},"geometry":{"type":"Polygon","coordinates":[[[-38,-10],[-36,-10],[-36.5,-11],[-38,-11],[-38,-10]]]}},
+    // Centro-Oeste
+    {"type":"Feature","properties":{"SIGLA":"DF","NM_ESTADO":"Distrito Federal"},"geometry":{"type":"Polygon","coordinates":[[[-47.9,-15.7],[-47.5,-15.7],[-47.5,-16],[-47.9,-16],[-47.9,-15.7]]]}},
+    {"type":"Feature","properties":{"SIGLA":"GO","NM_ESTADO":"Goiás"},"geometry":{"type":"Polygon","coordinates":[[[-52,-13],[-46,-13],[-46,-19],[-52,-19],[-52,-13]]]}},
+    {"type":"Feature","properties":{"SIGLA":"MS","NM_ESTADO":"Mato Grosso do Sul"},"geometry":{"type":"Polygon","coordinates":[[[-57,-19],[-51,-19],[-51,-23],[-57,-23],[-57,-19]]]}},
+    {"type":"Feature","properties":{"SIGLA":"MT","NM_ESTADO":"Mato Grosso"},"geometry":{"type":"Polygon","coordinates":[[[-62,-8],[-55,-8],[-55,-16],[-62,-16],[-62,-8]]]}},
+    // Sudeste
+    {"type":"Feature","properties":{"SIGLA":"ES","NM_ESTADO":"Espírito Santo"},"geometry":{"type":"Polygon","coordinates":[[[-41,-18],[-39,-18],[-39,-21],[-41,-21],[-41,-18]]]}},
+    {"type":"Feature","properties":{"SIGLA":"MG","NM_ESTADO":"Minas Gerais"},"geometry":{"type":"Polygon","coordinates":[[[-51,-14],[-44,-14],[-44,-22],[-51,-22],[-51,-14]]]}},
+    {"type":"Feature","properties":{"SIGLA":"RJ","NM_ESTADO":"Rio de Janeiro"},"geometry":{"type":"Polygon","coordinates":[[[-44.5,-22],[-41,-22],[-41,-23.5],[-44.5,-23.5],[-44.5,-22]]]}},
+    {"type":"Feature","properties":{"SIGLA":"SP","NM_ESTADO":"São Paulo"},"geometry":{"type":"Polygon","coordinates":[[[-52,-20],[-44,-20],[-44,-24],[-52,-24],[-52,-20]]]}},
+    // Sul
+    {"type":"Feature","properties":{"SIGLA":"PR","NM_ESTADO":"Paraná"},"geometry":{"type":"Polygon","coordinates":[[[-54,-23],[-48,-23],[-48,-26],[-54,-26],[-54,-23]]]}},
+    {"type":"Feature","properties":{"SIGLA":"RS","NM_ESTADO":"Rio Grande do Sul"},"geometry":{"type":"Polygon","coordinates":[[[-57,-27],[-50,-27],[-50,-33],[-57,-33],[-57,-27]]]}},
+    {"type":"Feature","properties":{"SIGLA":"SC","NM_ESTADO":"Santa Catarina"},"geometry":{"type":"Polygon","coordinates":[[[-53,-26],[-48,-26],[-48,-29],[-53,-29],[-53,-26]]]}}
+  ]
+};
+
+// Adicionar ao mapa
+L.geoJSON(geojsonBrasil, {
+  style: function(feature) {
+    const sigla = feature.properties.SIGLA;
+    const region = stateToRegion[sigla] || 'Território Original (Portugal)';
+    const color = regionColors[region] || '#666';
+    return {
+      fillColor: color,
+      fillOpacity: 0.75,
+      color: '#ffffff',
+      weight: 1.5,
+      opacity: 0.9
+    };
+  },
+  onEachFeature: function(feature, layer) {
+    const sigla = feature.properties.SIGLA;
+    const nome = feature.properties.NM_ESTADO || stateNames[sigla] || sigla;
+    const region = stateToRegion[sigla] || 'Território Original (Portugal)';
     
-    L.geoJSON(geojson, {
-      style: function(feature) {
-        const sigla = feature.properties.SIGLA;
-        const region = stateToRegion[sigla] || 'Território Original (Portugal)';
-        const color = regionColors[region] || '#666';
-        console.log('Estado:', sigla, 'Região:', region, 'Cor:', color);
-        return {
-          fillColor: color,
-          fillOpacity: 0.75,
-          color: '#ffffff',
-          weight: 1.5,
-          opacity: 0.9
-        };
-      },
-      onEachFeature: function(feature, layer) {
-        const sigla = feature.properties.SIGLA;
-        const nome = stateNames[sigla] || feature.properties.NM_ESTADO || sigla;
-        const region = stateToRegion[sigla] || 'Território Original (Portugal)';
-        
-        layer.bindTooltip(`${nome}<br><span style="font-size:10px;color:#b8860b">${region}</span>`);
-        
-        layer.on('click', () => {
-          openRegionDetail(region);
-        });
-        
-        layer.on('mouseover', function() {
-          this.setStyle({ fillOpacity: 0.95, weight: 2.5 });
-        });
-        
-        layer.on('mouseout', function() {
-          this.setStyle({ fillOpacity: 0.75, weight: 1.5 });
-        });
-      }
-    }).addTo(map);
+    layer.bindTooltip(`${nome}<br><span style="font-size:10px;color:#b8860b">${region}</span>`);
     
-    // Ajustar zoom para mostrar todo o Brasil
-    map.fitBounds([[-33, -73], [5, -34]]);
-  })
-  .catch(error => {
-    console.error('Erro ao carregar GeoJSON:', error);
-    document.getElementById('pEmpty').innerHTML = `
-      <div class="d">⚠️</div>
-      <h3>Erro ao carregar mapa</h3>
-      <p>Não foi possível carregar os dados dos estados.<br>Erro: ${error.message}</p>
-    `;
-  });
+    layer.on('click', () => {
+      openRegionDetail(region);
+    });
+    
+    layer.on('mouseover', function() { this.setStyle({ fillOpacity: 0.95, weight: 2.5 }); });
+    layer.on('mouseout', function() { this.setStyle({ fillOpacity: 0.75, weight: 1.5 }); });
+  }
+}).addTo(map);
+
+// Ajustar zoom
+map.fitBounds([[-33, -73], [5, -34]]);
 </script>
 </body>
 </html>
