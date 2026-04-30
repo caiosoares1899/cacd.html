@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Brasil Joanino - Mapa da Economia (1808-1821)</title>
+    <!-- Leaflet CSS + JS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <!-- GeoJSON Brasil (IBGE simplificado) -->
+    <script src="https://raw.githubusercontent.com/codeforbrasil/brasil-geojson/master/ufs.geojson?raw=1" type="text/javascript"></script>
+    <!-- Estilos personalizados e tipografia -->
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', 'Roboto', 'Georgia', serif;
+            background: #f0f2e9;
+            color: #2c2b28;
+        }
+        .header {
+            background: #1e3a2f;
+            color: #ecd9b4;
+            padding: 1rem 2rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            text-align: center;
+        }
+        .header h1 {
+            font-weight: 500;
+            letter-spacing: 1px;
+            font-size: 1.7rem;
+        }
+        .header p {
+            font-size: 0.9rem;
+            opacity: 0.85;
+            margin-top: 0.3rem;
+        }
+        .map-container {
+            display: flex;
+            flex-wrap: wrap;
+            padding: 1rem;
+            gap: 1rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        #map {
+            flex: 3;
+            min-width: 280px;
+            height: 70vh;
+            border-radius: 20px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+            border: 2px solid #cdb28b;
+            background: #e9e2d0;
+            z-index: 1;
+        }
+        .legenda-panel {
+            flex: 1;
+            min-width: 220px;
+            background: #fffef7;
+            border-radius: 28px;
+            padding: 1.2rem;
+            box-shadow: 0 6px 16px rgba(0,0,0,0.1);
+            border: 1px solid #ddceb2;
+            backdrop-filter: blur(0px);
+            height: fit-content;
+        }
+        .legenda-panel h3 {
+            border-left: 6px solid #b37b2e;
+            padding-left: 12px;
+            margin-bottom: 1rem;
+            font-weight: 600;
+            color: #2c4b35;
+        }
+        .legenda-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 15px;
+            cursor: pointer;
+            transition: transform 0.1s ease;
+            padding: 5px 8px;
+            border-radius: 40px;
+        }
+        .legenda-item:hover {
+            background: #f2efdf;
+            transform: translateX(5px);
+        }
+        .cor-quadrado {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            border: 1px solid #af9a74;
+        }
+        .legenda-info {
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+        .legenda-info small {
+            font-weight: normal;
+            font-size: 0.7rem;
+            color: #6b5a44;
+        }
+        .acesso-rapido {
+            margin-top: 1.5rem;
+            padding-top: 1rem;
+            border-top: 2px dashed #dac29c;
+        }
+        .acesso-rapido button {
+            background: #e6dcc8;
+            border: none;
+            margin: 5px 5px 0 0;
+            padding: 6px 12px;
+            border-radius: 30px;
+            font-size: 0.7rem;
+            font-weight: 500;
+            color: #2d3e2b;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .acesso-rapido button:hover {
+            background: #bc9f6e;
+            color: white;
+        }
+        /* Popup customizado (card) */
+        .custom-popup .leaflet-popup-content-wrapper {
+            background: #fef7e8;
+            border-radius: 24px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+            border-left: 8px solid #9b7b4c;
+            font-family: 'Segoe UI', 'Georgia';
+            color: #2b2a27;
+        }
+        .custom-popup .leaflet-popup-tip {
+            background: #fef7e8;
+        }
+        .card-titulo {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #6a3e1a;
+            margin-bottom: 8px;
+            border-bottom: 2px solid #e2cbaa;
+            display: inline-block;
+        }
+        .card-produto {
+            font-size: 1rem;
+            background: #e7dcc4;
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 40px;
+            margin: 8px 0;
+        }
+        .card-desc {
+            margin: 12px 0;
+            line-height: 1.4;
+            font-size: 0.9rem;
+        }
+        .card-infoextra {
+            background: #fff0db;
+            padding: 8px 12px;
+            border-radius: 16px;
+            font-size: 0.8rem;
+            margin-top: 8px;
+        }
+        .legenda-note {
+            font-size: 0.7rem;
+            text-align: center;
+            margin-top: 16px;
+            color: #735e3a;
+        }
+        footer {
+            text-align: center;
+            font-size: 0.7rem;
+            padding: 1rem;
+            background: #e1d7c4;
+            margin-top: 1rem;
+        }
+        @media (max-width: 780px) {
+            .map-container { flex-direction: column; }
+            #map { height: 55vh; }
+        }
+    </style>
+</head>
+<body>
+<div class="header">
+    <h1>🇧🇷 BRASIL JOANINO (1808–1821) · ECONOMIA & PRODUÇÃO</h1>
+    <p>Período da Corte Portuguesa no Rio de Janeiro · Abertura dos Portos · Renovação produtiva</p>
+</div>
+
+<div class="map-container">
+    <div id="map"></div>
+    <div class="legenda-panel">
+        <h3>📊 LEGENDA ECONÔMICA</h3>
+        <div id="legenda-dinamica"></div>
+        <div class="acesso-rapido">
+            <span>🔍 Acesso rápido a capitanias:</span><br>
+            <button data-uf="AM">Amazonas</button>
+            <button data-uf="MA">Maranhão</button>
+            <button data-uf="CE">Ceará</button>
+            <button data-uf="RN">Rio G. Norte</button>
+            <button data-uf="PB">Paraíba</button>
+            <button data-uf="PE">Pernambuco</button>
+            <button data-uf="BA">Bahia</button>
+            <button data-uf="MG">Minas Gerais</button>
+            <button data-uf="SP">São Paulo</button>
+            <button data-uf="PR">Paraná</button>
+            <button data-uf="SC">Santa Catarina</button>
+            <button data-uf="RS">Rio G. Sul</button>
+            <button data-uf="RJ">Rio de Janeiro</button>
+        </div>
+        <div class="legenda-note">
+            ⚡ Clique em qualquer estado no mapa ou na legenda para detalhes econômicos do período joanino.
+        </div>
+    </div>
+</div>
+<footer>
+    Baseado em descrições históricas — economia nas capitanias (c. 1808-1821). Abertura dos portos, fomento manufatureiro e novos ciclos.
+</footer>
+
+<script>
+    // ---------- DADOS ECONÔMICOS DETALHADOS PARA CADA UF (Período Joanino) ----------
+    const dadosEconomicos = {
+        "AM": { nome: "Capitania do Rio Negro / Amazonas", produtos: ["Drogas do Sertão (cacau, cravo, canela)", "Salsaparrilha", "Guaraná"], cor: "#76b852", descricao: "Drogas do sertão em declínio devido à concorrência asiática, mas ainda relevante para coleta extrativa. Produção voltada ao abastecimento interno e comércio local.", extra: "A Coroa incentivou a navegação pelo Amazonas; viajantes naturalistas registraram a riqueza botânica." },
+        "MA": { nome: "Maranhão", produtos: ["Algodão (Rei Algodão)", "Arroz", "Couro"], cor: "#e0ac69", descricao: "O 'Rei Algodão' dominava a economia maranhense. Algodão de alta qualidade era exportado para Europa e teares britânicos. Arroz também tinha produção significativa.", extra: "Companhia de Comércio do Grão-Pará e Maranhão fomentou a agricultura. Abertura dos portos (1808) impulsionou ainda mais o escoamento." },
+        "CE": { nome: "Ceará", produtos: ["Pecuária", "Couro", "Charque"], cor: "#c49a6c", descricao: "Economia baseada na criação de gado e derivados (couro, carne seca). Fornecia animais para tração e alimentação das minas.", extra: "Importante fornecedora de charque para o Sudeste e tropas." },
+        "RN": { nome: "Rio Grande do Norte", produtos: ["Sal marinho", "Pecuária", "Algodão"], cor: "#d9b48b", descricao: "Salinas naturais asseguravam produção de sal, essencial para conservação de carnes. Algodão e gado completavam a economia.", extra: "Sal exportado para pesca e charqueadas do sul." },
+        "PB": { nome: "Paraíba", produtos: ["Algodão", "Cana-de-açúcar", "Mandioca"], cor: "#e0ac69", descricao: "Algodão em ascensão e pequenos engenhos de açúcar. Região de transição entre a zona da mata e sertão.", extra: "Produção voltada para os mercados do Recife e Salvador." },
+        "PE": { nome: "Pernambuco", produtos: ["Cana-de-açúcar (novos engenhos)", "Tabaco", "Algodão"], cor: "#b3863c", descricao: "Após crise do açúcar, novos engenhos renovaram a produção. Tabaco de corda e algodão também relevantes. Recife era polo comercial dinâmico.", extra: "Revolução Pernambucana de 1817 evidencia a força política local. Incentivos joaninos melhoraram portos." },
+        "BA": { nome: "Bahia", produtos: ["Cana-de-açúcar", "Tabaco (fumo de corda)", "Mandioca", "Azeite de dendê"], cor: "#b3863c", descricao: "Principal produtor de açúcar e tabaco. Salvador conectava-se ao comércio com a África (escravos) e Europa. Cultivo de dendê e algodão.", extra: "Casa da moeda e fundição instaladas. Maior centro escravista do período." },
+        "MG": { nome: "Minas Gerais", produtos: ["Mineração (ouro e diamantes declinantes)", "Agricultura de subsistência", "Pecuária"], cor: "#cfb27c", descricao: "Capitania mais populosa. Mineração ainda relevante, mas em decadência. Investiu-se em manufaturas (ferro, tecidos) e produção de alimentos.", extra: "Vila Rica era centro político-cultural. Fomento joanino a atividades industriais incipientes (Fábrica de Ferro Patriótica)." },
+        "SP": { nome: "São Paulo", produtos: ["Açúcar (região de Piracicaba)", "Tropeirismo", "Algodão"], cor: "#b3863c", descricao: "Piracicaba consolidou-se como hub de tropeiros e novos engenhos de açúcar após colapso de São Domingos. Exportação via Santos.", extra: "Caminho para o sul e para as minas. Produção açucareira modernizada." },
+        "PR": { nome: "Paraná (parte de São Paulo até 1853)", produtos: ["Erva-mate", "Madeira", "Pecuária"], cor: "#82b366", descricao: "O interior do Paraná produzia erva-mate (alimento e moeda de troca). Exportada para o Prata e sul do Brasil.", extra: "Mate era consumido por gaúchos e escoado por Paranaguá." },
+        "SC": { nome: "Santa Catarina", produtos: ["Óleo de Baleia", "Pescado", "Farinha de mandioca"], cor: "#5f9ea0", descricao: "Caça à baleia era atividade central no litoral catarinense. O óleo era enviado para o Rio de Janeiro (iluminação).", extra: "Armação de baleias na Ilha de Santa Catarina sob concessão real." },
+        "RS": { nome: "Rio Grande de São Pedro (Rio Grande do Sul)", produtos: ["Charque", "Couro", "Trigo", "Graxa", "Sebo", "Velas"], cor: "#a57047", descricao: "Pecuária extensiva e charqueadas abasteciam o Sudeste com carne seca. Trigo começava a ser cultivado. Exportação por mar de couro, graxa e velas.", extra: "Região de fronteira disputada. A produção charqueadora gerava conflitos com estâncias platinas." },
+        "RJ": { nome: "Rio de Janeiro (Corte)", produtos: ["Açúcar (região de Campos)", "Café (início de expansão)", "Manufaturas reais"], cor: "#b37b2e", descricao: "Sede da Corte. Fomentaram-se manufaturas (tecelagem, ferro, pólvora). Café começava a ganhar força no Vale do Paraíba. Açúcar nos arredores de Campos.", extra: "Abertura dos Portos (1808) transformou o Rio em entreposto mundial. Banco do Brasil e Imprensa Régia instalados." }
+    };
+    
+    // Lista de produtos para legenda principal (cores unificadas)
+    const mapeamentoProdutoParaCor = {
+        "Drogas do Sertão": "#76b852", "Algodão": "#e0ac69", "Arroz": "#e0ac69", "Cana-de-açúcar": "#b3863c", "Tabaco": "#b3863c", "Mineração": "#cfb27c",
+        "Tropeirismo": "#9bc47e", "Erva-mate": "#82b366", "Óleo de Baleia": "#5f9ea0", "Charque": "#a57047", "Couro": "#a57047", "Trigo": "#c9a87b",
+        "Pecuária": "#c49a6c", "Sal": "#d9b48b"
+    };
+    
+    // Mapear cores amigáveis por categoria resumida para legenda:
+    const legendaCores = [
+        { nome: "🌿 Drogas do Sertão / Extrativismo", cor: "#76b852", ufs: ["AM"] },
+        { nome: "🧶 Algodão (Rei Algodão)", cor: "#e0ac69", ufs: ["MA", "RN", "PB", "PE"] },
+        { nome: "🍬 Cana-de-açúcar & Tabaco", cor: "#b3863c", ufs: ["PE", "BA", "SP", "RJ"] },
+        { nome: "⛏️ Mineração (declinante)", cor: "#cfb27c", ufs: ["MG"] },
+        { nome: "🧉 Erva-mate", cor: "#82b366", ufs: ["PR"] },
+        { nome: "🐋 Caça à Baleia / Óleo", cor: "#5f9ea0", ufs: ["SC"] },
+        { nome: "🐂 Pecuária / Charque / Couro", cor: "#a57047", ufs: ["CE", "RS"] },
+        { nome: "🌾 Sal, pecuária diversa", cor: "#d9b48b", ufs: ["RN", "PB"] },
+        { nome: "🍞 Trigo / Sebo / Velas (RS)", cor: "#c9a87b", ufs: ["RS"] },
+        { nome: "🧵 Tropas e comércio interno", cor: "#9bc47e", ufs: ["SP"] }
+    ];
+    
+    // Construir legenda interativa
+    const legendaDiv = document.getElementById("legenda-dinamica");
+    legendaCores.forEach(item => {
+        const divItem = document.createElement("div");
+        divItem.className = "legenda-item";
+        divItem.setAttribute("data-produto", item.nome);
+        divItem.innerHTML = `
+            <div class="cor-quadrado" style="background: ${item.cor};"></div>
+            <div class="legenda-info">${item.nome}<br><small>${item.ufs.join(", ")}</small></div>
+        `;
+        // Ao clicar na legenda, podemos destacar (opcional: centralizar no primeiro estado)
+        divItem.addEventListener("click", () => {
+            if(item.ufs.length) {
+                const uf = item.ufs[0];
+                const ufGeo = ufGeoJsonLayers.find(l => l.feature?.properties?.sigla === uf);
+                if(ufGeo) map.fitBounds(ufGeo.getBounds());
+            }
+        });
+        legendaDiv.appendChild(divItem);
+    });
+    
+    // Inicializar mapa
+    const map = L.map('map').setView([-14.2, -53.0], 4.2);
+    
+    // Cartografia base
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OSM</a> & CartoDB',
+        subdomains: 'abcd',
+        maxZoom: 10,
+        minZoom: 3.5
+    }).addTo(map);
+    
+    // Variável para armazenar layers GeoJSON
+    let ufGeoJsonLayers = [];
+    
+    // Carregar GeoJSON dos estados brasileiros (simplificado)
+    // Usaremos URL confiável do github raw IBGE simplificado.
+    const geojsonUrl = "https://raw.githubusercontent.com/codeforbrasil/brasil-geojson/master/ufs.geojson";
+    
+    fetch(geojsonUrl)
+        .then(response => response.json())
+        .then(data => {
+            // Associar cores baseado no estado
+            L.geoJSON(data, {
+                style: function(feature) {
+                    let sigla = feature.properties.sigla;
+                    let economicData = dadosEconomicos[sigla];
+                    let fillColor = economicData ? economicData.cor : "#c1b69c";
+                    return {
+                        color: "#3b2b1f",
+                        weight: 1.3,
+                        fillColor: fillColor,
+                        fillOpacity: 0.7,
+                        opacity: 0.9,
+                        dashArray: null
+                    };
+                },
+                onEachFeature: function(feature, layer) {
+                    ufGeoJsonLayers.push(layer);
+                    let sigla = feature.properties.sigla;
+                    let nomeEstado = feature.properties.nome || sigla;
+                    let econ = dadosEconomicos[sigla];
+                    if(!econ) {
+                        // fallback caso sem dados específicos
+                        econ = { nome: nomeEstado, produtos: ["Atividades variadas"], descricao: "Região com economia diversificada no período joanino.", extra: "Integração ao mercado interno e portos abertos." };
+                    }
+                    
+                    // Popup estilizado (card)
+                    const produtosStr = econ.produtos.map(p => `🏷️ ${p}`).join(" · ");
+                    const popupContent = `
+                        <div style="min-width: 200px; max-width: 280px;">
+                            <div class="card-titulo">${econ.nome}</div>
+                            <div class="card-produto">✨ Principais produtos: ${produtosStr}</div>
+                            <div class="card-desc">📖 ${econ.descricao}</div>
+                            <div class="card-infoextra">🔎 Informações suplementares:<br> ${econ.extra || "Produção integrada ao comércio atlântico e demandas internas após 1808."}</div>
+                            <div style="font-size:0.7rem; margin-top:8px; text-align:right;">⭐ Período Joanino (1808-1821)</div>
+                        </div>
+                    `;
+                    layer.bindPopup(popupContent, { className: 'custom-popup', maxWidth: 300 });
+                    
+                    // Adicionar evento de clique (opcional zoom simples)
+                    layer.on('click', function() {
+                        layer.openPopup();
+                    });
+                    
+                    // Tooltip com nome e produto principal
+                    let tooltipText = `${econ.nome}<br>🎯 ${econ.produtos.slice(0,2).join(", ")}`;
+                    layer.bindTooltip(tooltipText, { sticky: true, offset: [0, -10] });
+                }
+            }).addTo(map);
+            
+            // Ajustar zoom após carregar tudo
+            map.fitBounds(L.geoJSON(data).getBounds());
+        })
+        .catch(error => {
+            console.error("Erro ao carregar GEOJSON:", error);
+            // Fallback: mapa base apenas com anotações
+            alert("Erro ao carregar mapa completo, mas recursos visuais continuam.");
+        });
+    
+    // Função para centralizar estados via acesso rápido
+    function centralizarUF(sigla) {
+        const layerEncontrado = ufGeoJsonLayers.find(layer => {
+            return layer.feature && layer.feature.properties.sigla === sigla;
+        });
+        if(layerEncontrado) {
+            map.fitBounds(layerEncontrado.getBounds());
+            layerEncontrado.openPopup();
+        } else {
+            // Fallback coordenadas aproximadas
+            const coords = {
+                "AM": [-3.47, -62.0], "MA": [-5.5, -45.5], "CE": [-5.2, -39.5], "RN": [-5.8, -36.6],
+                "PB": [-7.0, -36.5], "PE": [-8.3, -37.0], "BA": [-12.5, -41.0], "MG": [-18.5, -44.5],
+                "SP": [-22.5, -48.5], "PR": [-24.8, -51.5], "SC": [-27.2, -50.5], "RS": [-30.0, -53.5],
+                "RJ": [-22.2, -42.5]
+            };
+            if(coords[sigla]) map.setView(coords[sigla], 7);
+        }
+    }
+    
+    // associar botões de acesso rápido
+    document.querySelectorAll(".acesso-rapido button").forEach(btn => {
+        btn.addEventListener("click", (e) => {
+            const uf = btn.getAttribute("data-uf");
+            centralizarUF(uf);
+        });
+    });
+    
+    // Legenda também pode abrir popup genérico com resumo do produto? Já está centralizando.
+    // Adicionar controle informativo extra no canto
+    const infoControle = L.control({ position: 'topright' });
+    infoControle.onAdd = function() {
+        const div = L.DomUtil.create('div', 'info-legenda-custom');
+        div.innerHTML = '<div style="background: #fdf8ec; padding: 6px 12px; border-radius: 20px; box-shadow: 0 1px 6px rgba(0,0,0,0.2); font-size:12px; font-weight:bold;">📌 Corte Joanina no RJ · Abertura dos Portos (1808)</div>';
+        return div;
+    };
+    infoControle.addTo(map);
+    
+    // pequena sobreposição com texto de capitania mais populosa (Minas Gerais)
+    // popup inicial de boas vindas (timeout)
+    setTimeout(() => {
+        L.popup()
+            .setLatLng([-19.5, -43.5])
+            .setContent('<b>🇧🇷 Minas Gerais</b><br>Capitania mais populosa do Brasil Joanino. Mineração em declínio, mas diversificação econômica e manufaturas.')
+            .openOn(map);
+    }, 800);
+    
+    // adicionar marcadores simbólicos de principais portos (opcional)
+    const portos = [
+        { coords: [-22.9083, -43.1964], nome: "Rio de Janeiro - Porto e Corte", prod: "Açúcar, café nascente" },
+        { coords: [-12.9714, -38.5014], nome: "Salvador", prod: "Açúcar e Tabaco" },
+        { coords: [-8.0476, -34.8770], nome: "Recife", prod: "Algodão, Açúcar" },
+        { coords: [-2.529, -44.3028], nome: "São Luís", prod: "Algodão" },
+        { coords: [-30.034, -51.217], nome: "Rio Grande", prod: "Charque, Couro" }
+    ];
+    portos.forEach(p => {
+        L.circleMarker(p.coords, { radius: 5, color: "#996633", weight: 1, fillColor: "#ffcc77", fillOpacity: 0.7 })
+            .bindTooltip(p.nome + "<br>" + p.prod, { sticky: true })
+            .addTo(map);
+    });
+    
+    // Adicionar anotação de hub de tropeiros - Piracicaba (SP)
+    L.marker([-22.725, -47.648], { icon: L.divIcon({ html: '🐎', iconSize: [20,20], className: 'tropeiro-icon' }) })
+        .bindPopup("<b>Piracicaba (SP)</b><br>Hub de tropeiros e novos engenhos de açúcar após colapso de São Domingos.")
+        .addTo(map);
+    
+    // Adicionar símbolo erva-mate no Paraná
+    L.marker([-25.4284, -49.2733], { icon: L.divIcon({ html: '🍃', iconSize: [24,24], className: 'mate-icon' }) })
+        .bindPopup("<b>Paraná tradicional</b><br>Produção de Erva-mate → escoamento para Prata e Sudeste.")
+        .addTo(map);
+    
+    // Pequeno ajuste de estilo dos ícones extras
+    const estiloExtra = document.createElement('style');
+    estiloExtra.textContent = `
+        .tropeiro-icon, .mate-icon { background: none; font-size: 1.4rem; text-shadow: 0 0 2px white; filter: drop-shadow(0 2px 2px rgba(0,0,0,0.3)); }
+        .legenda-item { cursor: pointer; }
+    `;
+    document.head.appendChild(estiloExtra);
+    
+    // Explicação final no console (bye)
+    console.log("Mapa econômico Joanino carregado com sucesso! Clique nos estados e legenda.");
+</script>
+</body>
+</html>
