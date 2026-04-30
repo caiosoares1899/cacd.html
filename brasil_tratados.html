@@ -15,16 +15,21 @@ header{background:#090d12;border-bottom:2px solid var(--gold);padding:10px 20px;
 .logo h1 em{color:var(--gold);font-style:normal}
 .logo-sub{font-size:.5rem;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;margin-top:2px}
 .body-wrap{flex:1;display:flex;overflow:hidden;min-height:0}
-.map-wrap{flex:1;overflow:auto;background:#0a1520;display:flex;align-items:center;justify-content:center;padding:8px;position:relative}
-.map-container{position:relative;display:inline-block}
+.map-wrap{flex:1;overflow:auto;background:#0a1520;display:flex;align-items:center;justify-content:center;padding:8px}
 .map-img{height:calc(100vh - 116px);width:auto;display:block}
-.map-overlay{position:absolute;top:0;left:0;width:100%;height:100%;cursor:pointer}
-.map-legend{position:fixed;bottom:20px;left:20px;z-index:50;background:rgba(9,13,18,.93);border:1px solid var(--border);padding:9px 12px;backdrop-filter:blur(4px);max-height:60vh;overflow-y:auto}
-.ml-title{font-size:.46rem;color:var(--gold);letter-spacing:.12em;text-transform:uppercase;margin-bottom:7px}
-.ml-row{display:flex;align-items:center;gap:6px;margin-bottom:5px;cursor:pointer;transition:opacity .15s}
-.ml-row:hover{opacity:.7}
-.ml-dot{width:10px;height:10px;border-radius:1px;flex-shrink:0;border:1px solid rgba(255,255,255,.15)}
-.ml-txt{font-size:.52rem;color:#c9d1d9}
+.legend-panel{width:360px;flex-shrink:0;background:var(--panel);border-left:1px solid var(--border);display:flex;flex-direction:column;overflow:hidden}
+.legend-header{background:var(--bg);padding:15px;border-bottom:1px solid var(--gold);text-align:center}
+.legend-header h2{font-family:"Playfair Display",serif;font-size:1rem;color:var(--gold);letter-spacing:2px}
+.legend-header p{font-size:.55rem;color:var(--muted);margin-top:5px}
+.legend-items{flex:1;overflow-y:auto;padding:12px}
+.legend-item{display:flex;align-items:center;gap:12px;padding:12px 15px;margin-bottom:8px;background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:6px;cursor:pointer;transition:all .2s}
+.legend-item:hover{background:var(--gold-dim);border-color:var(--gold);transform:translateX(5px)}
+.legend-item.active{background:var(--gold-dim);border-color:var(--gold);border-left-width:4px}
+.legend-color{width:28px;height:28px;border-radius:4px;flex-shrink:0}
+.legend-info{flex:1}
+.legend-name{font-family:"Playfair Display",serif;font-size:.8rem;font-weight:600;color:var(--text)}
+.legend-year{font-size:.55rem;color:var(--gold);margin-top:3px;letter-spacing:1px}
+.legend-desc{font-size:.5rem;color:var(--muted);margin-top:3px}
 .side-panel{width:330px;flex-shrink:0;background:var(--panel);border-left:1px solid var(--border);display:flex;flex-direction:column;overflow:hidden}
 .sp-empty{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;color:var(--muted);padding:28px 20px;text-align:center}
 .sp-empty .ico{font-size:2.2rem;opacity:.12}
@@ -38,11 +43,10 @@ header{background:#090d12;border-bottom:2px solid var(--gold);padding:10px 20px;
 .sp-sb{font-size:.56rem;color:var(--muted);margin-top:3px}
 .sp-cls{position:absolute;top:10px;right:11px;background:transparent;border:1px solid var(--border);color:var(--muted);width:23px;height:23px;cursor:pointer;font-size:.68rem;display:flex;align-items:center;justify-content:center;transition:all .2s}
 .sp-cls:hover{border-color:var(--gold);color:var(--gold)}
-.sp-scroll{flex:1;overflow-y:auto;padding:11px 13px;scrollbar-width:thin;scrollbar-color:var(--border) transparent}
+.sp-scroll{flex:1;overflow-y:auto;padding:11px 13px;scrollbar-width:thin}
 .sp-scroll::-webkit-scrollbar{width:3px}
 .sp-scroll::-webkit-scrollbar-thumb{background:var(--border)}
 .irow{margin-bottom:11px;padding-bottom:11px;border-bottom:1px solid var(--border)}
-.irow:last-child{border-bottom:none;margin-bottom:0}
 .ilbl{font-size:.47rem;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);margin-bottom:4px}
 .ival{font-family:"Crimson Pro",serif;font-size:.86rem;line-height:1.68;color:#c9d1d9}
 .lgrid{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:4px}
@@ -55,9 +59,9 @@ header{background:#090d12;border-bottom:2px solid var(--gold);padding:10px 20px;
 .tb-treaty{background:rgba(230,145,0,.12);color:#ffb74d;border-color:rgba(255,183,77,.4)}
 .tb-arb{background:rgba(106,27,154,.12);color:#ba68c8;border-color:rgba(186,104,200,.4)}
 .bottom-bar{background:#090d12;border-top:1px solid var(--border);padding:6px 18px;flex-shrink:0;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
-.bb-hint{font-size:.49rem;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;flex-shrink:0}
+.bb-hint{font-size:.49rem;color:var(--muted);letter-spacing:.08em;text-transform:uppercase}
 .pills{display:flex;gap:3px;flex-wrap:wrap}
-.pill{font-size:.48rem;padding:3px 7px;background:rgba(255,255,255,.03);border:1px solid var(--border);color:var(--muted);cursor:pointer;letter-spacing:.04em;transition:all .15s;white-space:nowrap}
+.pill{font-size:.48rem;padding:3px 7px;background:rgba(255,255,255,.03);border:1px solid var(--border);color:var(--muted);cursor:pointer;transition:all .15s;white-space:nowrap}
 .pill:hover,.pill.on{border-color:var(--gold);color:var(--gold);background:var(--gold-dim)}
 </style>
 </head>
@@ -65,74 +69,31 @@ header{background:#090d12;border-bottom:2px solid var(--gold);padding:10px 20px;
 <header>
   <div class="logo">
     <h1>Brasil &mdash; <em>Expansão Territorial</em> &amp; Diplomacia na América do Sul</h1>
-    <div class="logo-sub">Sécs. XV&ndash;XX &middot; Clique nas regiões coloridas do mapa</div>
+    <div class="logo-sub">Sécs. XV&ndash;XX &middot; Clique nos itens da legenda</div>
   </div>
 </header>
 <div class="body-wrap">
+
+  <!-- MAPA -->
   <div class="map-wrap">
-    <div class="map-legend">
-      <div class="ml-title">Regiões &mdash; clique para abrir</div>
-      <div class="ml-row" onclick="openEv('original')">     <div class="ml-dot" style="background:#c87060"></div><span class="ml-txt">Território Original (1494)</span></div>
-      <div class="ml-row" onclick="openEv('espanha1494')">  <div class="ml-dot" style="background:#d4a843"></div><span class="ml-txt">Ced. Espanha (1494)</span></div>
-      <div class="ml-row" onclick="openEv('peru1600')">     <div class="ml-dot" style="background:#e8a850"></div><span class="ml-txt">Ced. Peru/Esp. (1600)</span></div>
-      <div class="ml-row" onclick="openEv('peru1650')">     <div class="ml-dot" style="background:#d8c858"></div><span class="ml-txt">Ced. Peru/Esp. (1650)</span></div>
-      <div class="ml-row" onclick="openEv('colombia1750')"> <div class="ml-dot" style="background:#88c855"></div><span class="ml-txt">Ced. Colômbia/Esp. (1750)</span></div>
-      <div class="ml-row" onclick="openEv('colombia1860')"> <div class="ml-dot" style="background:#58a838"></div><span class="ml-txt">Ced. Colômbia (1860)</span></div>
-      <div class="ml-row" onclick="openEv('bolivia1860')">  <div class="ml-dot" style="background:#78b468"></div><span class="ml-txt">Ced. Bolívia (1860)</span></div>
-      <div class="ml-row" onclick="openEv('bolivia1903')">  <div class="ml-dot" style="background:#b888c8"></div><span class="ml-txt">Ced. Bolívia/Acre (1903)</span></div>
-      <div class="ml-row" onclick="openEv('paraguai1870')"> <div class="ml-dot" style="background:#7898c0"></div><span class="ml-txt">Ced. Paraguai (1870)</span></div>
-      <div class="ml-row" onclick="openEv('argentina1801')"><div class="ml-dot" style="background:#90b878"></div><span class="ml-txt">Ced. Argentina (1801)</span></div>
-      <div class="ml-row" onclick="openEv('argentina1816')"><div class="ml-dot" style="background:#50c880"></div><span class="ml-txt">Ced. Argentina+Uruguai (1816)</span></div>
-      <div class="ml-row" onclick="openEv('franca1816')">   <div class="ml-dot" style="background:#58c0d8"></div><span class="ml-txt">Ced. França (1816)</span></div>
-    </div>
-    
-    <div class="map-container">
-      <img src="mapa_brasil.png" alt="Mapa do Brasil" class="map-img" id="mapImage">
-      <svg class="map-overlay" viewBox="0 0 1105 1092" preserveAspectRatio="none" id="overlaySvg">
-        <!-- ZONAS CLICÁVEIS - Mesmas coordenadas do SVG original -->
-        <polygon class="zone" data-region="original" fill="rgba(200,112,96,0.4)" stroke="#c87060" stroke-width="2" 
-                 points="754,808 752,792 752,775 752,756 752,737 752,724 752,708 752,696 752,677 752,661 752,641 752,622 752,603 752,584 752,567 752,548 752,529 752,510 754,492 754,473 754,454 754,439 754,420 754,401 754,382 760,370 771,366 782,360 791,350 804,349 816,349 823,338 818,329 818,315 824,303 822,289 822,276 828,265 838,258 848,248 859,244 872,244 885,242 900,245 912,252 924,259 934,268 944,277 954,286 964,294 976,302 990,304 1009,304 1017,312 1022,327 1024,342 1028,356 1028,372 1027,384 1024,398 1020,409 1012,420 1002,429 994,441 984,450 974,458 964,468 960,479 956,493 948,504 938,511 926,510 923,524 918,536 920,550 920,566 922,582 920,598 920,611 916,626 916,642 908,654 902,666 902,683 898,697 891,708 886,722 876,732 868,743 868,760 856,768 846,776 838,788 822,787 812,786 800,786 788,786 774,790 766,801 754,808"/>
-        
-        <polygon class="zone" data-region="espanha1494" fill="rgba(212,168,67,0.4)" stroke="#d4a843" stroke-width="2"
-                 points="548,654 542,654 536,652 538,646 540,641 536,637 530,642 523,646 518,640 512,642 510,637 510,626 510,616 510,606 510,596 510,586 510,576 510,567 510,557 510,550 510,542 510,532 510,522 510,512 510,502 510,491 510,481 510,471 510,461 510,450 510,440 510,430 514,426 523,426 532,428 542,428 551,428 559,428 565,434 572,430 580,430 588,430 598,432 606,432 616,432 624,433 624,440 620,447 618,455 616,464 614,470 614,479 614,485 616,492 618,500 616,508 619,516 618,523 615,530 611,536 610,544 608,552 606,558 604,565 600,570 594,574 590,579 586,586 584,592 576,595 572,600 567,606 566,612 560,618 556,623 553,628 550,635 550,643 551,648 548,654"/>
-        
-        <polygon class="zone" data-region="peru1600" fill="rgba(232,168,80,0.4)" stroke="#e8a850" stroke-width="2"
-                 points="446,650 444,642 447,634 446,627 441,620 436,613 438,606 432,600 426,592 419,586 411,582 404,576 400,568 400,558 400,548 400,540 400,531 400,521 400,507 400,494 400,481 406,477 413,478 418,472 413,464 416,454 422,446 423,438 424,429 418,422 412,415 416,406 420,399 420,389 422,382 425,372 430,378 434,386 434,393 437,402 444,408 450,415 458,421 466,424 472,426 482,429 489,424 500,425 512,426 522,426 534,428 540,435 540,448 540,461 540,475 540,488 540,501 540,514 540,527 540,540 540,553 539,562 540,574 540,587 540,600 540,613 540,626 536,636 530,642 521,644 514,641 506,644 498,643 491,638 482,634 474,632 467,636 460,638 454,645 446,650"/>
-        
-        <polygon class="zone" data-region="peru1650" fill="rgba(216,200,88,0.4)" stroke="#d8c858" stroke-width="2"
-                 points="449,910 435,906 417,906 424,894 429,878 438,866 441,854 431,844 417,838 402,833 390,825 378,818 364,814 350,808 340,799 328,790 320,778 310,768 314,756 304,750 290,744 276,740 264,740 252,738 241,740 238,757 228,751 216,757 206,768 195,778 184,786 174,781 171,766 166,751 160,738 155,726 151,714 154,703 156,692 146,682 142,666 138,654 130,641 134,628 144,618 150,607 143,596 136,584 136,573 140,560 148,549 144,535 144,520 152,507 162,496 170,485 182,478 194,474 207,468 219,462 228,453 236,463 238,480 246,492 256,501 269,508 283,508 296,514 308,522 320,529 334,536 352,537 364,545 366,560 366,575 368,586 370,604 382,609 399,610 417,610 416,624 422,638 434,646 438,661 434,676 430,690 422,703 422,717 428,731 428,746 426,763 439,770 450,779 450,799 450,819 450,836 450,850 450,870 450,890 449,910"/>
-        
-        <polygon class="zone" data-region="colombia1750" fill="rgba(136,200,85,0.4)" stroke="#88c855" stroke-width="2"
-                 points="347,86 341,82 336,84 332,85 326,84 322,83 316,83 310,83 306,83 300,82 296,84 290,82 284,84 280,84 275,84 270,79 270,71 269,64 265,60 261,56 263,52 269,54 273,58 280,59 285,60 291,62 296,65 301,66 306,65 308,60 310,56 314,52 320,54 325,52 330,50 336,48 341,44 349,42 354,39 358,35 363,30 366,24 370,23 374,27 374,32 372,38 376,42 381,46 384,52 384,58 382,62 378,67 377,74 376,81 373,84 368,84 363,82 357,82 352,82 347,86"/>
-        
-        <polygon class="zone" data-region="colombia1860" fill="rgba(88,168,56,0.4)" stroke="#58a838" stroke-width="2"
-                 points="46,155 52,142 62,132 75,126 88,124 100,128 110,138 116,150 118,165 112,182 104,200 94,218 83,238 74,260 68,288 66,316 68,345 66,370 58,385 46,388 33,378 24,355 22,326 24,296 30,268 36,240 40,210 44,182"/>
-        
-        <polygon class="zone" data-region="bolivia1860" fill="rgba(120,180,104,0.4)" stroke="#78b468" stroke-width="2"
-                 points="66,370 88,348 110,345 130,342 134,370 136,400 136,432 140,465 144,498 148,532 150,565 146,595 136,618 118,624 100,618 84,602 70,578 60,548 54,518 52,488 52,456 54,422 58,392"/>
-        
-        <polygon class="zone" data-region="bolivia1903" fill="rgba(184,136,200,0.4)" stroke="#b888c8" stroke-width="2"
-                 points="81,430 75,430 70,430 64,430 64,425 62,422 59,420 56,416 52,418 49,418 50,414 48,411 46,406 46,403 46,398 46,394 48,389 47,384 48,380 48,376 49,372 52,373 57,374 62,375 65,376 69,374 74,376 78,376 84,376 88,377 94,378 97,380 102,380 105,382 110,384 114,381 116,382 120,385 122,388 125,390 128,392 128,396 128,398 130,402 128,406 124,408 121,408 117,410 113,410 110,412 108,415 104,418 101,420 98,421 94,422 91,420 87,422 84,424 82,427 81,430"/>
-        
-        <polygon class="zone" data-region="paraguai1870" fill="rgba(120,152,192,0.4)" stroke="#7898c0" stroke-width="2"
-                 points="260,636 288,626 316,628 340,638 362,654 372,678 370,702 358,720 336,732 310,734 284,724 260,708 248,686 246,662 250,642"/>
-        
-        <polygon class="zone" data-region="argentina1801" fill="rgba(144,184,120,0.4)" stroke="#90b878" stroke-width="2"
-                 points="186,852 214,840 242,842 262,854 274,874 276,896 266,914 246,922 222,920 202,908 188,888 182,868"/>
-        
-        <polygon class="zone" data-region="argentina1816" fill="rgba(80,200,128,0.4)" stroke="#50c880" stroke-width="2"
-                 points="551,1048 546,1045 544,1040 540,1036 536,1033 530,1030 528,1027 524,1023 520,1022 515,1018 510,1016 504,1014 500,1010 496,1007 492,1003 488,1005 482,1003 479,1000 475,996 471,992 467,988 462,985 457,982 452,983 448,982 452,978 456,974 460,970 464,966 468,962 470,957 474,953 478,949 482,948 490,948 494,949 498,950 504,953 510,954 515,952 520,956 524,960 529,962 533,966 538,966 542,971 544,976 546,982 546,986 542,991 542,996 544,1003 544,1010 544,1016 546,1022 548,1028 550,1033 552,1039 553,1044 551,1048"/>
-        
-        <polygon class="zone" data-region="franca1816" fill="rgba(88,192,216,0.4)" stroke="#58c0d8" stroke-width="2"
-                 points="759,150 745,150 732,150 718,150 705,150 691,150 678,150 664,150 651,150 637,150 636,140 640,131 640,121 633,114 630,107 622,102 618,98 616,89 614,82 611,72 610,62 608,53 601,46 594,46 588,38 586,30 578,24 572,24 564,18 557,14 548,10 540,8 544,4 557,4 571,4 584,4 598,4 611,4 625,4 638,4 652,4 666,4 679,4 693,4 706,4 720,4 733,4 747,4 760,5 760,19 760,30 760,42 760,55 760,69 760,82 760,96 760,109 760,123 760,136 759,150"/>
-      </svg>
-    </div>
+    <img src="mapa_brasil.png" alt="Mapa do Brasil" class="map-img" id="mapImage">
   </div>
+
+  <!-- LEGENDA CLICÁVEL (lado esquerdo) -->
+  <div class="legend-panel">
+    <div class="legend-header">
+      <h2>🗺️ REGIÕES DO MAPA</h2>
+      <p>Clique em qualquer item para ver informações históricas</p>
+    </div>
+    <div class="legend-items" id="legendList"></div>
+  </div>
+
+  <!-- PAINEL DE INFORMAÇÕES (lado direito) -->
   <div class="side-panel">
     <div class="sp-empty" id="spEmpty">
-      <div class="ico">🗺️</div>
+      <div class="ico">📜</div>
       <h3>Selecione uma Região</h3>
-      <p>Clique em qualquer área colorida do mapa ou nos itens da legenda para ver os eventos históricos.</p>
+      <p>Clique em qualquer item da legenda ao lado para ver os eventos históricos detalhados.</p>
     </div>
     <div class="sp-content" id="spContent">
       <div class="sp-hdr">
@@ -145,100 +106,181 @@ header{background:#090d12;border-bottom:2px solid var(--gold);padding:10px 20px;
     </div>
   </div>
 </div>
+
 <div class="bottom-bar">
   <span class="bb-hint">Acesso rápido →</span>
   <div class="pills" id="pills"></div>
 </div>
 
 <script>
-const EVTS = {
-  original: {name:"Território Original Português", sub:"A leste da Linha de Tordesilhas · 1494", yr:"1494", type:"tb-treaty", tl:"Tratado", leaders:[{f:"🇵🇹",r:"Rei de Portugal",n:"D. João II"},{f:"🇪🇸",r:"Reis de Castela",n:"Fernando II e Isabel I"}], re:"Divisão papal do mundo a 370 léguas (≈ 46°30' W) a oeste de Cabo Verde. Apenas a estreita faixa costeira nordeste/leste do Brasil ficava do lado português.", mo:"Resolver a disputa sobre as terras descobertas por Colombo (1492).", co:"Portugal reivindicou o Brasil como possessão legítima.", le:"Nunca respeitada na prática, serviu de base jurídica colonial.", rp:"Sem Tordesilhas, o Brasil seria 60% menor."},
-  espanha1494: {name:"Cedido pela Espanha (1494)", sub:"Faixa entre Tordesilhas e a fronteira colonial real", yr:"Sécs. XVII–XVIII", type:"tb-treaty", tl:"Expansão Territorial", leaders:[{f:"🇧🇷",r:"Bandeirantes",n:"Borba Gato, Anhanguera"},{f:"🇪🇸",r:"Vice-reinado do Peru",n:"Administradores espanhóis"}], re:"As bandeiras paulistas avançaram para o interior ignorando Tordesilhas.", mo:"Busca por escravos indígenas e ouro.", co:"Criou o uti possidetis como realidade geopolítica.", le:"O Brasil colonial conquistou ~4 milhões de km² além de Tordesilhas.", rp:"Alexandre de Gusmão usou o uti possidetis no Tratado de Madri (1750)."},
-  peru1600: {name:"Cedido pelo Peru/Espanha (1600)", sub:"Expansão precoce no Amazonas central", yr:"1637–1750", type:"tb-treaty", tl:"Expansão / Tratado", leaders:[{f:"🇧🇷",r:"Explorador",n:"Pedro Teixeira"},{f:"🇪🇸",r:"Vice-reinado do Peru",n:"Filipe IV"}], re:"Pedro Teixeira navegou todo o Amazonas até Quito (1637–38).", mo:"Afirmar posse portuguesa do Amazonas.", co:"Criou precedente de controle lusitano sobre o Amazonas.", le:"Primeira demarcação efetiva do Amazonas como território português.", rp:"Afastou definitivamente o Peru/Espanha da bacia amazônica central."},
-  peru1650: {name:"Cedido pelo Peru/Espanha (1650)", sub:"Grande expansão central — Amazônia e interior", yr:"1650–1750", type:"tb-treaty", tl:"Expansão / Tratado", leaders:[{f:"🇧🇷",r:"Governadores",n:"Alexandre de Gusmão"},{f:"🇪🇸",r:"Vice-reinado do Peru",n:"Administradores espanhóis"}], re:"A maior região incorporada ao Brasil além de Tordesilhas.", mo:"Uti possidetis: missões e postos militares portugueses.", co:"Espanha reconheceu a posse lusitana sobre o Amazonas central.", le:"Definiu o coração do Brasil continental.", rp:"O uti possidetis tornou-se pedra angular do direito internacional."},
-  colombia1750: {name:"Cedido pela Colômbia/Espanha (1750)", sub:"Alto Rio Negro / Noroeste Amazônico", yr:"1750 / 1907", type:"tb-treaty", tl:"Tratado de Fronteira", leaders:[{f:"🇧🇷",r:"Rei de Portugal",n:"D. João V"},{f:"🇨🇴",r:"Espanha / Colômbia",n:"Fernando VI"}], re:"O Tratado de Madri (1750) cedeu ao Brasil o Alto Rio Negro.", mo:"Uti possidetis: missões portuguesas na região.", co:"A Nova Granada/Colômbia perdeu o acesso ao Alto Amazonas.", le:"Definiu o corredor noroeste que hoje faz fronteira com Colômbia.", rp:"Cimentou a relação bilateral positiva Brasil-Colômbia."},
-  colombia1860: {name:"Cedido pela Colômbia (1860)", sub:"Região do Javari / Fronteira Oeste", yr:"1853 / 1907", type:"tb-treaty", tl:"Cooperação / Tratado", leaders:[{f:"🇧🇷",r:"Imperador do Brasil",n:"D. Pedro II"},{f:"🇨🇴",r:"Presidente da Colômbia",n:"José Hilario López"}], re:"Brasil e Colômbia negociaram acesso colombiano ao Amazonas.", mo:"A Colômbia precisava de saída fluvial ao Atlântico.", co:"Colômbia obteve direitos de navegação.", le:"Base para cooperação amazônica futura.", rp:"Estabeleceu que o controle brasileiro da Amazônia era incontestável."},
-  bolivia1860: {name:"Cedido pela Bolívia (1860)", sub:"Alto Madeira / Guaporé / Fronteira MT", yr:"1867", type:"tb-treaty", tl:"Tratado de Fronteira", leaders:[{f:"🇧🇷",r:"Imperador do Brasil",n:"D. Pedro II"},{f:"🇧🇴",r:"Presidente da Bolívia",n:"Mariano Melgarejo"}], re:"O Tratado de Ayacucho (1867) fixou a fronteira pelo paralelo 10°20' S.", mo:"Conflitos de garimpeiros e seringueiros.", co:"Fronteira parcialmente delimitada. O Acre ficou em zona ambígua.", le:"A imprecisão do Ayacucho culminou na Revolução Acreana.", rp:"Exemplo clássico de como acordos vagos criam conflitos futuros."},
-  bolivia1903: {name:"Cedido pela Bolívia (1903) — Acre", sub:"Tratado de Petrópolis · Revolução Acreana", yr:"1899–1903", type:"tb-war", tl:"Conflito Armado / Tratado", leaders:[{f:"🇧🇷",r:"Presidente",n:"Rodrigues Alves"},{f:"🇧🇴",r:"Presidente da Bolívia",n:"José Manuel Pando"}], re:"Seringueiros brasileiros no Acre rebelaram-se e proclamaram a República do Acre.", mo:"~60.000 brasileiros viviam no Acre produzindo borracha.", co:"Brasil obteve 191.000 km². Bolívia recebeu indenização.", le:"Símbolo máximo da diplomacia Rio Branco.", rp:"Em 2006, Evo Morales invocou esse histórico ao nacionalizar o gás."},
-  paraguai1870: {name:"Cedido pelo Paraguai (1870)", sub:"Guerra da Tríplice Aliança · 1864–1870", yr:"1864–1870", type:"tb-war", tl:"Guerra", leaders:[{f:"🇧🇷",r:"Imperador do Brasil",n:"D. Pedro II"},{f:"🇵🇾",r:"Presidente-Ditador",n:"Francisco Solano López"}], re:"A maior guerra da história da América do Sul. O Paraguai perdeu 60–70% da população.", mo:"Solano López buscava hegemonia regional.", co:"Brasil obteve a região entre os rios Apa e Branco.", le:"Guerra mais mortífera da história americana.", rp:"Itaipu (1973) transformou o rival em parceiro energético."},
-  argentina1801: {name:"Cedido pela Argentina/Espanha (1801)", sub:"Missões Orientais · Noroeste do RS", yr:"1801", type:"tb-war", tl:"Conflito Armado", leaders:[{f:"🇧🇷",r:"Capitania RS",n:"Borges do Canto"},{f:"🇪🇸",r:"Vice-reinado do Prata",n:"Joaquín del Pino"}], re:"Borges do Canto tomou os Sete Povos das Missões Orientais em apenas 10 dias.", mo:"Guerra das Laranjas (Portugal × Espanha) criou janela geopolítica.", co:"Brasil incorporou o noroeste gaúcho.", le:"Definiu o extremo NW do Rio Grande do Sul.", rp:"A Questão de Palmas/Misiones (1895) foi primeira grande vitória do Barão do Rio Branco."},
-  argentina1816: {name:"Cedido pela Argentina (1816) + Uruguai (1830)", sub:"Cisplatina · Guerra Cisplatina · MERCOSUL", yr:"1816–1991", type:"tb-war", tl:"Conflito / Independência / Integração", leaders:[{f:"🇧🇷",r:"Imperador",n:"D. Pedro I"},{f:"🇺🇾",r:"Revolucionários",n:"Artigas / Lavalleja"}], re:"Portugal invadiu a Banda Oriental (1816) como Cisplatina. Guerra Cisplatina (1825–28) criou o Uruguai.", mo:"Portugal queria o estuário do Prata.", co:"Brasil perdeu a Cisplatina (1828). Uruguai tornou-se independente.", le:"O Uruguai nasceu como Estado-tampão britânico.", rp:"O MERCOSUL transformou a rivalidade em parceria estratégica."},
-  franca1816: {name:"Cedido pela França (1810–1816)", sub:"Guiana Francesa / Amapá · Arbitragem de Berna", yr:"1809 / 1900", type:"tb-arb", tl:"Conflito / Arbitragem", leaders:[{f:"🇧🇷",r:"Príncipe Regente",n:"D. João VI"},{f:"🇫🇷",r:"Imperador",n:"Napoleão Bonaparte"}], re:"D. João VI tomou a Guiana Francesa (1809) como represália a Napoleão.", mo:"Retaliação napoleônica e interesse estratégico no norte.", co:"Brasil garantiu ~260.000 km² do Amapá.", le:"Primeira grande vitória diplomática do Barão do Rio Branco.", rp:"Lançou Rio Branco à cena nacional e abriu seu ciclo de consolidação das fronteiras."}
-};
+// DADOS HISTÓRICOS COMPLETOS
+const REGIONS = [
+  { id: "original", name: "Território Original Português", year: "1494", sub: "A leste da Linha de Tordesilhas", color: "#c87060", type: "tb-treaty", tl: "Tratado de Tordesilhas",
+    leaders: [{f:"🇵🇹",r:"Rei de Portugal",n:"D. João II"},{f:"🇪🇸",r:"Reis de Castela",n:"Fernando II e Isabel I"}],
+    re: "Divisão papal do mundo a 370 léguas (≈ 46°30' W) a oeste de Cabo Verde. Apenas a estreita faixa costeira nordeste/leste do Brasil ficava do lado português. O vasto interior — toda a Amazônia, centro-oeste e sul — era formalmente espanhol.",
+    mo: "Resolver a disputa sobre as terras descobertas por Colombo (1492). O papa Alexandre VI mediou o acordo em Tordesilhas, Espanha.",
+    co: "Portugal reivindicou o Brasil como possessão legítima. A expansão bandeirante posterior ignorou a linha sistematicamente.",
+    le: "Nunca respeitada na prática, serviu de base jurídica colonial. O Tratado de Madri (1750) a substituiu definitivamente.",
+    rp: "Sem Tordesilhas, o Brasil seria 60% menor. A doutrina do uti possidetis moldou o direito internacional de fronteiras."
+  },
+  { id: "espanha1494", name: "Cedido pela Espanha (1494)", year: "Sécs. XVII–XVIII", sub: "Faixa entre Tordesilhas e a fronteira colonial real", color: "#d4a843", type: "tb-treaty", tl: "Expansão Territorial",
+    leaders: [{f:"🇧🇷",r:"Bandeirantes",n:"Borba Gato, Anhanguera"},{f:"🇪🇸",r:"Vice-reinado do Peru",n:"Administradores espanhóis"}],
+    re: "As bandeiras paulistas avançaram centenas de léguas para o interior ignorando Tordesilhas, ocupando de fato território espanhol. O princípio do uti possidetis — quem ocupa, possui — foi consagrado no Tratado de Madri (1750).",
+    mo: "Busca por escravos indígenas, ouro e pedras preciosas. A vastidão do interior e a ausência espanhola facilitaram a ocupação.",
+    co: "Criou o uti possidetis como realidade geopolítica. Deu ao Brasil sua atual forma continental.",
+    le: "O Brasil colonial conquistou ~4 milhões de km² além de Tordesilhas.",
+    rp: "Alexandre de Gusmão usou o uti possidetis no Tratado de Madri (1750)."
+  },
+  { id: "peru1600", name: "Cedido pelo Peru/Espanha (1600)", year: "1637–1750", sub: "Expansão precoce no Amazonas central", color: "#e8a850", type: "tb-treaty", tl: "Expansão / Tratado",
+    leaders: [{f:"🇧🇷",r:"Explorador",n:"Pedro Teixeira"},{f:"🇪🇸",r:"Vice-reinado do Peru",n:"Filipe IV"}],
+    re: "Pedro Teixeira navegou todo o Amazonas até Quito (1637–38) e plantou um marco de fronteira de facto. Na volta, demarcou o rio Madeira como limite. O Tratado de Madri (1750) legalizou essa posse.",
+    mo: "Afirmar posse portuguesa do Amazonas durante a União Ibérica.",
+    co: "Criou precedente de controle lusitano sobre o Amazonas. A região passou a ser administrada de Belém, não de Lima.",
+    le: "Primeira demarcação efetiva do Amazonas como território português.",
+    rp: "Afastou definitivamente o Peru/Espanha da bacia amazônica central."
+  },
+  { id: "peru1650", name: "Cedido pelo Peru/Espanha (1650)", year: "1650–1750", sub: "Grande expansão central — Amazônia e interior", color: "#d8c858", type: "tb-treaty", tl: "Expansão / Tratado",
+    leaders: [{f:"🇧🇷",r:"Governadores",n:"Alexandre de Gusmão"},{f:"🇪🇸",r:"Vice-reinado do Peru",n:"Administradores espanhóis"}],
+    re: "A maior região incorporada ao Brasil além de Tordesilhas. Abrange a Amazônia central e o interior continental. A expansão bandeirante cobriu essa vastidão, legitimada pelo Tratado de Madri (1750).",
+    mo: "Uti possidetis: missões jesuíticas, postos militares e aldeamentos portugueses justificavam a posse de fato.",
+    co: "Espanha reconheceu a posse lusitana sobre o Amazonas central e o centro-oeste.",
+    le: "Definiu o coração do Brasil continental. Alexandre de Gusmão é o pai das fronteiras brasileiras.",
+    rp: "O uti possidetis tornou-se pedra angular do direito internacional."
+  },
+  { id: "colombia1750", name: "Cedido pela Colômbia/Espanha (1750)", year: "1750 / 1907", sub: "Alto Rio Negro / Noroeste Amazônico", color: "#88c855", type: "tb-treaty", tl: "Tratado de Fronteira",
+    leaders: [{f:"🇧🇷",r:"Rei de Portugal",n:"D. João V"},{f:"🇨🇴",r:"Espanha / Colômbia",n:"Fernando VI"}],
+    re: "O Tratado de Madri (1750) cedeu ao Brasil o Alto Rio Negro, reclamado pela Nova Granada. O Tratado Brasil-Colômbia (1907) demarcou definitivamente a fronteira de 1.644 km.",
+    mo: "Uti possidetis: missões e postos militares portugueses na região justificavam a posse.",
+    co: "A Nova Granada/Colômbia perdeu o acesso ao Alto Amazonas.",
+    le: "Definiu o corredor noroeste que hoje faz fronteira com Colômbia e Venezuela.",
+    rp: "Cimentou a relação bilateral positiva Brasil-Colômbia."
+  },
+  { id: "colombia1860", name: "Cedido pela Colômbia (1860)", year: "1853 / 1907", sub: "Região do Javari / Fronteira Oeste", color: "#58a838", type: "tb-treaty", tl: "Cooperação / Tratado",
+    leaders: [{f:"🇧🇷",r:"Imperador do Brasil",n:"D. Pedro II"},{f:"🇨🇴",r:"Presidente da Colômbia",n:"José Hilario López"}],
+    re: "Brasil e Colômbia negociaram acesso colombiano ao Amazonas para navegação em troca de reconhecimento das fronteiras brasileiras a oeste.",
+    mo: "A Colômbia precisava de saída fluvial ao Atlântico via Amazônia.",
+    co: "Colômbia obteve direitos de navegação; Brasil consolidou fronteira ocidental.",
+    le: "Base para cooperação amazônica futura (Tratado de Cooperação Amazônica, 1978).",
+    rp: "Estabeleceu que o controle brasileiro da Amazônia era incontestável."
+  },
+  { id: "bolivia1860", name: "Cedido pela Bolívia (1860)", year: "1867", sub: "Alto Madeira / Guaporé / Fronteira MT", color: "#78b468", type: "tb-treaty", tl: "Tratado de Fronteira",
+    leaders: [{f:"🇧🇷",r:"Imperador do Brasil",n:"D. Pedro II"},{f:"🇧🇴",r:"Presidente da Bolívia",n:"Mariano Melgarejo"}],
+    re: "O Tratado de Ayacucho (1867) fixou a fronteira pelo paralelo 10°20' S até o rio Madeira. A Bolívia cedeu território mas recebeu direitos de navegação.",
+    mo: "Conflitos de garimpeiros e seringueiros. Necessidade de demarcação após a independência boliviana.",
+    co: "Fronteira parcialmente delimitada. O Acre ficou em zona ambígua — semente da crise de 1903.",
+    le: "A imprecisão do Ayacucho culminou na Revolução Acreana e no Tratado de Petrópolis.",
+    rp: "Exemplo clássico de como acordos vagos criam conflitos futuros."
+  },
+  { id: "bolivia1903", name: "Cedido pela Bolívia (1903) — Acre", year: "1899–1903", sub: "Tratado de Petrópolis · Revolução Acreana", color: "#b888c8", type: "tb-war", tl: "Conflito Armado / Tratado",
+    leaders: [{f:"🇧🇷",r:"Presidente",n:"Rodrigues Alves"},{f:"🇧🇴",r:"Presidente da Bolívia",n:"José Manuel Pando"}],
+    re: "Seringueiros brasileiros no Acre boliviano rebelaram-se (1899) e proclamaram a República do Acre. O risco do Bolivian Syndicate arrendar o território foi inadmissível. Plácido de Castro liderou a intervenção. O Tratado de Petrópolis (17/11/1903) cedeu 191.000 km² ao Brasil.",
+    mo: "~60.000 brasileiros viviam no Acre boliviano produzindo borracha. O Bolivian Syndicate ameaçava criar um Estado privado na Amazônia.",
+    co: "Brasil obteve 191.000 km². Bolívia recebeu £2 milhões e a Estrada de Ferro Madeira-Mamoré.",
+    le: "Símbolo máximo da diplomacia Rio Branco. Plácido de Castro é herói nacional do Acre.",
+    rp: "Em 2006, Evo Morales invocou esse histórico ao nacionalizar o gás e escalar a crise com a Petrobras."
+  },
+  { id: "paraguai1870", name: "Cedido pelo Paraguai (1870)", year: "1864–1870", sub: "Guerra da Tríplice Aliança", color: "#7898c0", type: "tb-war", tl: "Guerra",
+    leaders: [{f:"🇧🇷",r:"Imperador do Brasil",n:"D. Pedro II"},{f:"🇵🇾",r:"Presidente-Ditador",n:"Francisco Solano López"}],
+    re: "A maior guerra da história da América do Sul. O Paraguai invadiu RS e Mato Grosso. Brasil, Argentina e Uruguai formaram a Tríplice Aliança. Após 6 anos, o Paraguai perdeu 60–70% da população masculina e 140.000 km².",
+    mo: "Solano López buscava hegemonia regional e saída ao mar. O Brasil reagiu à invasão de seu território.",
+    co: "Brasil obteve a região entre os rios Apa e Branco. O Paraguai foi devastado demograficamente.",
+    le: "Guerra mais mortífera da história americana. O Brasil emergiu como potência militar dominante.",
+    rp: "O custo humano acelerou a crise do Império e contribuiu para a Proclamação da República (1889)."
+  },
+  { id: "argentina1801", name: "Cedido pela Argentina/Espanha (1801)", year: "1801", sub: "Missões Orientais · Noroeste do RS", color: "#90b878", type: "tb-war", tl: "Conflito Armado",
+    leaders: [{f:"🇧🇷",r:"Capitania RS",n:"Borges do Canto"},{f:"🇪🇸",r:"Vice-reinado do Prata",n:"Joaquín del Pino"}],
+    re: "Aproveitando a Guerra das Laranjas (Portugal × Espanha na Europa), Borges do Canto tomou os Sete Povos das Missões Orientais em apenas 10 dias.",
+    mo: "Guerra europeia criou janela geopolítica. Os Sete Povos eram cobiçados desde o Tratado de Madri (1750).",
+    co: "Brasil incorporou definitivamente o noroeste gaúcho. As ruínas jesuíticas são hoje Patrimônio da UNESCO.",
+    le: "Definiu o extremo NW do Rio Grande do Sul.",
+    rp: "A Questão de Palmas/Misiones (arbitragem Cleveland, 1895) resolveu pendências."
+  },
+  { id: "argentina1816", name: "Cedido pela Argentina (1816) + Uruguai (1830)", year: "1816–1991", sub: "Cisplatina · Guerra Cisplatina · MERCOSUL", color: "#50c880", type: "tb-war", tl: "Conflito / Independência / Integração",
+    leaders: [{f:"🇧🇷",r:"Imperador",n:"D. Pedro I"},{f:"🇺🇾",r:"Revolucionários",n:"Artigas / Lavalleja"}],
+    re: "Portugal invadiu a Banda Oriental (1816) e a incorporou como Cisplatina (1821). Os '33 Orientais' iniciaram a revolução (1825). A Guerra Cisplatina (1825–28) terminou em empate; a GB mediou a criação do Uruguai. Em 1991, Brasil e Argentina criaram o MERCOSUL.",
+    mo: "Portugal queria o estuário do Prata. A GB criou o Uruguai como Estado-tampão. O MERCOSUL surgiu da democratização.",
+    co: "Brasil perdeu a Cisplatina (1828). Uruguai tornou-se independente. O MERCOSUL cresceu de US$4 bi (1991) para US$88 bi (2022).",
+    le: "O Uruguai nasceu como Estado-tampão britânico. O MERCOSUL transformou a rivalidade em parceria estratégica.",
+    rp: "A perda da Cisplatina contribuiu para a abdicação de D. Pedro I (1831)."
+  },
+  { id: "franca1816", name: "Cedido pela França (1810–1816)", year: "1809 / 1900", sub: "Guiana Francesa / Amapá · Arbitragem de Berna", color: "#58c0d8", type: "tb-arb", tl: "Conflito / Arbitragem",
+    leaders: [{f:"🇧🇷",r:"Príncipe Regente",n:"D. João VI"},{f:"🇫🇷",r:"Imperador",n:"Napoleão Bonaparte"}],
+    re: "D. João VI ordenou a tomada da Guiana Francesa (1809) como represália pela invasão napoleônica. A questão do Amapá (~260.000 km²) perdurou décadas. O Conselho Federal Suíço decidiu em favor do Brasil em 1° de dezembro de 1900.",
+    mo: "Retaliação napoleônica e interesse estratégico no norte. A descoberta de ouro no Amapá reacendeu o interesse francês.",
+    co: "Brasil garantiu ~260.000 km² do Amapá. Fronteira fixada no rio Oiapoque e Cabo Orange.",
+    le: "Primeira grande vitória diplomática do Barão do Rio Branco.",
+    rp: "Lançou Rio Branco à cena nacional e abriu seu ciclo de consolidação das fronteiras (1902–1912)."
+  }
+];
 
-// Criar pills
+// Construir a legenda visual
+const legendList = document.getElementById('legendList');
 const pillsDiv = document.getElementById('pills');
-const pillMap = {};
-Object.entries(EVTS).forEach(([id, ev]) => {
-  const el = document.createElement('div');
-  el.className = 'pill';
-  el.dataset.id = id;
-  el.textContent = ev.yr.toString().slice(0,4) + ' · ' + ev.name.split(' ').slice(0,3).join(' ');
-  el.onclick = () => openEv(id);
-  pillsDiv.appendChild(el);
-  pillMap[id] = el;
-});
-
 let activeId = null;
 
-// Adicionar eventos de clique aos polígonos do SVG
-document.querySelectorAll('.zone').forEach(zone => {
-  zone.style.cursor = 'pointer';
-  zone.addEventListener('click', (e) => {
-    const region = zone.dataset.region;
-    if (region) openEv(region);
-    e.stopPropagation();
-  });
-  zone.addEventListener('mouseenter', () => {
-    zone.style.fillOpacity = '0.6';
-    zone.style.strokeWidth = '3';
-  });
-  zone.addEventListener('mouseleave', () => {
-    if (activeId !== zone.dataset.region) {
-      zone.style.fillOpacity = '0.4';
-      zone.style.strokeWidth = '2';
-    }
-  });
+// Mapeamento para acesso rápido
+REGIONS.forEach(region => {
+  // Item da legenda (grande, colorido, clicável)
+  const item = document.createElement('div');
+  item.className = 'legend-item';
+  item.dataset.id = region.id;
+  item.onclick = () => openRegion(region.id);
+  item.innerHTML = `
+    <div class="legend-color" style="background: ${region.color}; border: 2px solid ${region.color}"></div>
+    <div class="legend-info">
+      <div class="legend-name">${region.name}</div>
+      <div class="legend-year">📅 ${region.year}</div>
+      <div class="legend-desc">${region.sub}</div>
+    </div>
+  `;
+  legendList.appendChild(item);
+  
+  // Pill de acesso rápido
+  const pill = document.createElement('div');
+  pill.className = 'pill';
+  pill.dataset.id = region.id;
+  pill.textContent = region.year.toString().slice(0,4) + ' · ' + region.name.split(' ').slice(0,2).join(' ');
+  pill.onclick = () => openRegion(region.id);
+  pillsDiv.appendChild(pill);
 });
 
-function openEv(id) {
-  const ev = EVTS[id];
-  if (!ev) return;
+function openRegion(id) {
+  const region = REGIONS.find(r => r.id === id);
+  if (!region) return;
   
   // Remove destaque anterior
-  if (activeId) {
-    const prevZone = document.querySelector(`.zone[data-region="${activeId}"]`);
-    if (prevZone) {
-      prevZone.style.fillOpacity = '0.4';
-      prevZone.style.strokeWidth = '2';
-    }
-    if (pillMap[activeId]) pillMap[activeId].classList.remove('on');
-  }
+  document.querySelectorAll('.legend-item').forEach(item => item.classList.remove('active'));
+  document.querySelectorAll('.pill').forEach(pill => pill.classList.remove('on'));
+  
+  // Destaque atual
+  const currentItem = document.querySelector(`.legend-item[data-id="${id}"]`);
+  const currentPill = document.querySelector(`.pill[data-id="${id}"]`);
+  if (currentItem) currentItem.classList.add('active');
+  if (currentPill) currentPill.classList.add('on');
   
   activeId = id;
   
-  // Destaque atual
-  const currentZone = document.querySelector(`.zone[data-region="${id}"]`);
-  if (currentZone) {
-    currentZone.style.fillOpacity = '0.7';
-    currentZone.style.strokeWidth = '4';
-  }
-  if (pillMap[id]) pillMap[id].classList.add('on');
+  // Preenche o painel
+  document.getElementById('spYr').textContent = region.year + ' · ' + region.tl;
+  document.getElementById('spNm').textContent = region.name;
+  document.getElementById('spSb').textContent = region.sub;
   
-  document.getElementById('spYr').textContent = ev.yr + ' · ' + ev.tl;
-  document.getElementById('spNm').textContent = ev.name;
-  document.getElementById('spSb').textContent = ev.sub;
-  
-  const ldrs = ev.leaders.map(l => `<div class="lbox"><span class="lflag">${l.f}</span><div class="lrole">${l.r}</div><div class="lname">${l.n}</div></div>`).join('');
+  const leadersHtml = region.leaders.map(l => `
+    <div class="lbox">
+      <span class="lflag">${l.f}</span>
+      <div class="lrole">${l.r}</div>
+      <div class="lname">${l.n}</div>
+    </div>
+  `).join('');
   
   document.getElementById('spScroll').innerHTML = `
-    <span class="tbadge ${ev.type}">${ev.tl}</span>
-    <div class="irow"><div class="ilbl">Líderes</div><div class="lgrid">${ldrs}</div></div>
-    <div class="irow"><div class="ilbl">Resumo</div><div class="ival">${ev.re}</div></div>
-    <div class="irow"><div class="ilbl">Motivação</div><div class="ival">${ev.mo}</div></div>
-    <div class="irow"><div class="ilbl">Consequências</div><div class="ival">${ev.co}</div></div>
-    <div class="irow"><div class="ilbl">Legado</div><div class="ival">${ev.le}</div></div>
-    <div class="irow"><div class="ilbl">Repercussão na Política Externa</div><div class="ival">${ev.rp}</div></div>
+    <span class="tbadge ${region.type}">${region.tl}</span>
+    <div class="irow"><div class="ilbl">👑 Líderes</div><div class="lgrid">${leadersHtml}</div></div>
+    <div class="irow"><div class="ilbl">📖 Resumo</div><div class="ival">${region.re}</div></div>
+    <div class="irow"><div class="ilbl">🎯 Motivação</div><div class="ival">${region.mo}</div></div>
+    <div class="irow"><div class="ilbl">⚡ Consequências</div><div class="ival">${region.co}</div></div>
+    <div class="irow"><div class="ilbl">🏛️ Legado</div><div class="ival">${region.le}</div></div>
+    <div class="irow"><div class="ilbl">🌎 Repercussão na Política Externa</div><div class="ival">${region.rp}</div></div>
   `;
   
   document.getElementById('spEmpty').style.display = 'none';
@@ -248,12 +290,8 @@ function openEv(id) {
 
 function closePanel() {
   if (activeId) {
-    const zone = document.querySelector(`.zone[data-region="${activeId}"]`);
-    if (zone) {
-      zone.style.fillOpacity = '0.4';
-      zone.style.strokeWidth = '2';
-    }
-    if (pillMap[activeId]) pillMap[activeId].classList.remove('on');
+    document.querySelectorAll('.legend-item').forEach(item => item.classList.remove('active'));
+    document.querySelectorAll('.pill').forEach(pill => pill.classList.remove('on'));
     activeId = null;
   }
   document.getElementById('spEmpty').style.display = 'flex';
