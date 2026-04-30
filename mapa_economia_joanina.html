@@ -7,8 +7,6 @@
     <!-- Leaflet CSS + JS -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    <!-- GeoJSON oficial do Brasil (IBGE via GitHub) -->
-    <script src="https://raw.githubusercontent.com/codeforbrasil/brasil-geojson/master/ufs.geojson?raw=1" type="text/javascript"></script>
     <style>
         * {
             margin: 0;
@@ -57,7 +55,7 @@
         }
         .legenda-panel {
             flex: 1;
-            min-width: 240px;
+            min-width: 250px;
             background: #fffef7;
             border-radius: 28px;
             padding: 1.2rem;
@@ -78,7 +76,7 @@
             gap: 12px;
             margin-bottom: 14px;
             cursor: pointer;
-            transition: transform 0.1s ease;
+            transition: transform 0.1s ease, background 0.2s;
             padding: 5px 8px;
             border-radius: 40px;
         }
@@ -129,7 +127,7 @@
             color: white;
             transform: scale(0.96);
         }
-        /* Popup estilo cartão idêntico ao brasil_tratados.html */
+        /* Popup estilo cartão igual ao brasil_tratados.html */
         .custom-popup .leaflet-popup-content-wrapper {
             background: #fffef5;
             border-radius: 16px;
@@ -144,7 +142,7 @@
         }
         .card-popup {
             min-width: 260px;
-            max-width: 320px;
+            max-width: 340px;
             padding: 6px 2px 4px 0;
         }
         .card-titulo {
@@ -157,7 +155,7 @@
             padding-right: 12px;
         }
         .card-produto {
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             background: #e7dcc4;
             display: inline-block;
             padding: 4px 12px;
@@ -192,7 +190,6 @@
             background: #e1d7c4;
             margin-top: 1rem;
         }
-        /* controle de informação tipo selo */
         .info-selo {
             background: #fdf8ec;
             padding: 6px 12px;
@@ -343,7 +340,7 @@
         }
     };
     
-    // lista completa para legenda condensada e com cores representativas
+    // Lista para legenda com cores representativas
     const legendaCores = [
         { nome: "🌿 Drogas do Sertão / Extrativismo", cor: "#76b852", ufs: ["AM"] },
         { nome: "🧶 Algodão (Rei Algodão)", cor: "#e0ac69", ufs: ["MA", "RN", "PB", "PE"] },
@@ -352,12 +349,10 @@
         { nome: "🧉 Erva-mate", cor: "#82b366", ufs: ["PR"] },
         { nome: "🐋 Caça à Baleia / Óleo", cor: "#5f9ea0", ufs: ["SC"] },
         { nome: "🐂 Pecuária / Charque / Couro", cor: "#a57047", ufs: ["CE", "RS"] },
-        { nome: "🧂 Sal & pecuária diversificada", cor: "#d9b48b", ufs: ["RN"] },
-        { nome: "🍞 Trigo / Sebo / Velas (RS)", cor: "#c9a87b", ufs: [] },
-        { nome: "🏇 Tropas e comércio interno", cor: "#9bc47e", ufs: ["SP"] }
+        { nome: "🧂 Sal & pecuária diversificada", cor: "#d9b48b", ufs: ["RN"] }
     ];
     
-    // construir legenda interativa
+    // Construir legenda interativa
     const legendaDiv = document.getElementById("legenda-dinamica");
     legendaCores.forEach(item => {
         const divItem = document.createElement("div");
@@ -365,22 +360,17 @@
         divItem.setAttribute("data-produto", item.nome);
         divItem.innerHTML = `
             <div class="cor-quadrado" style="background: ${item.cor};"></div>
-            <div class="legenda-info">${item.nome}<br><small>${item.ufs.length ? item.ufs.join(", ") : "RS, SC, PR"}</small></div>
+            <div class="legenda-info">${item.nome}<br><small>${item.ufs.join(", ")}</small></div>
         `;
-        // clique na legenda centraliza no primeiro estado associado
         divItem.addEventListener("click", () => {
             if(item.ufs.length > 0) {
-                const ufAlvo = item.ufs[0];
-                centralizarUF(ufAlvo);
-            } else {
-                // fallback para RS caso vazio
-                centralizarUF("RS");
+                centralizarUF(item.ufs[0]);
             }
         });
         legendaDiv.appendChild(divItem);
     });
     
-    // Mapa
+    // Inicializar mapa
     const map = L.map('map').setView([-14.2, -53.0], 4.2);
     L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OSM</a> & CartoDB',
@@ -389,7 +379,7 @@
         minZoom: 3.5
     }).addTo(map);
     
-    // adicionar selo informativo no canto
+    // Selo informativo
     const infoSelo = L.control({ position: 'topright' });
     infoSelo.onAdd = function() {
         const div = L.DomUtil.create('div', 'info-selo');
@@ -398,9 +388,8 @@
     };
     infoSelo.addTo(map);
     
-    let ufLayers = []; // armazenar layers após carregar
+    let ufLayers = [];
     
-    // Função para centralizar UF e abrir popup
     function centralizarUF(sigla) {
         const layerEncontrado = ufLayers.find(layer => {
             return layer.feature && layer.feature.properties.sigla === sigla;
@@ -409,7 +398,6 @@
             map.fitBounds(layerEncontrado.getBounds());
             layerEncontrado.openPopup();
         } else {
-            // coordenadas aproximadas de fallback para cada estado
             const coordsFallback = {
                 "AM": [-3.47, -62.0], "MA": [-5.5, -45.5], "CE": [-5.2, -39.5], "RN": [-5.8, -36.6],
                 "PB": [-7.0, -36.5], "PE": [-8.3, -37.0], "BA": [-12.5, -41.0], "MG": [-18.5, -44.5],
@@ -420,7 +408,7 @@
         }
     }
     
-    // Carregar GeoJSON oficial do Brasil (IBGE)
+    // Carregar GeoJSON oficial do Brasil
     const geojsonUrl = "https://raw.githubusercontent.com/codeforbrasil/brasil-geojson/master/ufs.geojson";
     fetch(geojsonUrl)
         .then(response => response.json())
@@ -434,7 +422,7 @@
                         color: "#3b2b1f",
                         weight: 1.5,
                         fillColor: fillColor,
-                        fillOpacity: 0.75,
+                        fillOpacity: 0.8,
                         opacity: 0.9
                     };
                 },
@@ -444,16 +432,15 @@
                     let nomeEstado = feature.properties.nome || sigla;
                     let econ = dadosEconomicos[sigla];
                     if (!econ) {
-                        // fallback seguro (não deve ocorrer, mas garantia)
                         econ = {
                             nome: nomeEstado,
                             produtos: ["Atividades coloniais"],
                             descricao: "Região com atividades produtivas integradas ao mercado interno durante o período joanino.",
-                            extra: "A abertura dos portos beneficiou o escoamento de mercadorias tradicionais."
+                            extra: "A abertura dos portos beneficiou o escoamento de mercadorias tradicionais.",
+                            cor: "#c1b69c"
                         };
                     }
                     
-                    // exibir produtos formatados
                     const listaProdutos = econ.produtos.map(p => `• ${p}`).join('<br>');
                     const popupHTML = `
                         <div class="card-popup">
@@ -461,13 +448,12 @@
                             <div class="card-produto">✨ Produção principal</div>
                             <div style="font-size:0.85rem; margin:4px 0 8px 0;">${listaProdutos}</div>
                             <div class="card-desc"><strong>📖 Contexto Joanino:</strong> ${econ.descricao}</div>
-                            <div class="card-infoextra">🔎 <strong>Informações adicionais:</strong> ${econ.extra || "Região influenciada pela presença da Corte e incentivos manufatureiros."}</div>
+                            <div class="card-infoextra">🔎 <strong>Informações adicionais:</strong> ${econ.extra}</div>
                             <div style="font-size:0.7rem; margin-top:8px; text-align:right; color:#8b6b3c;">⏳ 1808–1821 | Brasil Joanino</div>
                         </div>
                     `;
                     layer.bindPopup(popupHTML, { className: 'custom-popup', maxWidth: 340, minWidth: 260 });
                     
-                    // tooltip com resumo
                     let resumoProdutos = econ.produtos.slice(0,2).join(" / ");
                     layer.bindTooltip(`${econ.nome}<br>🎯 ${resumoProdutos}`, { sticky: true, offset: [0, -12] });
                 }
@@ -475,7 +461,7 @@
             
             map.fitBounds(geoJsonLayer.getBounds());
             
-            // adicionar marcadores simbólicos ilustrativos
+            // Adicionar marcadores simbólicos
             const pontosExtras = [
                 { lat: -22.725, lng: -47.648, nome: "Piracicaba (SP)", desc: "Hub de tropeiros e novos engenhos de açúcar após colapso de São Domingos.", icone: "🐎" },
                 { lat: -25.4284, lng: -49.2733, nome: "Paraná tradicional", desc: "Produção de Erva-mate escoada para Prata e Sudeste.", icone: "🍃" },
@@ -489,45 +475,34 @@
                     .addTo(map);
             });
             
-            // estilo extra para ícones
             const estiloIcone = document.createElement('style');
             estiloIcone.textContent = `
                 .icone-simbolo { background: none; font-size: 1.5rem; text-shadow: 0 0 3px white; filter: drop-shadow(0 1px 2px rgba(0,0,0,0.3)); }
                 .legenda-item { cursor: pointer; }
             `;
             document.head.appendChild(estiloIcone);
+            
+            // Popup inicial em Minas Gerais
+            setTimeout(() => {
+                const mgLayer = ufLayers.find(l => l.feature?.properties?.sigla === "MG");
+                if(mgLayer) {
+                    mgLayer.openPopup();
+                    map.fitBounds(mgLayer.getBounds());
+                }
+            }, 800);
         })
         .catch(error => {
-            console.error("Falha ao carregar GeoJSON oficial:", error);
-            // fallback com mensagem amigável
-            map.setView([-14.2, -53.0], 4);
-            L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png').addTo(map);
-            alert("Não foi possível carregar o mapa completo, mas você pode visualizar a legenda e referências.");
+            console.error("Erro ao carregar GeoJSON:", error);
+            alert("Não foi possível carregar o mapa completo. Verifique sua conexão.");
         });
     
-    // conectar botões de acesso rápido
+    // Botões de acesso rápido
     document.querySelectorAll(".acesso-rapido button").forEach(btn => {
         btn.addEventListener("click", (e) => {
             const uf = btn.getAttribute("data-uf");
             centralizarUF(uf);
         });
     });
-    
-    // pequeno popup inicial informativo
-    setTimeout(() => {
-        if (ufLayers.length === 0) return;
-        const mgLayer = ufLayers.find(l => l.feature?.properties?.sigla === "MG");
-        if(mgLayer) {
-            mgLayer.openPopup();
-            map.fitBounds(mgLayer.getBounds());
-        } else {
-            map.setView([-19.5, -43.5], 6);
-            L.popup()
-                .setLatLng([-19.5, -43.5])
-                .setContent("<b>Minas Gerais</b><br>Capitania mais populosa do Brasil Joanino. Mineração em declínio, mas diversificação agrícola e manufatureira.")
-                .openOn(map);
-        }
-    }, 800);
 </script>
 </body>
 </html>
