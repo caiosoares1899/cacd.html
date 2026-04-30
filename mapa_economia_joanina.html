@@ -54,7 +54,6 @@ body{height:100vh;display:flex;flex-direction:column;font-family:'IBM Plex Sans'
 .produto-list{list-style:none;padding:0;margin:0}
 .produto-list li{font-size:12px;color:var(--gold-light);margin-bottom:3px}
 .footer-note{position:fixed;bottom:8px;left:8px;right:8px;text-align:center;font-family:'IBM Plex Mono',monospace;font-size:7px;color:var(--muted);background:rgba(10,9,6,.7);padding:4px 8px;border-radius:12px;z-index:1000;pointer-events:none}
-.state-label{background:none!important;border:none!important;font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:500;color:rgba(201,168,76,0.7);text-shadow:0 1px 2px black;white-space:nowrap}
 @media(max-width:700px){.sidebar{display:none}.popup-grid{grid-template-columns:1fr}}
 </style>
 </head>
@@ -68,8 +67,8 @@ body{height:100vh;display:flex;flex-direction:column;font-family:'IBM Plex Sans'
   <div class="filters">
     <span class="filter-label">Filtrar:</span>
     <button class="produto-btn active" id="btn-all" onclick="filter('all')">Todos</button>
-    <button class="produto-btn" id="btn-algodao" style="color:#e0ac69;border-color:#e0ac6955">🧶 Algodão</button>
-    <button class="produto-btn" id="btn-acucar" style="color:#b3863c;border-color:#b3863c55">🍬 Açúcar/Tabaco</button>
+    <button class="produto-btn" id="btn-algodao" style="color:#e0ac69;border-color:#e0ac6955">🧵 Algodão</button>
+    <button class="produto-btn" id="btn-acucar" style="color:#b3863c;border-color:#b3863c55">🌾 Açúcar/Tabaco</button>
     <button class="produto-btn" id="btn-pecuaria" style="color:#a57047;border-color:#a5704755">🐂 Pecuária</button>
     <button class="produto-btn" id="btn-mineracao" style="color:#cfb27c;border-color:#cfb27c55">⛏️ Mineração</button>
     <button class="produto-btn" id="btn-extrativo" style="color:#76b852;border-color:#76b85255">🌿 Extrativismo</button>
@@ -109,23 +108,24 @@ body{height:100vh;display:flex;flex-direction:column;font-family:'IBM Plex Sans'
 
 <script>
 // ==============================================================
-// DADOS ECONÔMICOS COM EMOJIS E CORES
+// DADOS ECONÔMICOS COM EMOJIS ATUALIZADOS
+// Algodão/tecido: 🧵 | Açúcar/tabaco: 🌾
 // ==============================================================
 const dadosEconomicos = {
     "AC": { nome: "Acre (parte da Capitania do Rio Negro)", produtos: ["Drogas do Sertão", "Borracha (início)"], grupo: "extrativo", cor: "#76b852", emoji: "🌿", descricao: "Região amazônica de extrativismo vegetal. As 'drogas do sertão' eram coletadas por populações indígenas e mestiças.", extra: "A região só seria efetivamente ocupada mais tarde, mas já integrava a rota amazônica.", pext: "Fronteira disputada com a Espanha. A exploração de drogas do sertão era estratégica para Portugal." },
     "AM": { nome: "Capitania do Rio Negro / Amazonas", produtos: ["Drogas do Sertão", "Salsaparrilha", "Guaraná"], grupo: "extrativo", cor: "#76b852", emoji: "🌿", descricao: "As 'drogas do sertão' entraram em declínio devido à concorrência asiática, mas o extrativismo ainda abastecia o mercado interno. A Coroa incentivou expedições científicas.", extra: "Viajantes naturalistas como Alexandre Rodrigues Ferreira documentaram a riqueza botânica.", pext: "A Amazônia despertava cobiça internacional. Portugal temia que potências estrangeiras estabelecessem bases na região." },
-    "MA": { nome: "Maranhão", produtos: ["Algodão (Rei Algodão)", "Arroz", "Couro"], grupo: "algodao", cor: "#e0ac69", emoji: "🧶", descricao: "O 'Rei Algodão' reinava absoluto: algodão de fibra longa exportado para a Inglaterra. Arroz também se destacava.", extra: "Com a Abertura dos Portos (1808), o escoamento direto para a Europa explodiu.", pext: "O algodão maranhense abastecia diretamente a Revolução Industrial inglesa." },
+    "MA": { nome: "Maranhão", produtos: ["Algodão (Rei Algodão)", "Arroz", "Couro"], grupo: "algodao", cor: "#e0ac69", emoji: "🧵", descricao: "O 'Rei Algodão' reinava absoluto: algodão de fibra longa exportado para a Inglaterra. Arroz também se destacava.", extra: "Com a Abertura dos Portos (1808), o escoamento direto para a Europa explodiu.", pext: "O algodão maranhense abastecia diretamente a Revolução Industrial inglesa." },
     "CE": { nome: "Ceará", produtos: ["Pecuária", "Couro", "Charque"], grupo: "pecuaria", cor: "#c49a6c", emoji: "🐂", descricao: "Economia baseada na criação extensiva de gado, fornecendo couro, carne-seca e animais de tração.", extra: "Grandes fazendas de gado no sertão; o sal também teve relevância.", pext: "O charque cearense competia com o produto platino. D. João VI usou tarifas protecionistas." },
-    "RN": { nome: "Rio Grande do Norte", produtos: ["Sal marinho", "Pecuária", "Algodão"], grupo: "pecuaria", cor: "#d9b48b", emoji: "🧂", descricao: "Salinas naturais produziam sal para conservação. O algodão ganhou espaço, e a pecuária complementava.", extra: "Com a corte no Rio, a demanda por sal e carne seca aumentou.", pext: "O sal era essencial para a indústria da pesca e conservação — produto estratégico." },
-    "PB": { nome: "Paraíba", produtos: ["Algodão", "Cana-de-açúcar", "Mandioca"], grupo: "algodao", cor: "#e0ac69", emoji: "🧶", descricao: "Zona da Mata com pequenos engenhos de açúcar; o algodão tornou-se cada vez mais expressivo.", extra: "Região de transição entre canaviais pernambucanos e sertão paraibano.", pext: "Beneficiou-se da alta dos preços do algodão no mercado internacional." },
-    "PE": { nome: "Pernambuco", produtos: ["Cana-de-açúcar (novos engenhos)", "Tabaco", "Algodão"], grupo: "acucar", cor: "#b3863c", emoji: "🍬", descricao: "Novos engenhos renovaram a lavoura canavieira. Recife tornou-se um dos maiores portos do Império.", extra: "Revolução Pernambucana de 1817 refletiu o descontentamento fiscal e político.", pext: "O porto do Recife era estratégico para os interesses britânicos no Atlântico Sul." },
-    "AL": { nome: "Alagoas", produtos: ["Cana-de-açúcar", "Algodão", "Pecuária"], grupo: "acucar", cor: "#b3863c", emoji: "🍬", descricao: "Região de transição entre a zona canavieira pernambucana e o sertão. Pequenos engenhos predominavam.", extra: "Maceió começava a ganhar importância como porto secundário.", pext: "A produção açucareira alagoana integrava o complexo nordestino voltado à exportação." },
-    "SE": { nome: "Sergipe", produtos: ["Cana-de-açúcar", "Algodão", "Pecuária"], grupo: "acucar", cor: "#b3863c", emoji: "🍬", descricao: "Produção canavieira modesta comparada à Bahia e Pernambuco, mas relevante localmente.", extra: "O Rio São Francisco era importante via de integração com o sertão.", pext: "Região periférica da economia açucareira, mas integrada ao mercado baiano." },
-    "BA": { nome: "Bahia", produtos: ["Cana-de-açúcar", "Tabaco (fumo de corda)", "Azeite de dendê"], grupo: "acucar", cor: "#b3863c", emoji: "🍬", descricao: "Principal região produtora de açúcar e tabaco do período colonial. Salvador era um dos maiores portos atlânticos.", extra: "Casa da moeda e fundição instaladas; relação comercial intensa com a África.", pext: "Salvador era o elo comercial com a África. A pressão inglesa pelo fim do tráfico afetou a economia baiana." },
+    "RN": { nome: "Rio Grande do Norte", produtos: ["Sal marinho", "Pecuária", "Algodão"], grupo: "algodao", cor: "#e0ac69", emoji: "🧵", descricao: "Salinas naturais produziam sal para conservação. O algodão ganhou espaço, e a pecuária complementava.", extra: "Com a corte no Rio, a demanda por sal e carne seca aumentou.", pext: "O sal era essencial para a indústria da pesca e conservação — produto estratégico." },
+    "PB": { nome: "Paraíba", produtos: ["Algodão", "Cana-de-açúcar", "Mandioca"], grupo: "algodao", cor: "#e0ac69", emoji: "🧵", descricao: "Zona da Mata com pequenos engenhos de açúcar; o algodão tornou-se cada vez mais expressivo.", extra: "Região de transição entre canaviais pernambucanos e sertão paraibano.", pext: "Beneficiou-se da alta dos preços do algodão no mercado internacional." },
+    "PE": { nome: "Pernambuco", produtos: ["Cana-de-açúcar (novos engenhos)", "Tabaco", "Algodão"], grupo: "acucar", cor: "#b3863c", emoji: "🌾", descricao: "Novos engenhos renovaram a lavoura canavieira. Recife tornou-se um dos maiores portos do Império.", extra: "Revolução Pernambucana de 1817 refletiu o descontentamento fiscal e político.", pext: "O porto do Recife era estratégico para os interesses britânicos no Atlântico Sul." },
+    "AL": { nome: "Alagoas", produtos: ["Cana-de-açúcar", "Algodão", "Pecuária"], grupo: "acucar", cor: "#b3863c", emoji: "🌾", descricao: "Região de transição entre a zona canavieira pernambucana e o sertão. Pequenos engenhos predominavam.", extra: "Maceió começava a ganhar importância como porto secundário.", pext: "A produção açucareira alagoana integrava o complexo nordestino voltado à exportação." },
+    "SE": { nome: "Sergipe", produtos: ["Cana-de-açúcar", "Algodão", "Pecuária"], grupo: "acucar", cor: "#b3863c", emoji: "🌾", descricao: "Produção canavieira modesta comparada à Bahia e Pernambuco, mas relevante localmente.", extra: "O Rio São Francisco era importante via de integração com o sertão.", pext: "Região periférica da economia açucareira, mas integrada ao mercado baiano." },
+    "BA": { nome: "Bahia", produtos: ["Cana-de-açúcar", "Tabaco (fumo de corda)", "Azeite de dendê"], grupo: "acucar", cor: "#b3863c", emoji: "🌾", descricao: "Principal região produtora de açúcar e tabaco do período colonial. Salvador era um dos maiores portos atlânticos.", extra: "Casa da moeda e fundição instaladas; relação comercial intensa com a África.", pext: "Salvador era o elo comercial com a África. A pressão inglesa pelo fim do tráfico afetou a economia baiana." },
     "MG": { nome: "Minas Gerais", produtos: ["Mineração (ouro e diamantes declinantes)", "Agricultura de subsistência", "Pecuária"], grupo: "mineracao", cor: "#cfb27c", emoji: "⛏️", descricao: "Capitania mais populosa. A mineração ainda produzia, mas em declínio. D. João VI estimulou manufaturas.", extra: "Vila Rica foi centro cultural. Fábrica de Ferro Patriótica e outras manufaturas surgiram.", pext: "Minas era o coração econômico. A decadência da mineração preocupava Portugal." },
-    "ES": { nome: "Espírito Santo", produtos: ["Açúcar", "Mandioca", "Pecuária"], grupo: "acucar", cor: "#b3863c", emoji: "🍬", descricao: "Economia modesta, com pequenos engenhos de açúcar e produção de alimentos para abastecimento interno.", extra: "A região servia de conexão entre Minas Gerais e o litoral.", pext: "Porto de Vitória era secundário, mas estratégico para o escoamento mineiro." },
+    "ES": { nome: "Espírito Santo", produtos: ["Açúcar", "Mandioca", "Pecuária"], grupo: "acucar", cor: "#b3863c", emoji: "🌾", descricao: "Economia modesta, com pequenos engenhos de açúcar e produção de alimentos para abastecimento interno.", extra: "A região servia de conexão entre Minas Gerais e o litoral.", pext: "Porto de Vitória era secundário, mas estratégico para o escoamento mineiro." },
     "RJ": { nome: "Rio de Janeiro (Corte e Capitania)", produtos: ["Açúcar (Campos)", "Café (início)", "Manufaturas reais"], grupo: "acucar", cor: "#b37b2e", emoji: "👑", descricao: "Sede da Família Real. O açúcar predominava em Campos, enquanto o café começava a expandir-se.", extra: "Abertura dos Portos (1808) transformou a economia. Banco do Brasil e Imprensa Régia foram criados.", pext: "O Rio tornou-se capital do Império Português (1815)." },
-    "SP": { nome: "São Paulo", produtos: ["Açúcar (Piracicaba)", "Tropeirismo", "Algodão"], grupo: "acucar", cor: "#b3863c", emoji: "🍬", descricao: "Piracicaba consolidou-se como hub de tropeiros e novos engenhos de açúcar. Elo entre sul, minas e Santos.", extra: "Caminho para o sul e para o mercado platino; foco na logística.", pext: "Posição geográfica conectava o Prata ao Sudeste. Tropeirismo era crucial para coesão territorial." },
+    "SP": { nome: "São Paulo", produtos: ["Açúcar (Piracicaba)", "Tropeirismo", "Algodão"], grupo: "acucar", cor: "#b3863c", emoji: "🌾", descricao: "Piracicaba consolidou-se como hub de tropeiros e novos engenhos de açúcar. Elo entre sul, minas e Santos.", extra: "Caminho para o sul e para o mercado platino; foco na logística.", pext: "Posição geográfica conectava o Prata ao Sudeste. Tropeirismo era crucial para coesão territorial." },
     "PR": { nome: "Paraná (parte de SP até 1853)", produtos: ["Erva-mate", "Madeira", "Pecuária"], grupo: "mate", cor: "#82b366", emoji: "🧉", descricao: "Erva-mate era o motor econômico, usada como moeda de troca e consumida no sul e no Prata.", extra: "Tropeirismo de mate conectava o sul à Corte; chamada de 'ouro verde'.", pext: "Comércio de mate com o Prata era intenso, mas sujeito a disputas fronteiriças." },
     "SC": { nome: "Santa Catarina", produtos: ["Óleo de Baleia", "Pescado", "Farinha"], grupo: "baleia", cor: "#5f9ea0", emoji: "🐋", descricao: "Caça à baleia era a principal atividade. Óleo era enviado ao Rio para iluminação pública.", extra: "Real Armação da Baleia era concessionada pela Coroa.", pext: "Óleo de baleia era estratégico. Controle da caça no Atlântico Sul era política marítima joanina." },
     "RS": { nome: "Rio Grande de São Pedro", produtos: ["Charque", "Couro", "Trigo", "Graxa", "Sebo"], grupo: "pecuaria", cor: "#a57047", emoji: "🐂", descricao: "Pecuária extensiva gerava charque abastecendo o Sudeste e a Corte.", extra: "Charqueadas usavam mão de obra escravizada. Região de fronteira disputada.", pext: "Região disputada com Espanha. Charque gaúcho competia com produto platino." },
@@ -134,7 +134,7 @@ const dadosEconomicos = {
     "PA": { nome: "Grão-Pará", produtos: ["Drogas do Sertão", "Cacau", "Pecuária"], grupo: "extrativo", cor: "#76b852", emoji: "🌿", descricao: "Extrativismo vegetal predominante. Cacau e outras drogas do sertão eram exportadas.", extra: "Belém era o principal porto da Amazônia oriental.", pext: "A região amazônica era cobiçada internacionalmente. Portugal reforçou presença militar." }
 };
 
-// Coordenadas para posicionar os emojis e siglas
+// Coordenadas para posicionar os emojis
 const coordsEstados = {
     "AC": [-9.0, -70.0], "AM": [-3.47, -62.0], "MA": [-5.5, -45.5], "CE": [-5.2, -39.5],
     "RN": [-5.8, -36.6], "PB": [-7.0, -36.5], "PE": [-8.3, -37.0], "AL": [-9.6, -36.0],
@@ -144,7 +144,6 @@ const coordsEstados = {
 };
 
 let map = null;
-let markersLayer = null;
 
 // Inicializar mapa
 function initMap() {
@@ -152,7 +151,7 @@ function initMap() {
     L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}{r}.png', {subdomains: 'abcd'}).addTo(map);
 }
 
-// Carregar GeoJSON para base (sem cores, apenas contorno)
+// Carregar GeoJSON para base
 function loadBaseMap() {
     fetch('https://servicodados.ibge.gov.br/api/v3/malhas/paises/BR?formato=application/vnd.geo+json&qualidade=minima&intrarregiao=UF')
         .then(response => response.json())
@@ -160,43 +159,30 @@ function loadBaseMap() {
             L.geoJSON(geoJson, {
                 style: { fillColor: '#1a2e1e', fillOpacity: 0.4, color: '#3d6645', weight: 0.8, opacity: 0.6 }
             }).addTo(map);
-            addMarkersAndLabels();
+            addEmojiMarkers();
         })
-        .catch(() => {
-            // Fallback: mesmo sem GeoJSON, adicionar marcadores
-            addMarkersAndLabels();
-        });
+        .catch(() => addEmojiMarkers());
 }
 
-// Adicionar emojis clicáveis e siglas dos estados
-function addMarkersAndLabels() {
+// Adicionar apenas os emojis clicáveis (sem siglas)
+function addEmojiMarkers() {
     Object.entries(dadosEconomicos).forEach(([uf, dados]) => {
         const coords = coordsEstados[uf];
         if (!coords) return;
         
-        // Criar divIcon com EMOJI (clicável)
         const emojiIcon = L.divIcon({
             className: 'emoji-marker',
-            html: `<div style="font-size: 28px; cursor: pointer; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5)); transition: transform 0.1s; text-align: center;">${dados.emoji}</div>`,
-            iconSize: [32, 32],
-            iconAnchor: [16, 16],
-            popupAnchor: [0, -12]
+            html: `<div style="font-size: 32px; cursor: pointer; filter: drop-shadow(0 2px 6px rgba(0,0,0,0.6)); transition: transform 0.1s; text-align: center; background: rgba(0,0,0,0.3); border-radius: 50%; width: 48px; height: 48px; display: flex; align-items: center; justify-content: center;">${dados.emoji}</div>`,
+            iconSize: [48, 48],
+            iconAnchor: [24, 24],
+            popupAnchor: [0, -20]
         });
         
         const marker = L.marker(coords, { icon: emojiIcon, zIndexOffset: 100 }).addTo(map);
         marker.on('click', () => openPopup(uf));
         marker.bindTooltip(`${dados.nome}<br><span style="color:${dados.cor}">${dados.produtos[0]}</span>`, { 
-            direction: 'top', offset: [0, -20], className: 'cacd-tooltip' 
+            direction: 'top', offset: [0, -25], className: 'cacd-tooltip' 
         });
-        
-        // Adicionar SIGLA do estado (texto)
-        const siglaIcon = L.divIcon({
-            className: 'state-label',
-            html: `<div style="font-size: 10px; font-family: monospace; color: rgba(201,168,76,0.6); text-shadow: 0 1px 2px black; background: rgba(0,0,0,0.4); padding: 2px 4px; border-radius: 4px;">${uf}</div>`,
-            iconSize: [30, 16],
-            iconAnchor: [15, 8]
-        });
-        L.marker([coords[0] + 0.35, coords[1]], { icon: siglaIcon, interactive: false, zIndexOffset: 90 }).addTo(map);
     });
     
     buildSidebar();
@@ -251,14 +237,8 @@ function filter(grupo) {
     const btn = document.getElementById(`btn-${grupo === 'all' ? 'all' : grupo}`);
     if (btn) btn.classList.add('active');
     
-    // Filtrar sidebar
     document.querySelectorAll('.si').forEach(el => {
         el.classList.toggle('hidden', grupo !== 'all' && el.dataset.grupo !== grupo);
-    });
-    
-    // Filtrar marcadores no mapa
-    document.querySelectorAll('.emoji-marker, .leaflet-marker-icon').forEach(el => {
-        // Isso é mais complexo; vamos apenas esconder via CSS ou recriar
     });
     
     const visibleCount = document.querySelectorAll('.si:not(.hidden)').length;
