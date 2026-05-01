@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
@@ -15,506 +16,245 @@
     --parchment-dark: #e8dab8;
     --parchment-deep: #d6c89a;
     --gold: #b8892a;
-    --gold-light: #d4a94a;
     --gold-dark: #8a6415;
-    --red-wax: #8b2020;
-    --sea: #3a5f7a;
-    --sea-light: #5a82a0;
-    --green-map: #4a6b3a;
     --tan: #c4a96a;
   }
 
-  * { margin: 0; padding: 0; box-sizing: border-box; }
+- { margin: 0; padding: 0; box-sizing: border-box; }
 
-  body {
-    background: var(--parchment);
-    color: var(--ink);
-    font-family: 'Spectral', Georgia, serif;
-    min-height: 100vh;
-    position: relative;
-    overflow-x: hidden;
-  }
+body {
+background: var(–parchment);
+color: var(–ink);
+font-family: ‘Spectral’, Georgia, serif;
+min-height: 100vh;
+position: relative;
+overflow-x: hidden;
+}
+body::before {
+content: ‘’;
+position: fixed; inset: 0;
+background-image:
+radial-gradient(ellipse at 20% 30%, rgba(160,120,60,0.08) 0%, transparent 50%),
+radial-gradient(ellipse at 80% 70%, rgba(100,70,30,0.06) 0%, transparent 40%);
+pointer-events: none; z-index: 0;
+}
+body::after {
+content: ‘’;
+position: fixed; inset: 0;
+background-image:
+repeating-linear-gradient(0deg, transparent, transparent 59px, rgba(100,70,20,0.04) 60px),
+repeating-linear-gradient(90deg, transparent, transparent 59px, rgba(100,70,20,0.04) 60px);
+pointer-events: none; z-index: 0;
+}
 
-  /* Aged paper texture overlay */
-  body::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background-image:
-      radial-gradient(ellipse at 20% 30%, rgba(160,120,60,0.08) 0%, transparent 50%),
-      radial-gradient(ellipse at 80% 70%, rgba(100,70,30,0.06) 0%, transparent 40%),
-      radial-gradient(ellipse at 50% 10%, rgba(180,140,80,0.05) 0%, transparent 60%);
-    pointer-events: none;
-    z-index: 0;
-  }
+.page-wrap {
+position: relative; z-index: 1;
+max-width: 1100px; margin: 0 auto;
+padding: 0 2rem 4rem;
+}
 
-  /* Grid/compass rose decorative lines */
-  body::after {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background-image:
-      repeating-linear-gradient(0deg, transparent, transparent 59px, rgba(100,70,20,0.04) 60px),
-      repeating-linear-gradient(90deg, transparent, transparent 59px, rgba(100,70,20,0.04) 60px);
-    pointer-events: none;
-    z-index: 0;
-  }
+/* HEADER */
+header { text-align: center; padding: 3.5rem 1rem 2.5rem; }
 
-  .page-wrap {
-    position: relative;
-    z-index: 1;
-    max-width: 1100px;
-    margin: 0 auto;
-    padding: 0 2rem 4rem;
-  }
+.header-rule {
+display: flex; align-items: center; gap: 1rem; margin-bottom: 1.8rem;
+}
+.header-rule::before, .header-rule::after {
+content: ‘’; flex: 1; height: 1px;
+background: linear-gradient(to right, transparent, var(–gold), transparent);
+}
+.header-rule span {
+font-family: ‘Cinzel’, serif; font-size: 0.7rem;
+letter-spacing: 0.35em; color: var(–gold); text-transform: uppercase; white-space: nowrap;
+}
 
-  /* ── HEADER ────────────────────────────────── */
-  header {
-    text-align: center;
-    padding: 3.5rem 1rem 2.5rem;
-    position: relative;
-  }
+.seal { width: 72px; height: 72px; margin: 0 auto 1.2rem; }
+.seal svg { width: 100%; height: 100%; animation: sealRotate 60s linear infinite; }
+@keyframes sealRotate { to { transform: rotate(360deg); } }
 
-  .header-rule {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    margin-bottom: 1.8rem;
-  }
-  .header-rule::before,
-  .header-rule::after {
-    content: '';
-    flex: 1;
-    height: 1px;
-    background: linear-gradient(to right, transparent, var(--gold), transparent);
-  }
-  .header-rule span {
-    font-family: 'Cinzel', serif;
-    font-size: 0.7rem;
-    letter-spacing: 0.35em;
-    color: var(--gold);
-    text-transform: uppercase;
-    white-space: nowrap;
-  }
+h1 {
+font-family: ‘Cinzel’, serif;
+font-size: clamp(2rem, 5vw, 3.2rem); font-weight: 700;
+letter-spacing: 0.08em; line-height: 1.15; margin-bottom: 0.4rem;
+}
+h1 span { color: var(–gold-dark); }
 
-  .seal {
-    width: 72px;
-    height: 72px;
-    margin: 0 auto 1.2rem;
-    position: relative;
-  }
-  .seal svg {
-    width: 100%;
-    height: 100%;
-    animation: sealRotate 60s linear infinite;
-  }
-  @keyframes sealRotate {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
-  }
+.subtitle-header {
+font-family: ‘IM Fell English’, serif; font-style: italic;
+font-size: 1.1rem; color: var(–ink-light); margin-bottom: 2rem; letter-spacing: 0.03em;
+}
 
-  h1 {
-    font-family: 'Cinzel', serif;
-    font-size: clamp(2rem, 5vw, 3.2rem);
-    font-weight: 700;
-    letter-spacing: 0.08em;
-    color: var(--ink);
-    line-height: 1.15;
-    margin-bottom: 0.4rem;
-  }
-  h1 span {
-    color: var(--gold-dark);
-  }
+/* ABOUT */
+.about-section {
+background: rgba(255,255,255,0.35);
+border: 1px solid var(–parchment-deep); border-top: 3px solid var(–gold);
+border-radius: 2px; padding: 2.2rem 2.8rem; margin-bottom: 3.5rem;
+position: relative;
+box-shadow: inset 0 1px 0 rgba(255,255,255,0.6), 0 2px 12px rgba(80,50,10,0.08);
+}
+.about-section::before {
+content: ‘§’; position: absolute; top: -1px; left: 50%;
+transform: translateX(-50%) translateY(-50%);
+background: var(–parchment); padding: 0 1rem;
+font-family: ‘Cinzel’, serif; font-size: 1rem; color: var(–gold);
+}
+.about-label {
+font-family: ‘Cinzel’, serif; font-size: 0.65rem; letter-spacing: 0.4em;
+text-transform: uppercase; color: var(–gold-dark); margin-bottom: 1rem; display: block;
+}
+.about-section p { font-size: 1.02rem; line-height: 1.85; color: var(–ink-mid); font-weight: 300; }
+.about-section p + p { margin-top: 0.9rem; }
+.about-section em { font-style: italic; color: var(–ink); font-weight: 400; }
 
-  .subtitle-header {
-    font-family: 'IM Fell English', serif;
-    font-style: italic;
-    font-size: 1.1rem;
-    color: var(--ink-light);
-    margin-bottom: 2rem;
-    letter-spacing: 0.03em;
-  }
+/* GRID */
+.projects-heading { display: flex; align-items: center; gap: 1.2rem; margin-bottom: 2rem; }
+.projects-heading::after {
+content: ‘’; flex: 1; height: 1px;
+background: linear-gradient(to right, var(–parchment-deep), transparent);
+}
+.projects-heading h2 {
+font-family: ‘Cinzel’, serif; font-size: 0.7rem; letter-spacing: 0.42em;
+text-transform: uppercase; color: var(–ink-mid); white-space: nowrap;
+}
 
-  /* ── ABOUT SECTION ─────────────────────────── */
-  .about-section {
-    background: rgba(255,255,255,0.35);
-    border: 1px solid var(--parchment-deep);
-    border-top: 3px solid var(--gold);
-    border-radius: 2px;
-    padding: 2.2rem 2.8rem;
-    margin-bottom: 3.5rem;
-    position: relative;
-    box-shadow: inset 0 1px 0 rgba(255,255,255,0.6), 0 2px 12px rgba(80,50,10,0.08);
-  }
+.projects-grid {
+display: grid;
+grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+gap: 1.8rem; margin-bottom: 4rem;
+}
 
-  .about-section::before {
-    content: '§';
-    position: absolute;
-    top: -1px;
-    left: 50%;
-    transform: translateX(-50%) translateY(-50%);
-    background: var(--parchment);
-    padding: 0 1rem;
-    font-family: 'Cinzel', serif;
-    font-size: 1rem;
-    color: var(--gold);
-  }
+.project-card {
+background: rgba(255,255,255,0.42);
+border: 1px solid var(–parchment-deep); border-radius: 2px;
+overflow: hidden; text-decoration: none; color: inherit;
+display: flex; flex-direction: column;
+transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.2s ease;
+box-shadow: 0 2px 10px rgba(80,50,10,0.07); position: relative;
+}
+.project-card::before {
+content: ‘’; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+background: var(–gold); transform: scaleX(0); transform-origin: left;
+transition: transform 0.3s ease; z-index: 3;
+}
+.project-card:hover { transform: translateY(-4px); box-shadow: 0 8px 28px rgba(80,50,10,0.14); background: rgba(255,255,255,0.62); }
+.project-card:hover::before { transform: scaleX(1); }
 
-  .about-label {
-    font-family: 'Cinzel', serif;
-    font-size: 0.65rem;
-    letter-spacing: 0.4em;
-    text-transform: uppercase;
-    color: var(--gold-dark);
-    margin-bottom: 1rem;
-    display: block;
-  }
+/* IFRAME PREVIEW */
+.card-preview {
+width: 100%; height: 200px;
+position: relative; overflow: hidden;
+background: var(–parchment-dark);
+border-bottom: 1px solid var(–parchment-deep);
+}
+.card-preview iframe {
+width: 1280px; height: 854px;
+border: none; display: block;
+transform-origin: top left;
+pointer-events: none;
+/* escala inicial; JS ajusta ao tamanho real do card */
+transform: scale(0.234);
+}
+/* overlay captura cliques sem ativar o iframe */
+.card-preview .overlay {
+position: absolute; inset: 0; z-index: 2; cursor: pointer;
+}
+.card-preview .preview-tag {
+position: absolute; bottom: 7px; right: 8px; z-index: 3;
+font-family: ‘Cinzel’, serif; font-size: 0.5rem; letter-spacing: 0.25em;
+text-transform: uppercase; color: var(–ink-light);
+background: rgba(245,238,216,0.82); padding: 2px 6px; border-radius: 1px;
+}
+/* skeleton de carregamento */
+.card-preview::after {
+content: ‘carregando prévia…’;
+position: absolute; inset: 0; display: flex;
+align-items: center; justify-content: center;
+font-family: ‘Cinzel’, serif; font-size: 0.58rem; letter-spacing: 0.22em;
+color: var(–ink-light); opacity: 0.45; pointer-events: none; z-index: 0;
+}
 
-  .about-section p {
-    font-size: 1.02rem;
-    line-height: 1.85;
-    color: var(--ink-mid);
-    font-weight: 300;
-  }
+/* CARD BODY */
+.card-body { padding: 1.4rem 1.6rem 1.6rem; flex: 1; display: flex; flex-direction: column; gap: 0.5rem; }
+.card-tag {
+display: inline-block; font-family: ‘Cinzel’, serif; font-size: 0.58rem;
+letter-spacing: 0.35em; text-transform: uppercase; color: var(–gold-dark);
+border: 1px solid var(–tan); padding: 0.25rem 0.7rem; border-radius: 1px; width: fit-content;
+}
+.card-title { font-family: ‘Cinzel’, serif; font-size: 1.05rem; font-weight: 600; color: var(–ink); line-height: 1.3; margin-top: 0.2rem; }
+.card-desc { font-size: 0.9rem; line-height: 1.65; color: var(–ink-light); font-weight: 300; flex: 1; }
+.card-cta {
+display: flex; align-items: center; gap: 0.5rem; margin-top: 0.8rem;
+font-family: ‘Cinzel’, serif; font-size: 0.62rem; letter-spacing: 0.3em;
+text-transform: uppercase; color: var(–gold-dark);
+}
+.card-cta::after { content: ‘’; display: block; width: 24px; height: 1px; background: var(–gold-dark); transition: width 0.25s ease; }
+.project-card:hover .card-cta::after { width: 40px; }
 
-  .about-section p + p {
-    margin-top: 0.9rem;
-  }
+/* SEPARATOR */
+.ornament-sep { text-align: center; margin: 3rem 0; position: relative; }
+.ornament-sep::before {
+content: ‘’; position: absolute; top: 50%; left: 0; right: 0; height: 1px;
+background: linear-gradient(to right, transparent, var(–parchment-deep) 20%, var(–parchment-deep) 80%, transparent);
+}
+.ornament-sep span {
+position: relative; background: var(–parchment); padding: 0 1.5rem;
+font-family: ‘IM Fell English’, serif; font-size: 1.5rem; color: var(–tan); letter-spacing: 0.5em;
+}
 
-  .about-section em {
-    font-style: italic;
-    color: var(--ink);
-    font-weight: 400;
-  }
+/* AUTHOR */
+.author-section {
+display: grid; grid-template-columns: auto 1fr; gap: 1.8rem; align-items: start;
+background: rgba(255,255,255,0.25); border: 1px solid var(–parchment-deep);
+border-radius: 2px; padding: 1.8rem 2.2rem; box-shadow: 0 1px 8px rgba(80,50,10,0.06);
+}
+.author-avatar {
+width: 64px; height: 64px; border-radius: 50%;
+background: var(–parchment-dark); border: 2px solid var(–tan);
+display: flex; align-items: center; justify-content: center;
+font-family: ‘Cinzel’, serif; font-size: 1.3rem; color: var(–gold-dark); flex-shrink: 0;
+}
+.author-label { font-family: ‘Cinzel’, serif; font-size: 0.6rem; letter-spacing: 0.4em; text-transform: uppercase; color: var(–gold-dark); margin-bottom: 0.4rem; display: block; }
+.author-name { font-family: ‘Cinzel’, serif; font-size: 1rem; font-weight: 600; color: var(–ink); margin-bottom: 0.3rem; }
+.author-role { font-family: ‘IM Fell English’, serif; font-style: italic; font-size: 0.88rem; color: var(–ink-light); margin-bottom: 0.7rem; }
+.author-bio { font-size: 0.88rem; line-height: 1.75; color: var(–ink-mid); font-weight: 300; }
 
-  /* ── PROJECTS GRID ─────────────────────────── */
-  .projects-heading {
-    display: flex;
-    align-items: center;
-    gap: 1.2rem;
-    margin-bottom: 2rem;
-  }
-  .projects-heading::after {
-    content: '';
-    flex: 1;
-    height: 1px;
-    background: linear-gradient(to right, var(--parchment-deep), transparent);
-  }
+/* FOOTER */
+footer { text-align: center; padding: 2.5rem 1rem 1.5rem; border-top: 1px solid var(–parchment-deep); margin-top: 3rem; }
+footer p { font-family: ‘Cinzel’, serif; font-size: 0.62rem; letter-spacing: 0.35em; text-transform: uppercase; color: var(–ink-light); opacity: 0.7; }
 
-  .projects-heading h2 {
-    font-family: 'Cinzel', serif;
-    font-size: 0.7rem;
-    letter-spacing: 0.42em;
-    text-transform: uppercase;
-    color: var(--ink-mid);
-    white-space: nowrap;
-  }
+/* ANIMAÇÕES */
+@keyframes fadeUp { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: translateY(0); } }
+header          { animation: fadeUp 0.7s ease both; }
+.about-section  { animation: fadeUp 0.7s 0.15s ease both; }
+.projects-grid  { animation: fadeUp 0.7s 0.25s ease both; }
+.author-section { animation: fadeUp 0.7s 0.35s ease both; }
 
-  .projects-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 1.8rem;
-    margin-bottom: 4rem;
-  }
-
-  .project-card {
-    background: rgba(255,255,255,0.42);
-    border: 1px solid var(--parchment-deep);
-    border-radius: 2px;
-    overflow: hidden;
-    text-decoration: none;
-    color: inherit;
-    display: flex;
-    flex-direction: column;
-    transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.2s ease;
-    box-shadow: 0 2px 10px rgba(80,50,10,0.07);
-    position: relative;
-  }
-
-  .project-card::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 3px;
-    background: var(--gold);
-    transform: scaleX(0);
-    transform-origin: left;
-    transition: transform 0.3s ease;
-  }
-
-  .project-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 8px 28px rgba(80,50,10,0.14);
-    background: rgba(255,255,255,0.62);
-  }
-
-  .project-card:hover::before {
-    transform: scaleX(1);
-  }
-
-  .card-preview {
-    width: 100%;
-    height: 180px;
-    position: relative;
-    overflow: hidden;
-    background: var(--parchment-dark);
-    border-bottom: 1px solid var(--parchment-deep);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .card-preview svg {
-    width: 100%;
-    height: 100%;
-  }
-
-  .card-preview .preview-label {
-    position: absolute;
-    bottom: 8px;
-    right: 10px;
-    font-family: 'Cinzel', serif;
-    font-size: 0.55rem;
-    letter-spacing: 0.3em;
-    color: var(--ink-light);
-    text-transform: uppercase;
-    opacity: 0.7;
-  }
-
-  .card-body {
-    padding: 1.4rem 1.6rem 1.6rem;
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-  }
-
-  .card-tag {
-    display: inline-block;
-    font-family: 'Cinzel', serif;
-    font-size: 0.58rem;
-    letter-spacing: 0.35em;
-    text-transform: uppercase;
-    color: var(--gold-dark);
-    border: 1px solid var(--tan);
-    padding: 0.25rem 0.7rem;
-    border-radius: 1px;
-    width: fit-content;
-  }
-
-  .card-title {
-    font-family: 'Cinzel', serif;
-    font-size: 1.05rem;
-    font-weight: 600;
-    color: var(--ink);
-    line-height: 1.3;
-    margin-top: 0.2rem;
-  }
-
-  .card-desc {
-    font-size: 0.9rem;
-    line-height: 1.65;
-    color: var(--ink-light);
-    font-weight: 300;
-    flex: 1;
-  }
-
-  .card-cta {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    margin-top: 0.8rem;
-    font-family: 'Cinzel', serif;
-    font-size: 0.62rem;
-    letter-spacing: 0.3em;
-    text-transform: uppercase;
-    color: var(--gold-dark);
-  }
-
-  .card-cta::after {
-    content: '';
-    display: block;
-    width: 24px;
-    height: 1px;
-    background: var(--gold-dark);
-    transition: width 0.25s ease;
-  }
-
-  .project-card:hover .card-cta::after {
-    width: 40px;
-  }
-
-  /* Coming soon card */
-  .card-soon {
-    opacity: 0.6;
-    pointer-events: none;
-    cursor: default;
-  }
-  .card-soon .card-tag {
-    color: var(--ink-light);
-    border-color: var(--parchment-deep);
-  }
-  .card-soon .card-cta {
-    color: var(--ink-light);
-  }
-  .card-soon .card-cta::after {
-    background: var(--ink-light);
-  }
-
-  /* ── SEPARATOR ──────────────────────────────── */
-  .ornament-sep {
-    text-align: center;
-    margin: 3rem 0;
-    position: relative;
-  }
-  .ornament-sep::before {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 0; right: 0;
-    height: 1px;
-    background: linear-gradient(to right, transparent, var(--parchment-deep) 20%, var(--parchment-deep) 80%, transparent);
-  }
-  .ornament-sep span {
-    position: relative;
-    background: var(--parchment);
-    padding: 0 1.5rem;
-    font-family: 'IM Fell English', serif;
-    font-size: 1.5rem;
-    color: var(--tan);
-    letter-spacing: 0.5em;
-  }
-
-  /* ── AUTHOR BIO ─────────────────────────────── */
-  .author-section {
-    display: grid;
-    grid-template-columns: auto 1fr;
-    gap: 1.8rem;
-    align-items: start;
-    background: rgba(255,255,255,0.25);
-    border: 1px solid var(--parchment-deep);
-    border-radius: 2px;
-    padding: 1.8rem 2.2rem;
-    box-shadow: 0 1px 8px rgba(80,50,10,0.06);
-  }
-
-  .author-avatar {
-    width: 64px;
-    height: 64px;
-    border-radius: 50%;
-    background: var(--parchment-dark);
-    border: 2px solid var(--tan);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-family: 'Cinzel', serif;
-    font-size: 1.3rem;
-    color: var(--gold-dark);
-    flex-shrink: 0;
-  }
-
-  .author-info {
-    flex: 1;
-  }
-
-  .author-label {
-    font-family: 'Cinzel', serif;
-    font-size: 0.6rem;
-    letter-spacing: 0.4em;
-    text-transform: uppercase;
-    color: var(--gold-dark);
-    margin-bottom: 0.4rem;
-    display: block;
-  }
-
-  .author-name {
-    font-family: 'Cinzel', serif;
-    font-size: 1rem;
-    font-weight: 600;
-    color: var(--ink);
-    margin-bottom: 0.3rem;
-  }
-
-  .author-role {
-    font-family: 'IM Fell English', serif;
-    font-style: italic;
-    font-size: 0.88rem;
-    color: var(--ink-light);
-    margin-bottom: 0.7rem;
-  }
-
-  .author-bio {
-    font-size: 0.88rem;
-    line-height: 1.75;
-    color: var(--ink-mid);
-    font-weight: 300;
-  }
-
-  /* ── FOOTER ─────────────────────────────────── */
-  footer {
-    text-align: center;
-    padding: 2.5rem 1rem 1.5rem;
-    border-top: 1px solid var(--parchment-deep);
-    margin-top: 3rem;
-  }
-
-  footer p {
-    font-family: 'Cinzel', serif;
-    font-size: 0.62rem;
-    letter-spacing: 0.35em;
-    text-transform: uppercase;
-    color: var(--ink-light);
-    opacity: 0.7;
-  }
-
-  /* ── ANIMATIONS ─────────────────────────────── */
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(18px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-
-  header { animation: fadeUp 0.7s ease both; }
-  .about-section { animation: fadeUp 0.7s 0.15s ease both; }
-  .projects-grid { animation: fadeUp 0.7s 0.25s ease both; }
-  .author-section { animation: fadeUp 0.7s 0.35s ease both; }
-
-  @media (max-width: 600px) {
-    .about-section { padding: 1.6rem 1.4rem; }
-    .author-section {
-      grid-template-columns: 1fr;
-    }
-    .author-avatar { margin: 0 auto; }
-    .author-info { text-align: center; }
-  }
+@media (max-width: 600px) {
+.about-section { padding: 1.6rem 1.4rem; }
+.author-section { grid-template-columns: 1fr; }
+.author-avatar { margin: 0 auto; }
+.author-info { text-align: center; }
+}
 </style>
+
 </head>
 <body>
 
 <div class="page-wrap">
 
-  <!-- HEADER -->
   <header>
-    <div class="header-rule">
-      <span>Repositório de Estudos Diplomáticos</span>
-    </div>
-
-    <!-- Decorative seal SVG -->
+    <div class="header-rule"><span>Repositório de Estudos Diplomáticos</span></div>
     <div class="seal">
       <svg viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <!-- Outer ring with dashes -->
         <circle cx="40" cy="40" r="37" stroke="#b8892a" stroke-width="1" stroke-dasharray="3 3"/>
         <circle cx="40" cy="40" r="32" stroke="#b8892a" stroke-width="0.5"/>
-        <!-- Compass rose simplified -->
         <line x1="40" y1="10" x2="40" y2="70" stroke="#b8892a" stroke-width="0.6" opacity="0.5"/>
         <line x1="10" y1="40" x2="70" y2="40" stroke="#b8892a" stroke-width="0.6" opacity="0.5"/>
         <line x1="18" y1="18" x2="62" y2="62" stroke="#b8892a" stroke-width="0.4" opacity="0.35"/>
         <line x1="62" y1="18" x2="18" y2="62" stroke="#b8892a" stroke-width="0.4" opacity="0.35"/>
-        <!-- N arrow -->
         <polygon points="40,12 37,24 40,22 43,24" fill="#b8892a" opacity="0.8"/>
-        <!-- Center star -->
         <circle cx="40" cy="40" r="4" fill="none" stroke="#b8892a" stroke-width="1"/>
         <circle cx="40" cy="40" r="1.5" fill="#b8892a"/>
-        <!-- Degree marks -->
         <g stroke="#b8892a" stroke-width="0.5" opacity="0.5">
           <line x1="40" y1="8" x2="40" y2="12"/>
           <line x1="40" y1="68" x2="40" y2="72"/>
@@ -523,303 +263,118 @@
         </g>
       </svg>
     </div>
-
     <h1>CACD <span>·</span> Arquivo<br>Diplomático</h1>
     <p class="subtitle-header">Instrumentos para o Concurso de Admissão à Carreira Diplomática</p>
   </header>
 
-  <!-- ABOUT -->
   <section class="about-section" aria-label="Sobre o projeto">
     <span class="about-label">Da natureza e propósito desta coleção</span>
-    <p>
-      Este repositório reúne ferramentas interativas concebidas para facilitar a preparação ao <em>Concurso de Admissão à Carreira Diplomática (CACD)</em>. O exame — organizado pelo Instituto Rio Branco do Ministério das Relações Exteriores — exige domínio profundo de história, geografia, direito internacional e relações exteriores do Brasil.
-    </p>
-    <p>
-      Cada projeto aqui catalogado é uma carta náutica para navegar em um domínio específico do conhecimento: tratados que moldaram as fronteiras brasileiras, conflitos que redefiniram o mapa do mundo, figuras que governaram o país. Os materiais são de livre acesso e uso educativo, elaborados com rigor e atenção às fontes primárias.
-    </p>
+    <p>Este repositório reúne ferramentas interativas concebidas para facilitar a preparação ao <em>Concurso de Admissão à Carreira Diplomática (CACD)</em>. O exame — organizado pelo Instituto Rio Branco do Ministério das Relações Exteriores — exige domínio profundo de história, geografia, direito internacional e relações exteriores do Brasil.</p>
+    <p>Cada projeto aqui catalogado é uma carta náutica para navegar em um domínio específico do conhecimento: tratados que moldaram as fronteiras brasileiras, conflitos que redefiniram o mapa do mundo, figuras que governaram o país. Os materiais são de livre acesso e uso educativo, elaborados com rigor e atenção às fontes primárias.</p>
   </section>
 
-  <!-- PROJECTS -->
-  <div class="projects-heading">
-    <h2>Instrumentos disponíveis</h2>
-  </div>
+  <div class="projects-heading"><h2>Instrumentos disponíveis</h2></div>
 
   <div class="projects-grid">
 
-    <!-- Card 1: Tratados -->
-    <a href="https://caiosoares1899.github.io/cacd.html/brasil_tratados.html"
-       class="project-card"
-       target="_blank"
-       aria-label="Brasil: Expansão Territorial e Diplomacia na América do Sul">
+```
+<!-- 1 -->
+<a href="https://caiosoares1899.github.io/cacd.html/brasil_tratados.html"
+   class="project-card" target="_blank">
+  <div class="card-preview">
+    <iframe src="https://caiosoares1899.github.io/cacd.html/brasil_tratados.html"
+            loading="lazy" scrolling="no" tabindex="-1" aria-hidden="true"></iframe>
+    <div class="overlay"></div>
+    <span class="preview-tag">Cartografia</span>
+  </div>
+  <div class="card-body">
+    <span class="card-tag">História · Direito Internacional</span>
+    <div class="card-title">Brasil — Expansão Territorial &amp; Diplomacia</div>
+    <p class="card-desc">Mapa interativo das aquisições territoriais brasileiras desde o Tratado de Tordesilhas (1494) até o século XX. Clique nas regiões para acessar os eventos diplomáticos.</p>
+    <div class="card-cta">Acessar instrumento</div>
+  </div>
+</a>
 
-      <div class="card-preview" aria-hidden="true">
-        <!-- SVG miniature: map silhouette -->
-        <svg viewBox="0 0 320 180" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
-          <!-- Parchment bg -->
-          <rect width="320" height="180" fill="#e8dab8"/>
-          <!-- Grid lines -->
-          <g stroke="#c4a96a" stroke-width="0.4" opacity="0.4">
-            <line x1="0" y1="36" x2="320" y2="36"/>
-            <line x1="0" y1="72" x2="320" y2="72"/>
-            <line x1="0" y1="108" x2="320" y2="108"/>
-            <line x1="0" y1="144" x2="320" y2="144"/>
-            <line x1="64" y1="0" x2="64" y2="180"/>
-            <line x1="128" y1="0" x2="128" y2="180"/>
-            <line x1="192" y1="0" x2="192" y2="180"/>
-            <line x1="256" y1="0" x2="256" y2="180"/>
-          </g>
-          <!-- Tordesillas line -->
-          <line x1="100" y1="0" x2="100" y2="180" stroke="#8b2020" stroke-width="1.2" stroke-dasharray="6 4" opacity="0.7"/>
-          <!-- Brazil shape (simplified polygon) -->
-          <polygon
-            points="130,20 180,15 220,30 245,55 248,90 240,125 210,155 175,165 150,158 125,145 110,120 105,90 108,60 118,35"
-            fill="#4a6b3a" fill-opacity="0.35" stroke="#4a6b3a" stroke-width="1.2"/>
-          <!-- Territory 2 -->
-          <polygon
-            points="108,60 118,35 130,20 125,40 112,70"
-            fill="#3a5f7a" fill-opacity="0.4" stroke="#3a5f7a" stroke-width="0.8"/>
-          <!-- Territory 3 -->
-          <polygon
-            points="108,90 110,120 105,100 103,85"
-            fill="#8b2020" fill-opacity="0.35" stroke="#8b2020" stroke-width="0.8"/>
-          <!-- Compass rose small -->
-          <circle cx="270" cy="35" r="18" fill="none" stroke="#b8892a" stroke-width="0.6" opacity="0.6"/>
-          <line x1="270" y1="18" x2="270" y2="52" stroke="#b8892a" stroke-width="0.7" opacity="0.6"/>
-          <line x1="253" y1="35" x2="287" y2="35" stroke="#b8892a" stroke-width="0.7" opacity="0.6"/>
-          <polygon points="270,19 268,28 272,28" fill="#b8892a" opacity="0.7"/>
-          <text x="270" y="14" text-anchor="middle" font-family="serif" font-size="7" fill="#b8892a" opacity="0.8">N</text>
-          <!-- Title area -->
-          <rect x="12" y="145" width="85" height="22" fill="#e8dab8" fill-opacity="0.8"/>
-          <text x="54" y="157" text-anchor="middle" font-family="serif" font-style="italic" font-size="7.5" fill="#3d2f1a">Expansão Territorial</text>
-          <text x="54" y="165" text-anchor="middle" font-family="serif" font-size="6" fill="#6b5535">Sécs. XV – XX</text>
-          <!-- Tordesillas label -->
-          <rect x="62" y="6" width="50" height="13" fill="#e8dab8" fill-opacity="0.75" rx="1"/>
-          <text x="87" y="15" text-anchor="middle" font-family="serif" font-size="6" fill="#8b2020">Linha de Tordesilhas</text>
-        </svg>
-        <span class="preview-label">Cartografia</span>
-      </div>
+<!-- 2 -->
+<a href="https://caiosoares1899.github.io/cacd.html/mapaconflitos.index.html"
+   class="project-card" target="_blank">
+  <div class="card-preview">
+    <iframe src="https://caiosoares1899.github.io/cacd.html/mapaconflitos.index.html"
+            loading="lazy" scrolling="no" tabindex="-1" aria-hidden="true"></iframe>
+    <div class="overlay"></div>
+    <span class="preview-tag">Geopolítica</span>
+  </div>
+  <div class="card-body">
+    <span class="card-tag">Relações Internacionais</span>
+    <div class="card-title">Mapa de Conflitos Internacionais</div>
+    <p class="card-desc">Panorama geopolítico interativo dos principais conflitos e tensões no cenário internacional. Ferramenta essencial para a prova de Política Internacional.</p>
+    <div class="card-cta">Acessar instrumento</div>
+  </div>
+</a>
 
-      <div class="card-body">
-        <span class="card-tag">História · Direito Internacional</span>
-        <div class="card-title">Brasil — Expansão Territorial &amp; Diplomacia</div>
-        <p class="card-desc">Mapa interativo das aquisições territoriais brasileiras desde o Tratado de Tordesilhas (1494) até o século XX. Clique nas regiões coloridas para acessar os eventos diplomáticos correspondentes.</p>
-        <div class="card-cta">Acessar instrumento</div>
-      </div>
-    </a>
+<!-- 3 -->
+<a href="https://caiosoares1899.github.io/cacd.html/presidentes.index.html"
+   class="project-card" target="_blank">
+  <div class="card-preview">
+    <iframe src="https://caiosoares1899.github.io/cacd.html/presidentes.index.html"
+            loading="lazy" scrolling="no" tabindex="-1" aria-hidden="true"></iframe>
+    <div class="overlay"></div>
+    <span class="preview-tag">História Política</span>
+  </div>
+  <div class="card-body">
+    <span class="card-tag">História do Brasil</span>
+    <div class="card-title">Presidentes do Brasil</div>
+    <p class="card-desc">Linha do tempo interativa dos presidentes brasileiros desde a Proclamação da República — períodos, contextos históricos e características de cada governo.</p>
+    <div class="card-cta">Acessar instrumento</div>
+  </div>
+</a>
 
-    <!-- Card 2: Mapa de Conflitos -->
-    <a href="https://caiosoares1899.github.io/cacd.html/mapaconflitos.index.html"
-       class="project-card"
-       target="_blank"
-       aria-label="Mapa de Conflitos Internacionais">
+<!-- 4 -->
+<a href="https://caiosoares1899.github.io/cacd.html/mapa_economia_joanina.html"
+   class="project-card" target="_blank">
+  <div class="card-preview">
+    <iframe src="https://caiosoares1899.github.io/cacd.html/mapa_economia_joanina.html"
+            loading="lazy" scrolling="no" tabindex="-1" aria-hidden="true"></iframe>
+    <div class="overlay"></div>
+    <span class="preview-tag">Economia Colonial</span>
+  </div>
+  <div class="card-body">
+    <span class="card-tag">História do Brasil · Período Joanino</span>
+    <div class="card-title">Brasil Joanino — Economia &amp; Produção</div>
+    <p class="card-desc">Mapa interativo da economia durante a presença da Corte portuguesa no Rio de Janeiro (1808–1821). Explore capitanias, produtos e repercussões na política externa.</p>
+    <div class="card-cta">Acessar instrumento</div>
+  </div>
+</a>
 
-      <div class="card-preview" aria-hidden="true">
-        <svg viewBox="0 0 320 180" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
-          <rect width="320" height="180" fill="#e8dab8"/>
-          <!-- Ocean fill -->
-          <rect x="0" y="0" width="320" height="180" fill="#3a5f7a" fill-opacity="0.08"/>
-          <!-- Grid -->
-          <g stroke="#c4a96a" stroke-width="0.4" opacity="0.35">
-            <line x1="0" y1="45" x2="320" y2="45"/>
-            <line x1="0" y1="90" x2="320" y2="90"/>
-            <line x1="0" y1="135" x2="320" y2="135"/>
-            <line x1="80" y1="0" x2="80" y2="180"/>
-            <line x1="160" y1="0" x2="160" y2="180"/>
-            <line x1="240" y1="0" x2="240" y2="180"/>
-          </g>
-          <!-- Continent silhouettes (rough) -->
-          <!-- Americas -->
-          <ellipse cx="75" cy="85" rx="38" ry="65" fill="#d6c89a" stroke="#b8892a" stroke-width="0.5" opacity="0.7"/>
-          <!-- Europe/Africa -->
-          <ellipse cx="160" cy="75" rx="25" ry="50" fill="#d6c89a" stroke="#b8892a" stroke-width="0.5" opacity="0.7"/>
-          <!-- Asia/Oceania -->
-          <ellipse cx="245" cy="80" rx="55" ry="50" fill="#d6c89a" stroke="#b8892a" stroke-width="0.5" opacity="0.7"/>
-          <!-- Conflict markers -->
-          <circle cx="160" cy="50" r="7" fill="#8b2020" fill-opacity="0.7"/>
-          <circle cx="160" cy="50" r="12" fill="none" stroke="#8b2020" stroke-width="0.8" opacity="0.4"/>
-          <circle cx="245" cy="60" r="9" fill="#8b2020" fill-opacity="0.6"/>
-          <circle cx="245" cy="60" r="15" fill="none" stroke="#8b2020" stroke-width="0.8" opacity="0.35"/>
-          <circle cx="75" cy="65" r="5" fill="#b8892a" fill-opacity="0.7"/>
-          <circle cx="75" cy="65" r="9" fill="none" stroke="#b8892a" stroke-width="0.8" opacity="0.4"/>
-          <circle cx="175" cy="110" r="6" fill="#8b2020" fill-opacity="0.5"/>
-          <circle cx="210" cy="90" r="4" fill="#b8892a" fill-opacity="0.5"/>
-          <!-- Legend -->
-          <rect x="8" y="148" width="100" height="24" fill="#e8dab8" fill-opacity="0.85"/>
-          <circle cx="20" cy="157" r="4" fill="#8b2020" fill-opacity="0.7"/>
-          <text x="28" y="160" font-family="serif" font-size="6.5" fill="#3d2f1a">Conflito armado</text>
-          <circle cx="20" cy="166" r="4" fill="#b8892a" fill-opacity="0.7"/>
-          <text x="28" y="169" font-family="serif" font-size="6.5" fill="#3d2f1a">Tensão regional</text>
-        </svg>
-        <span class="preview-label">Geopolítica</span>
-      </div>
-
-      <div class="card-body">
-        <span class="card-tag">Relações Internacionais</span>
-        <div class="card-title">Mapa de Conflitos Internacionais</div>
-        <p class="card-desc">Panorama geopolítico interativo dos principais conflitos e tensões no cenário internacional. Ferramenta essencial para a prova de Política Internacional do CACD.</p>
-        <div class="card-cta">Acessar instrumento</div>
-      </div>
-    </a>
-
-    <!-- Card 3: Presidentes -->
-    <a href="https://caiosoares1899.github.io/cacd.html/presidentes.index.html"
-       class="project-card"
-       target="_blank"
-       aria-label="Presidentes do Brasil">
-
-      <div class="card-preview" aria-hidden="true">
-        <svg viewBox="0 0 320 180" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
-          <rect width="320" height="180" fill="#e8dab8"/>
-          <!-- Decorative background lines -->
-          <g stroke="#c4a96a" stroke-width="0.4" opacity="0.3">
-            <line x1="0" y1="30" x2="320" y2="30"/>
-            <line x1="0" y1="60" x2="320" y2="60"/>
-            <line x1="0" y1="90" x2="320" y2="90"/>
-            <line x1="0" y1="120" x2="320" y2="120"/>
-            <line x1="0" y1="150" x2="320" y2="150"/>
-          </g>
-          <!-- Timeline bar -->
-          <rect x="20" y="88" width="280" height="4" fill="#b8892a" fill-opacity="0.4" rx="2"/>
-          <!-- Era blocks -->
-          <rect x="20" y="84" width="56" height="12" fill="#3a5f7a" fill-opacity="0.5" rx="1"/>
-          <rect x="80" y="84" width="48" height="12" fill="#4a6b3a" fill-opacity="0.5" rx="1"/>
-          <rect x="132" y="84" width="38" height="12" fill="#8b2020" fill-opacity="0.4" rx="1"/>
-          <rect x="174" y="84" width="56" height="12" fill="#b8892a" fill-opacity="0.4" rx="1"/>
-          <rect x="234" y="84" width="66" height="12" fill="#4a6b3a" fill-opacity="0.5" rx="1"/>
-          <!-- Era labels -->
-          <text x="48" y="75" text-anchor="middle" font-family="serif" font-size="6" fill="#3a5f7a" font-weight="bold">República</text>
-          <text x="48" y="83" text-anchor="middle" font-family="serif" font-size="5.5" fill="#3a5f7a">1889–1930</text>
-          <text x="104" y="75" text-anchor="middle" font-family="serif" font-size="6" fill="#4a6b3a">Era Vargas</text>
-          <text x="104" y="83" text-anchor="middle" font-family="serif" font-size="5.5" fill="#4a6b3a">1930–1945</text>
-          <text x="151" y="75" text-anchor="middle" font-family="serif" font-size="6" fill="#8b2020">Democrática</text>
-          <text x="151" y="83" text-anchor="middle" font-family="serif" font-size="5.5" fill="#8b2020">1946–1964</text>
-          <text x="202" y="75" text-anchor="middle" font-family="serif" font-size="6" fill="#8b6020">Militar</text>
-          <text x="202" y="83" text-anchor="middle" font-family="serif" font-size="5.5" fill="#8b6020">1964–1985</text>
-          <text x="267" y="75" text-anchor="middle" font-family="serif" font-size="6" fill="#4a6b3a">Nova Rep.</text>
-          <text x="267" y="83" text-anchor="middle" font-family="serif" font-size="5.5" fill="#4a6b3a">1985–hoje</text>
-          <!-- President portrait boxes -->
-          <g>
-            <rect x="35" y="105" width="30" height="36" fill="#d6c89a" stroke="#b8892a" stroke-width="0.7" rx="1"/>
-            <text x="50" y="127" text-anchor="middle" font-family="serif" font-size="6" fill="#6b5535">Deodoro</text>
-            <rect x="90" y="105" width="30" height="36" fill="#d6c89a" stroke="#b8892a" stroke-width="0.7" rx="1"/>
-            <text x="105" y="127" text-anchor="middle" font-family="serif" font-size="6" fill="#6b5535">Vargas</text>
-            <rect x="145" y="105" width="30" height="36" fill="#d6c89a" stroke="#b8892a" stroke-width="0.7" rx="1"/>
-            <text x="160" y="127" text-anchor="middle" font-family="serif" font-size="6" fill="#6b5535">JK</text>
-            <rect x="200" y="105" width="30" height="36" fill="#d6c89a" stroke="#b8892a" stroke-width="0.7" rx="1"/>
-            <text x="215" y="127" text-anchor="middle" font-family="serif" font-size="6" fill="#6b5535">Médici</text>
-            <rect x="255" y="105" width="30" height="36" fill="#d6c89a" stroke="#b8892a" stroke-width="0.7" rx="1"/>
-            <text x="270" y="127" text-anchor="middle" font-family="serif" font-size="6" fill="#6b5535">Lula</text>
-          </g>
-          <!-- Title -->
-          <rect x="8" y="8" width="140" height="22" fill="#e8dab8" fill-opacity="0.85"/>
-          <text x="78" y="19" text-anchor="middle" font-family="serif" font-size="8" fill="#3d2f1a" font-style="italic">Presidentes do Brasil</text>
-          <text x="78" y="27" text-anchor="middle" font-family="serif" font-size="6" fill="#6b5535">1889 — presente</text>
-        </svg>
-        <span class="preview-label">História Política</span>
-      </div>
-
-      <div class="card-body">
-        <span class="card-tag">História do Brasil</span>
-        <div class="card-title">Presidentes do Brasil</div>
-        <p class="card-desc">Linha do tempo interativa dos presidentes brasileiros desde a Proclamação da República. Períodos, contextos históricos e principais características de cada governo para revisão eficiente.</p>
-        <div class="card-cta">Acessar instrumento</div>
-      </div>
-    </a>
-
-    <!-- Card 4: Economia Joanina -->
-    <a href="https://caiosoares1899.github.io/cacd.html/mapa_economia_joanina.html"
-       class="project-card"
-       target="_blank"
-       aria-label="Brasil Joanino — Economia e Produção 1808–1821">
-
-      <div class="card-preview" aria-hidden="true">
-        <svg viewBox="0 0 320 180" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
-          <rect width="320" height="180" fill="#e8dab8"/>
-          <!-- Grid de fundo -->
-          <g stroke="#c4a96a" stroke-width="0.4" opacity="0.3">
-            <line x1="0" y1="36" x2="320" y2="36"/>
-            <line x1="0" y1="72" x2="320" y2="72"/>
-            <line x1="0" y1="108" x2="320" y2="108"/>
-            <line x1="0" y1="144" x2="320" y2="144"/>
-            <line x1="64" y1="0" x2="64" y2="180"/>
-            <line x1="128" y1="0" x2="128" y2="180"/>
-            <line x1="192" y1="0" x2="192" y2="180"/>
-            <line x1="256" y1="0" x2="256" y2="180"/>
-          </g>
-          <!-- Silhueta do Brasil simplificada -->
-          <polygon
-            points="130,18 185,14 225,32 248,58 250,95 242,128 212,158 174,168 148,160 122,146 108,120 104,88 107,58 118,33"
-            fill="#d6c89a" stroke="#b8892a" stroke-width="1"/>
-          <!-- Regiões produtoras coloridas -->
-          <!-- Norte / Extrativismo -->
-          <polygon points="118,33 150,20 185,14 195,40 175,55 145,50 125,45" fill="#4a6b3a" fill-opacity="0.45"/>
-          <!-- Nordeste / Açúcar-Algodão -->
-          <polygon points="185,14 225,32 235,60 210,72 190,65 175,55 195,40" fill="#b8892a" fill-opacity="0.4"/>
-          <!-- Sudeste / Mineração -->
-          <polygon points="175,95 210,88 235,105 228,130 205,145 178,140 162,122 165,100" fill="#8b5e2a" fill-opacity="0.4"/>
-          <!-- Sul / Pecuária -->
-          <polygon points="155,138 178,140 205,145 212,158 174,168 148,160 138,150" fill="#3a5f7a" fill-opacity="0.4"/>
-          <!-- Ícones de produtos (simplificados) -->
-          <!-- Algodão - NE -->
-          <circle cx="208" cy="50" r="7" fill="#f5eed8" stroke="#b8892a" stroke-width="0.8"/>
-          <text x="208" y="54" text-anchor="middle" font-family="serif" font-size="8" fill="#8b6020">🧵</text>
-          <!-- Açúcar - NE litoral -->
-          <circle cx="224" cy="72" r="7" fill="#f5eed8" stroke="#b8892a" stroke-width="0.8"/>
-          <text x="224" y="76" text-anchor="middle" font-family="serif" font-size="8" fill="#8b6020">🌾</text>
-          <!-- Mineração - MG -->
-          <circle cx="200" cy="112" r="7" fill="#f5eed8" stroke="#b8892a" stroke-width="0.8"/>
-          <text x="200" y="116" text-anchor="middle" font-family="serif" font-size="8" fill="#6b3a1a">⛏</text>
-          <!-- Extrativismo - Norte -->
-          <circle cx="148" cy="38" r="7" fill="#f5eed8" stroke="#b8892a" stroke-width="0.8"/>
-          <text x="148" y="42" text-anchor="middle" font-family="serif" font-size="8" fill="#4a6b3a">🌿</text>
-          <!-- Pecuária - Sul -->
-          <circle cx="168" cy="150" r="7" fill="#f5eed8" stroke="#b8892a" stroke-width="0.8"/>
-          <text x="168" y="154" text-anchor="middle" font-family="serif" font-size="8" fill="#3a5f7a">🐂</text>
-          <!-- Rio de Janeiro marcado como capital -->
-          <circle cx="218" cy="128" r="5" fill="#8b2020" fill-opacity="0.9"/>
-          <circle cx="218" cy="128" r="9" fill="none" stroke="#8b2020" stroke-width="0.8" stroke-dasharray="2 2"/>
-          <text x="218" y="142" text-anchor="middle" font-family="serif" font-size="5.5" fill="#8b2020">Rio de Janeiro</text>
-          <text x="218" y="149" text-anchor="middle" font-family="serif" font-size="5" fill="#8b2020">Capital</text>
-          <!-- Legenda -->
-          <rect x="8" y="6" width="88" height="50" fill="#e8dab8" fill-opacity="0.88" rx="1"/>
-          <text x="52" y="16" text-anchor="middle" font-family="serif" font-size="6.5" fill="#3d2f1a" font-style="italic">Brasil Joanino</text>
-          <text x="52" y="23" text-anchor="middle" font-family="serif" font-size="5.5" fill="#6b5535">1808 — 1821</text>
-          <line x1="12" y1="26" x2="92" y2="26" stroke="#b8892a" stroke-width="0.5" opacity="0.6"/>
-          <rect x="12" y="29" width="8" height="6" fill="#4a6b3a" fill-opacity="0.5"/>
-          <text x="24" y="35" font-family="serif" font-size="5.5" fill="#3d2f1a">Extrativismo</text>
-          <rect x="12" y="37" width="8" height="6" fill="#b8892a" fill-opacity="0.5"/>
-          <text x="24" y="43" font-family="serif" font-size="5.5" fill="#3d2f1a">Açúcar/Algodão</text>
-          <rect x="12" y="45" width="8" height="6" fill="#8b5e2a" fill-opacity="0.5"/>
-          <text x="24" y="51" font-family="serif" font-size="5.5" fill="#3d2f1a">Mineração</text>
-        </svg>
-        <span class="preview-label">Economia Colonial</span>
-      </div>
-
-      <div class="card-body">
-        <span class="card-tag">História do Brasil · Período Joanino</span>
-        <div class="card-title">Brasil Joanino — Economia &amp; Produção</div>
-        <p class="card-desc">Mapa interativo da economia brasileira durante a presença da Corte portuguesa no Rio de Janeiro (1808–1821). Explore as capitanias, os produtos de exportação, o contexto das reformas joaninas e a repercussão na política externa.</p>
-        <div class="card-cta">Acessar instrumento</div>
-      </div>
-    </a>
+<!-- 5 -->
+<a href="https://caiosoares1899.github.io/cacd.html/chanceleres_brasil.html"
+   class="project-card" target="_blank">
+  <div class="card-preview">
+    <iframe src="https://caiosoares1899.github.io/cacd.html/chanceleres_brasil.html"
+            loading="lazy" scrolling="no" tabindex="-1" aria-hidden="true"></iframe>
+    <div class="overlay"></div>
+    <span class="preview-tag">Diplomacia</span>
+  </div>
+  <div class="card-body">
+    <span class="card-tag">Política Externa · História</span>
+    <div class="card-title">Chanceleres &amp; Diplomatas do Brasil</div>
+    <p class="card-desc">De Tomé de Sousa à Nova República — linha do tempo completa com governadores-gerais, ministros do Império e chanceleres: pensamento, eventos-chave e legado de cada figura.</p>
+    <div class="card-cta">Acessar instrumento</div>
+  </div>
+</a>
+```
 
   </div>
 
-  <!-- SEPARATOR -->
-  <div class="ornament-sep" aria-hidden="true">
-    <span>✦ ✦ ✦</span>
-  </div>
+  <div class="ornament-sep" aria-hidden="true"><span>✦ ✦ ✦</span></div>
 
-  <!-- AUTHOR -->
   <section class="author-section" aria-label="Sobre o autor">
     <div class="author-avatar" aria-hidden="true">CS</div>
     <div class="author-info">
       <span class="author-label">Responsável pela coleção</span>
       <div class="author-name">Caio Soares</div>
       <div class="author-role">Candidato à Carreira Diplomática · Organizador do arquivo</div>
-      <p class="author-bio">
-        [Espaço reservado para biografia do autor. Adicione aqui uma breve apresentação: formação acadêmica, motivações para o CACD, áreas de interesse dentro da diplomacia e qualquer outra informação que queira compartilhar com os visitantes.]
-      </p>
+      <p class="author-bio">[Espaço reservado para biografia do autor. Adicione aqui uma breve apresentação: formação acadêmica, motivações para o CACD, áreas de interesse dentro da diplomacia e qualquer outra informação que queira compartilhar com os visitantes.]</p>
     </div>
   </section>
 
@@ -828,6 +383,33 @@
   </footer>
 
 </div>
+
+<script>
+  // Redimensiona os iframes para preencher exatamente o container do card
+  function scaleIframes() {
+    document.querySelectorAll('.card-preview').forEach(function(preview) {
+      var iframe = preview.querySelector('iframe');
+      if (!iframe) return;
+      var w = preview.offsetWidth;
+      var h = preview.offsetHeight;
+      var scale = w / 1280;
+      iframe.style.transform = 'scale(' + scale + ')';
+      iframe.style.width  = '1280px';
+      iframe.style.height = Math.round(h / scale) + 'px';
+    });
+  }
+
+  scaleIframes();
+  window.addEventListener('resize', scaleIframes);
+
+  // Overlay redireciona o clique para o link do card
+  document.querySelectorAll('.overlay').forEach(function(overlay) {
+    overlay.addEventListener('click', function() {
+      var card = overlay.closest('.project-card');
+      if (card) window.open(card.getAttribute('href'), '_blank');
+    });
+  });
+</script>
 
 </body>
 </html>
