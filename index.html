@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
@@ -20,228 +19,230 @@
     --tan: #c4a96a;
   }
 
-- { margin: 0; padding: 0; box-sizing: border-box; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
 
-body {
-background: var(–parchment);
-color: var(–ink);
-font-family: ‘Spectral’, Georgia, serif;
-min-height: 100vh;
-position: relative;
-overflow-x: hidden;
-}
-body::before {
-content: ‘’;
-position: fixed; inset: 0;
-background-image:
-radial-gradient(ellipse at 20% 30%, rgba(160,120,60,0.08) 0%, transparent 50%),
-radial-gradient(ellipse at 80% 70%, rgba(100,70,30,0.06) 0%, transparent 40%);
-pointer-events: none; z-index: 0;
-}
-body::after {
-content: ‘’;
-position: fixed; inset: 0;
-background-image:
-repeating-linear-gradient(0deg, transparent, transparent 59px, rgba(100,70,20,0.04) 60px),
-repeating-linear-gradient(90deg, transparent, transparent 59px, rgba(100,70,20,0.04) 60px);
-pointer-events: none; z-index: 0;
-}
+  body {
+    background: var(--parchment);
+    color: var(--ink);
+    font-family: 'Spectral', Georgia, serif;
+    min-height: 100vh;
+    position: relative;
+    overflow-x: hidden;
+  }
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background-image:
+      radial-gradient(ellipse at 20% 30%, rgba(160,120,60,0.08) 0%, transparent 50%),
+      radial-gradient(ellipse at 80% 70%, rgba(100,70,30,0.06) 0%, transparent 40%);
+    pointer-events: none; z-index: 0;
+  }
+  body::after {
+    content: '';
+    position: fixed; inset: 0;
+    background-image:
+      repeating-linear-gradient(0deg, transparent, transparent 59px, rgba(100,70,20,0.04) 60px),
+      repeating-linear-gradient(90deg, transparent, transparent 59px, rgba(100,70,20,0.04) 60px);
+    pointer-events: none; z-index: 0;
+  }
 
-.page-wrap {
-position: relative; z-index: 1;
-max-width: 1100px; margin: 0 auto;
-padding: 0 2rem 4rem;
-}
+  .page-wrap {
+    position: relative; z-index: 1;
+    max-width: 1100px; margin: 0 auto;
+    padding: 0 2rem 4rem;
+  }
 
-/* HEADER */
-header { text-align: center; padding: 3.5rem 1rem 2.5rem; }
+  /* ── HEADER ── */
+  header { text-align: center; padding: 3.5rem 1rem 2.5rem; }
 
-.header-rule {
-display: flex; align-items: center; gap: 1rem; margin-bottom: 1.8rem;
-}
-.header-rule::before, .header-rule::after {
-content: ‘’; flex: 1; height: 1px;
-background: linear-gradient(to right, transparent, var(–gold), transparent);
-}
-.header-rule span {
-font-family: ‘Cinzel’, serif; font-size: 0.7rem;
-letter-spacing: 0.35em; color: var(–gold); text-transform: uppercase; white-space: nowrap;
-}
+  .header-rule { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.8rem; }
+  .header-rule::before, .header-rule::after {
+    content: ''; flex: 1; height: 1px;
+    background: linear-gradient(to right, transparent, var(--gold), transparent);
+  }
+  .header-rule span {
+    font-family: 'Cinzel', serif; font-size: 0.7rem;
+    letter-spacing: 0.35em; color: var(--gold); text-transform: uppercase; white-space: nowrap;
+  }
 
-.seal { width: 72px; height: 72px; margin: 0 auto 1.2rem; }
-.seal svg { width: 100%; height: 100%; animation: sealRotate 60s linear infinite; }
-@keyframes sealRotate { to { transform: rotate(360deg); } }
+  .seal { width: 72px; height: 72px; margin: 0 auto 1.2rem; }
+  .seal svg { width: 100%; height: 100%; animation: sealRotate 60s linear infinite; }
+  @keyframes sealRotate { to { transform: rotate(360deg); } }
 
-h1 {
-font-family: ‘Cinzel’, serif;
-font-size: clamp(2rem, 5vw, 3.2rem); font-weight: 700;
-letter-spacing: 0.08em; line-height: 1.15; margin-bottom: 0.4rem;
-}
-h1 span { color: var(–gold-dark); }
+  h1 {
+    font-family: 'Cinzel', serif;
+    font-size: clamp(2rem, 5vw, 3.2rem); font-weight: 700;
+    letter-spacing: 0.08em; line-height: 1.15; margin-bottom: 0.4rem;
+  }
+  h1 span { color: var(--gold-dark); }
 
-.subtitle-header {
-font-family: ‘IM Fell English’, serif; font-style: italic;
-font-size: 1.1rem; color: var(–ink-light); margin-bottom: 2rem; letter-spacing: 0.03em;
-}
+  .subtitle-header {
+    font-family: 'IM Fell English', serif; font-style: italic;
+    font-size: 1.1rem; color: var(--ink-light); margin-bottom: 2rem; letter-spacing: 0.03em;
+  }
 
-/* ABOUT */
-.about-section {
-background: rgba(255,255,255,0.35);
-border: 1px solid var(–parchment-deep); border-top: 3px solid var(–gold);
-border-radius: 2px; padding: 2.2rem 2.8rem; margin-bottom: 3.5rem;
-position: relative;
-box-shadow: inset 0 1px 0 rgba(255,255,255,0.6), 0 2px 12px rgba(80,50,10,0.08);
-}
-.about-section::before {
-content: ‘§’; position: absolute; top: -1px; left: 50%;
-transform: translateX(-50%) translateY(-50%);
-background: var(–parchment); padding: 0 1rem;
-font-family: ‘Cinzel’, serif; font-size: 1rem; color: var(–gold);
-}
-.about-label {
-font-family: ‘Cinzel’, serif; font-size: 0.65rem; letter-spacing: 0.4em;
-text-transform: uppercase; color: var(–gold-dark); margin-bottom: 1rem; display: block;
-}
-.about-section p { font-size: 1.02rem; line-height: 1.85; color: var(–ink-mid); font-weight: 300; }
-.about-section p + p { margin-top: 0.9rem; }
-.about-section em { font-style: italic; color: var(–ink); font-weight: 400; }
+  /* ── ABOUT ── */
+  .about-section {
+    background: rgba(255,255,255,0.35);
+    border: 1px solid var(--parchment-deep); border-top: 3px solid var(--gold);
+    border-radius: 2px; padding: 2.2rem 2.8rem; margin-bottom: 3.5rem;
+    position: relative;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.6), 0 2px 12px rgba(80,50,10,0.08);
+  }
+  .about-section::before {
+    content: '§'; position: absolute; top: -1px; left: 50%;
+    transform: translateX(-50%) translateY(-50%);
+    background: var(--parchment); padding: 0 1rem;
+    font-family: 'Cinzel', serif; font-size: 1rem; color: var(--gold);
+  }
+  .about-label {
+    font-family: 'Cinzel', serif; font-size: 0.65rem; letter-spacing: 0.4em;
+    text-transform: uppercase; color: var(--gold-dark); margin-bottom: 1rem; display: block;
+  }
+  .about-section p { font-size: 1.02rem; line-height: 1.85; color: var(--ink-mid); font-weight: 300; }
+  .about-section p + p { margin-top: 0.9rem; }
+  .about-section em { font-style: italic; color: var(--ink); font-weight: 400; }
 
-/* GRID */
-.projects-heading { display: flex; align-items: center; gap: 1.2rem; margin-bottom: 2rem; }
-.projects-heading::after {
-content: ‘’; flex: 1; height: 1px;
-background: linear-gradient(to right, var(–parchment-deep), transparent);
-}
-.projects-heading h2 {
-font-family: ‘Cinzel’, serif; font-size: 0.7rem; letter-spacing: 0.42em;
-text-transform: uppercase; color: var(–ink-mid); white-space: nowrap;
-}
+  /* ── GRID ── */
+  .projects-heading { display: flex; align-items: center; gap: 1.2rem; margin-bottom: 2rem; }
+  .projects-heading::after {
+    content: ''; flex: 1; height: 1px;
+    background: linear-gradient(to right, var(--parchment-deep), transparent);
+  }
+  .projects-heading h2 {
+    font-family: 'Cinzel', serif; font-size: 0.7rem; letter-spacing: 0.42em;
+    text-transform: uppercase; color: var(--ink-mid); white-space: nowrap;
+  }
 
-.projects-grid {
-display: grid;
-grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-gap: 1.8rem; margin-bottom: 4rem;
-}
+  .projects-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.8rem; margin-bottom: 4rem;
+  }
 
-.project-card {
-background: rgba(255,255,255,0.42);
-border: 1px solid var(–parchment-deep); border-radius: 2px;
-overflow: hidden; text-decoration: none; color: inherit;
-display: flex; flex-direction: column;
-transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.2s ease;
-box-shadow: 0 2px 10px rgba(80,50,10,0.07); position: relative;
-}
-.project-card::before {
-content: ‘’; position: absolute; top: 0; left: 0; right: 0; height: 3px;
-background: var(–gold); transform: scaleX(0); transform-origin: left;
-transition: transform 0.3s ease; z-index: 3;
-}
-.project-card:hover { transform: translateY(-4px); box-shadow: 0 8px 28px rgba(80,50,10,0.14); background: rgba(255,255,255,0.62); }
-.project-card:hover::before { transform: scaleX(1); }
+  @media (max-width: 960px) {
+    .projects-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 580px) {
+    .projects-grid { grid-template-columns: 1fr; }
+  }
 
-/* IFRAME PREVIEW */
-.card-preview {
-width: 100%; height: 200px;
-position: relative; overflow: hidden;
-background: var(–parchment-dark);
-border-bottom: 1px solid var(–parchment-deep);
-}
-.card-preview iframe {
-width: 1280px; height: 854px;
-border: none; display: block;
-transform-origin: top left;
-pointer-events: none;
-/* escala inicial; JS ajusta ao tamanho real do card */
-transform: scale(0.234);
-}
-/* overlay captura cliques sem ativar o iframe */
-.card-preview .overlay {
-position: absolute; inset: 0; z-index: 2; cursor: pointer;
-}
-.card-preview .preview-tag {
-position: absolute; bottom: 7px; right: 8px; z-index: 3;
-font-family: ‘Cinzel’, serif; font-size: 0.5rem; letter-spacing: 0.25em;
-text-transform: uppercase; color: var(–ink-light);
-background: rgba(245,238,216,0.82); padding: 2px 6px; border-radius: 1px;
-}
-/* skeleton de carregamento */
-.card-preview::after {
-content: ‘carregando prévia…’;
-position: absolute; inset: 0; display: flex;
-align-items: center; justify-content: center;
-font-family: ‘Cinzel’, serif; font-size: 0.58rem; letter-spacing: 0.22em;
-color: var(–ink-light); opacity: 0.45; pointer-events: none; z-index: 0;
-}
+  .project-card {
+    background: rgba(255,255,255,0.42);
+    border: 1px solid var(--parchment-deep); border-radius: 2px;
+    overflow: hidden; text-decoration: none; color: inherit;
+    display: flex; flex-direction: column;
+    transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.2s ease;
+    box-shadow: 0 2px 10px rgba(80,50,10,0.07); position: relative;
+  }
+  .project-card::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+    background: var(--gold); transform: scaleX(0); transform-origin: left;
+    transition: transform 0.3s ease; z-index: 3;
+  }
+  .project-card:hover { transform: translateY(-4px); box-shadow: 0 8px 28px rgba(80,50,10,0.14); background: rgba(255,255,255,0.62); }
+  .project-card:hover::before { transform: scaleX(1); }
 
-/* CARD BODY */
-.card-body { padding: 1.4rem 1.6rem 1.6rem; flex: 1; display: flex; flex-direction: column; gap: 0.5rem; }
-.card-tag {
-display: inline-block; font-family: ‘Cinzel’, serif; font-size: 0.58rem;
-letter-spacing: 0.35em; text-transform: uppercase; color: var(–gold-dark);
-border: 1px solid var(–tan); padding: 0.25rem 0.7rem; border-radius: 1px; width: fit-content;
-}
-.card-title { font-family: ‘Cinzel’, serif; font-size: 1.05rem; font-weight: 600; color: var(–ink); line-height: 1.3; margin-top: 0.2rem; }
-.card-desc { font-size: 0.9rem; line-height: 1.65; color: var(–ink-light); font-weight: 300; flex: 1; }
-.card-cta {
-display: flex; align-items: center; gap: 0.5rem; margin-top: 0.8rem;
-font-family: ‘Cinzel’, serif; font-size: 0.62rem; letter-spacing: 0.3em;
-text-transform: uppercase; color: var(–gold-dark);
-}
-.card-cta::after { content: ‘’; display: block; width: 24px; height: 1px; background: var(–gold-dark); transition: width 0.25s ease; }
-.project-card:hover .card-cta::after { width: 40px; }
+  /* ── IFRAME PREVIEW ── */
+  .card-preview {
+    width: 100%; height: 190px;
+    position: relative; overflow: hidden;
+    background: var(--parchment-dark);
+    border-bottom: 1px solid var(--parchment-deep);
+  }
+  .card-preview iframe {
+    width: 1280px; height: 854px;
+    border: none; display: block;
+    transform-origin: top left;
+    pointer-events: none;
+    transform: scale(0.234); /* fallback; JS ajusta */
+  }
+  .card-preview .overlay {
+    position: absolute; inset: 0; z-index: 2; cursor: pointer;
+  }
+  .card-preview .preview-tag {
+    position: absolute; bottom: 7px; right: 8px; z-index: 3;
+    font-family: 'Cinzel', serif; font-size: 0.5rem; letter-spacing: 0.25em;
+    text-transform: uppercase; color: var(--ink-light);
+    background: rgba(245,238,216,0.82); padding: 2px 6px; border-radius: 1px;
+  }
+  .card-preview::after {
+    content: 'carregando prévia…';
+    position: absolute; inset: 0; display: flex;
+    align-items: center; justify-content: center;
+    font-family: 'Cinzel', serif; font-size: 0.58rem; letter-spacing: 0.22em;
+    color: var(--ink-light); opacity: 0.45; pointer-events: none; z-index: 0;
+  }
 
-/* SEPARATOR */
-.ornament-sep { text-align: center; margin: 3rem 0; position: relative; }
-.ornament-sep::before {
-content: ‘’; position: absolute; top: 50%; left: 0; right: 0; height: 1px;
-background: linear-gradient(to right, transparent, var(–parchment-deep) 20%, var(–parchment-deep) 80%, transparent);
-}
-.ornament-sep span {
-position: relative; background: var(–parchment); padding: 0 1.5rem;
-font-family: ‘IM Fell English’, serif; font-size: 1.5rem; color: var(–tan); letter-spacing: 0.5em;
-}
+  /* ── CARD BODY ── */
+  .card-body { padding: 1.3rem 1.5rem 1.5rem; flex: 1; display: flex; flex-direction: column; gap: 0.45rem; }
+  .card-tag {
+    display: inline-block; font-family: 'Cinzel', serif; font-size: 0.56rem;
+    letter-spacing: 0.32em; text-transform: uppercase; color: var(--gold-dark);
+    border: 1px solid var(--tan); padding: 0.22rem 0.65rem; border-radius: 1px; width: fit-content;
+  }
+  .card-title { font-family: 'Cinzel', serif; font-size: 1rem; font-weight: 600; color: var(--ink); line-height: 1.3; margin-top: 0.15rem; }
+  .card-desc { font-size: 0.875rem; line-height: 1.65; color: var(--ink-light); font-weight: 300; flex: 1; }
+  .card-cta {
+    display: flex; align-items: center; gap: 0.5rem; margin-top: 0.7rem;
+    font-family: 'Cinzel', serif; font-size: 0.6rem; letter-spacing: 0.3em;
+    text-transform: uppercase; color: var(--gold-dark);
+  }
+  .card-cta::after { content: ''; display: block; width: 22px; height: 1px; background: var(--gold-dark); transition: width 0.25s ease; }
+  .project-card:hover .card-cta::after { width: 38px; }
 
-/* AUTHOR */
-.author-section {
-display: grid; grid-template-columns: auto 1fr; gap: 1.8rem; align-items: start;
-background: rgba(255,255,255,0.25); border: 1px solid var(–parchment-deep);
-border-radius: 2px; padding: 1.8rem 2.2rem; box-shadow: 0 1px 8px rgba(80,50,10,0.06);
-}
-.author-avatar {
-width: 64px; height: 64px; border-radius: 50%;
-background: var(–parchment-dark); border: 2px solid var(–tan);
-display: flex; align-items: center; justify-content: center;
-font-family: ‘Cinzel’, serif; font-size: 1.3rem; color: var(–gold-dark); flex-shrink: 0;
-}
-.author-label { font-family: ‘Cinzel’, serif; font-size: 0.6rem; letter-spacing: 0.4em; text-transform: uppercase; color: var(–gold-dark); margin-bottom: 0.4rem; display: block; }
-.author-name { font-family: ‘Cinzel’, serif; font-size: 1rem; font-weight: 600; color: var(–ink); margin-bottom: 0.3rem; }
-.author-role { font-family: ‘IM Fell English’, serif; font-style: italic; font-size: 0.88rem; color: var(–ink-light); margin-bottom: 0.7rem; }
-.author-bio { font-size: 0.88rem; line-height: 1.75; color: var(–ink-mid); font-weight: 300; }
+  /* ── SEPARATOR ── */
+  .ornament-sep { text-align: center; margin: 3rem 0; position: relative; }
+  .ornament-sep::before {
+    content: ''; position: absolute; top: 50%; left: 0; right: 0; height: 1px;
+    background: linear-gradient(to right, transparent, var(--parchment-deep) 20%, var(--parchment-deep) 80%, transparent);
+  }
+  .ornament-sep span {
+    position: relative; background: var(--parchment); padding: 0 1.5rem;
+    font-family: 'IM Fell English', serif; font-size: 1.5rem; color: var(--tan); letter-spacing: 0.5em;
+  }
 
-/* FOOTER */
-footer { text-align: center; padding: 2.5rem 1rem 1.5rem; border-top: 1px solid var(–parchment-deep); margin-top: 3rem; }
-footer p { font-family: ‘Cinzel’, serif; font-size: 0.62rem; letter-spacing: 0.35em; text-transform: uppercase; color: var(–ink-light); opacity: 0.7; }
+  /* ── AUTHOR ── */
+  .author-section {
+    display: grid; grid-template-columns: auto 1fr; gap: 1.8rem; align-items: start;
+    background: rgba(255,255,255,0.25); border: 1px solid var(--parchment-deep);
+    border-radius: 2px; padding: 1.8rem 2.2rem; box-shadow: 0 1px 8px rgba(80,50,10,0.06);
+  }
+  .author-avatar {
+    width: 64px; height: 64px; border-radius: 50%;
+    background: var(--parchment-dark); border: 2px solid var(--tan);
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Cinzel', serif; font-size: 1.3rem; color: var(--gold-dark); flex-shrink: 0;
+  }
+  .author-label { font-family: 'Cinzel', serif; font-size: 0.6rem; letter-spacing: 0.4em; text-transform: uppercase; color: var(--gold-dark); margin-bottom: 0.4rem; display: block; }
+  .author-name { font-family: 'Cinzel', serif; font-size: 1rem; font-weight: 600; color: var(--ink); margin-bottom: 0.3rem; }
+  .author-role { font-family: 'IM Fell English', serif; font-style: italic; font-size: 0.88rem; color: var(--ink-light); margin-bottom: 0.7rem; }
+  .author-bio { font-size: 0.88rem; line-height: 1.75; color: var(--ink-mid); font-weight: 300; }
 
-/* ANIMAÇÕES */
-@keyframes fadeUp { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: translateY(0); } }
-header          { animation: fadeUp 0.7s ease both; }
-.about-section  { animation: fadeUp 0.7s 0.15s ease both; }
-.projects-grid  { animation: fadeUp 0.7s 0.25s ease both; }
-.author-section { animation: fadeUp 0.7s 0.35s ease both; }
+  /* ── FOOTER ── */
+  footer { text-align: center; padding: 2.5rem 1rem 1.5rem; border-top: 1px solid var(--parchment-deep); margin-top: 3rem; }
+  footer p { font-family: 'Cinzel', serif; font-size: 0.62rem; letter-spacing: 0.35em; text-transform: uppercase; color: var(--ink-light); opacity: 0.7; }
 
-@media (max-width: 600px) {
-.about-section { padding: 1.6rem 1.4rem; }
-.author-section { grid-template-columns: 1fr; }
-.author-avatar { margin: 0 auto; }
-.author-info { text-align: center; }
-}
+  /* ── ANIMAÇÕES ── */
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: translateY(0); } }
+  header          { animation: fadeUp 0.7s ease both; }
+  .about-section  { animation: fadeUp 0.7s 0.15s ease both; }
+  .projects-grid  { animation: fadeUp 0.7s 0.25s ease both; }
+  .author-section { animation: fadeUp 0.7s 0.35s ease both; }
+
+  @media (max-width: 600px) {
+    .about-section { padding: 1.6rem 1.4rem; }
+    .author-section { grid-template-columns: 1fr; }
+    .author-avatar { margin: 0 auto; }
+    .author-info { text-align: center; }
+  }
 </style>
-
 </head>
 <body>
 
 <div class="page-wrap">
 
+  <!-- HEADER -->
   <header>
     <div class="header-rule"><span>Repositório de Estudos Diplomáticos</span></div>
     <div class="seal">
@@ -267,107 +268,126 @@ header          { animation: fadeUp 0.7s ease both; }
     <p class="subtitle-header">Instrumentos para o Concurso de Admissão à Carreira Diplomática</p>
   </header>
 
+  <!-- ABOUT -->
   <section class="about-section" aria-label="Sobre o projeto">
     <span class="about-label">Da natureza e propósito desta coleção</span>
     <p>Este repositório reúne ferramentas interativas concebidas para facilitar a preparação ao <em>Concurso de Admissão à Carreira Diplomática (CACD)</em>. O exame — organizado pelo Instituto Rio Branco do Ministério das Relações Exteriores — exige domínio profundo de história, geografia, direito internacional e relações exteriores do Brasil.</p>
     <p>Cada projeto aqui catalogado é uma carta náutica para navegar em um domínio específico do conhecimento: tratados que moldaram as fronteiras brasileiras, conflitos que redefiniram o mapa do mundo, figuras que governaram o país. Os materiais são de livre acesso e uso educativo, elaborados com rigor e atenção às fontes primárias.</p>
   </section>
 
+  <!-- PROJECTS -->
   <div class="projects-heading"><h2>Instrumentos disponíveis</h2></div>
 
   <div class="projects-grid">
 
-```
-<!-- 1 -->
-<a href="https://caiosoares1899.github.io/cacd.html/brasil_tratados.html"
-   class="project-card" target="_blank">
-  <div class="card-preview">
-    <iframe src="https://caiosoares1899.github.io/cacd.html/brasil_tratados.html"
-            loading="lazy" scrolling="no" tabindex="-1" aria-hidden="true"></iframe>
-    <div class="overlay"></div>
-    <span class="preview-tag">Cartografia</span>
-  </div>
-  <div class="card-body">
-    <span class="card-tag">História · Direito Internacional</span>
-    <div class="card-title">Brasil — Expansão Territorial &amp; Diplomacia</div>
-    <p class="card-desc">Mapa interativo das aquisições territoriais brasileiras desde o Tratado de Tordesilhas (1494) até o século XX. Clique nas regiões para acessar os eventos diplomáticos.</p>
-    <div class="card-cta">Acessar instrumento</div>
-  </div>
-</a>
+    <!-- 1 · Brasil no Mundo -->
+    <a href="https://caiosoares1899.github.io/cacd.html/brasilnomundo"
+       class="project-card" target="_blank">
+      <div class="card-preview">
+        <iframe src="https://caiosoares1899.github.io/cacd.html/brasilnomundo"
+                loading="lazy" scrolling="no" tabindex="-1" aria-hidden="true"></iframe>
+        <div class="overlay"></div>
+        <span class="preview-tag">Política Externa</span>
+      </div>
+      <div class="card-body">
+        <span class="card-tag">Diplomacia · Relações Exteriores</span>
+        <div class="card-title">Brasil no Mundo — Relações Diplomáticas</div>
+        <p class="card-desc">Mapa mundial interativo das relações diplomáticas do Brasil com 195 países. Visualize por continente a presença e intensidade das relações exteriores brasileiras.</p>
+        <div class="card-cta">Acessar instrumento</div>
+      </div>
+    </a>
 
-<!-- 2 -->
-<a href="https://caiosoares1899.github.io/cacd.html/mapaconflitos.index.html"
-   class="project-card" target="_blank">
-  <div class="card-preview">
-    <iframe src="https://caiosoares1899.github.io/cacd.html/mapaconflitos.index.html"
-            loading="lazy" scrolling="no" tabindex="-1" aria-hidden="true"></iframe>
-    <div class="overlay"></div>
-    <span class="preview-tag">Geopolítica</span>
-  </div>
-  <div class="card-body">
-    <span class="card-tag">Relações Internacionais</span>
-    <div class="card-title">Mapa de Conflitos Internacionais</div>
-    <p class="card-desc">Panorama geopolítico interativo dos principais conflitos e tensões no cenário internacional. Ferramenta essencial para a prova de Política Internacional.</p>
-    <div class="card-cta">Acessar instrumento</div>
-  </div>
-</a>
+    <!-- 2 · Mapa de Conflitos -->
+    <a href="https://caiosoares1899.github.io/cacd.html/mapaconflitos.index.html"
+       class="project-card" target="_blank">
+      <div class="card-preview">
+        <iframe src="https://caiosoares1899.github.io/cacd.html/mapaconflitos.index.html"
+                loading="lazy" scrolling="no" tabindex="-1" aria-hidden="true"></iframe>
+        <div class="overlay"></div>
+        <span class="preview-tag">Geopolítica</span>
+      </div>
+      <div class="card-body">
+        <span class="card-tag">Relações Internacionais</span>
+        <div class="card-title">Mapa de Conflitos Internacionais</div>
+        <p class="card-desc">Panorama geopolítico interativo dos principais conflitos e tensões no cenário internacional. Ferramenta essencial para a prova de Política Internacional.</p>
+        <div class="card-cta">Acessar instrumento</div>
+      </div>
+    </a>
 
-<!-- 3 -->
-<a href="https://caiosoares1899.github.io/cacd.html/presidentes.index.html"
-   class="project-card" target="_blank">
-  <div class="card-preview">
-    <iframe src="https://caiosoares1899.github.io/cacd.html/presidentes.index.html"
-            loading="lazy" scrolling="no" tabindex="-1" aria-hidden="true"></iframe>
-    <div class="overlay"></div>
-    <span class="preview-tag">História Política</span>
-  </div>
-  <div class="card-body">
-    <span class="card-tag">História do Brasil</span>
-    <div class="card-title">Presidentes do Brasil</div>
-    <p class="card-desc">Linha do tempo interativa dos presidentes brasileiros desde a Proclamação da República — períodos, contextos históricos e características de cada governo.</p>
-    <div class="card-cta">Acessar instrumento</div>
-  </div>
-</a>
+    <!-- 3 · Presidentes -->
+    <a href="https://caiosoares1899.github.io/cacd.html/presidentes.index.html"
+       class="project-card" target="_blank">
+      <div class="card-preview">
+        <iframe src="https://caiosoares1899.github.io/cacd.html/presidentes.index.html"
+                loading="lazy" scrolling="no" tabindex="-1" aria-hidden="true"></iframe>
+        <div class="overlay"></div>
+        <span class="preview-tag">História Política</span>
+      </div>
+      <div class="card-body">
+        <span class="card-tag">História do Brasil</span>
+        <div class="card-title">Presidentes do Brasil</div>
+        <p class="card-desc">Linha do tempo interativa dos presidentes brasileiros desde a Proclamação da República — períodos, contextos históricos e características de cada governo.</p>
+        <div class="card-cta">Acessar instrumento</div>
+      </div>
+    </a>
 
-<!-- 4 -->
-<a href="https://caiosoares1899.github.io/cacd.html/mapa_economia_joanina.html"
-   class="project-card" target="_blank">
-  <div class="card-preview">
-    <iframe src="https://caiosoares1899.github.io/cacd.html/mapa_economia_joanina.html"
-            loading="lazy" scrolling="no" tabindex="-1" aria-hidden="true"></iframe>
-    <div class="overlay"></div>
-    <span class="preview-tag">Economia Colonial</span>
-  </div>
-  <div class="card-body">
-    <span class="card-tag">História do Brasil · Período Joanino</span>
-    <div class="card-title">Brasil Joanino — Economia &amp; Produção</div>
-    <p class="card-desc">Mapa interativo da economia durante a presença da Corte portuguesa no Rio de Janeiro (1808–1821). Explore capitanias, produtos e repercussões na política externa.</p>
-    <div class="card-cta">Acessar instrumento</div>
-  </div>
-</a>
+    <!-- 4 · Economia Joanina -->
+    <a href="https://caiosoares1899.github.io/cacd.html/mapa_economia_joanina.html"
+       class="project-card" target="_blank">
+      <div class="card-preview">
+        <iframe src="https://caiosoares1899.github.io/cacd.html/mapa_economia_joanina.html"
+                loading="lazy" scrolling="no" tabindex="-1" aria-hidden="true"></iframe>
+        <div class="overlay"></div>
+        <span class="preview-tag">Economia Colonial</span>
+      </div>
+      <div class="card-body">
+        <span class="card-tag">História do Brasil · Período Joanino</span>
+        <div class="card-title">Brasil Joanino — Economia &amp; Produção</div>
+        <p class="card-desc">Mapa interativo da economia durante a presença da Corte portuguesa no Rio de Janeiro (1808–1821). Explore capitanias, produtos e repercussões na política externa.</p>
+        <div class="card-cta">Acessar instrumento</div>
+      </div>
+    </a>
 
-<!-- 5 -->
-<a href="https://caiosoares1899.github.io/cacd.html/chanceleres_brasil.html"
-   class="project-card" target="_blank">
-  <div class="card-preview">
-    <iframe src="https://caiosoares1899.github.io/cacd.html/chanceleres_brasil.html"
-            loading="lazy" scrolling="no" tabindex="-1" aria-hidden="true"></iframe>
-    <div class="overlay"></div>
-    <span class="preview-tag">Diplomacia</span>
-  </div>
-  <div class="card-body">
-    <span class="card-tag">Política Externa · História</span>
-    <div class="card-title">Chanceleres &amp; Diplomatas do Brasil</div>
-    <p class="card-desc">De Tomé de Sousa à Nova República — linha do tempo completa com governadores-gerais, ministros do Império e chanceleres: pensamento, eventos-chave e legado de cada figura.</p>
-    <div class="card-cta">Acessar instrumento</div>
-  </div>
-</a>
-```
+    <!-- 5 · Chanceleres -->
+    <a href="https://caiosoares1899.github.io/cacd.html/chanceleres_brasil.html"
+       class="project-card" target="_blank">
+      <div class="card-preview">
+        <iframe src="https://caiosoares1899.github.io/cacd.html/chanceleres_brasil.html"
+                loading="lazy" scrolling="no" tabindex="-1" aria-hidden="true"></iframe>
+        <div class="overlay"></div>
+        <span class="preview-tag">Diplomacia</span>
+      </div>
+      <div class="card-body">
+        <span class="card-tag">Política Externa · História</span>
+        <div class="card-title">Chanceleres &amp; Diplomatas do Brasil</div>
+        <p class="card-desc">De Tomé de Sousa à Nova República — linha do tempo completa com governadores-gerais, ministros do Império e chanceleres: pensamento, eventos-chave e legado.</p>
+        <div class="card-cta">Acessar instrumento</div>
+      </div>
+    </a>
+
+    <!-- 6 · Expansão Territorial -->
+    <a href="https://caiosoares1899.github.io/cacd.html/brasil_tratados.html"
+       class="project-card" target="_blank">
+      <div class="card-preview">
+        <iframe src="https://caiosoares1899.github.io/cacd.html/brasil_tratados.html"
+                loading="lazy" scrolling="no" tabindex="-1" aria-hidden="true"></iframe>
+        <div class="overlay"></div>
+        <span class="preview-tag">Cartografia</span>
+      </div>
+      <div class="card-body">
+        <span class="card-tag">História · Direito Internacional</span>
+        <div class="card-title">Brasil — Expansão Territorial &amp; Diplomacia</div>
+        <p class="card-desc">Mapa interativo das aquisições territoriais brasileiras desde o Tratado de Tordesilhas (1494) até o século XX. Clique nas regiões para acessar os eventos diplomáticos.</p>
+        <div class="card-cta">Acessar instrumento</div>
+      </div>
+    </a>
 
   </div>
 
+  <!-- SEPARATOR -->
   <div class="ornament-sep" aria-hidden="true"><span>✦ ✦ ✦</span></div>
 
+  <!-- AUTHOR -->
   <section class="author-section" aria-label="Sobre o autor">
     <div class="author-avatar" aria-hidden="true">CS</div>
     <div class="author-info">
@@ -385,24 +405,21 @@ header          { animation: fadeUp 0.7s ease both; }
 </div>
 
 <script>
-  // Redimensiona os iframes para preencher exatamente o container do card
+  // Ajusta a escala do iframe ao tamanho real do card
   function scaleIframes() {
     document.querySelectorAll('.card-preview').forEach(function(preview) {
       var iframe = preview.querySelector('iframe');
       if (!iframe) return;
-      var w = preview.offsetWidth;
-      var h = preview.offsetHeight;
-      var scale = w / 1280;
+      var scale = preview.offsetWidth / 1280;
       iframe.style.transform = 'scale(' + scale + ')';
       iframe.style.width  = '1280px';
-      iframe.style.height = Math.round(h / scale) + 'px';
+      iframe.style.height = Math.round(preview.offsetHeight / scale) + 'px';
     });
   }
-
   scaleIframes();
   window.addEventListener('resize', scaleIframes);
 
-  // Overlay redireciona o clique para o link do card
+  // Overlay redireciona o clique para o link do card pai
   document.querySelectorAll('.overlay').forEach(function(overlay) {
     overlay.addEventListener('click', function() {
       var card = overlay.closest('.project-card');
