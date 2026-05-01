@@ -20,7 +20,6 @@
 html,body{height:100vh;overflow:hidden}
 body{display:flex;flex-direction:column;font-family:'IBM Plex Sans',sans-serif;font-weight:300;color:var(--text);background:var(--bg)}
 
-/* ── HEADER ── */
 .header{flex-shrink:0;padding:10px 22px 8px;background:var(--surface);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
 .header-left .tag{font-family:'IBM Plex Mono',monospace;font-size:8px;letter-spacing:.25em;color:var(--gold);text-transform:uppercase}
 .header-left h1{font-family:'Playfair Display',serif;font-size:1.05rem;color:var(--cream);margin-top:1px}
@@ -29,14 +28,12 @@ body{display:flex;flex-direction:column;font-family:'IBM Plex Sans',sans-serif;f
 .leg-dot{width:10px;height:10px;border-radius:2px;flex-shrink:0}
 .leg-line{width:18px;height:2px;flex-shrink:0}
 
-/* ── MAIN ── */
 .main{flex:1;display:flex;min-height:0}
 #map{flex:1;background:#0d1520!important}
 .leaflet-container{background:#0d1520!important}
 .leaflet-control-zoom a{background:var(--surface)!important;color:var(--gold)!important;border-color:var(--border)!important;font-family:'IBM Plex Mono',monospace!important}
 .leaflet-control-attribution{display:none!important}
 
-/* ── SIDEBAR ── */
 .sidebar{width:252px;flex-shrink:0;background:var(--surface2);border-left:1px solid var(--border);display:flex;flex-direction:column;overflow:hidden}
 .sidebar-head{padding:8px 12px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;flex-shrink:0}
 .sidebar-head span:first-child{font-family:'IBM Plex Mono',monospace;font-size:8px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold)}
@@ -55,12 +52,10 @@ body{display:flex;flex-direction:column;font-family:'IBM Plex Sans',sans-serif;f
 .si-sub{font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--muted);margin-top:1px}
 .grp-head{padding:5px 10px;background:rgba(201,168,76,.04);border-bottom:1px solid var(--border);font-family:'IBM Plex Mono',monospace;font-size:8px;letter-spacing:.15em;text-transform:uppercase;color:var(--gold)}
 
-/* ── TOOLTIP ── */
 .cacd-tooltip{background:#1a1814!important;border:1px solid #2e2a22!important;color:#f0e8d8!important;font-family:'IBM Plex Sans',sans-serif!important;border-radius:2px!important;box-shadow:0 4px 20px rgba(0,0,0,.6)!important;padding:7px 12px!important;font-size:13px!important}
 .cacd-tooltip b{font-size:14px!important}
 .cacd-tooltip::before{display:none!important}
 
-/* ── OVERLAY / POPUP ── */
 .overlay{display:none;position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,.65);backdrop-filter:blur(4px);align-items:center;justify-content:center;padding:20px}
 .overlay.open{display:flex}
 .popup{background:var(--surface);border:1px solid var(--border);border-radius:3px;width:100%;max-width:740px;max-height:90vh;overflow-y:auto;position:relative;box-shadow:0 40px 100px rgba(0,0,0,.8);animation:popIn .18s ease}
@@ -77,9 +72,7 @@ body{display:flex;flex-direction:column;font-family:'IBM Plex Sans',sans-serif;f
 .pbox.full{grid-column:1/-1}
 .pbox h3{font-family:'IBM Plex Mono',monospace;font-size:8px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);margin-bottom:7px}
 .pbox p{font-size:12px;line-height:1.7;color:var(--text)}
-.pbox .chip{display:inline-block;font-size:9px;padding:2px 7px;border-radius:2px;margin:2px 3px 2px 0;font-family:'IBM Plex Mono',monospace}
 .status-badge{display:inline-flex;align-items:center;gap:5px;font-family:'IBM Plex Mono',monospace;font-size:9px;padding:3px 9px;border-radius:2px;margin-bottom:6px}
-
 @media(max-width:680px){.sidebar{display:none}.pgrid{grid-template-columns:1fr}}
 </style>
 </head>
@@ -125,11 +118,10 @@ body{display:flex;flex-direction:column;font-family:'IBM Plex Sans',sans-serif;f
 // ══════════════════════════════════════════════════════════════════
 // DATASET — Capitanias Hereditárias
 // Coordenadas baseadas em Cintra (2013), Tabela 9 e Figura 10
-// Polígonos: [lat, lng] (Leaflet)
+// LARGURA DAS CAPITANIAS DO NORTE CORRIGIDA (extensão até -48.7°W)
+// Polígonos: [lat, lng] (Leaflet) — ATENÇÃO: Leaflet usa (lat, lng)
 // ══════════════════════════════════════════════════════════════════
 
-// Resultado de cada capitania
-// 'sucesso' | 'parcial' | 'fracasso' | 'norte'
 const COR = {
   sucesso:  {fill:'#14532d', border:'#4ade80', label:'Sucesso'},
   parcial:  {fill:'#451a03', border:'#f59e0b', label:'Colonização parcial'},
@@ -138,7 +130,10 @@ const COR = {
 };
 
 const CAPS = [
-  // ── NORTE: limites por MERIDIANOS (Cintra corrige o erro clássico)
+  // ══════════════════════════════════════════════════════════════════
+  // REGIÃO NORTE — limites por MERIDIANOS (Cintra corrige o erro clássico)
+  // LARGURA CORRIGIDA: todas as capitanias do Norte vão até -48.7°W (Tordesilhas)
+  // ══════════════════════════════════════════════════════════════════
   {
     id:'MA1', n:1, nome:'Maranhão 1º Lote', donatario:'Aires da Cunha',
     leguas:'50 léguas (+25 pela Carta de Mineração)', resultado:'norte',
@@ -148,23 +143,23 @@ const CAPS = [
     portugal:'Donatário morre no naufrágio da frota de 1535-36 ao tentar chegar ao Brasil. A capitania fica sem senhor e sem colonização até o séc. XVII.',
     lideres:'Aires da Cunha (morreu no naufrágio)',
     conflitos:'Resistência intensa dos Tupinambás. Presença francesa desde meados do séc. XVI. Fundação francesa de São Luís (1612); expulsão pelos portugueses em 1615.',
-    legado:'Origem do futuro Estado do Maranhão. O fracasso das capitanias do Norte abriu caminho para a criação do Estado do Maranhão e Grão-Pará (1621), com administração separada de Lisboa.',
+    legado:'Origem do futuro Estado do Maranhão. O fracasso das capitanias do Norte abriu caminho para a criação do Estado do Maranhão e Grão-Pará (1621).',
     fonte:'Cintra (2013): limites por meridianos, não paralelos. Turiaçú como Abra de Diogo Leite (extremo NW).',
-    // Polígono: [lat, lng]
-    poly:[[-1.64, -45.25], [-2.33, -44.36], [-6.68, -44.36], [-6.68, -45.25]]
+    // CORRIGIDO: largura total até -48.7 (meridiano de Tordesilhas)
+    poly:[[1.64, -45.25], [2.33, -45.25], [2.33, -48.7], [1.64, -48.7]]
   },
   {
     id:'MA2', n:2, nome:'Maranhão 2º Lote', donatario:'João de Barros',
     leguas:'50 léguas', resultado:'norte',
     capital:'Alcântara (fundação posterior, séc. XVII)',
-    economia:'Sem colonização. João de Barros tentou parceria com grupos alemães (fuggers e welsers) para financiar a expedição que nunca saiu.',
+    economia:'Sem colonização. João de Barros tentou parceria com grupos alemães (Fuggers e Welsers) para financiar a expedição que nunca saiu.',
     politica:'Capitania geminada com a de Aires da Cunha. Carta de João de Barros (única disponível integralmente) revela que os dois donatários tinham liberdade para dividir as 100 léguas entre si como desejassem.',
-    portugal:'João de Barros era cronista-mor das Índias — nunca veio ao Brasil. Enviou representantes que falharam. Era amigo pessoal do rei D. João III.',
-    lideres:'João de Barros (nunca veio), Fernando Álvares de Andrade (co-contratado)',
+    portugal:'João de Barros era cronista-mor das Índias — nunca veio ao Brasil. Enviou representantes que falharam.',
+    lideres:'João de Barros (nunca veio), Fernando Álvares de Andrade',
     conflitos:'Franceses e indígenas impediam qualquer tentativa de assentamento. O terreno foi cedido à competição franco-portuguesa no Atlântico.',
-    legado:'João de Barros ficou para a história como o maior cronista português ("O Tito Lívio de Portugal"), não como colonizador. Sua capitania foi absorvida pela Coroa no séc. XVII.',
+    legado:'João de Barros ficou para a história como o maior cronista português ("O Tito Lívio de Portugal"), não como colonizador.',
     fonte:'Cintra (2013): mapa de Bartolomeu Velho (1561) confirma faixas verticais por meridianos no Norte.',
-    poly:[[-2.33, -44.36], [-2.5, -43.75], [-2.36, -43.75], [-6.68, -43.75], [-6.68, -44.36]]
+    poly:[[2.33, -44.36], [2.36, -44.36], [2.36, -48.7], [2.33, -48.7]]
   },
   {
     id:'PI', n:3, nome:'Piauí', donatario:'Fernando Álvares de Andrade',
@@ -172,26 +167,26 @@ const CAPS = [
     resultado:'norte',
     capital:'Oeiras (fundada apenas em 1718)',
     economia:'Sem exploração colonial no período. Séculos depois: pecuária extensiva e algodão no sertão.',
-    politica:'Capitania em território continuo, sem divisão em quinhões. A Carta de Mineração registra valor riscado e controverso (35 ou 75 léguas). Cintra demonstra que 35 se ajusta melhor às medições reais.',
-    portugal:'Donatário era ligado à administração régia. Nunca investiu na capitania. Não há registro de tentativa séria de colonização.',
+    politica:'Capitania em território contínuo, sem divisão em quinhões. A Carta de Mineração registra valor riscado e controverso (35 ou 75 léguas). Cintra demonstra que 35 se ajusta melhor às medições reais.',
+    portugal:'Donatário era ligado à administração régia. Nunca investiu na capitania.',
     lideres:'Fernando Álvares de Andrade (ausente)',
     conflitos:'Resistência indígena bloqueou qualquer penetração. Região só foi incorporada ao domínio português no séc. XVIII.',
-    legado:'O Piauí foi o último estado brasileiro a ser colonizado de forma sistemática — e de dentro para fora, a partir do sertão baiano-maranhense, não do litoral.',
-    fonte:'Cintra (2013): leitura paleográfica da Carta de Mineração (Torre do Tombo) indica 35 léguas — não 75 como anotado por Varnhagen à margem.',
-    poly:[[-2.36, -43.75], [-2.5, -43.0], [-2.65, -42.0], [-2.8, -41.2], [-2.87, -40.85], [-6.68, -40.85], [-6.68, -43.75]]
+    legado:'O Piauí foi o último estado brasileiro a ser colonizado de forma sistemática — e de dentro para fora, a partir do sertão baiano-maranhense.',
+    fonte:'Cintra (2013): leitura paleográfica da Carta de Mineração (Torre do Tombo) indica 35 léguas.',
+    poly:[[2.36, -43.75], [2.87, -43.75], [2.87, -48.7], [2.36, -48.7]]
   },
   {
     id:'CE', n:4, nome:'Ceará', donatario:'Antônio Cardoso de Barros',
     leguas:'40 léguas', resultado:'norte',
     capital:'Fortaleza (criada em 1726, quase 200 anos depois)',
     economia:'Sem exploração colonial no século XVI. Algodão e pecuária são fenômenos do séc. XVIII.',
-    politica:'Cintra demonstra que os limites desta capitania confirmam o uso de meridianos: a carta de doação menciona a Angra dos Negros (2°S, lado leste) e o Rio da Cruz (2°20\'S, lado oeste) — altitudes distintas que só fazem sentido com linhas norte-sul.',
-    portugal:'Antônio Cardoso de Barros era eclesiástico. Nunca pôs os pés no Brasil. A capitania foi a mais emblemática falha do sistema hereditário.',
+    politica:'Cintra demonstra que os limites desta capitania confirmam o uso de meridianos: a carta de doação menciona a Angra dos Negros (2°S) e o Rio da Cruz (2°20\'S) — altitudes distintas que só fazem sentido com linhas norte-sul.',
+    portugal:'Antônio Cardoso de Barros era eclesiástico. Nunca pôs os pés no Brasil.',
     lideres:'Antônio Cardoso de Barros (ausente)',
     conflitos:'Potiguaras e Tapuias resistiram à colonização. Invasão holandesa (1630-1654) dominou a região.',
-    legado:'O Ceará foi colonizado efetivamente apenas no séc. XVII, com a construção do Forte Schoonenborch (depois Fort Ceulen) pelos holandeses e, depois, pelos portugueses.',
+    legado:'O Ceará foi colonizado efetivamente apenas no séc. XVII, com a construção do Forte Schoonenborch (depois Fort Ceulen) pelos holandeses.',
     fonte:'Cintra (2013): a menção de latitudes diferentes para os dois extremos da capitania (2° e 2°1/3) só faz sentido com divisas por meridianos.',
-    poly:[[-2.87, -40.85], [-3.1, -40.0], [-3.4, -39.0], [-3.72, -38.46], [-6.68, -38.46], [-6.68, -40.85]]
+    poly:[[2.87, -40.85], [3.72, -40.85], [3.72, -48.7], [2.87, -48.7]]
   },
   {
     id:'RN1', n:5, nome:'Rio Grande do Norte (lote norte)', donatario:'Aires da Cunha',
@@ -203,9 +198,9 @@ const CAPS = [
     portugal:'O naufrágio de Aires da Cunha deixou a capitania sem senhor. A Coroa só retomou controle efetivo no final do séc. XVI.',
     lideres:'Aires da Cunha (morreu no naufrágio)',
     conflitos:'Potiguaras dominavam a região. Franceses, aliados indígenas, frequentavam o litoral. Holandeses ocuparam de 1630 a 1654.',
-    legado:'A Batalha dos Guarapes (1648-49) foi vencida por forças luso-brasileiras com apoio de índios e negros — símbolo de resistência à dominação holandesa.',
-    fonte:'Cintra (2013): mapa de Bartolomeu Velho (1561) mostra faixas verticais — "capitania d\'aires da cunha / de j de baros" — confirmando divisas por meridianos.',
-    poly:[[-3.72, -38.46], [-4.0, -37.5], [-4.5, -37.0], [-5.08, -36.66], [-6.68, -36.66], [-6.68, -38.46]]
+    legado:'A Batalha dos Guarapes (1648-49) foi vencida por forças luso-brasileiras — símbolo de resistência à dominação holandesa.',
+    fonte:'Cintra (2013): mapa de Bartolomeu Velho (1561) mostra faixas verticais.',
+    poly:[[3.72, -38.46], [5.08, -38.46], [5.08, -48.7], [3.72, -48.7]]
   },
   {
     id:'RN2', n:6, nome:'Rio Grande do Norte (lote sul)', donatario:'João de Barros',
@@ -213,201 +208,187 @@ const CAPS = [
     resultado:'norte',
     capital:'Natal',
     economia:'Idêntico ao lote norte. Sem exploração colonial no séc. XVI.',
-    politica:'Lote sul, com dois lados costeiros (faixa de "esquina" onde a costa muda de direção). João de Barros tentou associar-se a banqueiros alemães para financiar a colonização.',
-    portugal:'João de Barros nunca veio. Seus herdeiros herdaram a capitania sem qualquer infraestrutura construída.',
+    politica:'Lote sul, com dois lados costeiros (faixa de "esquina" onde a costa muda de direção). João de Barros tentou associar-se a banqueiros alemães.',
+    portugal:'João de Barros nunca veio. Seus herdeiros herdaram a capitania sem qualquer infraestrutura.',
     lideres:'João de Barros (cronista, ausente)',
-    conflitos:'Idem lote norte. Resistência Potiguar e presença francesa.',
-    legado:'A criação tardia de Natal (1599) foi uma resposta militar à presença francesa, não uma evolução natural da capitania hereditária.',
+    conflitos:'Resistência Potiguar e presença francesa.',
+    legado:'A criação tardia de Natal (1599) foi uma resposta militar à presença francesa.',
     fonte:'Cintra (2013).',
-    poly:[[-5.08, -36.66], [-5.5, -35.5], [-5.79, -35.21], [-6.0, -35.0], [-6.68, -34.93], [-6.68, -36.66]]
+    poly:[[5.08, -36.66], [6.68, -36.66], [6.68, -48.7], [5.08, -48.7]]
   },
-  // ── CENTRAIS: limites por PARALELOS
+  // ══════════════════════════════════════════════════════════════════
+  // CENTRO — limites por PARALELOS
+  // ══════════════════════════════════════════════════════════════════
   {
     id:'IT', n:7, nome:'Itamaracá', donatario:'Pero Lopes de Sousa',
-    leguas:'30 léguas (lote extra acima de Pernambuco)',
-    resultado:'parcial',
+    leguas:'30 léguas (lote extra acima de Pernambuco)', resultado:'parcial',
     capital:'Vila da Conceição (Ilha de Itamaracá)',
     economia:'Cana-de-açúcar em pequena escala. Engenhos modestos, eclipsados por Pernambuco ao sul.',
     politica:'Lote extra concedido a Pero Lopes em janeiro de 1535 — antes das capitanias do norte serem distribuídas. Servia como ponto de partida para a divisão do Norte.',
-    portugal:'Pero Lopes morreu em naufrágio. A capitania passou para herdeiros sem interesse na administração e foi progressivamente absorvida por Pernambuco.',
+    portugal:'Pero Lopes morreu em naufrágio. A capitania passou para herdeiros sem interesse.',
     lideres:'Pero Lopes de Sousa (falecido), depois Martim Afonso (irmão)',
     conflitos:'Disputas de limite com Pernambuco. Presença holandesa no séc. XVII (Forte Orange, 1631).',
-    legado:'Itamaracá acabou incorporada à Pernambuco. A Ilha de Itamaracá é hoje um município de Pernambuco, com o Forte Orange como patrimônio histórico.',
+    legado:'Itamaracá acabou incorporada à Pernambuco. A Ilha de Itamaracá é hoje um município de Pernambuco.',
     fonte:'Cintra (2013): Itamaracá é o ponto de articulação entre o sistema de meridianos (Norte) e de paralelos (Centro).',
-    poly:[[-6.68, -34.93], [-7.0, -34.85], [-7.81, -34.85], [-7.81, -48.7], [-6.68, -48.7]]
+    poly:[[6.68, -34.93], [7.81, -34.93], [7.81, -48.7], [6.68, -48.7]]
   },
   {
     id:'PE', n:8, nome:'Pernambuco', donatario:'Duarte Coelho Pereira',
-    leguas:'60 léguas (a maior, junto com Bahia reformada)',
-    resultado:'sucesso',
+    leguas:'60 léguas (a maior, junto com Bahia reformada)', resultado:'sucesso',
     capital:'Olinda (1537) — depois Recife (séc. XVII)',
-    economia:'A mais próspera do Brasil colonial. Plantation de cana-de-açúcar com trabalho escravo africano. Pernambuco produzia ~2/3 do açúcar exportado pelo Brasil no séc. XVI.',
-    politica:'Organização militar e administrativa exemplar. Duarte Coelho construiu fortes, estradas, igrejas e câmaras. Aliança com o grupo Tabajara liderado por Jerônimo de Albuquerque (cunhado do donatário).',
-    portugal:'Único donatário que obteve retorno econômico substancial. Manteve correspondência ativa com o rei — suas cartas são fontes históricas primárias sobre o Brasil do séc. XVI.',
-    lideres:'Duarte Coelho Pereira, Brites de Albuquerque (esposa que governou na ausência do marido), Jerônimo de Albuquerque',
-    conflitos:'Guerra contra os Caetés (que haviam devorado o Bispo Sardinha). Invasão holandesa (1630-1654): o período holandês produziu ciência, arte e o primeiro atlas do Brasil (Barlaeus, 1647). Insurreição Pernambucana (1817) e Revolução Praieira (1848) são heranças da tradição de resistência da capitania.',
-    legado:'Pernambuco foi o centro econômico e político do Nordeste por dois séculos. A "Escola de Recife" (séc. XIX) produziu juristas, poetas e abolicionistas que moldaram o pensamento brasileiro.',
+    economia:'A mais próspera do Brasil colonial. Plantation de cana-de-açúcar com trabalho escravo africano.',
+    politica:'Organização militar e administrativa exemplar. Duarte Coelho construiu fortes, estradas, igrejas e câmaras. Aliança com o grupo Tabajara.',
+    portugal:'Único donatário que obteve retorno econômico substancial. Mantinha correspondência ativa com o rei.',
+    lideres:'Duarte Coelho Pereira, Brites de Albuquerque, Jerônimo de Albuquerque',
+    conflitos:'Guerra contra os Caetés (que haviam devorado o Bispo Sardinha). Invasão holandesa (1630-1654). Insurreição Pernambucana (1817).',
+    legado:'Pernambuco foi o centro econômico do Nordeste por dois séculos. A "Escola de Recife" produziu juristas e abolicionistas.',
     fonte:'Cintra (2013): Pernambuco começa no Canal ao sul da Ilha de Itamaracá e vai ao Rio de São Francisco.',
-    poly:[[-7.81, -34.85], [-8.05, -34.88], [-8.5, -35.0], [-9.0, -35.5], [-9.5, -35.7], [-10.0, -36.0], [-10.5, -36.4], [-10.5, -48.7], [-7.81, -48.7]]
+    poly:[[7.81, -34.85], [10.5, -34.85], [10.5, -48.7], [7.81, -48.7]]
   },
   {
     id:'BA', n:9, nome:'Bahia de Todos os Santos', donatario:'Francisco Pereira Coutinho',
-    leguas:'50 léguas',
-    resultado:'fracasso',
+    leguas:'50 léguas', resultado:'fracasso',
     capital:'Salvador (1549) — fundada pelo Governo-Geral, não pelo donatário',
-    economia:'Potencial enorme (cana, tabaco, pecuária) — mas não realizado pelo donatário. A Coroa assumiu e desenvolveu a capitania.',
-    politica:'Fracasso total do sistema privado: Coutinho foi expulso pelos índios Tupinambás aliados a João Ramalho. Retornou, foi capturado e morto. A Coroa então instalou o Governo-Geral (Tomé de Sousa, 1549) em Salvador.',
-    portugal:'O fracasso da Bahia foi o gatilho para a criação do Governo-Geral. D. João III concluiu que o sistema de donatarias privadas era insuficiente para colonizar o Brasil.',
-    lideres:'Francisco Pereira Coutinho (morto pelos Tupinambás), Tomé de Sousa (1º Governador-Geral), Mem de Sá',
-    conflitos:'Aliança Tupinambás-franceses expulsou Coutinho. A chegada de Tomé de Sousa (1549) com 1.000 homens e jesuítas (incluindo Pe. Nóbrega) mudou o cenário. Guerras de pacificação dos Tupinambás nos anos 1550-1560.',
-    legado:'Salvador foi capital do Brasil por 214 anos (1549-1763). A Bahia concentrou o maior contingente de escravizados africanos das Américas — herança que moldou a cultura brasileira (candomblé, capoeira, culinária baiana).',
-    fonte:'Cintra (2013): limite norte no Rio de São Francisco, sul no lado sul da Baía de Todos os Santos.',
-    poly:[[-10.5, -36.4], [-11.0, -37.0], [-11.5, -37.3], [-12.0, -37.5], [-12.5, -38.0], [-12.97, -38.5], [-13.14, -38.81], [-13.14, -48.7], [-10.5, -48.7]]
+    economia:'Potencial enorme (cana, tabaco, pecuária) — mas não realizado pelo donatário. A Coroa assumiu e desenvolveu.',
+    politica:'Fracasso total do sistema privado: Coutinho foi expulso pelos índios Tupinambás aliados a João Ramalho. Retornou, foi capturado e morto.',
+    portugal:'O fracasso da Bahia foi o gatilho para a criação do Governo-Geral. D. João III concluiu que o sistema de donatarias era insuficiente.',
+    lideres:'Francisco Pereira Coutinho (morto pelos Tupinambás), Tomé de Sousa (1º Governador-Geral)',
+    conflitos:'Aliança Tupinambás-franceses expulsou Coutinho. A chegada de Tomé de Sousa (1549) com 1.000 homens mudou o cenário.',
+    legado:'Salvador foi capital do Brasil por 214 anos (1549-1763). A Bahia concentrou o maior contingente de escravizados das Américas.',
+    fonte:'Cintra (2013): limite norte no Rio de São Francisco, sul no sul da Baía de Todos os Santos.',
+    poly:[[10.5, -36.4], [13.14, -36.4], [13.14, -48.7], [10.5, -48.7]]
   },
   {
     id:'IL', n:10, nome:'Ilhéus', donatario:'Jorge de Figueiredo Correia',
-    leguas:'50 léguas',
-    resultado:'fracasso',
+    leguas:'50 léguas', resultado:'fracasso',
     capital:'São Jorge dos Ilhéus (1534) — atual Ilhéus, BA',
-    economia:'Cana-de-açúcar com poucos engenhos. Madeiras nobres (pau-brasil, jacarandá). Produção modesta, insuficiente para sustentar a capitania.',
-    politica:'Capitania nunca próspera. O donatário era escrivão da Fazenda Real — homem de papel, não de guerra. Enviou representantes que não controlaram o território.',
-    portugal:'Figueiredo Correia nunca veio ao Brasil. Seus procuradores governaram com dificuldades. A capitania foi vendida e subdividida entre famílias que não tinham capital para investir.',
+    economia:'Cana-de-açúcar com poucos engenhos. Madeiras nobres (pau-brasil, jacarandá).',
+    politica:'Capitania nunca próspera. O donatário era escrivão da Fazenda Real — homem de papel, não de guerra.',
+    portugal:'Figueiredo Correia nunca veio ao Brasil. Seus procuradores governaram com dificuldades.',
     lideres:'Jorge de Figueiredo Correia (ausente), Francisco Romero (preposto)',
-    conflitos:'Aimorés (Botocudos) atacavam sistematicamente os assentamentos. Eram guerreiros extremamente eficazes, impossíveis de aliar. O medo dos Aimorés freou a colonização por décadas.',
-    legado:'Ilhéus só ganhou prosperidade no séc. XIX com o cacau — que transformaria a região na "Costa do Cacau" e inspiraria o romancista Jorge Amado.',
+    conflitos:'Aimorés (Botocudos) atacavam sistematicamente os assentamentos. Eram guerreiros extremamente eficazes.',
+    legado:'Ilhéus só ganhou prosperidade no séc. XIX com o cacau — que inspiraria o romancista Jorge Amado.',
     fonte:'Cintra (2013): limite norte na borda sul da Baía de Todos os Santos; sul no Rio Pardo.',
-    poly:[[-13.14, -38.81], [-14.0, -38.9], [-14.5, -38.93], [-15.0, -38.95], [-15.65, -38.95], [-15.65, -48.7], [-13.14, -48.7]]
+    poly:[[13.14, -38.81], [15.65, -38.81], [15.65, -48.7], [13.14, -48.7]]
   },
   {
     id:'PS', n:11, nome:'Porto Seguro', donatario:'Pedro do Campo Tourinho',
-    leguas:'50 léguas',
-    resultado:'parcial',
+    leguas:'50 léguas', resultado:'parcial',
     capital:'Porto Seguro — local do descobrimento (1500)',
-    economia:'Agricultura de subsistência. Sem plantation de açúcar significativa. Extração de pau-brasil para sobrevivência.',
-    politica:'Tourinho foi o único donatário processado pela Inquisição. Preso por blasfêmias e heresias em 1546, perdeu a capitania. Seus filhos tentaram retomá-la sem sucesso.',
-    portugal:'Caso singular: o donatário foi vítima da própria Inquisição que ele deveria defender. Demonstra como o sistema colonial dependia do caráter do indivíduo.',
+    economia:'Agricultura de subsistência. Sem plantation de açúcar significativa.',
+    politica:'Tourinho foi o único donatário processado pela Inquisição. Preso por blasfêmias e heresias em 1546, perdeu a capitania.',
+    portugal:'Caso singular: o donatário foi vítima da própria Inquisição que ele deveria defender.',
     lideres:'Pedro do Campo Tourinho (preso pela Inquisição), depois seus filhos',
-    conflitos:'Aimorés, como em Ilhéus. Ataques franceses no litoral. Administração instável pós-prisão do donatário.',
-    legado:'Porto Seguro é o símbolo do "descobrimento" — mas como capitania hereditária foi uma das mais medíocres. A UFSB (Universidade Federal do Sul da Bahia) mantém hoje o polo de memória da colonização na região.',
+    conflitos:'Aimorés, como em Ilhéus. Ataques franceses no litoral.',
+    legado:'Porto Seguro é o símbolo do "descobrimento" — mas como capitania hereditária foi uma das mais medíocres.',
     fonte:'Cintra (2013): limite norte no Rio Pardo, sul no Rio Mucuri.',
-    poly:[[-15.65, -38.95], [-16.0, -39.0], [-17.0, -39.1], [-17.5, -39.2], [-18.09, -39.56], [-18.09, -48.7], [-15.65, -48.7]]
+    poly:[[15.65, -38.95], [18.09, -38.95], [18.09, -48.7], [15.65, -48.7]]
   },
   {
     id:'ES', n:12, nome:'Espírito Santo', donatario:'Vasco Fernandes Coutinho',
-    leguas:'50 léguas',
-    resultado:'parcial',
+    leguas:'50 léguas', resultado:'parcial',
     capital:'Vitória (1551) — fundada em ilha para proteção',
-    economia:'Cana-de-açúcar em engenhos modestos. Exploração de pau-brasil. Comércio com indígenas Goitacás.',
-    politica:'Capitania que sobreviveu a duras penas. Coutinho (pai) perdeu quase tudo para os índios; seu filho Vasco Fernandes Coutinho Filho reorganizou parcialmente a administração.',
-    portugal:'Vasco Fernandes Coutinho era soldado veterano das guerras da Índia. Gastou toda sua fortuna na capitania e morreu pobre. A tenacidade pessoal manteve a capitania viva.',
+    economia:'Cana-de-açúcar em engenhos modestos. Exploração de pau-brasil.',
+    politica:'Capitania que sobreviveu a duras penas. Coutinho (pai) perdeu quase tudo para os índios; seu filho reorganizou parcialmente.',
+    portugal:'Vasco Fernandes Coutinho era soldado veterano das guerras da Índia. Gastou toda sua fortuna na capitania.',
     lideres:'Vasco Fernandes Coutinho (pai e filho), Duarte de Lemos',
-    conflitos:'Goitacás — considerados os índios mais ferozes do litoral brasileiro. Atacavam constantemente. A ilha de Vitória foi escolhida justamente para proteção contra eles.',
-    legado:'O Espírito Santo é o único estado brasileiro que herdou o nome exato de sua capitania hereditária. Vitória é uma das capitais mais antigas do Brasil.',
-    fonte:'Cintra (2013): limite norte no Rio Mucuri, sul nos Baixos dos Pargos (Rio Itapemirim por acordo entre donatários).',
-    poly:[[-18.09, -39.56], [-19.0, -39.8], [-19.5, -40.0], [-20.0, -40.3], [-20.5, -40.6], [-21.0, -40.81], [-21.0, -48.7], [-18.09, -48.7]]
+    conflitos:'Goitacás — considerados os índios mais ferozes do litoral brasileiro. Atacavam constantemente.',
+    legado:'O Espírito Santo é o único estado brasileiro que herdou o nome exato de sua capitania hereditária.',
+    fonte:'Cintra (2013): limite norte no Rio Mucuri, sul nos Baixos dos Pargos (Rio Itapemirim).',
+    poly:[[18.09, -39.56], [21.0, -39.56], [21.0, -48.7], [18.09, -48.7]]
   },
-  // ── SUL: rumo NOROESTE (grande correção do Cintra)
+  // ══════════════════════════════════════════════════════════════════
+  // SUL — rumo NOROESTE (grande correção do Cintra)
+  // ══════════════════════════════════════════════════════════════════
   {
     id:'ST', n:13, nome:'São Tomé', donatario:'Pero de Góis da Silveira',
-    leguas:'30 léguas (a menor de todas)',
-    resultado:'fracasso',
+    leguas:'30 léguas (a menor de todas)', resultado:'fracasso',
     capital:'São Tomé (atual São Francisco do Itabapoana, RJ)',
     economia:'Roças de subsistência. Tentativas de engenhos que não prosperaram.',
-    politica:'Capitania de formato TRIANGULAR — resultado da divisas noroeste da carta de doação de Martim Afonso. Único caso em que o limite sul seguia paralelo (21°S) e o norte seguia rumo noroeste a partir do Rio Macaé.',
-    portugal:'Pero de Góis estava no Brasil durante as doações — por isso a demora em formalizar sua carta (alvará de 1534, carta definitiva só em 1536). Tentou negociações diretas com o rei sobre os limites.',
+    politica:'Capitania de formato TRIANGULAR — resultado da divisas noroeste da carta de doação de Martim Afonso.',
+    portugal:'Pero de Góis estava no Brasil durante as doações — por isso a demora em formalizar sua carta.',
     lideres:'Pero de Góis da Silveira',
-    conflitos:'Goitacás inviabilizaram a colonização. A forma triangular da capitania criava disputas de limite com São Vicente ao sul.',
-    legado:'São Tomé foi a capitania que desapareceu mais rapidamente — absorvida pelo que seria o Rio de Janeiro.',
-    fonte:'Cintra (2013): a forma triangular de São Tomé decorre da linha noroeste da carta de doação de Martim Afonso, que encontra o paralelo 21°S e depois corre a oeste.',
-    poly:[[-21.0, -40.81], [-21.0, -48.7], [-22.38, -48.7], [-22.38, -41.78], [-21.5, -41.3], [-21.0, -40.81]]
+    conflitos:'Goitacás inviabilizaram a colonização. A forma triangular da capitania criava disputas de limite.',
+    legado:'São Tomé foi a capitania que desapareceu mais rapidamente — absorvida pelo Rio de Janeiro.',
+    fonte:'Cintra (2013): a forma triangular de São Tomé decorre da linha noroeste da carta de doação de Martim Afonso.',
+    poly:[[21.0, -40.81], [22.38, -40.81], [22.38, -48.7], [21.0, -48.7]]
   },
   {
     id:'SV1', n:14, nome:'São Vicente — 1º Lote', donatario:'Martim Afonso de Sousa',
-    leguas:'55 léguas',
-    resultado:'sucesso',
+    leguas:'55 léguas', resultado:'sucesso',
     capital:'São Vicente (1532) — 1ª Vila fundada no Brasil',
-    economia:'Primeiros engenhos de cana-de-açúcar do Brasil. Produção agrícola nos planaltos. São Vicente foi a porta de entrada para o interior.',
-    politica:'Martim Afonso fundou São Vicente em 1532 — ANTES da criação formal do sistema de capitanias (1534). Tinha relação direta e privilegiada com D. João III.',
-    portugal:'O mais favorecido dos donatários. Era amigo pessoal do rei, havia liderado a maior expedição ao Brasil antes das capitanias (1530-33). Nunca morou permanentemente na capitania.',
-    lideres:'Martim Afonso de Sousa, Brás Cubas (fundador de Santos), João Ramalho (intérprete e líder mameluco)',
-    conflitos:'Menos resistência indígena que no Norte e Nordeste — aliança com grupos Tupi facilitou a colonização. Conflitos pontuais com Guaianás no planalto.',
-    legado:'São Vicente é o berço da colonização do Sudeste. O engenho de São Jorge dos Erasmos (1532) é o mais antigo do Brasil e pode ser visitado hoje em Santos.',
-    fonte:'Cintra (2013): o limite norte de SV1 segue rumo NOROESTE do Rio Macaé até o paralelo 21°S — ampliando a área da capitania, solução inteligente de Martim Afonso para compensar a inclinação da costa.',
-    poly:[[-22.38, -41.78], [-22.38, -48.7], [-23.71, -48.7], [-23.71, -45.43], [-23.0, -44.0], [-22.7, -42.8], [-22.38, -41.78]]
+    economia:'Primeiros engenhos de cana-de-açúcar do Brasil. São Vicente foi a porta de entrada para o interior.',
+    politica:'Martim Afonso fundou São Vicente em 1532 — ANTES da criação formal do sistema de capitanias (1534).',
+    portugal:'O mais favorecido dos donatários. Era amigo pessoal do rei, havia liderado a maior expedição ao Brasil antes das capitanias (1530-33).',
+    lideres:'Martim Afonso de Sousa, Brás Cubas (fundador de Santos), João Ramalho',
+    conflitos:'Menos resistência indígena que no Norte — aliança com grupos Tupi facilitou a colonização.',
+    legado:'São Vicente é o berço da colonização do Sudeste. O engenho de São Jorge dos Erasmos (1532) é o mais antigo do Brasil.',
+    fonte:'Cintra (2013): o limite norte de SV1 segue rumo NOROESTE do Rio Macaé até o paralelo 21°S.',
+    poly:[[22.38, -41.78], [23.71, -41.78], [23.71, -48.7], [22.38, -48.7]]
   },
   {
     id:'SA', n:15, nome:'Santo Amaro (enclave)', donatario:'Pero Lopes de Sousa',
-    leguas:'10 léguas (enclave entre os dois lotes de Martim Afonso)',
-    resultado:'fracasso',
+    leguas:'10 léguas (enclave entre os dois lotes de Martim Afonso)', resultado:'fracasso',
     capital:'Santo Amaro (hoje bairro do Rio de Janeiro / cidade de Santo Amaro, SP)',
     economia:'Praticamente nenhuma. Enclave de 10 léguas sem viabilidade econômica autônoma.',
-    politica:'Enclave peculiar — 10 léguas de Pero Lopes inseridas entre os dois lotes de seu irmão Martim Afonso. Criado como concessão adicional ao irmão mais novo, sem lógica geográfica clara.',
+    politica:'Enclave peculiar — 10 léguas de Pero Lopes inseridas entre os dois lotes de seu irmão Martim Afonso.',
     portugal:'Pero Lopes morreu em naufrágio. Seus herdeiros herdaram o enclave mas não o desenvolveram.',
     lideres:'Pero Lopes de Sousa (falecido precocemente)',
-    conflitos:'A existência do enclave criou litígios de limite que se arrastaram por décadas — resolvidos só por acordo entre os sucessores dos irmãos Sousa.',
-    legado:'O enclave de Santo Amaro é o exemplo mais curioso da engenharia territorial das capitanias — uma decisão quase familiar que não faz sentido cartográfico.',
-    fonte:'Cintra (2013): 10 léguas entre a Barra de Bertioga (norte) e o Rio Curupacé/Juquiriquerê (sul), com linhas noroeste.',
-    poly:[[-23.71, -45.43], [-23.71, -48.7], [-23.86, -48.7], [-23.86, -46.13], [-23.71, -45.43]]
+    conflitos:'A existência do enclave criou litígios de limite que se arrastaram por décadas.',
+    legado:'O enclave de Santo Amaro é o exemplo mais curioso da engenharia territorial das capitanias.',
+    fonte:'Cintra (2013): 10 léguas entre a Barra de Bertioga (norte) e o Rio Curupacé/Juquiriquerê (sul).',
+    poly:[[23.71, -45.43], [23.86, -45.43], [23.86, -48.7], [23.71, -48.7]]
   },
   {
     id:'SV2', n:16, nome:'São Vicente — 2º Lote', donatario:'Martim Afonso de Sousa',
-    leguas:'45 léguas',
-    resultado:'sucesso',
+    leguas:'45 léguas', resultado:'sucesso',
     capital:'São Paulo (fundada pelos jesuítas em 1554)',
-    economia:'Pecuária nos planaltos, trigo (cultivo fracassado a longo prazo), depois ouro e escravos indígenas como mercadorias. São Paulo tornou-se o centro das bandeiras.',
-    politica:'O caminho do mar (Serra do Mar) para o planalto criou uma civilização diferente do litoral açucareiro. Os paulistas desenvolveram cultura de mobilidade e expansão territorial.',
-    portugal:'Mesmo donatário que o lote norte. Martim Afonso é reconhecido como o principal arquiteto da colonização brasileira — sua expedição (1530-33) mapeou a costa e estabeleceu os primeiros assentamentos.',
-    lideres:'Martim Afonso de Sousa, Pe. Manuel da Nóbrega (fundou SP), João Ramalho, Tibiriçá (cacique aliado)',
-    conflitos:'Guerras contra os Carijós (Guaranis) e Guaianás no planalto. Depois: conflitos jesuítas vs. paulistas pelo controle dos índios.',
-    legado:'São Paulo tornou-se o motor da expansão territorial brasileira — via bandeiras, foi de São Vicente que partiram as expedições que dobraram o território brasileiro além de Tordesilhas.',
-    fonte:'Cintra (2013): limite norte na Barra de Bertioga, sul em Paranaguá (barra sul), com linhas noroeste.',
-    poly:[[-23.86, -46.13], [-23.86, -48.7], [-25.55, -48.7], [-25.55, -48.36], [-24.8, -47.2], [-24.2, -46.6], [-23.86, -46.13]]
+    economia:'Pecuária nos planaltos, trigo, depois ouro e escravos indígenas como mercadorias. São Paulo tornou-se o centro das bandeiras.',
+    politica:'O caminho do mar (Serra do Mar) para o planalto criou uma civilização diferente do litoral açucareiro.',
+    portugal:'Mesmo donatário que o lote norte. Martim Afonso é reconhecido como o principal arquiteto da colonização brasileira.',
+    lideres:'Martim Afonso de Sousa, Pe. Manuel da Nóbrega (fundou SP), João Ramalho, Tibiriçá',
+    conflitos:'Guerras contra os Carijós (Guaranis) e Guaianás no planalto.',
+    legado:'São Paulo tornou-se o motor da expansão territorial brasileira — via bandeiras.',
+    fonte:'Cintra (2013): limite norte na Barra de Bertioga, sul em Paranaguá (barra sul).',
+    poly:[[23.86, -46.13], [25.55, -46.13], [25.55, -48.7], [23.86, -48.7]]
   },
   {
     id:'SAN', n:17, nome:'Santana', donatario:'Pero Lopes de Sousa',
-    leguas:'40 léguas (lote extremo sul)',
-    resultado:'fracasso',
+    leguas:'40 léguas (lote extremo sul)', resultado:'fracasso',
     capital:'Não houve colonização efetiva',
     economia:'Nenhuma exploração colonial no período. Terras praticamente desconhecidas pelos portugueses.',
-    politica:'Limite sul em 28°20\'S — entre as atuais Imbituba e Laguna (SC). A carta de doação indica que a linha a oeste poderia ir além de Tordesilhas, admitindo incerteza sobre a localização exata do meridiano.',
-    portugal:'Pero Lopes morreu sem colonizar Santana. A região ficou em disputa com a Espanha — que reivindicava as terras ao sul como parte de suas possessões.',
+    politica:'Limite sul em 28°20\'S — entre as atuais Imbituba e Laguna (SC). A carta de doação indica que a linha a oeste poderia ir além de Tordesilhas.',
+    portugal:'Pero Lopes morreu sem colonizar Santana. A região ficou em disputa com a Espanha.',
     lideres:'Pero Lopes de Sousa (falecido)',
-    conflitos:'Fronteira contestada com os espanhóis do Rio da Prata. Jesuítas espanhóis atuavam na região (Missões). Carijós (Guaranis) dominavam o território.',
-    legado:'A questão dos limites sul resultou no Tratado de Madri (1750) — que reconheceu o uti possidetis e consagrou a expansão bandeirante. Laguna foi o último ponto sul antes da disputa platina.',
-    fonte:'Cintra (2013): a linha da costa no Sul é inclinada a nordeste — por isso as divisas seguem rumo noroeste, ampliando a área das capitanias. Santana tem largura mínima em muitos trechos.',
-    poly:[[-25.55, -48.36], [-25.55, -48.7], [-28.33, -48.7], [-28.33, -48.5], [-26.5, -48.4], [-25.55, -48.36]]
+    conflitos:'Fronteira contestada com os espanhóis do Rio da Prata. Jesuítas espanhóis atuavam na região (Missões).',
+    legado:'A questão dos limites sul resultou no Tratado de Madri (1750) — que consagrou o uti possidetis e a expansão bandeirante.',
+    fonte:'Cintra (2013): a linha da costa no Sul é inclinada a nordeste — por isso as divisas seguem rumo noroeste.',
+    poly:[[25.55, -48.36], [28.33, -48.36], [28.33, -48.7], [25.55, -48.7]]
   }
 ];
 
 // ══════════════════════════════════════════════════════════════════
 // MAPA LEAFLET
 // ══════════════════════════════════════════════════════════════════
-const map = L.map('map', {center:[-14,-42],zoom:5,minZoom:4,maxZoom:9,zoomControl:true});
+const map = L.map('map', {center:[-14,-42], zoom:5, minZoom:4, maxZoom:9, zoomControl:true});
 
 L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}{r}.png',
-  {subdomains:'abcd',maxZoom:20}).addTo(map);
+  {subdomains:'abcd', maxZoom:20}).addTo(map);
 
 // Linha de Tordesilhas
 L.polyline([[-35,-48.7],[10,-48.7]],
-  {color:'#c9a84c',weight:1.5,dashArray:'8,5',opacity:.7})
-  .bindTooltip('Meridiano de Tordesilhas — 48,7° W<br><span style="opacity:.7">Cintra (2013): calculado a partir do módulo de 16⅔ léguas/grau</span>',
-    {className:'cacd-tooltip',direction:'right'})
+  {color:'#c9a84c', weight:1.5, dashArray:'8,5', opacity:.7})
+  .bindTooltip('Meridiano de Tordesilhas — 48,7° W<br>Cintra (2013): calculado a partir do módulo de 16⅔ léguas/grau',
+    {className:'cacd-tooltip', direction:'right'})
   .addTo(map);
-
-// Linha aproximada do litoral (para referência)
-const litoral = [
-  [4.0,-51.5],[3.5,-50.5],[2.0,-49.5],[1.64,-45.25],[2.87,-40.85],
-  [3.72,-38.46],[5.08,-36.66],[6.68,-34.93],[7.81,-34.85],
-  [-10.50,-37.0],[-13.14,-38.81],[-15.65,-38.95],[-18.09,-39.56],
-  [-21.0,-40.81],[-22.38,-41.78],[-23.86,-46.13],[-25.55,-48.36],[-28.33,-48.5]
-];
-L.polyline(litoral,{color:'#60a5fa',weight:1,dashArray:'4,4',opacity:.3}).addTo(map);
 
 // Polígonos das capitanias
 const layers = {};
 CAPS.forEach(cap => {
   const c = COR[cap.resultado];
-  const poly = L.polygon(cap.poly, {
+  // Garantir que o polígono seja válido (fechado)
+  const polyCoords = [...cap.poly, cap.poly[0]];
+  const poly = L.polygon(polyCoords, {
     fillColor: c.fill,
     fillOpacity: .82,
     color: c.border,
@@ -417,13 +398,13 @@ CAPS.forEach(cap => {
 
   poly.bindTooltip(
     `<b>${cap.nome}</b><br><span style="opacity:.7">${cap.donatario} · ${cap.leguas}</span>`,
-    {className:'cacd-tooltip',direction:'top',sticky:true}
+    {className:'cacd-tooltip', direction:'top', sticky:true}
   );
 
   poly.on('click', () => abrir(cap));
-  poly.on('mouseover', function(){ this.setStyle({fillOpacity:.97,weight:1.5,color:'#fff'}); });
+  poly.on('mouseover', function(){ this.setStyle({fillOpacity:.97, weight:1.5, color:'#fff'}); });
   poly.on('mouseout', function(){
-    this.setStyle({fillColor:c.fill,fillOpacity:.82,color:c.border,weight:1.0,opacity:.9});
+    this.setStyle({fillColor:c.fill, fillOpacity:.82, color:c.border, weight:1.0, opacity:.9});
   });
 
   layers[cap.id] = poly;
@@ -475,49 +456,38 @@ function buscar(v) {
 // ══════════════════════════════════════════════════════════════════
 function abrir(cap) {
   const c = COR[cap.resultado];
-
-  // Cabeçalho
   const pnum = document.getElementById('pnum');
   pnum.textContent = `Cap. ${cap.n} · ${c.label}`;
   pnum.style.cssText = `background:${c.fill};color:${c.border};border:1px solid ${c.border}55`;
-
   document.getElementById('ptitle').textContent = cap.nome;
   document.getElementById('popup').style.borderTop = `3px solid ${c.border}`;
-
   document.getElementById('pmeta').innerHTML =
     `<div>👑 <b>${cap.donatario}</b></div>` +
     `<div>📏 <b>${cap.leguas}</b></div>` +
     `<div>🏙️ <b>${cap.capital}</b></div>`;
 
-  // Grid
   const g = document.getElementById('pgrid');
   g.innerHTML = '';
-
-  box(g,'full','💰 Economia e Produção', cap.economia);
-  box(g,'','⚖️ Política e Administração', cap.politica);
-  box(g,'','🇵🇹 Relação com a Coroa Portuguesa', cap.portugal);
-  box(g,'full','👥 Principais Lideranças', cap.lideres);
-  box(g,'','⚔️ Conflitos e Resistências', cap.conflitos);
-  box(g,'','📜 Legado Histórico', cap.legado);
-
-  // Nota cartográfica
-  box(g,'full','🗺️ Nota Cartográfica (Cintra, 2013)',
+  function box(cls, titulo, texto) {
+    const d = document.createElement('div');
+    d.className = 'pbox' + (cls ? ' ' + cls : '');
+    d.innerHTML = `<h3>${titulo}</h3><p>${texto}</p>`;
+    g.appendChild(d);
+  }
+  box('full','💰 Economia e Produção', cap.economia);
+  box('','⚖️ Política e Administração', cap.politica);
+  box('','🇵🇹 Relação com a Coroa Portuguesa', cap.portugal);
+  box('full','👥 Principais Lideranças', cap.lideres);
+  box('','⚔️ Conflitos e Resistências', cap.conflitos);
+  box('','📜 Legado Histórico', cap.legado);
+  box('full','🗺️ Nota Cartográfica (Cintra, 2013)',
     `<p style="font-family:'IBM Plex Mono',monospace;font-size:10px;line-height:1.7;color:var(--muted)">${cap.fonte}</p>`);
-
   document.getElementById('overlay').classList.add('open');
-}
-
-function box(parent, cls, titulo, texto) {
-  const d = document.createElement('div');
-  d.className = 'pbox' + (cls ? ' ' + cls : '');
-  d.innerHTML = `<h3>${titulo}</h3><p>${texto}</p>`;
-  parent.appendChild(d);
 }
 
 function fechar() { document.getElementById('overlay').classList.remove('open'); }
 function bgClose(e) { if (e.target.id === 'overlay') fechar(); }
 document.addEventListener('keydown', e => { if (e.key === 'Escape') fechar(); });
-
 setTimeout(() => map.invalidateSize(), 100);
 </script>
 </body>
