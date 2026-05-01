@@ -1,0 +1,3136 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Mapa interativo das relações diplomáticas do Brasil com todos os países do mundo — presença consular, comércio, brasileiros no exterior, organismos internacionais. Material de estudo para o CACD.">
+<meta name="keywords" content="CACD, diplomacia brasileira, política externa, relações internacionais, embaixadas, consulados, comércio exterior, MRE">
+<meta name="author" content="CACD Study">
+<title>Brasil no Mundo — Relações Diplomáticas · CACD</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌎</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=IBM+Plex+Sans:wght@300;400;500&family=IBM+Plex+Mono:wght@400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<style>
+:root{--bg:#0a0906;--surface:#141210;--surface2:#1a1814;--border:#2e2a22;--gold:#c9a84c;--gold-light:#e8c97a;--cream:#f0e8d8;--muted:#8a7f6e;--text:#d8cfc0;--text-sm:#b0a898;
+--c-emb:#4ade80;--c-con:#60a5fa;--c-esc:#f59e0b;--c-hon:#a78bfa;--c-sem:#1e2d1e}
+*{box-sizing:border-box;margin:0;padding:0}
+html{height:100%}
+body{height:100vh;display:flex;flex-direction:column;font-family:'IBM Plex Sans',sans-serif;font-weight:300;color:var(--text);background:var(--bg);overflow:hidden}
+.header{flex-shrink:0;padding:11px 22px 9px;background:var(--surface);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.header-left .tag{font-family:'IBM Plex Mono',monospace;font-size:8px;letter-spacing:.25em;color:var(--gold);text-transform:uppercase}
+.header-left h1{font-family:'Playfair Display',serif;font-size:1.1rem;color:var(--cream);margin-top:1px}
+.filters{display:flex;gap:5px;flex-wrap:wrap;align-items:center}
+.filter-label{font-family:'IBM Plex Mono',monospace;font-size:8px;letter-spacing:.15em;color:var(--muted);text-transform:uppercase;margin-right:2px}
+.era-btn{font-family:'IBM Plex Mono',monospace;font-size:8px;letter-spacing:.08em;text-transform:uppercase;padding:3px 9px;border-radius:2px;border:1px solid var(--border);background:transparent;color:var(--muted);cursor:pointer;transition:all .15s}
+.era-btn.active{background:rgba(201,168,76,.12);border-color:var(--gold);color:var(--gold)}
+.legend{display:flex;gap:10px;align-items:center;padding:0 10px;border-left:1px solid var(--border);margin-left:5px}
+.leg-item{display:flex;align-items:center;gap:4px;font-family:'IBM Plex Mono',monospace;font-size:8px;color:var(--muted)}
+.leg-dot{width:9px;height:9px;border-radius:2px}
+.main{flex:1;display:flex;min-height:0}
+#map{flex:1;background:#0d1520!important}
+.leaflet-container{background:#0d1520!important}
+.leaflet-control-zoom a{background:var(--surface)!important;color:var(--gold)!important;border-color:var(--border)!important;font-family:'IBM Plex Mono',monospace!important}
+.leaflet-control-attribution{display:none!important}
+.sidebar{width:248px;flex-shrink:0;background:var(--surface2);border-left:1px solid var(--border);display:flex;flex-direction:column;overflow:hidden}
+.sidebar-head{padding:9px 14px;border-bottom:1px solid var(--border);font-family:'IBM Plex Mono',monospace;font-size:8px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);flex-shrink:0;display:flex;align-items:center;justify-content:space-between}
+.sidebar-count{font-size:9px;color:var(--muted);letter-spacing:0}
+.search-box{padding:8px 12px;border-bottom:1px solid var(--border);flex-shrink:0}
+.search-box input{width:100%;background:var(--bg);border:1px solid var(--border);border-radius:2px;padding:5px 8px;font-family:'IBM Plex Sans',sans-serif;font-size:11px;color:var(--cream);outline:none}
+.search-box input::placeholder{color:var(--muted)}
+.search-box input:focus{border-color:var(--gold)}
+.sidebar-list{overflow-y:auto;flex:1}
+.si{padding:8px 12px;border-bottom:1px solid var(--border);cursor:pointer;transition:background .1s;display:flex;align-items:flex-start;gap:8px}
+.si:hover{background:rgba(201,168,76,.05)}
+.si.hidden{display:none}
+.si-flag{font-size:14px;flex-shrink:0;margin-top:1px}
+.si-name{font-size:11.5px;color:var(--cream);font-weight:500;line-height:1.3}
+.si-sub{font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--muted);margin-top:2px}
+.si-pres{display:inline-block;font-size:8px;padding:1px 5px;border-radius:2px;margin-top:3px;font-family:'IBM Plex Mono',monospace;letter-spacing:.05em}
+.overlay{display:none;position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,.65);backdrop-filter:blur(4px);align-items:center;justify-content:center;padding:20px}
+.overlay.open{display:flex}
+.popup{background:var(--surface);border:1px solid var(--border);border-radius:3px;width:100%;max-width:760px;max-height:90vh;overflow-y:auto;position:relative;box-shadow:0 40px 100px rgba(0,0,0,.8);animation:popIn .18s ease}
+@keyframes popIn{from{opacity:0;transform:scale(.95) translateY(12px)}to{opacity:1;transform:scale(1) translateY(0)}}
+.popup-close{position:absolute;top:13px;right:14px;background:none;border:none;cursor:pointer;color:var(--muted);font-size:17px;line-height:1;z-index:2;transition:color .15s}
+.popup-close:hover{color:var(--cream)}
+.popup-top{padding:18px 44px 14px 20px;border-bottom:1px solid var(--border)}
+.p-flag{font-size:2rem;margin-bottom:6px}
+.p-tag{font-family:'IBM Plex Mono',monospace;font-size:8px;letter-spacing:.2em;text-transform:uppercase;padding:2px 7px;border-radius:2px;display:inline-block;margin-bottom:9px}
+.p-title{font-family:'Playfair Display',serif;font-size:1.4rem;color:var(--cream);line-height:1.2;margin-bottom:5px}
+.p-meta{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--muted);display:flex;gap:14px;flex-wrap:wrap;align-items:center}
+.p-meta span{color:var(--gold-light)}
+.pres-badge{display:inline-flex;align-items:center;gap:4px;font-size:9px;padding:2px 8px;border-radius:2px;font-family:'IBM Plex Mono',monospace;letter-spacing:.05em}
+.popup-grid{padding:16px 20px;display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.pbox{border:1px solid var(--border);border-radius:2px;padding:11px 13px;background:rgba(255,255,255,.015)}
+.pbox.full{grid-column:1/-1}
+.pbox.third{grid-column:span 1}
+.pbox h3{font-family:'IBM Plex Mono',monospace;font-size:8px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);margin-bottom:6px}
+.pbox p{font-size:12px;line-height:1.65;color:var(--text)}
+.pbox .big-num{font-family:'Playfair Display',serif;font-size:1.5rem;color:var(--gold-light);margin-bottom:2px}
+.pbox .sub-num{font-size:11px;color:var(--muted);font-family:'IBM Plex Mono',monospace}
+.trade-row{display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid var(--border);font-size:11.5px}
+.trade-row:last-child{border-bottom:none}
+.trade-label{color:var(--muted);font-family:'IBM Plex Mono',monospace;font-size:10px}
+.trade-val{color:var(--cream);font-weight:500}
+.tag-list{display:flex;flex-wrap:wrap;gap:4px;margin-top:4px}
+.org-tag{font-size:9px;padding:2px 7px;border-radius:2px;background:rgba(201,168,76,.1);border:1px solid rgba(201,168,76,.2);color:var(--gold-light);font-family:'IBM Plex Mono',monospace}
+.aprox-item{display:flex;gap:6px;padding:3px 0;font-size:11.5px;border-bottom:1px solid var(--border)}
+.aprox-item:last-child{border-bottom:none}
+.aprox-icon{flex-shrink:0;width:16px;text-align:center}
+.cacd-tooltip{background:#1a1814!important;border:1px solid #2e2a22!important;color:#f0e8d8!important;font-family:'IBM Plex Sans',sans-serif!important;border-radius:2px!important;box-shadow:0 4px 20px rgba(0,0,0,.6)!important;padding:7px 12px!important;font-size:14px!important}
+.cacd-tooltip b{font-size:15px!important}
+.cacd-tooltip span{font-size:12px!important;opacity:.75}
+.cacd-tooltip::before{display:none!important}
+.loading-msg{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--gold);letter-spacing:.1em;z-index:1000;pointer-events:none}
+@media(max-width:700px){.sidebar{display:none}.popup-grid{grid-template-columns:1fr}.pbox.full{grid-column:1}.legend{display:none}}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-left">
+    <div class="tag">CACD · Política Externa Brasileira</div>
+    <h1>Brasil no Mundo — Relações Diplomáticas</h1>
+  </div>
+  <div class="filters">
+    <span class="filter-label">Continente:</span>
+    <button class="era-btn active" id="btn-all" onclick="filterCont('all')">Todos</button>
+    <button class="era-btn" id="btn-americas" onclick="filterCont('americas')" style="color:#4ade80;border-color:#4ade8055">Américas</button>
+    <button class="era-btn" id="btn-europa" onclick="filterCont('europa')" style="color:#60a5fa;border-color:#60a5fa55">Europa</button>
+    <button class="era-btn" id="btn-africa" onclick="filterCont('africa')" style="color:#f59e0b;border-color:#f59e0b55">África</button>
+    <button class="era-btn" id="btn-asia" onclick="filterCont('asia')" style="color:#f87171;border-color:#f87171aa">Ásia</button>
+    <button class="era-btn" id="btn-oceania" onclick="filterCont('oceania')" style="color:#a78bfa;border-color:#a78bfa55">Oceania</button>
+    <button class="era-btn" id="btn-parlamento" onclick="filterCont('parlamento')" style="color:#c9a84c;border-color:#c9a84c55">Sem Embaixada</button>
+  </div>
+  <div class="legend">
+    <div class="leg-item" style="color:var(--muted);font-size:7px;letter-spacing:.12em;margin-right:4px">COR = CONTINENTE</div>
+    <div class="leg-item"><div class="leg-dot" style="background:#4ade80"></div>Américas</div>
+    <div class="leg-item"><div class="leg-dot" style="background:#60a5fa"></div>Europa</div>
+    <div class="leg-item"><div class="leg-dot" style="background:#f59e0b"></div>África</div>
+    <div class="leg-item"><div class="leg-dot" style="background:#f87171"></div>Ásia</div>
+    <div class="leg-item"><div class="leg-dot" style="background:#a78bfa"></div>Oceania</div>
+    <div class="leg-item" style="border-left:1px solid var(--border);padding-left:8px;margin-left:4px;gap:8px;color:var(--muted);font-size:7px;letter-spacing:.12em">INTENSIDADE = PRESENÇA</div>
+  </div>
+</div>
+
+<div class="main">
+  <div id="map"><div class="loading-msg" id="loading">⟳ Carregando mapa mundial…</div></div>
+  <div class="sidebar">
+    <div class="sidebar-head">▸ Países <span class="sidebar-count" id="count">195</span></div>
+    <div class="search-box"><input type="text" placeholder="Buscar país…" oninput="searchCountry(this.value)" id="search-input"></div>
+    <div class="sidebar-list" id="slist"></div>
+  </div>
+</div>
+
+<div class="overlay" id="overlay" onclick="closeIfBg(event)">
+  <div class="popup" id="popup">
+    <button class="popup-close" onclick="closePopup()">✕</button>
+    <div class="popup-top">
+      <div class="p-flag" id="p-flag"></div>
+      <div class="p-tag" id="p-tag"></div>
+      <div class="p-title" id="p-title"></div>
+      <div class="p-meta" id="p-meta"></div>
+    </div>
+    <div class="popup-grid" id="popup-grid"></div>
+  </div>
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════════════════
+// DATASET: RELAÇÕES DIPLOMÁTICAS DO BRASIL
+// Tipos de presença: 'embaixada' | 'consulado' | 'escritorio' | 'honorario' | 'acreditacao'
+// ═══════════════════════════════════════════════════════════════
+const PAISES = {
+
+// ─── AMÉRICAS DO SUL ───
+"ARG": {
+  nome: "Argentina", flag: "🇦🇷", continente: "americas",
+  iso: "ARG", capital: "Buenos Aires",
+  presenca: "embaixada",
+  presencaLabel: "Embaixada em Buenos Aires",
+  inicioRelacoes: 1822,
+  brasileiros: 45000,
+  exportacoes: { total: "US$ 10,3 bi", principais: ["minério de ferro","petróleo","carne bovina","soja","automóveis"] },
+  importacoes: { total: "US$ 9,8 bi", principais: ["trigo","adubos","automóveis","plásticos","minérios"] },
+  comercioTotal: "US$ 20,1 bi (2023)",
+  organismos: ["ONU","OEA","Mercosul","UNASUL","CELAC","G20","BID","CAF","AIIB","FMI","OCDE (candidato)","OMC","CSNU (rotativo)"],
+  conflitos: "Rivalidade histórica no Prata (séculos XVIII–XIX). Competição por hegemonia regional. Crise do gasoduto (2004–07). Desequilíbrio comercial frequente gera atritos. Tensões cambiais afetam Mercosul.",
+  aproximacoes: "Declaração de Itaipu-Corpus (1979) resolveu disputa sobre aproveitamento do Paraná. Acordo nuclear (1991): ABACC criou confiança mútua. Parceiros fundadores do Mercosul (1991). Eixo central da integração sul-americana. Brics+: Argentina convidada (2023)."
+},
+
+"URU": {
+  nome: "Uruguai", flag: "🇺🇾", continente: "americas",
+  iso: "URY", capital: "Montevidéu",
+  presenca: "embaixada",
+  presencaLabel: "Embaixada em Montevidéu",
+  inicioRelacoes: 1828,
+  brasileiros: 38000,
+  exportacoes: { total: "US$ 2,1 bi", principais: ["petróleo","automóveis","trigo","açúcar","máquinas"] },
+  importacoes: { total: "US$ 1,8 bi", principais: ["carne bovina","leite","arroz","madeira","couro"] },
+  comercioTotal: "US$ 3,9 bi (2023)",
+  organismos: ["ONU","OEA","Mercosul","UNASUL","CELAC","BID","CAF","OMC"],
+  conflitos: "Independência do Uruguai (1828) foi imposta pela Grã-Bretanha como Estado-tampão. Conflito da Cisplatina (1825–28). Disputa ocasional sobre o Rio Quaraí e Lagoa Mirim.",
+  aproximacoes: "Integração profunda no Mercosul. Acordo sobre o Rio Quaraí (2002). Fronteiras abertas com cidades-gêmeas (Rivera-Santana, Chuy-Chuí). Cooperação intensa em energia e infraestrutura."
+},
+
+"PRY": {
+  nome: "Paraguai", flag: "🇵🇾", continente: "americas",
+  iso: "PRY", capital: "Assunção",
+  presenca: "embaixada",
+  presencaLabel: "Embaixada em Assunção",
+  inicioRelacoes: 1844,
+  brasileiros: 400000,
+  exportacoes: { total: "US$ 3,2 bi", principais: ["energia elétrica (Itaipu)","soja","combustíveis","arroz","máquinas"] },
+  importacoes: { total: "US$ 2,8 bi", principais: ["soja reexportada","energia","têxteis","eletroeletrônicos","couros"] },
+  comercioTotal: "US$ 6 bi (2023)",
+  organismos: ["ONU","OEA","Mercosul","UNASUL","CELAC","BID","CAF","OMC"],
+  conflitos: "Guerra do Paraguai (1864–70): conflito mais sangrento da América do Sul — Brasil, Argentina e Uruguai vs Paraguai. Paraguai perdeu 60–90% da população masculina. Memória ainda sensível. Reconhecimento de Taiwan: Paraguai é o único país sul-americano que reconhece Taiwan, gerando atrito recorrente no Mercosul.",
+  aproximacoes: "Itaipu Binacional (1973): maior hidrelétrica do mundo em geração, eixo da relação bilateral. Revisão do tratado em 2023 (energias e royalties). Comunidade brasileira (brasiguaios) é a maior comunidade estrangeira no Paraguai."
+},
+
+"BOL": {
+  nome: "Bolívia", flag: "🇧🇴", continente: "americas",
+  iso: "BOL", capital: "Sucre / La Paz",
+  presenca: "embaixada",
+  presencaLabel: "Embaixada em La Paz",
+  inicioRelacoes: 1825,
+  brasileiros: 8500,
+  exportacoes: { total: "US$ 1,4 bi", principais: ["bens manufaturados","produtos químicos","açúcar","máquinas","veículos"] },
+  importacoes: { total: "US$ 4,2 bi", principais: ["gás natural","minérios","zinco","ouro","soja"] },
+  comercioTotal: "US$ 5,6 bi (2023)",
+  organismos: ["ONU","OEA","UNASUL","CELAC","BID","CAF","Mercosul (Estado associado)","OMC"],
+  conflitos: "Crise do gás (2006): Evo Morales nacionalizou os hidrocarbonetos — Petrobras perdeu ativos. Litígio na CIJ sobre saída ao mar (Bolivia vs Chile — o Brasil apoiou a Bolívia diplomaticamente). Tensão sobre contrabando e crime organizado na fronteira.",
+  aproximacoes: "Gasoduto Brasil-Bolívia (GASBOL, 1999): infraestrutura estratégica. Cooperação técnica intensa (EMBRAPA, SEBRAE). IIRSA/COSIPLAN: rodovias de integração física. Bolívia acedeu como membro pleno do Mercosul (2023)."
+},
+
+"PER": {
+  nome: "Peru", flag: "🇵🇪", continente: "americas",
+  iso: "PER", capital: "Lima",
+  presenca: "embaixada",
+  presencaLabel: "Embaixada em Lima",
+  inicioRelacoes: 1826,
+  brasileiros: 32000,
+  exportacoes: { total: "US$ 1,8 bi", principais: ["manufaturados","veículos","açúcar","plásticos","máquinas"] },
+  importacoes: { total: "US$ 1,1 bi", principais: ["zinco","cobre","prata","café","têxteis"] },
+  comercioTotal: "US$ 2,9 bi (2023)",
+  organismos: ["ONU","OEA","UNASUL","CELAC","Aliança do Pacífico (observador)","BID","CAF","OMC"],
+  conflitos: "Fronteira amazônica com tensões históricas (séc. XIX–XX). Acordo de limites definitivo somente em 1909. Crime organizado e narcotráfico na tríplice fronteira Brasil-Peru-Colômbia.",
+  aproximacoes: "Acordo de integração Brasil-Peru (2003). Rodovia Interoceânica (inaugurada 2011): conecta o Pacífico à Amazônia brasileira, abrindo exportações para a Ásia. Cooperação Amazônica (OTCA)."
+},
+
+"COL": {
+  nome: "Colômbia", flag: "🇨🇴", continente: "americas",
+  iso: "COL", capital: "Bogotá",
+  presenca: "embaixada",
+  presencaLabel: "Embaixada em Bogotá",
+  inicioRelacoes: 1826,
+  brasileiros: 25000,
+  exportacoes: { total: "US$ 2,2 bi", principais: ["veículos","máquinas","produtos químicos","açúcar","papel"] },
+  importacoes: { total: "US$ 0,8 bi", principais: ["petróleo","fertilizantes","plásticos","algodão","minerais"] },
+  comercioTotal: "US$ 3,0 bi (2023)",
+  organismos: ["ONU","OEA","UNASUL","CELAC","BID","CAF","OMC"],
+  conflitos: "FARC: guerrilha colombiana com presença no território brasileiro (Amazônia). Sequestro de brasileiros na fronteira. Narcotráfico e lavagem de dinheiro transfronteiriços.",
+  aproximacoes: "Acordo de cooperação Amazônica (OTCA). Operações conjuntas na fronteira (Operação Ágata). Construção da Ponte Tienditas (2019) na fronteira fluvial. Acordo de livre comércio Mercosul-Aliança do Pacífico em negociação."
+},
+
+"VEN": {
+  nome: "Venezuela", flag: "🇻🇪", continente: "americas",
+  iso: "VEN", capital: "Caracas",
+  presenca: "embaixada",
+  presencaLabel: "Embaixada em Caracas",
+  inicioRelacoes: 1826,
+  brasileiros: 8000,
+  exportacoes: { total: "US$ 0,4 bi", principais: ["alimentos","medicamentos","produtos industriais","calçados","têxteis"] },
+  importacoes: { total: "US$ 0,2 bi", principais: ["petróleo cru","produtos petroquímicos"] },
+  comercioTotal: "US$ 0,6 bi (2023)",
+  organismos: ["ONU","OEA (suspensa 2017–2023)","CELAC","Mercosul (suspenso desde 2016)","OPEP","BID","CAF","OMC"],
+  conflitos: "Crise política e migratória (2015–presente): mais de 500.000 venezuelanos no Brasil (Roraima especialmente). Ruptura diplomática (2019–2022 com governos Bolsonaro vs Maduro). Venezuela suspensa do Mercosul por violação da cláusula democrática. Tensões na fronteira.",
+  aproximacoes: "Projeto de integração energética (2005): Petróleos de Venezuela e Petrobras. Retomada das relações plenas pelo governo Lula (2023). Venezuela apoiou candidatura brasileira ao CSNU. Acordo sobre Roraima e migrações."
+},
+
+"GUY": {
+  nome: "Guiana", flag: "🇬🇾", continente: "americas",
+  iso: "GUY", capital: "Georgetown",
+  presenca: "embaixada",
+  presencaLabel: "Embaixada em Georgetown",
+  inicioRelacoes: 1966,
+  brasileiros: 2000,
+  exportacoes: { total: "US$ 0,3 bi", principais: ["manufaturados","alimentos","combustíveis","máquinas"] },
+  importacoes: { total: "US$ 0,1 bi", principais: ["ouro","arroz","pescado","madeira"] },
+  comercioTotal: "US$ 0,4 bi (2023)",
+  organismos: ["ONU","OEA","CARICOM","UNASUL","CELAC","Commonwealth","BID","OMC"],
+  conflitos: "Disputa territorial Essequibo (Guiana vs Venezuela): Brasil é ator relevante por ser vizinho de ambos. Garimpo ilegal de brasileiros no território guianense.",
+  aproximacoes: "Descoberta de petróleo off-shore na Guiana (2015–): Brasil e Guiana cooperam em regulação e exploração. Rodovia Manaus-Georgetown (em obras). Acordo energético Brasil-Guiana."
+},
+
+"SUR": {
+  nome: "Suriname", flag: "🇸🇷", continente: "americas",
+  iso: "SUR", capital: "Paramaribo",
+  presenca: "embaixada",
+  presencaLabel: "Embaixada em Paramaribo",
+  inicioRelacoes: 1975,
+  brasileiros: 3000,
+  exportacoes: { total: "US$ 0,15 bi", principais: ["manufaturados","alimentos","combustíveis"] },
+  importacoes: { total: "US$ 0,05 bi", principais: ["ouro","madeira","camarão"] },
+  comercioTotal: "US$ 0,2 bi (2023)",
+  organismos: ["ONU","OEA","UNASUL","CELAC","CARICOM","BID","OMC"],
+  conflitos: "Garimpo ilegal de brasileiros é problema constante. Questões ambientais na Amazônia compartilhada.",
+  aproximacoes: "Cooperação técnica brasileira (ABC/Itamaraty). Integração pela rodovia BR-156. Acordo de cooperação amazônica (OTCA)."
+},
+
+"ECU": {
+  nome: "Equador", flag: "🇪🇨", continente: "americas",
+  iso: "ECU", capital: "Quito",
+  presenca: "embaixada",
+  presencaLabel: "Embaixada em Quito",
+  inicioRelacoes: 1830,
+  brasileiros: 10000,
+  exportacoes: { total: "US$ 0,9 bi", principais: ["manufaturados","veículos","açúcar","plásticos","papel"] },
+  importacoes: { total: "US$ 0,4 bi", principais: ["bananas","petróleo","flores","camarão"] },
+  comercioTotal: "US$ 1,3 bi (2023)",
+  organismos: ["ONU","OEA","UNASUL","CELAC","BID","CAF","OMC"],
+  conflitos: "Equador recebeu Julian Assange e concedeu-lhe asilo (2012–2019): não gerou conflito direto com o Brasil, mas foi pano de fundo em questões de soberania digital.",
+  aproximacoes: "Cooperação técnica intensa (EMBRAPA, saúde). Integração IIRSA/COSIPLAN. Negociação de acordo Mercosul-Aliança do Pacífico."
+},
+
+"CHI": {
+  nome: "Chile", flag: "🇨🇱", continente: "americas",
+  iso: "CHL", capital: "Santiago",
+  presenca: "embaixada",
+  presencaLabel: "Embaixada em Santiago",
+  inicioRelacoes: 1829,
+  brasileiros: 50000,
+  exportacoes: { total: "US$ 2,8 bi", principais: ["petróleo","veículos","aço","manufaturados","celulose"] },
+  importacoes: { total: "US$ 2,0 bi", principais: ["cobre","minério","papel","vinho","frutas"] },
+  comercioTotal: "US$ 4,8 bi (2023)",
+  organismos: ["ONU","OEA","UNASUL","CELAC","Aliança do Pacífico (observador br)","OCDE","BID","CAF","OMC","G20"],
+  conflitos: "Rivalidade histórica (Atlântico vs Pacífico como saída para exportações). Chile membro da Aliança do Pacífico e voltado para acordos com EUA e UE — diferente da estratégia Mercosul do Brasil.",
+  aproximacoes: "Acordo de livre comércio Mercosul-Chile (2021 ampliado). Chile é Estado associado do Mercosul. Corredor bioceânico Brasil-Chile (projetos em andamento). Cooperação antártica."
+},
+
+// ─── AMÉRICAS DO NORTE E CENTRAL ───
+"USA": {
+  nome: "Estados Unidos", flag: "🇺🇸", continente: "americas",
+  iso: "USA", capital: "Washington D.C.",
+  presenca: "embaixada",
+  presencaLabel: "Embaixada em Washington D.C.",
+  inicioRelacoes: 1824,
+  brasileiros: 1500000,
+  exportacoes: { total: "US$ 36,1 bi", principais: ["petróleo cru","celulose","suco de laranja","soja","aeronaves (Embraer)","ouro","carne bovina"] },
+  importacoes: { total: "US$ 38,2 bi", principais: ["semicondutores","plataformas de petróleo","medicamentos","defensivos agrícolas","software","armas"] },
+  comercioTotal: "US$ 74,3 bi (2023)",
+  organismos: ["ONU","OEA","G20","OMC","FMI","BIRD","BID","OCDE (candidato)","G7 (convidado)","AIIB"],
+  conflitos: "Espionagem da NSA sobre a presidenta Dilma Rousseff (2013): crise grave — Dilma cancelou visita a Obama e discursou na AGNU. Protecionismo americano (suco de laranja, aço, etanol). Tensão sobre política ambiental (Amazônia). Relações frias no período Bolsonaro (2019–22).",
+  aproximacoes: "Principal parceiro comercial. 'Parceria estratégica' desde 2010. Acordo de salvaguardas tecnológicas (Alcântara, 2019). Cooperação em defesa, aeroespacial e combate ao narcotráfico. Lula retomou relações próximas (2023–). Visita de Lula a Biden (2023): agenda climática e democracia."
+},
+
+"CAN": {
+  nome: "Canadá", flag: "🇨🇦", continente: "americas",
+  iso: "CAN", capital: "Ottawa",
+  presenca: "embaixada",
+  presencaLabel: "Embaixada em Ottawa",
+  inicioRelacoes: 1941,
+  brasileiros: 260000,
+  exportacoes: { total: "US$ 3,2 bi", principais: ["celulose","minério de ferro","suco de laranja","calçados","ouro"] },
+  importacoes: { total: "US$ 2,1 bi", principais: ["potássio","aeronaves","grãos","produtos petroquímicos"] },
+  comercioTotal: "US$ 5,3 bi (2023)",
+  organismos: ["ONU","OEA","G7","G20","OMC","FMI","BIRD","BID","OCDE","Aliança 5 Olhos (não-membro)"],
+  conflitos: "Disputa Embraer vs Bombardier na OMC (1999–2002): acirrada guerra subsidiária de aeronaves regionais; Brasil ganhou alguns painéis. Protecionismo sobre potássio (insumo crítico para agricultura brasileira).",
+  aproximacoes: "Forte comunidade brasileira em Toronto e Vancouver. Acordo Mercosul-Canadá em estudo. Cooperação em mineração, energia limpa e silvicultura. Posições convergentes em multilateralismo e clima."
+},
+
+"MEX": {
+  nome: "México", flag: "🇲🇽", continente: "americas",
+  iso: "MEX", capital: "Cidade do México",
+  presenca: "embaixada",
+  presencaLabel: "Embaixada na Cidade do México",
+  inicioRelacoes: 1830,
+  brasileiros: 40000,
+  exportacoes: { total: "US$ 4,1 bi", principais: ["petróleo","aço","automóveis","celulose","eletroeletrônicos"] },
+  importacoes: { total: "US$ 3,6 bi", principais: ["veículos","eletroeletrônicos","plásticos","produtos metálicos"] },
+  comercioTotal: "US$ 7,7 bi (2023)",
+  organismos: ["ONU","OEA","G20","OMC","OCDE","BID","CELAC","Aliança do Pacífico","NAFTA/USMCA"],
+  conflitos: "Competição comercial intensa: ambos são as maiores economias da América Latina. Rivalidade por liderança regional. Desequilíbrio comercial crescente favorável ao México.",
+  aproximacoes: "ACE 53 (acordo de complementação econômica, 2002). G20: posições frequentemente coordenadas. Interesse convergente em reforma da governança global. México e Brasil lideraram criação do CELAC (2010)."
+},
+
+"CUB": {
+  nome: "Cuba", flag: "🇨🇺", continente: "americas",
+  iso: "CUB", capital: "Havana",
+  presenca: "embaixada",
+  presencaLabel: "Embaixada em Havana",
+  inicioRelacoes: 1902,
+  brasileiros: 2500,
+  exportacoes: { total: "US$ 0,35 bi", principais: ["alimentos","remédios","açúcar","serviços médicos (intercâmbio)"] },
+  importacoes: { total: "US$ 0,05 bi", principais: ["açúcar","charutos","níquel"] },
+  comercioTotal: "US$ 0,4 bi (2023)",
+  organismos: ["ONU","CELAC","ALBA","NAM","OMC"],
+  conflitos: "Programa Mais Médicos (2013–18): 11.000 médicos cubanos vieram ao Brasil. Cancelado por Bolsonaro (2018). Cuba exigiu condições de trabalho direto com os médicos — desacordo sobre termos do programa.",
+  aproximacoes: "Brasil apoiou Cuba nas votações da AGNU contra o embargo americano. Cooperação em saúde pública. Lula retomou relações próximas (2023). Cuba nunca deixou de ter relações com o Brasil, mesmo em períodos de governos mais conservadores."
+},
+
+"HTI": {
+  nome: "Haiti", flag: "🇭🇹", continente: "americas",
+  iso: "HTI", capital: "Porto Príncipe",
+  presenca: "embaixada",
+  presencaLabel: "Embaixada em Porto Príncipe",
+  inicioRelacoes: 1826,
+  brasileiros: 800,
+  exportacoes: { total: "US$ 0,08 bi", principais: ["alimentos","manufaturados","medicamentos"] },
+  importacoes: { total: "US$ 0,01 bi", principais: ["têxteis","artesanato"] },
+  comercioTotal: "US$ 0,09 bi (2023)",
+  organismos: ["ONU","OEA","CARICOM","BID"],
+  conflitos: "MINUSTAH (2004–2017): Brasil liderou a missão de paz da ONU por 13 anos — papel inédito e controverso. Terremoto de 2010: ação humanitária brasileira relevante mas também críticas ao desempenho da MINUSTAH.",
+  aproximacoes: "Brasil liderou a MINUSTAH (Missão de Estabilização da ONU no Haiti) de 2004 a 2017 — maior projeção militar internacional do Brasil. Cooperação técnica intensa (EMBRAPA, ABC). Haiti tornou-se símbolo da política externa de solidariedade sul-sul."
+},
+
+"DOM": {
+  nome: "República Dominicana", flag: "🇩🇴", continente: "americas",
+  iso: "DOM", capital: "Santo Domingo",
+  presenca: "embaixada",
+  presencaLabel: "Embaixada em Santo Domingo",
+  inicioRelacoes: 1914,
+  brasileiros: 5000,
+  exportacoes: { total: "US$ 0,4 bi", principais: ["manufaturados","açúcar","calçados","papel"] },
+  importacoes: { total: "US$ 0,1 bi", principais: ["cigarros","óleos minerais","têxteis"] },
+  comercioTotal: "US$ 0,5 bi (2023)",
+  organismos: ["ONU","OEA","CARICOM (observador)","BID","CELAC","OMC"],
+  conflitos: "Poucos conflitos significativos. Questões de imigração haitiana cruzam indiretamente os interesses brasileiros.",
+  aproximacoes: "Cooperação técnica e comercial. Relações amistosas e estáveis."
+},
+
+"JAM": {
+  nome: "Jamaica", flag: "🇯🇲", continente: "americas",
+  iso: "JAM", capital: "Kingston",
+  presenca: "embaixada",
+  presencaLabel: "Embaixada em Kingston",
+  inicioRelacoes: 1962,
+  brasileiros: 1200,
+  exportacoes: { total: "US$ 0,18 bi", principais: ["açúcar","manufaturados","etanol","papel"] },
+  importacoes: { total: "US$ 0,05 bi", principais: ["alumínio","bauxita","rum"] },
+  comercioTotal: "US$ 0,23 bi (2023)",
+  organismos: ["ONU","OEA","CARICOM","Commonwealth","BID","CELAC","OMC"],
+  conflitos: "Poucos conflitos. Concorrência turística.",
+  aproximacoes: "Cooperação técnica em agricultura tropical. Relações estáveis no âmbito da CARICOM."
+},
+
+// ─── EUROPA ───
+"ALE": {
+  nome: "Alemanha", flag: "🇩🇪", continente: "europa",
+  iso: "DEU", capital: "Berlim",
+  presenca: "embaixada",
+  presencaLabel: "Embaixada em Berlim",
+  inicioRelacoes: 1827,
+  brasileiros: 240000,
+  exportacoes: { total: "US$ 7,1 bi", principais: ["celulose","minério de ferro","soja","carnes","café","etanol"] },
+  importacoes: { total: "US$ 6,8 bi", principais: ["máquinas","veículos","produtos químicos","equipamentos médicos","aeronaves"] },
+  comercioTotal: "US$ 13,9 bi (2023)",
+  organismos: ["ONU","G7","G20","NATO","UE","OMC","OCDE","FMI","BIRD","BID (extra-regional)"],
+  conflitos: "Acordo Mercosul-UE: pressão alemã por abertura de mercado agrícola brasileiro e acesso a manufaturados europeus. Críticas à política ambiental brasileira (desmatamento Amazônia) vinculadas ao acordo comercial. Disputa sobre padrões sanitários.",
+  aproximacoes: "Maior parceiro comercial europeu do Brasil. Forte presença de indústria alemã no Brasil (Volkswagen, Bosch, Siemens). Imigração alemã histórica no Sul do Brasil. Cooperação em energias renováveis e hidrogênio verde."
+},
+
+"FRA": {
+  nome: "França", flag: "🇫🇷", continente: "europa",
+  iso: "FRA", capital: "Paris",
+  presenca: "embaixada",
+  presencaLabel: "Embaixada em Paris",
+  inicioRelacoes: 1826,
+  brasileiros: 120000,
+  exportacoes: { total: "US$ 3,6 bi", principais: ["petróleo cru","minério de ferro","celulose","café","madeira"] },
+  importacoes: { total: "US$ 3,2 bi", principais: ["aeronaves (Airbus)","medicamentos","perfumes","vinho","máquinas"] },
+  comercioTotal: "US$ 6,8 bi (2023)",
+  organismos: ["ONU","CSNU (P5)","G7","G20","NATO","UE","OMC","OCDE","FMI","BIRD","BID (extra-regional)"],
+  conflitos: "Fronteira Brasil-Guiana Francesa: litígios periódicos sobre garimpo ilegal. Macron criticou desmatamento e Bolsonaro de forma contundente (2019). Macron acusou Bolsonaro de 'mentir' sobre o clima. Crise do acordo Mercosul-UE.",
+  aproximacoes: "França e Brasil são parceiros estratégicos desde 2008. Acordo de defesa (submarinos Scorpène construídos em Itaguaí). Cooperação em energia nuclear e aeroespacial. Missão conjunta de paz na Amazônia e Guiana."
+},
+
+"GBR": {
+  nome: "Reino Unido", flag: "🇬🇧", continente: "europa",
+  iso: "GBR", capital: "Londres",
+  presenca: "embaixada",
+  presencaLabel: "Embaixada em Londres",
+  inicioRelacoes: 1826,
+  brasileiros: 300000,
+  exportacoes: { total: "US$ 4,8 bi", principais: ["petróleo cru","café","ouro","minério de ferro","celulose"] },
+  importacoes: { total: "US$ 2,1 bi", principais: ["plataformas de petróleo","medicamentos","bebidas","máquinas","serviços financeiros"] },
+  comercioTotal: "US$ 6,9 bi (2023)",
+  organismos: ["ONU","CSNU (P5)","G7","G20","Commonwealth","OMC","OCDE","FMI","BIRD","BID (extra-regional)"],
+  conflitos: "Histórico: Reino Unido impôs o Tratado de 1827 (abertura dos portos) e tratados anti-tráfico de escravos com força coercitiva. Pressão abolicionista britânica. Questões de Ilhas Malvinas (Brasil apoia soberania argentina). Pós-Brexit: negociações bilaterais Mercosul-UK.",
+  aproximacoes: "Parceiros de longa data. Acordo Mercosul-UK (pós-Brexit, em negociação). Cooperação financeira (City de Londres é principal praça para bonds brasileiros). Colaboração em mudanças climáticas (COP). Grande diáspora brasileira em Londres."
+},
+
+"POR": {
+  nome: "Portugal", flag: "🇵🇹", continente: "europa",
+  iso: "PRT", capital: "Lisboa",
+  presenca: "embaixada",
+  presencaLabel: "Embaixada em Lisboa",
+  inicioRelacoes: 1825,
+  brasileiros: 700000,
+  exportacoes: { total: "US$ 1,2 bi", principais: ["petróleo","manufaturados","açúcar","café","carnes"] },
+  importacoes: { total: "US$ 0,9 bi", principais: ["vinho","cortiça","derivados de petróleo","equipamentos","máquinas"] },
+  comercioTotal: "US$ 2,1 bi (2023)",
+  organismos: ["ONU","UE","NATO","G20","OMC","OCDE","FMI","CPLP","BID (extra-regional)"],
+  conflitos: "Histórico colonial: Independência de 1822. Portugal foi o metrópole colonizador por 322 anos. Questões de dupla cidadania e reconhecimento de diplomas geraram atritos. Portugal foi o último país a reconhecer a independência brasileira.",
+  aproximacoes: "Língua comum: eixo da CPLP (Comunidade dos Países de Língua Portuguesa). Maior diáspora brasileira na Europa. Acordo de portabilidade previdenciária. 'Visto de Nômade' português muito usado por brasileiros. Relação mais próxima da história atualmente."
+},
+
+"ITA": {
+  nome: "Itália", flag: "🇮🇹", continente: "europa",
+  iso: "ITA", capital: "Roma",
+  presenca: "embaixada",
+  presencaLabel: "Embaixada em Roma",
+  inicioRelacoes: 1861,
+  brasileiros: 1200000,
+  exportacoes: { total: "US$ 3,1 bi", principais: ["café","celulose","petróleo","minério de ferro","couro","suco de laranja"] },
+  importacoes: { total: "US$ 2,4 bi", principais: ["máquinas","veículos","mármores","móveis","vinho"] },
+  comercioTotal: "US$ 5,5 bi (2023)",
+  organismos: ["ONU","G7","G20","NATO","UE","OMC","OCDE","FMI","BIRD","BID (extra-regional)","CPLP (observador)"],
+  conflitos: "Questão da dupla cidadania italiana: estima-se que 25–30 milhões de brasileiros têm direito à cidadania italiana — o que gerou debates sobre regras de concessão (lei 91/1992 e suas limitações). Acordo Mercosul-UE: posições italianas por vezes protecionistas.",
+  aproximacoes: "Imigração italiana foi fundamental para o Sul e Sudeste do Brasil (SP, RS, SC). Herança cultural profunda. Forte presença de empresas italianas no Brasil. Cooperação em moda, design e gastronomia. Maior comunidade de descendentes italianos fora da Itália está no Brasil."
+},
+
+"ESP": {
+  nome: "Espanha", flag: "🇪🇸", continente: "europa",
+  iso: "ESP", capital: "Madri",
+  presenca: "embaixada",
+  presencaLabel: "Embaixada em Madri",
+  inicioRelacoes: 1834,
+  brasileiros: 400000,
+  exportacoes: { total: "US$ 3,4 bi", principais: ["petróleo cru","minério de ferro","celulose","soja","café"] },
+  importacoes: { total: "US$ 2,8 bi", principais: ["veículos","máquinas","azeite","vinhos","produtos químicos"] },
+  comercioTotal: "US$ 6,2 bi (2023)",
+  organismos: ["ONU","G20","NATO","UE","OMC","OCDE","FMI","BIRD","BID (extra-regional)"],
+  conflitos: "Acordo Mercosul-UE travado em parte por resistência espanhola a abertura agrícola. Questões de desinvestimento de empresas espanholas (Telefônica/Vivo, Iberdrola, Repsol) no Brasil.",
+  aproximacoes: "Língua próxima facilita relações culturais. Grandes grupos espanhóis presentes no Brasil (Santander, BBVA, Telefônica). Forte fluxo de brasileiros para Espanha como destino de imigração e turismo."
+},
+
+"RUS": {
+  nome: "Rússia", flag: "🇷🇺", continente: "europa",
+  iso: "RUS", capital: "Moscou",
+  presenca: "embaixada",
+  presencaLabel: "Embaixada em Moscou",
+  inicioRelacoes: 1828,
+  brasileiros: 4500,
+  exportacoes: { total: "US$ 3,2 bi", principais: ["soja","carnes","café","açúcar","milho"] },
+  importacoes: { total: "US$ 1,8 bi", principais: ["fertilizantes","potássio","trigo","petróleo","defensivos agrícolas"] },
+  comercioTotal: "US$ 5,0 bi (2023)",
+  organismos: ["ONU","CSNU (P5)","G20","BRICS","OMC","SCO","CSTO","CEI"],
+  conflitos: "Guerra da Ucrânia (2022–): Brasil adotou posição de neutralidade ativa — não condenou a Rússia na ONU, abstenção na maioria das votações. Pressão ocidental sobre o Brasil. Fertilizantes: Brasil depende em ~24% de importações russas — vulnerabilidade estratégica.",
+  aproximacoes: "BRICS: parceiros centrais na reformulação da ordem multipolar. Brasil e Rússia defendem reforma do CSNU e da governança global. Cooperação tecnológica (vacinas durante COVID: Sputnik V). Agenda convergente em não-ocidentalismo e autonomia estratégica."
+},
+
+"CHN": {
+  nome: "China", flag: "🇨🇳", continente: "asia",
+  iso: "CHN", capital: "Pequim",
+  presenca: "embaixada",
+  presencaLabel: "Embaixada em Pequim",
+  inicioRelacoes: 1974,
+  brasileiros: 35000,
+  exportacoes: { total: "US$ 104,1 bi", principais: ["soja","petróleo cru","minério de ferro","carne bovina","celulose","algodão"] },
+  importacoes: { total: "US$ 65,3 bi", principais: ["eletroeletrônicos","máquinas","produtos químicos","fertilizantes","têxteis","automóveis"] },
+  comercioTotal: "US$ 169,4 bi (2023)",
+  organismos: ["ONU","CSNU (P5)","G20","BRICS","OMC","SCO","AIIB","NDB (Banco do BRICS)","G77"],
+  conflitos: "Desindustrialização brasileira: a avalanche de produtos chineses baratos é apontada como fator de desindustrialização. Dumping em aço, calçados e têxteis. Tensão sobre investimentos chineses em infraestrutura estratégica (portos, energia). EUA pressionam o Brasil a limitar Huawei no 5G. Dependência comercial excessiva gera vulnerabilidade.",
+  aproximacoes: "Maior parceiro comercial do Brasil desde 2009. BRICS: eixo central de cooperação Sul-Sul. Banco dos BRICS (NDB) sediado em Xangai. Lula visitou a China em 2023 — agenda de desdolarização e comércio em moedas nacionais. Acordo de swap cambial BRL-CNY. Belt and Road Initiative: empresas chinesas investem em ferrovias, portos e energia no Brasil."
+},
+
+"JPN": {
+  nome: "Japão", flag: "🇯🇵", continente: "asia",
+  iso: "JPN", capital: "Tóquio",
+  presenca: "embaixada",
+  presencaLabel: "Embaixada em Tóquio",
+  inicioRelacoes: 1895,
+  brasileiros: 1500000,
+  exportacoes: { total: "US$ 5,8 bi", principais: ["minério de ferro","soja","petróleo","alumínio","carnes","celulose"] },
+  importacoes: { total: "US$ 3,2 bi", principais: ["veículos","máquinas","produtos eletrônicos","aço","equipamentos médicos"] },
+  comercioTotal: "US$ 9,0 bi (2023)",
+  organismos: ["ONU","G7","G20","OMC","OCDE","AIIB","BID (extra-regional)","FMI","BIRD"],
+  conflitos: "Brasil tem a maior colônia japonesa fora do Japão (~1,5 milhão de descendentes). Tensões históricas pós-2ª Guerra: 'kachigumi' (fanáticos que não acreditavam na derrota do Japão) causaram tumultos em SP nos anos 1940. Protecionismo japonês em produtos agrícolas brasileiros.",
+  aproximacoes: "Imigração japonesa desde 1908 (navio Kasato Maru). Brasil e Japão têm 'parceria estratégica global'. Cooperação técnica agrícola histórica (JICA/EMBRAPA — cerrado transformado em celeiro). Acordo Mercosul-Japão em estudo."
+},
+
+"IND": {
+  nome: "Índia", flag: "🇮🇳", continente: "asia",
+  iso: "IND", capital: "Nova Delhi",
+  presenca: "embaixada",
+  presencaLabel: "Embaixada em Nova Delhi",
+  inicioRelacoes: 1948,
+  brasileiros: 5000,
+  exportacoes: { total: "US$ 4,8 bi", principais: ["petróleo cru","ouro","soja","açúcar","cobre"] },
+  importacoes: { total: "US$ 4,1 bi", principais: ["medicamentos","produtos químicos","combustíveis","têxteis","maquinário"] },
+  comercioTotal: "US$ 8,9 bi (2023)",
+  organismos: ["ONU","G20","BRICS","OMC","G77","NAM","AIIB","NDB"],
+  conflitos: "Disputas na OMC sobre produtos agrícolas (açúcar indiano subsidiado). Competição em mercados emergentes (África, América Latina). Diferenças sobre propriedade intelectual e medicamentos genéricos.",
+  aproximacoes: "BRICS: parceria estratégica central. IBAS (Índia-Brasil-África do Sul): fórum trilateral de democracias do Sul Global. Cooperação em biocombustíveis, saúde e tecnologia espacial. G4 (reforma do CSNU): Brasil e Índia pleiteiam juntos assentos permanentes no CSNU."
+},
+
+"SAF": {
+  nome: "África do Sul", flag: "🇿🇦", continente: "africa",
+  iso: "ZAF", capital: "Pretória",
+  presenca: "embaixada",
+  presencaLabel: "Embaixada em Pretória",
+  inicioRelacoes: 1948,
+  brasileiros: 8000,
+  exportacoes: { total: "US$ 1,2 bi", principais: ["petróleo","açúcar","soja","plásticos","manufaturados"] },
+  importacoes: { total: "US$ 0,8 bi", principais: ["ouro","platina","cromo","minerais","veículos"] },
+  comercioTotal: "US$ 2,0 bi (2023)",
+  organismos: ["ONU","G20","BRICS","UA","SADC","OMC","NDB"],
+  conflitos: "Competição agrícola em mercados africanos. Diferenças sobre capacidade nuclear civil.",
+  aproximacoes: "BRICS: parceiro central. IBAS (Índia-Brasil-África do Sul): fórum emblemático da política externa sul-sul. Brasil foi fundamental no processo de transição democrática sul-africana (Mandela era próximo de Lula). Cooperação em saúde (HIV/AIDS), mineração e energias renováveis."
+},
+
+"ANG": {
+  nome: "Angola", flag: "🇦🇴", continente: "africa",
+  iso: "AGO", capital: "Luanda",
+  presenca: "embaixada",
+  presencaLabel: "Embaixada em Luanda",
+  inicioRelacoes: 1975,
+  brasileiros: 30000,
+  exportacoes: { total: "US$ 0,9 bi", principais: ["manufaturados","alimentos","máquinas","construção civil","serviços"] },
+  importacoes: { total: "US$ 2,8 bi", principais: ["petróleo cru","LNG","diamantes"] },
+  comercioTotal: "US$ 3,7 bi (2023)",
+  organismos: ["ONU","UA","CPLP","SADC","OPEP","OMC","NDB (potencial membro)"],
+  conflitos: "Angola foi palco de guerra civil (1975–2002) com envolvimento cubano, soviético e sul-africano — o Brasil reconheceu o MPLA logo após a independência (antes dos EUA), numa decisão autônoma do Geisel/Azeredo da Silveira que irritou Washington.",
+  aproximacoes: "CPLP: parceria linguística e cultural central. Reconhecimento imediato da independência angolana em 1975 foi gesto histórico de autonomia diplomática. Petrobras com operações em Angola. Construtoras brasileiras (Odebrecht, Camargo Corrêa) atuaram extensamente — envolvidas na Lava Jato. Cooperação em saúde, educação e agricultura (EMBRAPA)."
+},
+
+"MOZ": {
+  nome: "Moçambique", flag: "🇲🇿", continente: "africa",
+  iso: "MOZ", capital: "Maputo",
+  presenca: "embaixada",
+  presencaLabel: "Embaixada em Maputo",
+  inicioRelacoes: 1975,
+  brasileiros: 5000,
+  exportacoes: { total: "US$ 0,25 bi", principais: ["alimentos","manufaturados","medicamentos","máquinas"] },
+  importacoes: { total: "US$ 0,3 bi", principais: ["gás natural","alumínio","carvão","borracha"] },
+  comercioTotal: "US$ 0,55 bi (2023)",
+  organismos: ["ONU","UA","CPLP","SADC","Commonwealth","OMC"],
+  conflitos: "Poucas tensões diretas. Questões de segurança no norte do país (Cabo Delgado) geram preocupação regional.",
+  aproximacoes: "CPLP: parceria estrutural. Cooperação técnica intensa (ABC/Itamaraty): agricultura tropical, saúde, educação. EMBRAPA Moçambique. ProSAVANA (polêmico projeto agrícola). Brasil apoiou o processo de paz moçambicano nos anos 1990."
+},
+
+"NIG": {
+  nome: "Nigéria", flag: "🇳🇬", continente: "africa",
+  iso: "NGA", capital: "Abuja",
+  presenca: "embaixada",
+  presencaLabel: "Embaixada em Abuja",
+  inicioRelacoes: 1960,
+  brasileiros: 2000,
+  exportacoes: { total: "US$ 0,5 bi", principais: ["açúcar","frango","soja","manufaturados","calçados"] },
+  importacoes: { total: "US$ 0,3 bi", principais: ["petróleo cru","fertilizantes"] },
+  comercioTotal: "US$ 0,8 bi (2023)",
+  organismos: ["ONU","UA","CEDEAO","G77","OPEP","Commonwealth","OMC"],
+  conflitos: "Lula apoiou posição da CEDEAO após o golpe no Níger (2023) — posição que divergia da Nigéria internamente. Competição por liderança no espaço lusófono-africano.",
+  aproximacoes: "Laço histórico da diáspora africana: iorubás e canombés têm raízes na Nigéria. Cooperação Sul-Sul. Brasil e Nigéria são as maiores economias de seus respectivos continentes — interesse estratégico mútuo."
+},
+
+"EGI": {
+  nome: "Egito", flag: "🇪🇬", continente: "africa",
+  iso: "EGY", capital: "Cairo",
+  presenca: "embaixada",
+  presencaLabel: "Embaixada no Cairo",
+  inicioRelacoes: 1924,
+  brasileiros: 3500,
+  exportacoes: { total: "US$ 1,8 bi", principais: ["açúcar","carnes","soja","milho","café"] },
+  importacoes: { total: "US$ 0,4 bi", principais: ["fertilizantes","fosfatos","mármore","óleos minerais"] },
+  comercioTotal: "US$ 2,2 bi (2023)",
+  organismos: ["ONU","UA","Liga Árabe","NAM","G77","OMC","BRICS (membro 2024)"],
+  conflitos: "Questão palestina: divergências de ênfase — Brasil mais próximo de posições pró-palestinas, Egito tem papel de mediador. Embargo egípcio a produtos brasileiros de frango (2023) por questões sanitárias.",
+  aproximacoes: "Egito integrou o BRICS em 2024 — alinhamento crescente. Comunidade árabe no Brasil (sírios, libaneses com passado egípcio). Cooperação em segurança alimentar. Canal de Suez: importância para exportações brasileiras."
+},
+
+"ETI": {
+  nome: "Etiópia", flag: "🇪🇹", continente: "africa",
+  iso: "ETH", capital: "Adis Abeba",
+  presenca: "embaixada",
+  presencaLabel: "Embaixada em Adis Abeba",
+  inicioRelacoes: 1961,
+  brasileiros: 800,
+  exportacoes: { total: "US$ 0,18 bi", principais: ["açúcar","manufaturados","construção civil"] },
+  importacoes: { total: "US$ 0,05 bi", principais: ["café","flores","couro"] },
+  comercioTotal: "US$ 0,23 bi (2023)",
+  organismos: ["ONU","UA (sede em Adis Abeba)","IGAD","G77","OMC"],
+  conflitos: "Conflito de Tigré (2020–22): Brasil não se manifestou formalmente. Questões de direitos humanos.",
+  aproximacoes: "Adis Abeba é sede da UA — ter embaixada lá é estratégico para o acesso à África. Cooperação técnica brasileira em café e agricultura. EMBRAPA coopera com Etiópia."
+},
+
+"ISR": {
+  nome: "Israel", flag: "🇮🇱", continente: "asia",
+  iso: "ISR", capital: "Tel Aviv / Jerusalém",
+  presenca: "embaixada",
+  presencaLabel: "Embaixada em Tel Aviv",
+  inicioRelacoes: 1949,
+  brasileiros: 150000,
+  exportacoes: { total: "US$ 1,1 bi", principais: ["soja","minério de ferro","açúcar","carnes","celulose"] },
+  importacoes: { total: "US$ 1,3 bi", principais: ["equipamentos de defesa","dispositivos médicos","pesticidas","software","diamantes"] },
+  comercioTotal: "US$ 2,4 bi (2023)",
+  organismos: ["ONU","OMC","OCDE","BID (extra-regional)"],
+  conflitos: "Crise diplomática grave (2024): após ofensiva israelense em Gaza, Brasil retirou o embaixador de Tel Aviv. Bolsonaro havia transferido a embaixada para Jerusalém (com escritório comercial) — revertido por Lula. Lula comparou operação israelense em Gaza ao Holocausto — declarado persona non grata por Israel. Tensão persistente.",
+  aproximacoes: "Maior comunidade judaica da América Latina no Brasil (~120.000 judeus). Cooperação em tecnologia, irrigação e agricultura de precisão (influência do modelo israelense no cerrado). Acordos de defesa durante governos anteriores."
+},
+
+"IRN": {
+  nome: "Irã", flag: "🇮🇷", continente: "asia",
+  iso: "IRN", capital: "Teerã",
+  presenca: "embaixada",
+  presencaLabel: "Embaixada em Teerã",
+  inicioRelacoes: 1961,
+  brasileiros: 2000,
+  exportacoes: { total: "US$ 1,2 bi", principais: ["soja","milho","carnes","açúcar","manufaturados"] },
+  importacoes: { total: "US$ 0,1 bi", principais: ["óleos minerais","petroquímicos","tapetes"] },
+  comercioTotal: "US$ 1,3 bi (2023)",
+  organismos: ["ONU","OPEP","OCI","G77","NAM","SCO (observador)"],
+  conflitos: "Sanções americanas e europeias ao Irã dificultam comércio com parceiros brasileiros. Ataque à AMIA em Buenos Aires (1994): suspeita de envolvimento iraniano gerou impacto na América do Sul. Brasil criticou sanções unilaterais mas votou resoluções de não-proliferação na AIEA.",
+  aproximacoes: "Acordo de Teerã (2010): Lula e Erdogan mediaram acordo sobre enriquecimento de urânio — EUA rejeitaram, mas foi gesto de autonomia estratégica. Brasil mantém relações quando muitos países as rompem. Cooperação em energia e alimentos."
+},
+
+"TUR": {
+  nome: "Turquia", flag: "🇹🇷", continente: "asia",
+  iso: "TUR", capital: "Ancara",
+  presenca: "embaixada",
+  presencaLabel: "Embaixada em Ancara",
+  inicioRelacoes: 1927,
+  brasileiros: 8000,
+  exportacoes: { total: "US$ 2,4 bi", principais: ["soja","milho","algodão","couro","celulose"] },
+  importacoes: { total: "US$ 1,8 bi", principais: ["aço","plásticos","produtos químicos","mármores","têxteis"] },
+  comercioTotal: "US$ 4,2 bi (2023)",
+  organismos: ["ONU","G20","NATO","OMC","OCI","OCDE"],
+  conflitos: "Turquia é membro da NATO mas mantém relações com a Rússia — posição de equilíbrio similar ao Brasil. Disputa sobre reconhecimento do genocídio armênio (Turquia nega — Brasil tem comunidade armênia).",
+  aproximacoes: "Acordo de Teerã (2010): Brasil e Turquia agiram juntos como mediadores em crise nuclear iraniana. Parceiros estratégicos em multilateralismo. Forte crescimento do comércio. Comunidade turca e síria no Brasil."
+},
+
+"SAU": {
+  nome: "Arábia Saudita", flag: "🇸🇦", continente: "asia",
+  iso: "SAU", capital: "Riade",
+  presenca: "embaixada",
+  presencaLabel: "Embaixada em Riade",
+  inicioRelacoes: 1954,
+  brasileiros: 40000,
+  exportacoes: { total: "US$ 2,8 bi", principais: ["carnes bovina e frango","açúcar","soja","celulose","café"] },
+  importacoes: { total: "US$ 1,5 bi", principais: ["petróleo","fertilizantes","derivados petroquímicos"] },
+  comercioTotal: "US$ 4,3 bi (2023)",
+  organismos: ["ONU","OPEP","G20","Liga Árabe","OCI","OMC","BRICS (membro 2024)"],
+  conflitos: "Embargo a carnes brasileiras por questões sanitárias é recorrente (2017, 2021). Questão da Arábia Saudita e direitos humanos vs política externa brasileira de direitos humanos.",
+  aproximacoes: "Arábia Saudita é um dos maiores destinos de carnes brasileiras. Investimentos do PIF (fundo soberano saudita) no Brasil. BRICS: Saudita entrou em 2024 — alinhamento crescente. Diáspora árabe no Brasil (comunidade libanesa e síria com raízes)."
+},
+
+"IND2": {
+  nome: "Indonésia", flag: "🇮🇩", continente: "asia",
+  iso: "IDN", capital: "Jacarta",
+  presenca: "embaixada",
+  presencaLabel: "Embaixada em Jacarta",
+  inicioRelacoes: 1953,
+  brasileiros: 3000,
+  exportacoes: { total: "US$ 1,6 bi", principais: ["soja","açúcar","algodão","minério de ferro","celulose"] },
+  importacoes: { total: "US$ 2,1 bi", principais: ["óleo de palma","carvão","fertilizantes","têxteis","calçados"] },
+  comercioTotal: "US$ 3,7 bi (2023)",
+  organismos: ["ONU","G20","ASEAN","OMC","NAM","G77","OCI"],
+  conflitos: "Competição em biocombustíveis: etanol de cana (BR) vs biodiesel de palma (IDN). Desmatamento: ambos enfrentam pressão internacional semelhante. Competição no mercado de proteínas animais.",
+  aproximacoes: "Brasil e Indonésia são as duas maiores florestas tropicais do mundo — cooperação ambiental estratégica. G20: parceiros em reforma da governança global. NAM: tradição histórica de não-alinhamento compartilhada."
+},
+
+"NIG2": {
+  nome: "Niger", flag: "🇳🇪", continente: "africa",
+  iso: "NER", capital: "Niamey",
+  presenca: "acreditacao",
+  presencaLabel: "Acreditado a partir de Abuja (Nigéria)",
+  inicioRelacoes: 1960,
+  brasileiros: 200,
+  exportacoes: { total: "US$ 0,02 bi", principais: ["manufaturados","alimentos"] },
+  importacoes: { total: "US$ 0,005 bi", principais: ["urânio"] },
+  comercioTotal: "US$ 0,025 bi (2023)",
+  organismos: ["ONU","UA","CEDEAO","G77","OCI","OMC"],
+  conflitos: "Golpe militar no Níger (2023): Brasil apoiou posição da CEDEAO pela restauração da ordem democrática. Gerou tensão com a junta militar.",
+  aproximacoes: "Cooperação técnica mínima. Brasil mantém acreditação diplomática indireta."
+},
+
+"PAK": {
+  nome: "Paquistão", flag: "🇵🇰", continente: "asia",
+  iso: "PAK", capital: "Islamabade",
+  presenca: "embaixada",
+  presencaLabel: "Embaixada em Islamabade",
+  inicioRelacoes: 1952,
+  brasileiros: 2000,
+  exportacoes: { total: "US$ 0,8 bi", principais: ["açúcar","algodão","soja","manufaturados","couro"] },
+  importacoes: { total: "US$ 0,3 bi", principais: ["têxteis","couro","artigos esportivos","frutas"] },
+  comercioTotal: "US$ 1,1 bi (2023)",
+  organismos: ["ONU","NAM","G77","OCI","SCO","Commonwealth","OMC"],
+  conflitos: "Questão nuclear: Paquistão não assinou TNP — Brasil defende não-proliferação mas mantém relações comerciais. Instabilidade política interna gera incerteza.",
+  aproximacoes: "Cooperação técnica em agricultura. Mercado potencial para produtos brasileiros. Diálogo sobre Caxemira no CSNU."
+},
+
+"AUS": {
+  nome: "Austrália", flag: "🇦🇺", continente: "oceania",
+  iso: "AUS", capital: "Camberra",
+  presenca: "embaixada",
+  presencaLabel: "Embaixada em Camberra",
+  inicioRelacoes: 1945,
+  brasileiros: 150000,
+  exportacoes: { total: "US$ 1,4 bi", principais: ["soja","carnes","couro","café","açúcar"] },
+  importacoes: { total: "US$ 0,8 bi", principais: ["carvão","trigo","minério de ferro","vinho","serviços de educação"] },
+  comercioTotal: "US$ 2,2 bi (2023)",
+  organismos: ["ONU","G20","Commonwealth","OCDE","AUKUS","Quad","OMC","AIIB","BID (extra-regional)"],
+  conflitos: "Competição agropecuária: ambos são grandes exportadores de carne e cereais. Protecionismo australiano em produtos brasileiros. AUKUS: cooperação de submarinos nucleares com EUA/UK deixa Brasil atento (dado seu próprio programa de submarino nuclear).",
+  aproximacoes: "G20: posições convergentes em governança climática. Cooperação em mineração e recursos naturais. Crescente diáspora brasileira em Melbourne e Sydney."
+},
+
+"NZL": {
+  nome: "Nova Zelândia", flag: "🇳🇿", continente: "oceania",
+  iso: "NZL", capital: "Wellington",
+  presenca: "embaixada",
+  presencaLabel: "Embaixada em Wellington",
+  inicioRelacoes: 1967,
+  brasileiros: 18000,
+  exportacoes: { total: "US$ 0,2 bi", principais: ["café","soja","carnes","produtos químicos"] },
+  importacoes: { total: "US$ 0,15 bi", principais: ["leite em pó","kiwi","lã","vinho"] },
+  comercioTotal: "US$ 0,35 bi (2023)",
+  organismos: ["ONU","Commonwealth","OCDE","OMC","Aliança 5 Olhos (não-membro br)"],
+  conflitos: "Competição em produtos lácteos e carne ovina. Acordos de livre comércio da NZ com países asiáticos competem com produto brasileiro.",
+  aproximacoes: "Relações estáveis e amistosas. Cooperação ambiental. Mercado de working holiday para brasileiros."
+},
+
+"FIJ": {
+  nome: "Fiji", flag: "🇫🇯", continente: "oceania",
+  iso: "FJI", capital: "Suva",
+  presenca: "acreditacao",
+  presencaLabel: "Acreditado a partir de Camberra (Austrália)",
+  inicioRelacoes: 1970,
+  brasileiros: 200,
+  exportacoes: { total: "US$ 0,01 bi", principais: ["manufaturados"] },
+  importacoes: { total: "US$ 0,005 bi", principais: ["açúcar de cana"] },
+  comercioTotal: "US$ 0,015 bi (2023)",
+  organismos: ["ONU","Commonwealth","Fórum das Ilhas do Pacífico","OMC","NAM"],
+  conflitos: "Minimal. Acesso às discussões do Fórum do Pacífico.",
+  aproximacoes: "Brasil apoia Estados insulares do Pacífico em questões climáticas e de aumento do nível do mar. Cooperação técnica mínima."
+},
+
+// ─── PAÍSES ADICIONAIS IMPORTANTES ───
+
+"KOR": {
+  nome: "Coreia do Sul", flag: "🇰🇷", continente: "asia",
+  iso: "KOR", capital: "Seul",
+  presenca: "embaixada",
+  presencaLabel: "Embaixada em Seul",
+  inicioRelacoes: 1959,
+  brasileiros: 50000,
+  exportacoes: { total: "US$ 5,3 bi", principais: ["minério de ferro","petróleo","soja","celulose","milho"] },
+  importacoes: { total: "US$ 4,1 bi", principais: ["veículos","eletroeletrônicos","aço","máquinas","semicondutores"] },
+  comercioTotal: "US$ 9,4 bi (2023)",
+  organismos: ["ONU","G20","OCDE","OMC","AIIB","BID (extra-regional)"],
+  conflitos: "Competição comercial em eletroeletrônicos e automóveis (Samsung, Hyundai vs montadoras brasileiras/europeias). Protecionismo coreano em alguns produtos agrícolas.",
+  aproximacoes: "Acordo de livre comércio Mercosul-Coreia do Sul (em negociação). Forte presença de empresas coreanas no Brasil (LG, Samsung, Hyundai, Posco). Comunidade coreana significativa em SP. Parceria em tecnologia e inovação."
+},
+
+"VIE": {
+  nome: "Vietnã", flag: "🇻🇳", continente: "asia",
+  iso: "VNM", capital: "Hanói",
+  presenca: "embaixada",
+  presencaLabel: "Embaixada em Hanói",
+  inicioRelacoes: 1989,
+  brasileiros: 2000,
+  exportacoes: { total: "US$ 3,8 bi", principais: ["soja","algodão","milho","carne de frango","couro"] },
+  importacoes: { total: "US$ 2,1 bi", principais: ["eletroeletrônicos","calçados","têxteis","máquinas","móveis"] },
+  comercioTotal: "US$ 5,9 bi (2023)",
+  organismos: ["ONU","ASEAN","OMC","APEC","NAM","G77"],
+  conflitos: "Competição em produtos têxteis e calçados. Dumping vietnamita em calçados gerou ações na OMC.",
+  aproximacoes: "Vietnã é destino crescente de exportações agrícolas brasileiras. Acordo Mercosul-ASEAN em negociação. Tradição de solidariedade terceiro-mundista."
+},
+
+"MAR": {
+  nome: "Marrocos", flag: "🇲🇦", continente: "africa",
+  iso: "MAR", capital: "Rabat",
+  presenca: "embaixada",
+  presencaLabel: "Embaixada em Rabat",
+  inicioRelacoes: 1960,
+  brasileiros: 4000,
+  exportacoes: { total: "US$ 0,9 bi", principais: ["açúcar","soja","carne bovina","manufaturados","café"] },
+  importacoes: { total: "US$ 0,6 bi", principais: ["fosfatos","fertilizantes","ácido fosfórico","produtos químicos"] },
+  comercioTotal: "US$ 1,5 bi (2023)",
+  organismos: ["ONU","UA","Liga Árabe","OCI","G77","OMC"],
+  conflitos: "Questão do Saara Ocidental: Brasil não reconhece a soberania marroquina sobre o território — mantém posição de autodeterminação. Marrocos pressiona por reconhecimento.",
+  aproximacoes: "Cooperação em segurança alimentar. Marrocos é principal fornecedor de fosfato ao Brasil — insumo crítico para fertilizantes e agricultura. Acordo de cooperação técnica."
+},
+
+"SEN": {
+  nome: "Senegal", flag: "🇸🇳", continente: "africa",
+  iso: "SEN", capital: "Dacar",
+  presenca: "embaixada",
+  presencaLabel: "Embaixada em Dacar",
+  inicioRelacoes: 1962,
+  brasileiros: 1500,
+  exportacoes: { total: "US$ 0,3 bi", principais: ["açúcar","manufaturados","alimentos","medicamentos"] },
+  importacoes: { total: "US$ 0,05 bi", principais: ["fosfatos","pescado","artesanato"] },
+  comercioTotal: "US$ 0,35 bi (2023)",
+  organismos: ["ONU","UA","CEDEAO","OCI","Francofonia","G77","OMC"],
+  conflitos: "Nenhum conflito significativo. Dacar foi sede de missão de paz onde brasileiros participaram.",
+  aproximacoes: "Cooperação Sul-Sul em agricultura e saúde. Laços históricos da diáspora afro-brasileira (influência wolof na cultura nordestina). Brasil treina militares senegaleses."
+},
+
+"GAN": {
+  nome: "Gana", flag: "🇬🇭", continente: "africa",
+  iso: "GHA", capital: "Acra",
+  presenca: "embaixada",
+  presencaLabel: "Embaixada em Acra",
+  inicioRelacoes: 1961,
+  brasileiros: 2000,
+  exportacoes: { total: "US$ 0,4 bi", principais: ["açúcar","manufaturados","equipamentos de construção"] },
+  importacoes: { total: "US$ 0,1 bi", principais: ["ouro","cacau","madeira"] },
+  comercioTotal: "US$ 0,5 bi (2023)",
+  organismos: ["ONU","UA","CEDEAO","Commonwealth","G77","OMC"],
+  conflitos: "Nenhum conflito significativo.",
+  aproximacoes: "Gana é modelo de democracia africana — convergência política. Cooperação em saúde e educação. Laços culturais afrobrasileiros."
+},
+
+"CNG": {
+  nome: "Rep. Dem. do Congo", flag: "🇨🇩", continente: "africa",
+  iso: "COD", capital: "Kinshasa",
+  presenca: "embaixada",
+  presencaLabel: "Embaixada em Kinshasa",
+  inicioRelacoes: 1960,
+  brasileiros: 1000,
+  exportacoes: { total: "US$ 0,15 bi", principais: ["manufaturados","alimentos","equipamentos"] },
+  importacoes: { total: "US$ 0,1 bi", principais: ["cobalto","cobre","coltan","diamantes"] },
+  comercioTotal: "US$ 0,25 bi (2023)",
+  organismos: ["ONU","UA","SADC","CEEAC","G77","OMC"],
+  conflitos: "Brasil participou de missões de paz da ONU no Congo (MONUC/MONUSCO). Instabilidade crônica no leste do Congo.",
+  aproximacoes: "Congo e Amazônia são as duas maiores florestas tropicais do mundo — cooperação em proteção ambiental. Cooperação técnica brasileira. Língua francesa cria distância mas o interesse estratégico cresce."
+},
+
+"TAN": {
+  nome: "Tanzânia", flag: "🇹🇿", continente: "africa",
+  iso: "TZA", capital: "Dodoma",
+  presenca: "embaixada",
+  presencaLabel: "Embaixada em Dar es Salaam",
+  inicioRelacoes: 1964,
+  brasileiros: 1200,
+  exportacoes: { total: "US$ 0,2 bi", principais: ["açúcar","manufaturados","medicamentos"] },
+  importacoes: { total: "US$ 0,08 bi", principais: ["ouro","chá","sisal","café"] },
+  comercioTotal: "US$ 0,28 bi (2023)",
+  organismos: ["ONU","UA","EAC","SADC","Commonwealth","G77","OMC"],
+  conflitos: "Nenhum conflito significativo.",
+  aproximacoes: "Cooperação técnica brasileira em agricultura (EMBRAPA). Laços culturais afrobrasileiros. Tanzania recebeu cooperação brasileira em biocombustíveis."
+},
+
+"KEN": {
+  nome: "Quênia", flag: "🇰🇪", continente: "africa",
+  iso: "KEN", capital: "Nairóbi",
+  presenca: "embaixada",
+  presencaLabel: "Embaixada em Nairóbi",
+  inicioRelacoes: 1964,
+  brasileiros: 3000,
+  exportacoes: { total: "US$ 0,35 bi", principais: ["açúcar","manufaturados","frango","medicamentos"] },
+  importacoes: { total: "US$ 0,1 bi", principais: ["chá","café","flores","horticultura"] },
+  comercioTotal: "US$ 0,45 bi (2023)",
+  organismos: ["ONU","UA","EAC","IGAD","Commonwealth","G77","OMC"],
+  conflitos: "Competição em café (um dos maiores produtores africanos vs Brasil). Nairóbi sedia sede do PNUMA e ONUDI — relevância multilateral.",
+  aproximacoes: "Cooperação técnica. Quênia é hub regional para cooperação Sul-Sul na África Oriental. EMBRAPA coopera em agricultura tropical."
+},
+
+"GRE": {
+  nome: "Grécia", flag: "🇬🇷", continente: "europa",
+  iso: "GRC", capital: "Atenas",
+  presenca: "embaixada",
+  presencaLabel: "Embaixada em Atenas",
+  inicioRelacoes: 1907,
+  brasileiros: 25000,
+  exportacoes: { total: "US$ 0,6 bi", principais: ["café","soja","celulose","minério de ferro","carnes"] },
+  importacoes: { total: "US$ 0,3 bi", principais: ["mármores","azeite","produtos farmacêuticos"] },
+  comercioTotal: "US$ 0,9 bi (2023)",
+  organismos: ["ONU","NATO","UE","OMC","OCDE"],
+  conflitos: "Nenhum conflito significativo. Armadores gregos controlam parte da frota que transporta commodities brasileiras.",
+  aproximacoes: "Imigração grega histórica (comunidade em SP). Empresas de navegação gregas importantes para comércio brasileiro. Relações estáveis."
+},
+
+"POL": {
+  nome: "Polônia", flag: "🇵🇱", continente: "europa",
+  iso: "POL", capital: "Varsóvia",
+  presenca: "embaixada",
+  presencaLabel: "Embaixada em Varsóvia",
+  inicioRelacoes: 1920,
+  brasileiros: 180000,
+  exportacoes: { total: "US$ 0,8 bi", principais: ["café","celulose","soja","carnes","etanol"] },
+  importacoes: { total: "US$ 0,5 bi", principais: ["máquinas","veículos","produtos químicos","aço"] },
+  comercioTotal: "US$ 1,3 bi (2023)",
+  organismos: ["ONU","NATO","UE","OMC","OCDE"],
+  conflitos: "Nenhum conflito significativo. Polônia é escala na rota migratória para a Europa.",
+  aproximacoes: "Grande diáspora polonesa no Sul do Brasil (PR, SC) — descendentes poloneses estimados em 2 milhões. Cooperação cultural e educacional. Parceria no âmbito UE."
+},
+
+"SUI": {
+  nome: "Suíça", flag: "🇨🇭", continente: "europa",
+  iso: "CHE", capital: "Berna",
+  presenca: "embaixada",
+  presencaLabel: "Embaixada em Berna",
+  inicioRelacoes: 1852,
+  brasileiros: 100000,
+  exportacoes: { total: "US$ 2,1 bi", principais: ["ouro","celulose","café","carnes","soja"] },
+  importacoes: { total: "US$ 2,8 bi", principais: ["medicamentos","produtos farmacêuticos","instrumentos de precisão","relógios","máquinas"] },
+  comercioTotal: "US$ 4,9 bi (2023)",
+  organismos: ["ONU (sede Genebra)","OMC (sede Genebra)","FMI","BIRD","OCDE"],
+  conflitos: "Sigilo bancário suíço historicamente usado para evasão fiscal brasileira. Lava Jato identificou contas em bancos suíços. Suíça cooperou parcialmente na devolução de ativos.",
+  aproximacoes: "Genebra é sede da OMC e de múltiplos organismos da ONU — presença diplomática brasileira intensa. Nestlé, Novartis, Roche com forte presença no Brasil. Cooperação em ciência e tecnologia."
+},
+
+"OLA": {
+  nome: "Países Baixos", flag: "🇳🇱", continente: "europa",
+  iso: "NLD", capital: "Amsterdã / Haia",
+  presenca: "embaixada",
+  presencaLabel: "Embaixada em Haia",
+  inicioRelacoes: 1826,
+  brasileiros: 60000,
+  exportacoes: { total: "US$ 6,8 bi", principais: ["soja","petróleo cru","minério de ferro","carnes","celulose"] },
+  importacoes: { total: "US$ 3,1 bi", principais: ["maquinário","equipamentos industriais","produtos químicos","fertilizantes"] },
+  comercioTotal: "US$ 9,9 bi (2023)",
+  organismos: ["ONU","NATO","UE","OMC","OCDE","FMI","BIRD","CIJ (sede em Haia)"],
+  conflitos: "Corte Internacional de Justiça fica em Haia — Brasil tem processos pendentes. Histórico colonial (Holanda ocupou Nordeste brasileiro 1630–1654 — Expulsão dos Holandeses). Porto de Rotterdam é principal entrada da soja brasileira na Europa.",
+  aproximacoes: "Rotterdam é o principal porto de entrada de commodities brasileiras na Europa. Shell e Unilever operam extensamente no Brasil. Acordo Mercosul-UE incluiu compromissos ambientais pressionados pela Holanda. Haia abriga CIJ — onde o Brasil tem histórico de participação em casos."
+},
+
+"BEL": {
+  nome: "Bélgica", flag: "🇧🇪", continente: "europa",
+  iso: "BEL", capital: "Bruxelas",
+  presenca: "embaixada",
+  presencaLabel: "Embaixada em Bruxelas",
+  inicioRelacoes: 1844,
+  brasileiros: 30000,
+  exportacoes: { total: "US$ 1,2 bi", principais: ["diamantes brutos","café","soja","celulose","carnes"] },
+  importacoes: { total: "US$ 1,0 bi", principais: ["diamantes lapidados","produtos farmacêuticos","chocolates","maquinário"] },
+  comercioTotal: "US$ 2,2 bi (2023)",
+  organismos: ["ONU","NATO","UE (sede Bruxelas)","OMC","OCDE","FMI","BIRD"],
+  conflitos: "Bruxelas é sede da UE — negociações do acordo Mercosul-UE têm um núcleo em Bruxelas. Tensões regulatórias e de padrões.",
+  aproximacoes: "Bruxelas é sede da UE e da NATO — localização estratégica para diplomacia multilateral. Comerciantes de diamantes belgas operam em parceria com mineração brasileira. Relações estáveis."
+},
+
+"AUT": {
+  nome: "Áustria", flag: "🇦🇹", continente: "europa",
+  iso: "AUT", capital: "Viena",
+  presenca: "embaixada",
+  presencaLabel: "Embaixada em Viena",
+  inicioRelacoes: 1823,
+  brasileiros: 15000,
+  exportacoes: { total: "US$ 0,7 bi", principais: ["café","celulose","carnes","soja"] },
+  importacoes: { total: "US$ 0,5 bi", principais: ["máquinas","equipamentos","produtos farmacêuticos"] },
+  comercioTotal: "US$ 1,2 bi (2023)",
+  organismos: ["ONU","AIEA (sede Viena)","UNIDO (sede Viena)","UE","OMC","OCDE","NATO (parceiro)"],
+  conflitos: "AIEA: Brasil monitora questões de não-proliferação a partir da sede vienense. Programa nuclear brasileiro sob escrutínio austríaco em fóruns da AIEA.",
+  aproximacoes: "Viena é sede da AIEA e UNIDO — importante para a diplomacia multilateral brasileira. Imigração austríaca histórica (família imperial de D. Leopoldina). Cooperação cultural."
+},
+
+"CHE2": {
+  nome: "República Tcheca", flag: "🇨🇿", continente: "europa",
+  iso: "CZE", capital: "Praga",
+  presenca: "embaixada",
+  presencaLabel: "Embaixada em Praga",
+  inicioRelacoes: 1919,
+  brasileiros: 15000,
+  exportacoes: { total: "US$ 0,4 bi", principais: ["café","carnes","celulose","manufaturados"] },
+  importacoes: { total: "US$ 0,35 bi", principais: ["maquinário","veículos","produtos químicos"] },
+  comercioTotal: "US$ 0,75 bi (2023)",
+  organismos: ["ONU","NATO","UE","OMC","OCDE"],
+  conflitos: "Nenhum conflito significativo.",
+  aproximacoes: "Comunidade tcheca histórica no Brasil (imigração do séc. XIX). Skoda e outras empresas. Relações estáveis no âmbito EU-Mercosul."
+},
+
+"HUN": {
+  nome: "Hungria", flag: "🇭🇺", continente: "europa",
+  iso: "HUN", capital: "Budapeste",
+  presenca: "embaixada",
+  presencaLabel: "Embaixada em Budapeste",
+  inicioRelacoes: 1919,
+  brasileiros: 8000,
+  exportacoes: { total: "US$ 0,3 bi", principais: ["café","soja","carnes","manufaturados"] },
+  importacoes: { total: "US$ 0,25 bi", principais: ["maquinário","veículos","eletrônicos","medicamentos"] },
+  comercioTotal: "US$ 0,55 bi (2023)",
+  organismos: ["ONU","NATO","UE","OMC","OCDE"],
+  conflitos: "Posição de Orbán sobre democracia vs padrões brasileiros. Tensão no âmbito da UE sobre estado de direito.",
+  aproximacoes: "Empresa Richter Gedeon (farmacêutica húngara) presente no Brasil. Relações estáveis. Imigração húngara menor mas presente."
+},
+
+"ROM": {
+  nome: "Romênia", flag: "🇷🇴", continente: "europa",
+  iso: "ROU", capital: "Bucareste",
+  presenca: "embaixada",
+  presencaLabel: "Embaixada em Bucareste",
+  inicioRelacoes: 1919,
+  brasileiros: 10000,
+  exportacoes: { total: "US$ 0,25 bi", principais: ["café","soja","carnes"] },
+  importacoes: { total: "US$ 0,18 bi", principais: ["maquinário","produtos químicos","farmacêuticos"] },
+  comercioTotal: "US$ 0,43 bi (2023)",
+  organismos: ["ONU","NATO","UE","OMC"],
+  conflitos: "Nenhum conflito significativo.",
+  aproximacoes: "Relações estáveis. Romênia é exportadora de profissionais de TI — alguns trabalham no Brasil. Cooperação no âmbito EU."
+},
+
+"BUL": {
+  nome: "Bulgária", flag: "🇧🇬", continente: "europa",
+  iso: "BGR", capital: "Sófia",
+  presenca: "embaixada",
+  presencaLabel: "Embaixada em Sófia",
+  inicioRelacoes: 1920,
+  brasileiros: 4000,
+  exportacoes: { total: "US$ 0,15 bi", principais: ["café","soja","carnes"] },
+  importacoes: { total: "US$ 0,1 bi", principais: ["produtos farmacêuticos","maquinário"] },
+  comercioTotal: "US$ 0,25 bi (2023)",
+  organismos: ["ONU","NATO","UE","OMC"],
+  conflitos: "Nenhum conflito significativo.",
+  aproximacoes: "Relações estáveis e de baixa intensidade."
+},
+
+"DIN": {
+  nome: "Dinamarca", flag: "🇩🇰", continente: "europa",
+  iso: "DNK", capital: "Copenhague",
+  presenca: "embaixada",
+  presencaLabel: "Embaixada em Copenhague",
+  inicioRelacoes: 1828,
+  brasileiros: 10000,
+  exportacoes: { total: "US$ 0,7 bi", principais: ["soja","carnes","café","celulose"] },
+  importacoes: { total: "US$ 0,5 bi", principais: ["maquinário","equipamentos de turbinas eólicas","farmacêuticos","lacticínios"] },
+  comercioTotal: "US$ 1,2 bi (2023)",
+  organismos: ["ONU","NATO","UE","OMC","OCDE"],
+  conflitos: "COP15 (Copenhague, 2009): Brasil teve papel central nas negociações — Lula e Obama construíram acordo de última hora. Dinamarca preocupada com desmatamento.",
+  aproximacoes: "Vestas e Ørsted investem em energia eólica e solar no Brasil. Cooperação em transição energética e hidrogênio verde. COP: posições climáticas frequentemente coordenadas."
+},
+
+"SUE": {
+  nome: "Suécia", flag: "🇸🇪", continente: "europa",
+  iso: "SWE", capital: "Estocolmo",
+  presenca: "embaixada",
+  presencaLabel: "Embaixada em Estocolmo",
+  inicioRelacoes: 1826,
+  brasileiros: 30000,
+  exportacoes: { total: "US$ 0,8 bi", principais: ["celulose","café","soja","carnes","minério de ferro"] },
+  importacoes: { total: "US$ 0,6 bi", principais: ["máquinas","veículos (Volvo, Scania)","farmacêuticos","telecomunicações (Ericsson)"] },
+  comercioTotal: "US$ 1,4 bi (2023)",
+  organismos: ["ONU","NATO (recém-adm.)","UE","OMC","OCDE"],
+  conflitos: "Críticas suecas ao desmatamento da Amazônia. Greta Thunberg e movimento climático sueco pressionam empresas a não comprar soja de áreas desmatadas.",
+  aproximacoes: "Volvo e Scania têm fábricas no Brasil. IKEA usa madeira e papel brasileiros (com certificação). Ericsson presente no mercado de telecom brasileiro. Cooperação em sustentabilidade e energia limpa."
+},
+
+"NOR": {
+  nome: "Noruega", flag: "🇳🇴", continente: "europa",
+  iso: "NOR", capital: "Oslo",
+  presenca: "embaixada",
+  presencaLabel: "Embaixada em Oslo",
+  inicioRelacoes: 1905,
+  brasileiros: 6000,
+  exportacoes: { total: "US$ 0,6 bi", principais: ["café","carnes","celulose","frutas tropicais"] },
+  importacoes: { total: "US$ 0,3 bi", principais: ["plataformas de petróleo","equipamentos offshore","farmacêuticos","peixes"] },
+  comercioTotal: "US$ 0,9 bi (2023)",
+  organismos: ["ONU","NATO","EEA (não-UE)","OMC","OCDE"],
+  conflitos: "Fundo Amazônia Norueguês: Noruega é o maior doador (US$ 1,2 bi doados). Durante o governo Bolsonaro, Noruega e Alemanha suspenderam doações por desmatamento — forte sinal político. Retomado com Lula (2023).",
+  aproximacoes: "Fundo Amazônia: Noruega é parceira central na proteção florestal. Equinor (empresa norueguesa) tem operações no pré-sal brasileiro. Cooperação offshore e em energias renováveis. Oslo Accords: tradição de mediação que inspira ações brasileiras."
+},
+
+"FIN": {
+  nome: "Finlândia", flag: "🇫🇮", continente: "europa",
+  iso: "FIN", capital: "Helsinque",
+  presenca: "embaixada",
+  presencaLabel: "Embaixada em Helsinque",
+  inicioRelacoes: 1919,
+  brasileiros: 7000,
+  exportacoes: { total: "US$ 0,5 bi", principais: ["celulose","café","carnes","soja"] },
+  importacoes: { total: "US$ 0,35 bi", principais: ["máquinas para papel e celulose","farmacêuticos","telecomunicações (Nokia)"] },
+  comercioTotal: "US$ 0,85 bi (2023)",
+  organismos: ["ONU","NATO (recém-adm.)","UE","OMC","OCDE"],
+  conflitos: "Nenhum conflito significativo. Finlândia critica desmatamento.",
+  aproximacoes: "Nokia presente no mercado brasileiro. Indústria de celulose finlandesa (UPM, Metsä) atua no Brasil. Cooperação em educação (modelo finlandês de referência para o Brasil)."
+},
+
+"UKR": {
+  nome: "Ucrânia", flag: "🇺🇦", continente: "europa",
+  iso: "UKR", capital: "Kiev",
+  presenca: "embaixada",
+  presencaLabel: "Embaixada em Kiev",
+  inicioRelacoes: 1991,
+  brasileiros: 60000,
+  exportacoes: { total: "US$ 0,4 bi", principais: ["café","carnes","soja","manufaturados"] },
+  importacoes: { total: "US$ 0,3 bi", principais: ["aço","trigo","fertilizantes"] },
+  comercioTotal: "US$ 0,7 bi (2023)",
+  organismos: ["ONU","G77","OMC","BSEC"],
+  conflitos: "Guerra Rússia-Ucrânia (2022–): Brasil absteve-se em resoluções da AGNU condenando a invasão russa — Ucrânia criticou a posição brasileira. Zelenski visitou Brasil (2023) para pressionar por apoio. Plano de Paz brasileiro ('Seis Pontos') foi apresentado como proposta de mediação — recebido com ceticismo por Kiev e Ocidente.",
+  aproximacoes: "Grande diáspora ucraniana no Sul do Brasil (PR tem ~500.000 descendentes). Ucrânia reconhece o Brasil como ator relevante para mediação. Cooperação agrícola histórica (ambas são grandes produtoras de grãos)."
+},
+
+"BLR": {
+  nome: "Bielorrússia", flag: "🇧🇾", continente: "europa",
+  iso: "BLR", capital: "Minsk",
+  presenca: "embaixada",
+  presencaLabel: "Embaixada em Minsk",
+  inicioRelacoes: 1992,
+  brasileiros: 500,
+  exportacoes: { total: "US$ 0,1 bi", principais: ["café","carnes"] },
+  importacoes: { total: "US$ 0,8 bi", principais: ["potássio (cloreto de potássio)","fertilizantes"] },
+  comercioTotal: "US$ 0,9 bi (2023)",
+  organismos: ["ONU","CEI","SCO","OMC"],
+  conflitos: "Regime Lukashenko: Brasil não condena expressamente as violações de direitos humanos — críticas de organizações de DH. Sanções ocidentais à Bielorrússia impactam comércio bilateral.",
+  aproximacoes: "Bielorrússia é importante fornecedora de potássio para o Brasil (insumo crítico para agricultura). Fertilizantes bielorrussos são estratégicos para o agronegócio brasileiro."
+},
+
+"ISL": {
+  nome: "Islândia", flag: "🇮🇸", continente: "europa",
+  iso: "ISL", capital: "Reiquiavique",
+  presenca: "acreditacao",
+  presencaLabel: "Acreditado a partir de Oslo (Noruega)",
+  inicioRelacoes: 1944,
+  brasileiros: 2000,
+  exportacoes: { total: "US$ 0,05 bi", principais: ["café","manufaturados"] },
+  importacoes: { total: "US$ 0,03 bi", principais: ["peixes","algas"] },
+  comercioTotal: "US$ 0,08 bi (2023)",
+  organismos: ["ONU","NATO","EEA (não-UE)","OMC","OCDE"],
+  conflitos: "Nenhum conflito significativo. Caça às baleias islandesa: posição brasileira é contrária.",
+  aproximacoes: "Cooperação em energias renováveis (geotermia). Islândia e Brasil têm em comum alta dependência de energia renovável."
+},
+
+"IRL": {
+  nome: "Irlanda", flag: "🇮🇪", continente: "europa",
+  iso: "IRL", capital: "Dublin",
+  presenca: "embaixada",
+  presencaLabel: "Embaixada em Dublin",
+  inicioRelacoes: 1947,
+  brasileiros: 80000,
+  exportacoes: { total: "US$ 0,6 bi", principais: ["café","soja","carnes","celulose"] },
+  importacoes: { total: "US$ 0,5 bi", principais: ["farmacêuticos","produtos químicos","tecnologia (Apple, Google)","lácteos"] },
+  comercioTotal: "US$ 1,1 bi (2023)",
+  organismos: ["ONU","UE","OMC","OCDE"],
+  conflitos: "Nenhum conflito significativo. Visto working holiday muito demandado por brasileiros.",
+  aproximacoes: "Grande diáspora brasileira em Dublin. Irlanda é hub de tecnologia e farmacêuticos para empresas que atuam no Brasil. Cooperação em TI e serviços."
+},
+
+"GEO": {
+  nome: "Geórgia", flag: "🇬🇪", continente: "asia",
+  iso: "GEO", capital: "Tbilisi",
+  presenca: "acreditacao",
+  presencaLabel: "Acreditado a partir de Ancara (Turquia)",
+  inicioRelacoes: 1992,
+  brasileiros: 800,
+  exportacoes: { total: "US$ 0,05 bi", principais: ["manufaturados","café"] },
+  importacoes: { total: "US$ 0,02 bi", principais: ["vinhos","avelãs","minerais"] },
+  comercioTotal: "US$ 0,07 bi (2023)",
+  organismos: ["ONU","OMC","BSEC","G77"],
+  conflitos: "Nenhum conflito bilateral significativo.",
+  aproximacoes: "Relações de baixa intensidade. Geórgia tem interesse em expandir relações com Brasil para compensar isolamento regional."
+},
+
+// ─── ÁSIA ADICIONAL ───
+"AFG": {
+  nome: "Afeganistão", flag: "🇦🇫", continente: "asia",
+  iso: "AFG", capital: "Cabul",
+  presenca: "acreditacao",
+  presencaLabel: "Acreditado a partir de Nova Delhi (Índia)",
+  inicioRelacoes: 1955,
+  brasileiros: 200,
+  exportacoes: { total: "US$ 0,01 bi", principais: ["manufaturados"] },
+  importacoes: { total: "US$ 0,005 bi", principais: ["tapetes"] },
+  comercioTotal: "US$ 0,015 bi (2023)",
+  organismos: ["ONU","OCI","SCO"],
+  conflitos: "Retirada americana (2021) e retomada do Talibã: Brasil fez operação de retirada de nacionais e afegãos colaboradores. Brasil não reconhece o governo talibã.",
+  aproximacoes: "Ajuda humanitária. Brasil participou de missões da ONU. Operação de evacuação de agosto de 2021."
+},
+
+"BAN": {
+  nome: "Bangladesh", flag: "🇧🇩", continente: "asia",
+  iso: "BGD", capital: "Dhaca",
+  presenca: "embaixada",
+  presencaLabel: "Embaixada em Dhaca",
+  inicioRelacoes: 1972,
+  brasileiros: 1500,
+  exportacoes: { total: "US$ 0,7 bi", principais: ["soja","algodão","açúcar","couro"] },
+  importacoes: { total: "US$ 0,3 bi", principais: ["têxteis","vestuário","peixes"] },
+  comercioTotal: "US$ 1,0 bi (2023)",
+  organismos: ["ONU","Commonwealth","OCI","NAM","G77","OMC"],
+  conflitos: "Competição têxtil: Bangladesh é o 2º exportador de têxteis do mundo — concorrência direta com a indústria têxtil brasileira.",
+  aproximacoes: "Bangladesh é grande mercado consumidor de soja e algodão brasileiros. Cooperação sul-sul em segurança alimentar."
+},
+
+"SRI": {
+  nome: "Sri Lanka", flag: "🇱🇰", continente: "asia",
+  iso: "LKA", capital: "Colombo",
+  presenca: "embaixada",
+  presencaLabel: "Embaixada em Colombo",
+  inicioRelacoes: 1953,
+  brasileiros: 800,
+  exportacoes: { total: "US$ 0,25 bi", principais: ["açúcar","soja","carnes"] },
+  importacoes: { total: "US$ 0,08 bi", principais: ["chá","pneus","borracha","fibras"] },
+  comercioTotal: "US$ 0,33 bi (2023)",
+  organismos: ["ONU","Commonwealth","NAM","G77","OMC"],
+  conflitos: "Crise econômica de 2022 (calote da dívida): Brasil não foi afetado diretamente mas há preocupações com padrão de investimento em países em desenvolvimento.",
+  aproximacoes: "Sri Lanka foi pioneiro no movimento dos não-alinhados — convergência histórica com política externa brasileira. Cooperação técnica."
+},
+
+"MYA": {
+  nome: "Mianmar", flag: "🇲🇲", continente: "asia",
+  iso: "MMR", capital: "Naipidau",
+  presenca: "acreditacao",
+  presencaLabel: "Acreditado a partir de Bancoc (Tailândia)",
+  inicioRelacoes: 1955,
+  brasileiros: 300,
+  exportacoes: { total: "US$ 0,05 bi", principais: ["manufaturados","alimentos"] },
+  importacoes: { total: "US$ 0,02 bi", principais: ["madeira","minerais","gemas"] },
+  comercioTotal: "US$ 0,07 (2023)",
+  organismos: ["ONU","ASEAN","NAM","G77"],
+  conflitos: "Golpe militar (2021): Brasil expressou preocupação nas instâncias multilaterais mas não cortou relações. Crise Rohingya: Brasil votou em resoluções humanitárias na ONU.",
+  aproximacoes: "Relações de baixa intensidade. Acreditação indireta."
+},
+
+"THA": {
+  nome: "Tailândia", flag: "🇹🇭", continente: "asia",
+  iso: "THA", capital: "Bancoc",
+  presenca: "embaixada",
+  presencaLabel: "Embaixada em Bancoc",
+  inicioRelacoes: 1959,
+  brasileiros: 5000,
+  exportacoes: { total: "US$ 1,8 bi", principais: ["soja","algodão","carnes","açúcar","celulose"] },
+  importacoes: { total: "US$ 2,1 bi", principais: ["eletroeletrônicos","borracha","maquinário","automóveis"] },
+  comercioTotal: "US$ 3,9 bi (2023)",
+  organismos: ["ONU","ASEAN","OMC","APEC","G77"],
+  conflitos: "Defasagem comercial crescente desfavorável ao Brasil. Dumping de produtos tailandeses em alguns setores.",
+  aproximacoes: "Tailândia é mercado crescente para commodities brasileiras. Acordo Mercosul-ASEAN em negociação. Bangkok é hub regional para cooperação com Sudeste Asiático."
+},
+
+"MAL": {
+  nome: "Malásia", flag: "🇲🇾", continente: "asia",
+  iso: "MYS", capital: "Kuala Lumpur",
+  presenca: "embaixada",
+  presencaLabel: "Embaixada em Kuala Lumpur",
+  inicioRelacoes: 1967,
+  brasileiros: 4000,
+  exportacoes: { total: "US$ 1,5 bi", principais: ["soja","algodão","carnes","celulose","petróleo"] },
+  importacoes: { total: "US$ 1,8 bi", principais: ["óleo de palma","borracha","eletroeletrônicos","maquinário"] },
+  comercioTotal: "US$ 3,3 bi (2023)",
+  organismos: ["ONU","ASEAN","Commonwealth","OCI","NAM","G77","OMC","APEC"],
+  conflitos: "Competição em biocombustíveis: óleo de palma malásio vs etanol brasileiro. Disputas na OMC e na arena de padrões de sustentabilidade (RSPO vs RenovaBio).",
+  aproximacoes: "Parceria em biocombustíveis (diálogo). Cooperação Sul-Sul. Acordo Mercosul-ASEAN em negociação."
+},
+
+"SIN": {
+  nome: "Singapura", flag: "🇸🇬", continente: "asia",
+  iso: "SGP", capital: "Singapura",
+  presenca: "embaixada",
+  presencaLabel: "Embaixada em Singapura",
+  inicioRelacoes: 1967,
+  brasileiros: 6000,
+  exportacoes: { total: "US$ 1,2 bi", principais: ["petróleo","café","celulose","frutas tropicais"] },
+  importacoes: { total: "US$ 0,9 bi", principais: ["eletroeletrônicos","produtos farmacêuticos","equipamentos de precisão"] },
+  comercioTotal: "US$ 2,1 bi (2023)",
+  organismos: ["ONU","ASEAN","Commonwealth","OMC","APEC","AIIB"],
+  conflitos: "Nenhum conflito significativo. Singapura é centro financeiro — preocupações com sigilo bancário e evasão fiscal.",
+  aproximacoes: "Hub financeiro e logístico para investimentos asiáticos no Brasil. Singapura atrai empresas de tecnologia brasileiras. Modelo de eficiência administrativa estudado pelo Brasil."
+},
+
+"FIL": {
+  nome: "Filipinas", flag: "🇵🇭", continente: "asia",
+  iso: "PHL", capital: "Manila",
+  presenca: "embaixada",
+  presencaLabel: "Embaixada em Manila",
+  inicioRelacoes: 1949,
+  brasileiros: 3000,
+  exportacoes: { total: "US$ 0,8 bi", principais: ["soja","algodão","açúcar","manufaturados"] },
+  importacoes: { total: "US$ 0,5 bi", principais: ["eletroeletrônicos","semicondutores","frutas tropicais","cobre"] },
+  comercioTotal: "US$ 1,3 bi (2023)",
+  organismos: ["ONU","ASEAN","G77","NAM","OMC","APEC"],
+  conflitos: "Nenhum conflito significativo.",
+  aproximacoes: "Relações estáveis. Mercado crescente para commodities brasileiras. Filipinos atuam em missões de paz onde o Brasil também está presente."
+},
+
+"CAM": {
+  nome: "Camboja", flag: "🇰🇭", continente: "asia",
+  iso: "KHM", capital: "Pnom Pen",
+  presenca: "acreditacao",
+  presencaLabel: "Acreditado a partir de Bancoc (Tailândia)",
+  inicioRelacoes: 1955,
+  brasileiros: 500,
+  exportacoes: { total: "US$ 0,06 bi", principais: ["manufaturados"] },
+  importacoes: { total: "US$ 0,03 bi", principais: ["têxteis","vestuário"] },
+  comercioTotal: "US$ 0,09 bi (2023)",
+  organismos: ["ONU","ASEAN","NAM","G77","OMC"],
+  conflitos: "Brasil participou de missões da UNTAC (1992–93) no Camboja. Nenhum conflito bilateral.",
+  aproximacoes: "Laços históricos pelas missões de paz. Brasil apoiou o processo de paz cambojano nos anos 1990."
+},
+
+"NEP": {
+  nome: "Nepal", flag: "🇳🇵", continente: "asia",
+  iso: "NPL", capital: "Catmandu",
+  presenca: "acreditacao",
+  presencaLabel: "Acreditado a partir de Nova Delhi (Índia)",
+  inicioRelacoes: 1959,
+  brasileiros: 400,
+  exportacoes: { total: "US$ 0,02 bi", principais: ["manufaturados"] },
+  importacoes: { total: "US$ 0,01 bi", principais: ["tapetes","artesanato"] },
+  comercioTotal: "US$ 0,03 bi (2023)",
+  organismos: ["ONU","NAM","SAARC","G77","OMC"],
+  conflitos: "Nenhum conflito significativo.",
+  aproximacoes: "Nepal acolheu missões de paz da ONU em que o Brasil participou. Cooperação humanitária após terremoto de 2015."
+},
+
+"MON": {
+  nome: "Mongólia", flag: "🇲🇳", continente: "asia",
+  iso: "MNG", capital: "Ulan Bator",
+  presenca: "acreditacao",
+  presencaLabel: "Acreditado a partir de Pequim (China)",
+  inicioRelacoes: 1961,
+  brasileiros: 200,
+  exportacoes: { total: "US$ 0,02 bi", principais: ["manufaturados"] },
+  importacoes: { total: "US$ 0,01 bi", principais: ["cobre","carvão","minerais"] },
+  comercioTotal: "US$ 0,03 bi (2023)",
+  organismos: ["ONU","NAM","OMC","SCO (parceiro)"],
+  conflitos: "Nenhum conflito significativo.",
+  aproximacoes: "Mongólia é ponto de conexão entre China e Rússia. Relações de baixa intensidade."
+},
+
+"KAZ": {
+  nome: "Cazaquistão", flag: "🇰🇿", continente: "asia",
+  iso: "KAZ", capital: "Astana",
+  presenca: "embaixada",
+  presencaLabel: "Embaixada em Astana",
+  inicioRelacoes: 1992,
+  brasileiros: 1500,
+  exportacoes: { total: "US$ 0,4 bi", principais: ["manufaturados","alimentos","soja"] },
+  importacoes: { total: "US$ 0,5 bi", principais: ["urânio","petróleo","minerais","trigo"] },
+  comercioTotal: "US$ 0,9 bi (2023)",
+  organismos: ["ONU","CEI","SCO","CSTO","EAEU","NAM","OMC"],
+  conflitos: "Nenhum conflito bilateral significativo.",
+  aproximacoes: "Cazaquistão é maior país da Ásia Central — potencial mercado e fornecedor. Acordo de cooperação em energia e mineração. BRICS (candidato). Conexão com Belt and Road."
+},
+
+"UZB": {
+  nome: "Uzbequistão", flag: "🇺🇿", continente: "asia",
+  iso: "UZB", capital: "Tashkent",
+  presenca: "embaixada",
+  presencaLabel: "Embaixada em Tashkent",
+  inicioRelacoes: 1992,
+  brasileiros: 500,
+  exportacoes: { total: "US$ 0,2 bi", principais: ["manufaturados","café","açúcar"] },
+  importacoes: { total: "US$ 0,1 bi", principais: ["algodão","ouro","urânio","minerais"] },
+  comercioTotal: "US$ 0,3 bi (2023)",
+  organismos: ["ONU","SCO","CEI","NAM","G77","OMC"],
+  conflitos: "Nenhum conflito bilateral.",
+  aproximacoes: "Cooperação em algodão e agricultura. Uzbequistão é grande produtor de algodão — produto que o Brasil também produz. Mercado crescente da Ásia Central."
+},
+
+"AZE": {
+  nome: "Azerbaijão", flag: "🇦🇿", continente: "asia",
+  iso: "AZE", capital: "Baku",
+  presenca: "embaixada",
+  presencaLabel: "Embaixada em Baku",
+  inicioRelacoes: 1992,
+  brasileiros: 1000,
+  exportacoes: { total: "US$ 0,15 bi", principais: ["manufaturados","alimentos"] },
+  importacoes: { total: "US$ 0,1 bi", principais: ["petróleo","gás","produtos petroquímicos"] },
+  comercioTotal: "US$ 0,25 bi (2023)",
+  organismos: ["ONU","CEI","NAM","OCI","G77","OMC"],
+  conflitos: "Nenhum conflito bilateral. Nagorno-Karabakh: Brasil manteve posição de solução negociada.",
+  aproximacoes: "COP29 (Baku, 2024): Azerbaijão presidiu a conferência — Brasil ativo nas negociações. Cooperação em energia."
+},
+
+"ARM": {
+  nome: "Armênia", flag: "🇦🇲", continente: "asia",
+  iso: "ARM", capital: "Ierevan",
+  presenca: "embaixada",
+  presencaLabel: "Embaixada em Ierevan",
+  inicioRelacoes: 1992,
+  brasileiros: 2000,
+  exportacoes: { total: "US$ 0,05 bi", principais: ["manufaturados","café"] },
+  importacoes: { total: "US$ 0,02 bi", principais: ["cognac","joias","frutas"] },
+  comercioTotal: "US$ 0,07 bi (2023)",
+  organismos: ["ONU","CEI","CSTO","OMC"],
+  conflitos: "Genocídio armênio: Brasil reconheceu o genocídio armênio (2011 — legislação aprovada). Isso gera sensibilidade nas relações com a Turquia.",
+  aproximacoes: "Comunidade armênia no Brasil (~100.000) — majoritariamente em SP. Brasil é um dos países que reconhece o genocídio armênio. Relações culturais fortes."
+},
+
+"IRQ": {
+  nome: "Iraque", flag: "🇮🇶", continente: "asia",
+  iso: "IRQ", capital: "Bagdá",
+  presenca: "embaixada",
+  presencaLabel: "Embaixada em Bagdá",
+  inicioRelacoes: 1960,
+  brasileiros: 2500,
+  exportacoes: { total: "US$ 0,8 bi", principais: ["carnes","açúcar","arroz","manufaturados"] },
+  importacoes: { total: "US$ 0,1 bi", principais: ["petróleo cru","minerais"] },
+  comercioTotal: "US$ 0,9 bi (2023)",
+  organismos: ["ONU","OPEP","Liga Árabe","OCI","G77","OMC"],
+  conflitos: "Guerra do Iraque (2003): Brasil se opôs à invasão americana sem resolução do CSNU — posição de Lula e Celso Amorim. Exportações de carnes interrompidas em momentos de instabilidade.",
+  aproximacoes: "Iraque é mercado importante para carnes e alimentos brasileiros. Comunidade árabe no Brasil com origem parcialmente iraquiana. Cooperação em reconstrução pós-conflito."
+},
+
+"SIR": {
+  nome: "Síria", flag: "🇸🇾", continente: "asia",
+  iso: "SYR", capital: "Damasco",
+  presenca: "embaixada",
+  presencaLabel: "Embaixada em Damasco",
+  inicioRelacoes: 1945,
+  brasileiros: 5000,
+  exportacoes: { total: "US$ 0,1 bi", principais: ["manufaturados","alimentos"] },
+  importacoes: { total: "US$ 0,03 bi", principais: ["fósforo","minerais","têxteis"] },
+  comercioTotal: "US$ 0,13 bi (2023)",
+  organismos: ["ONU","Liga Árabe","OCI","G77","OMC (suspenso)"],
+  conflitos: "Guerra civil síria (2011–): Brasil defendeu solução política negociada nas instâncias da ONU. Crise migratória síria: brasileiros de origem síria facilitaram entrada de refugiados. Desacordo sobre intervenção militar.",
+  aproximacoes: "Comunidade sírio-libanesa no Brasil é a maior do mundo (~10 milhões de descendentes). Brasil concedeu vistos humanitários a refugiados sírios. Laços culturais profundos."
+},
+
+"LIB": {
+  nome: "Líbano", flag: "🇱🇧", continente: "asia",
+  iso: "LBN", capital: "Beirute",
+  presenca: "embaixada",
+  presencaLabel: "Embaixada em Beirute",
+  inicioRelacoes: 1944,
+  brasileiros: 30000,
+  exportacoes: { total: "US$ 0,4 bi", principais: ["carnes","açúcar","alimentos","manufaturados"] },
+  importacoes: { total: "US$ 0,1 bi", principais: ["joias","artesanato","produtos agrícolas"] },
+  comercioTotal: "US$ 0,5 bi (2023)",
+  organismos: ["ONU","Liga Árabe","OCI","Francofonia","G77","OMC"],
+  conflitos: "Israel x Hezbollah: conflito que afeta a fronteira libanesa. Brasil tem soldados na UNIFIL (Força da ONU no Líbano). Crise financeira libanesa (2019–): afeta diáspora.",
+  aproximacoes: "Diáspora árabe no Brasil tem forte componente libanês — estimados 7–10 milhões de descendentes. Brasil é um dos maiores contribuintes para UNIFIL. Comunidade libanesa influente em SP (Saara, Brás). Michel Temer tinha ascendência libanesa."
+},
+
+"JOR": {
+  nome: "Jordânia", flag: "🇯🇴", continente: "asia",
+  iso: "JOR", capital: "Amã",
+  presenca: "embaixada",
+  presencaLabel: "Embaixada em Amã",
+  inicioRelacoes: 1958,
+  brasileiros: 3000,
+  exportacoes: { total: "US$ 0,5 bi", principais: ["carnes","açúcar","soja","café","manufaturados"] },
+  importacoes: { total: "US$ 0,2 bi", principais: ["fosfatos","fertilizantes","potássio"] },
+  comercioTotal: "US$ 0,7 bi (2023)",
+  organismos: ["ONU","Liga Árabe","OCI","G77","OMC"],
+  conflitos: "Questão palestina: Brasil defende solução de dois Estados — convergente com a Jordânia que abriga grande população palestina.",
+  aproximacoes: "Jordânia é importante fornecedora de fosfatos para fertilizantes brasileiros. Mercado para carnes e alimentos. Relações estáveis."
+},
+
+"OMN": {
+  nome: "Omã", flag: "🇴🇲", continente: "asia",
+  iso: "OMN", capital: "Mascate",
+  presenca: "embaixada",
+  presencaLabel: "Embaixada em Mascate",
+  inicioRelacoes: 1975,
+  brasileiros: 5000,
+  exportacoes: { total: "US$ 0,6 bi", principais: ["carnes","açúcar","alimentos","manufaturados"] },
+  importacoes: { total: "US$ 0,2 bi", principais: ["petróleo","LNG","fertilizantes"] },
+  comercioTotal: "US$ 0,8 bi (2023)",
+  organismos: ["ONU","Liga Árabe","OCI","CCG","G77","OMC"],
+  conflitos: "Nenhum conflito significativo. Omã é tradicional mediador regional — posição similar ao Brasil.",
+  aproximacoes: "Omã é destino de trabalhadores brasileiros na área de construção. Mercado para carnes e alimentos brasileiros. Cooperação energética."
+},
+
+"UAE": {
+  nome: "Emirados Árabes Unidos", flag: "🇦🇪", continente: "asia",
+  iso: "ARE", capital: "Abu Dhabi",
+  presenca: "embaixada",
+  presencaLabel: "Embaixada em Abu Dhabi",
+  inicioRelacoes: 1972,
+  brasileiros: 50000,
+  exportacoes: { total: "US$ 2,1 bi", principais: ["carnes","açúcar","café","soja","ouro","joias"] },
+  importacoes: { total: "US$ 1,2 bi", principais: ["petróleo refinado","alumínio","ouro","produtos de luxo"] },
+  comercioTotal: "US$ 3,3 bi (2023)",
+  organismos: ["ONU","Liga Árabe","OCI","CCG","G77","OMC","BRICS (candidato)"],
+  conflitos: "Embargo a carnes: EAU proibiu importação de carnes brasileiras por questões sanitárias em diversas ocasiões. Regulação de certificações halal gera atrito periódico.",
+  aproximacoes: "Dubai é hub de reexportação de produtos brasileiros para o Oriente Médio e África. Investimentos do Abu Dhabi Investment Authority (ADIA) no Brasil. Embraer com escritório regional em Dubai. Emirados atraem turistas e trabalhadores brasileiros."
+},
+
+"QAT": {
+  nome: "Qatar", flag: "🇶🇦", continente: "asia",
+  iso: "QAT", capital: "Doha",
+  presenca: "embaixada",
+  presencaLabel: "Embaixada em Doha",
+  inicioRelacoes: 1974,
+  brasileiros: 15000,
+  exportacoes: { total: "US$ 0,9 bi", principais: ["carnes","açúcar","alimentos","manufaturados"] },
+  importacoes: { total: "US$ 0,3 bi", principais: ["LNG","produtos petroquímicos","alumínio"] },
+  comercioTotal: "US$ 1,2 bi (2023)",
+  organismos: ["ONU","Liga Árabe","OCI","CCG","G77","OMC","BRICS (candidato)"],
+  conflitos: "Copa do Mundo FIFA 2022: trabalhadores brasileiros na construção de estádios — denúncias de condições análogas à escravidão. Questão de direitos trabalhistas.",
+  aproximacoes: "Qatar Airways opera voos para o Brasil — hub de conectividade. Qatar é mediador no Oriente Médio — convergência com papel brasileiro de mediação. Trabalhadores brasileiros na construção civil do Qatar. Investimentos do Qatar Investment Authority (QIA) no Brasil."
+},
+
+"KUW": {
+  nome: "Kuwait", flag: "🇰🇼", continente: "asia",
+  iso: "KWT", capital: "Cidade do Kuwait",
+  presenca: "embaixada",
+  presencaLabel: "Embaixada na Cidade do Kuwait",
+  inicioRelacoes: 1971,
+  brasileiros: 8000,
+  exportacoes: { total: "US$ 0,5 bi", principais: ["carnes","açúcar","alimentos"] },
+  importacoes: { total: "US$ 0,2 bi", principais: ["petróleo","produtos petroquímicos"] },
+  comercioTotal: "US$ 0,7 bi (2023)",
+  organismos: ["ONU","OPEP","Liga Árabe","OCI","CCG","G77","OMC"],
+  conflitos: "Kuwait Fund for Arab Economic Development (KFAED) já financiou projetos no Brasil. Nenhum conflito.",
+  aproximacoes: "Mercado para carnes e alimentos brasileiros. Trabalhadores brasileiros na construção civil do Golfo."
+},
+
+"BAH": {
+  nome: "Bahrein", flag: "🇧🇭", continente: "asia",
+  iso: "BHR", capital: "Manama",
+  presenca: "embaixada",
+  presencaLabel: "Embaixada em Manama",
+  inicioRelacoes: 1978,
+  brasileiros: 3000,
+  exportacoes: { total: "US$ 0,3 bi", principais: ["carnes","alimentos"] },
+  importacoes: { total: "US$ 0,1 bi", principais: ["alumínio","produtos petroquímicos"] },
+  comercioTotal: "US$ 0,4 bi (2023)",
+  organismos: ["ONU","Liga Árabe","OCI","CCG","G77","OMC"],
+  conflitos: "Primavera Árabe (2011): protestos sufocados com apoio saudita. Brasil manteve silêncio relativo.",
+  aproximacoes: "Mercado para carnes. Bahrein é hub financeiro regional."
+},
+
+"YEM": {
+  nome: "Iêmen", flag: "🇾🇪", continente: "asia",
+  iso: "YEM", capital: "Sanaa",
+  presenca: "acreditacao",
+  presencaLabel: "Acreditado a partir de Riade (Arábia Saudita)",
+  inicioRelacoes: 1961,
+  brasileiros: 800,
+  exportacoes: { total: "US$ 0,1 bi", principais: ["alimentos","manufaturados"] },
+  importacoes: { total: "US$ 0,02 bi", principais: ["petróleo"] },
+  comercioTotal: "US$ 0,12 bi (2023)",
+  organismos: ["ONU","Liga Árabe","OCI","G77"],
+  conflitos: "Guerra civil iemenita (2015–): Brasil defendeu cessar-fogo e solução diplomática. Crise humanitária grave. Houthis atacam navios no Mar Vermelho — impacto nas rotas de exportação brasileira.",
+  aproximacoes: "Brasil presta ajuda humanitária via ONU. Defende negociação. Acreditação indireta."
+},
+
+"AFR": {
+  nome: "África do Sul", flag: "🇿🇦", continente: "africa",
+  iso: "ZAF", capital: "Pretória",
+  presenca: "embaixada",
+  presencaLabel: "Embaixada em Pretória",
+  inicioRelacoes: 1948,
+  brasileiros: 8000,
+  exportacoes: { total: "US$ 1,2 bi", principais: ["petróleo","açúcar","soja","plásticos","manufaturados"] },
+  importacoes: { total: "US$ 0,8 bi", principais: ["ouro","platina","cromo","minerais","veículos"] },
+  comercioTotal: "US$ 2,0 bi (2023)",
+  organismos: ["ONU","G20","BRICS","UA","SADC","OMC","NDB"],
+  conflitos: "Competição agrícola em mercados africanos. Diferenças sobre capacidade nuclear civil.",
+  aproximacoes: "BRICS: parceiro central. IBAS (Índia-Brasil-África do Sul). Cooperação em saúde e democracia. Mandela era próximo de Lula."
+},
+
+"ALG": {
+  nome: "Argélia", flag: "🇩🇿", continente: "africa",
+  iso: "DZA", capital: "Argel",
+  presenca: "embaixada",
+  presencaLabel: "Embaixada em Argel",
+  inicioRelacoes: 1962,
+  brasileiros: 2000,
+  exportacoes: { total: "US$ 0,4 bi", principais: ["açúcar","carnes","soja","manufaturados"] },
+  importacoes: { total: "US$ 0,15 bi", principais: ["petróleo","gás natural","fertilizantes"] },
+  comercioTotal: "US$ 0,55 bi (2023)",
+  organismos: ["ONU","UA","Liga Árabe","OCI","OPEP","NAM","G77","OMC"],
+  conflitos: "Argélia apoia o Saara Ocidental (Frente Polisário) — mesma posição do Brasil. Questão do Saara une os dois países.",
+  aproximacoes: "Argélia é grande produtora de gás — energia de interesse para o Brasil. Cooperação Sul-Sul. Posições convergentes em não-alinhamento e reforma da ONU."
+},
+
+"LIB2": {
+  nome: "Líbia", flag: "🇱🇾", continente: "africa",
+  iso: "LBY", capital: "Trípoli",
+  presenca: "embaixada",
+  presencaLabel: "Embaixada em Trípoli",
+  inicioRelacoes: 1972,
+  brasileiros: 1000,
+  exportacoes: { total: "US$ 0,2 bi", principais: ["carnes","alimentos","manufaturados"] },
+  importacoes: { total: "US$ 0,05 bi", principais: ["petróleo cru"] },
+  comercioTotal: "US$ 0,25 bi (2023)",
+  organismos: ["ONU","UA","Liga Árabe","OPEP","OCI","G77"],
+  conflitos: "Queda de Gaddafi (2011): Brasil se absteve na resolução 1973 da ONU (zona de exclusão aérea) — depois criticou a intervenção militar da NATO como excessiva. Instabilidade política desde 2011.",
+  aproximacoes: "Brasil mediou saída de trabalhadores estrangeiros durante conflito de 2011. Interesse em petróleo líbio. Cooperação em reconstrução."
+},
+
+"TUN": {
+  nome: "Tunísia", flag: "🇹🇳", continente: "africa",
+  iso: "TUN", capital: "Túnis",
+  presenca: "embaixada",
+  presencaLabel: "Embaixada em Túnis",
+  inicioRelacoes: 1964,
+  brasileiros: 1500,
+  exportacoes: { total: "US$ 0,3 bi", principais: ["açúcar","soja","carnes","manufaturados"] },
+  importacoes: { total: "US$ 0,15 bi", principais: ["fosfatos","azeite","têxteis"] },
+  comercioTotal: "US$ 0,45 bi (2023)",
+  organismos: ["ONU","UA","Liga Árabe","OCI","Francofonia","G77","OMC"],
+  conflitos: "Primavera Árabe (2010–11): iniciada na Tunísia. Brasil apoiou transição democrática nas instâncias da ONU.",
+  aproximacoes: "Tunísia fornece fosfatos para fertilizantes brasileiros. Cooperação técnica. Modela de transição democrática no mundo árabe — converge com valores brasileiros."
+},
+
+"CMR": {
+  nome: "Camarões", flag: "🇨🇲", continente: "africa",
+  iso: "CMR", capital: "Yaoundé",
+  presenca: "embaixada",
+  presencaLabel: "Embaixada em Yaoundé",
+  inicioRelacoes: 1972,
+  brasileiros: 1000,
+  exportacoes: { total: "US$ 0,12 bi", principais: ["manufaturados","alimentos"] },
+  importacoes: { total: "US$ 0,05 bi", principais: ["petróleo","madeira","cacau"] },
+  comercioTotal: "US$ 0,17 bi (2023)",
+  organismos: ["ONU","UA","CEDEAO","Commonwealth","Francofonia","G77","OMC"],
+  conflitos: "Nenhum conflito significativo.",
+  aproximacoes: "Cooperação Sul-Sul. Laços culturais afrobrasileiros. EMBRAPA coopera com Camarões em culturas tropicais."
+},
+
+"COD": {
+  nome: "Costa do Marfim", flag: "🇨🇮", continente: "africa",
+  iso: "CIV", capital: "Abidjan",
+  presenca: "embaixada",
+  presencaLabel: "Embaixada em Abidjan",
+  inicioRelacoes: 1962,
+  brasileiros: 1500,
+  exportacoes: { total: "US$ 0,25 bi", principais: ["manufaturados","alimentos","equipamentos"] },
+  importacoes: { total: "US$ 0,2 bi", principais: ["cacau","café","borracha"] },
+  comercioTotal: "US$ 0,45 bi (2023)",
+  organismos: ["ONU","UA","CEDEAO","Francofonia","G77","OMC","OCI"],
+  conflitos: "Nenhum conflito significativo. Crise política ivoiriana (2010–11): Brasil apoiou mediação da CEDEAO.",
+  aproximacoes: "Costa do Marfim é o maior produtor de cacau do mundo — produto complementar ao agro brasileiro. Cooperação técnica. EMBRAPA."
+},
+
+"BUR": {
+  nome: "Burkina Faso", flag: "🇧🇫", continente: "africa",
+  iso: "BFA", capital: "Uagadugu",
+  presenca: "acreditacao",
+  presencaLabel: "Acreditado a partir de Abidjan (Costa do Marfim)",
+  inicioRelacoes: 1974,
+  brasileiros: 300,
+  exportacoes: { total: "US$ 0,03 bi", principais: ["manufaturados"] },
+  importacoes: { total: "US$ 0,01 bi", principais: ["ouro","algodão"] },
+  comercioTotal: "US$ 0,04 bi (2023)",
+  organismos: ["ONU","UA","CEDEAO","OCI","G77"],
+  conflitos: "Golpe militar (2022): Brasil expressou preocupação. CEDEAO aplicou sanções.",
+  aproximacoes: "Cooperação técnica mínima. Participação em missões de paz da ONU."
+},
+
+"MAL2": {
+  nome: "Mali", flag: "🇲🇱", continente: "africa",
+  iso: "MLI", capital: "Bamaco",
+  presenca: "acreditacao",
+  presencaLabel: "Acreditado a partir de Dacar (Senegal)",
+  inicioRelacoes: 1961,
+  brasileiros: 200,
+  exportacoes: { total: "US$ 0,02 bi", principais: ["manufaturados"] },
+  importacoes: { total: "US$ 0,005 bi", principais: ["ouro"] },
+  comercioTotal: "US$ 0,025 bi (2023)",
+  organismos: ["ONU","UA","CEDEAO","OCI","G77"],
+  conflitos: "Golpe militar (2021): Brasil apoiou posição da CEDEAO. Intervenção da Wagner Group russa no Mali.",
+  aproximacoes: "Mali é grande produtor de ouro. Cooperação técnica mínima. Acreditação indireta."
+},
+
+"ZIM": {
+  nome: "Zimbábue", flag: "🇿🇼", continente: "africa",
+  iso: "ZWE", capital: "Harare",
+  presenca: "acreditacao",
+  presencaLabel: "Acreditado a partir de Pretória (África do Sul)",
+  inicioRelacoes: 1980,
+  brasileiros: 800,
+  exportacoes: { total: "US$ 0,05 bi", principais: ["manufaturados","alimentos"] },
+  importacoes: { total: "US$ 0,02 bi", principais: ["tabaco","minerais","diamantes"] },
+  comercioTotal: "US$ 0,07 bi (2023)",
+  organismos: ["ONU","UA","SADC","Commonwealth","NAM","G77"],
+  conflitos: "Crise do Zimbábue (Mugabe): Brasil defendeu diálogo e não-isolamento, contra sanções ocidentais. Questão de direitos humanos.",
+  aproximacoes: "Cooperação Sul-Sul. Tabaco zimbabuano e agronegócio brasileiro têm sinergias."
+},
+
+"BOT": {
+  nome: "Botswana", flag: "🇧🇼", continente: "africa",
+  iso: "BWA", capital: "Gaborone",
+  presenca: "acreditacao",
+  presencaLabel: "Acreditado a partir de Pretória (África do Sul)",
+  inicioRelacoes: 1966,
+  brasileiros: 500,
+  exportacoes: { total: "US$ 0,04 bi", principais: ["manufaturados"] },
+  importacoes: { total: "US$ 0,03 bi", principais: ["diamantes","cobre","níquel"] },
+  comercioTotal: "US$ 0,07 bi (2023)",
+  organismos: ["ONU","UA","SADC","Commonwealth","G77","OMC"],
+  conflitos: "Nenhum conflito significativo. Botswana é modelo de governança democrática na África — convergência com valores brasileiros.",
+  aproximacoes: "Botswana é o maior produtor de diamantes do mundo — interesse para a joalheria brasileira. Cooperação técnica."
+},
+
+"NAM": {
+  nome: "Namíbia", flag: "🇳🇦", continente: "africa",
+  iso: "NAM", capital: "Windhoek",
+  presenca: "embaixada",
+  presencaLabel: "Embaixada em Windhoek",
+  inicioRelacoes: 1990,
+  brasileiros: 1200,
+  exportacoes: { total: "US$ 0,08 bi", principais: ["manufaturados","alimentos"] },
+  importacoes: { total: "US$ 0,05 bi", principais: ["urânio","pescado","minerais"] },
+  comercioTotal: "US$ 0,13 bi (2023)",
+  organismos: ["ONU","UA","SADC","Commonwealth","NAM","G77","OMC"],
+  conflitos: "Nenhum conflito significativo.",
+  aproximacoes: "Namíbia é grande produtora de urânio — de interesse para o programa nuclear brasileiro. Cooperação em mineração e saúde. A CPLP aprecia Namíbia como ponte para a África Austral."
+},
+
+"RWA": {
+  nome: "Ruanda", flag: "🇷🇼", continente: "africa",
+  iso: "RWA", capital: "Kigali",
+  presenca: "acreditacao",
+  presencaLabel: "Acreditado a partir de Nairóbi (Quênia)",
+  inicioRelacoes: 1963,
+  brasileiros: 600,
+  exportacoes: { total: "US$ 0,04 bi", principais: ["manufaturados","alimentos"] },
+  importacoes: { total: "US$ 0,02 bi", principais: ["café","chá","minerais de coltan"] },
+  comercioTotal: "US$ 0,06 bi (2023)",
+  organismos: ["ONU","UA","EAC","Commonwealth","Francofonia","G77","OMC"],
+  conflitos: "Genocídio de Ruanda (1994): Brasil participou da missão UNAMIR. Debates sobre responsabilidade de proteger (R2P).",
+  aproximacoes: "Ruanda é caso de estudo em reconciliação nacional — experiência relevante para o Brasil em transição pós-ditadura. Cooperação técnica mínima."
+},
+
+"UGA": {
+  nome: "Uganda", flag: "🇺🇬", continente: "africa",
+  iso: "UGA", capital: "Campala",
+  presenca: "acreditacao",
+  presencaLabel: "Acreditado a partir de Nairóbi (Quênia)",
+  inicioRelacoes: 1962,
+  brasileiros: 800,
+  exportacoes: { total: "US$ 0,06 bi", principais: ["manufaturados","alimentos"] },
+  importacoes: { total: "US$ 0,02 bi", principais: ["café","chá","flores"] },
+  comercioTotal: "US$ 0,08 bi (2023)",
+  organismos: ["ONU","UA","EAC","Commonwealth","NAM","G77","OMC"],
+  conflitos: "Nenhum conflito significativo bilateral.",
+  aproximacoes: "EMBRAPA coopera com Uganda em culturas tropicais. Cooperação Sul-Sul."
+},
+
+"ZAM": {
+  nome: "Zâmbia", flag: "🇿🇲", continente: "africa",
+  iso: "ZMB", capital: "Lusaca",
+  presenca: "acreditacao",
+  presencaLabel: "Acreditado a partir de Pretória (África do Sul)",
+  inicioRelacoes: 1964,
+  brasileiros: 800,
+  exportacoes: { total: "US$ 0,06 bi", principais: ["manufaturados"] },
+  importacoes: { total: "US$ 0,04 bi", principais: ["cobre","cobalto","minerais"] },
+  comercioTotal: "US$ 0,10 bi (2023)",
+  organismos: ["ONU","UA","SADC","Commonwealth","NAM","G77","OMC"],
+  conflitos: "Zâmbia deu calote em dívidas (2020): negociação de reestruturação no G20 em que o Brasil participou.",
+  aproximacoes: "Cooperação técnica. Cobre zambiano de interesse para a indústria brasileira."
+},
+
+"MAD": {
+  nome: "Madagascar", flag: "🇲🇬", continente: "africa",
+  iso: "MDG", capital: "Antananarivo",
+  presenca: "acreditacao",
+  presencaLabel: "Acreditado a partir de Maputo (Moçambique)",
+  inicioRelacoes: 1963,
+  brasileiros: 500,
+  exportacoes: { total: "US$ 0,04 bi", principais: ["manufaturados","alimentos"] },
+  importacoes: { total: "US$ 0,02 bi", principais: ["vanilha","cravo","minerais"] },
+  comercioTotal: "US$ 0,06 bi (2023)",
+  organismos: ["ONU","UA","SADC","Francofonia","NAM","G77","OMC"],
+  conflitos: "Nenhum conflito significativo.",
+  aproximacoes: "Cooperação técnica mínima. Acreditação indireta."
+},
+
+"SOM": {
+  nome: "Somália", flag: "🇸🇴", continente: "africa",
+  iso: "SOM", capital: "Mogadíscio",
+  presenca: "acreditacao",
+  presencaLabel: "Acreditado a partir de Nairóbi (Quênia)",
+  inicioRelacoes: 1964,
+  brasileiros: 300,
+  exportacoes: { total: "US$ 0,02 bi", principais: ["alimentos"] },
+  importacoes: { total: "US$ 0,005 bi", principais: ["minerais"] },
+  comercioTotal: "US$ 0,025 bi (2023)",
+  organismos: ["ONU","UA","IGAD","Liga Árabe","OCI","G77"],
+  conflitos: "Pirataria somali afeta rotas marítimas — preocupação para exportações brasileiras. Crise humanitária persistente.",
+  aproximacoes: "Brasil apoia missões humanitárias da ONU na Somália. Ajuda humanitária."
+},
+
+"SUD": {
+  nome: "Sudão", flag: "🇸🇩", continente: "africa",
+  iso: "SDN", capital: "Cartum",
+  presenca: "acreditacao",
+  presencaLabel: "Acreditado a partir do Cairo (Egito)",
+  inicioRelacoes: 1960,
+  brasileiros: 800,
+  exportacoes: { total: "US$ 0,1 bi", principais: ["manufaturados","alimentos"] },
+  importacoes: { total: "US$ 0,05 bi", principais: ["petróleo","goma arábica","minerais"] },
+  comercioTotal: "US$ 0,15 bi (2023)",
+  organismos: ["ONU","UA","Liga Árabe","IGAD","OCI","NAM","G77"],
+  conflitos: "Sudão do Sul (2011): Brasil apoiou o processo de independência. Conflito atual (2023): guerra civil entre SAF e RSF — Brasil defende cessação das hostilidades. Darfur: Brasil votou em resoluções humanitárias na ONU.",
+  aproximacoes: "Brasil forneceu ajuda humanitária. Cooperação técnica mínima."
+},
+
+"CAB": {
+  nome: "Cabo Verde", flag: "🇨🇻", continente: "africa",
+  iso: "CPV", capital: "Praia",
+  presenca: "embaixada",
+  presencaLabel: "Embaixada na Praia",
+  inicioRelacoes: 1975,
+  brasileiros: 15000,
+  exportacoes: { total: "US$ 0,1 bi", principais: ["manufaturados","alimentos","medicamentos"] },
+  importacoes: { total: "US$ 0,02 bi", principais: ["pescado","sal","artesanato"] },
+  comercioTotal: "US$ 0,12 bi (2023)",
+  organismos: ["ONU","UA","CEDEAO","CPLP","G77","OMC"],
+  conflitos: "Nenhum conflito significativo.",
+  aproximacoes: "CPLP: parceria central e modelo de cooperação Sul-Sul bem-sucedida. Acordo de portabilidade previdenciária. Diáspora cabo-verdiana no Brasil. Cabo Verde é considerado parceiro exemplar de cooperação portuguesa."
+},
+
+"STP": {
+  nome: "São Tomé e Príncipe", flag: "🇸🇹", continente: "africa",
+  iso: "STP", capital: "São Tomé",
+  presenca: "embaixada",
+  presencaLabel: "Embaixada em São Tomé",
+  inicioRelacoes: 1975,
+  brasileiros: 3000,
+  exportacoes: { total: "US$ 0,05 bi", principais: ["manufaturados","alimentos","medicamentos"] },
+  importacoes: { total: "US$ 0,01 bi", principais: ["cacau","pescado"] },
+  comercioTotal: "US$ 0,06 bi (2023)",
+  organismos: ["ONU","UA","CPLP","Francofonia","G77","OMC"],
+  conflitos: "Nenhum conflito significativo.",
+  aproximacoes: "CPLP: membro fundador. Cooperação técnica intensa (energia, saúde, educação). São Tomé tem descoberta de petróleo — interesse estratégico crescente."
+},
+
+"GNB": {
+  nome: "Guiné-Bissau", flag: "🇬🇼", continente: "africa",
+  iso: "GNB", capital: "Bissau",
+  presenca: "embaixada",
+  presencaLabel: "Embaixada em Bissau",
+  inicioRelacoes: 1974,
+  brasileiros: 2000,
+  exportacoes: { total: "US$ 0,04 bi", principais: ["manufaturados","alimentos","medicamentos"] },
+  importacoes: { total: "US$ 0,01 bi", principais: ["castanha de caju","pescado"] },
+  comercioTotal: "US$ 0,05 bi (2023)",
+  organismos: ["ONU","UA","CEDEAO","CPLP","OCI","G77","OMC"],
+  conflitos: "Instabilidade política crônica (golpes militares frequentes). Brasil apoia processos democráticos via CPLP e CEDEAO.",
+  aproximacoes: "CPLP: membro e parceiro de cooperação. Cooperação técnica brasileira em saúde, educação e agricultura."
+},
+
+"GAB": {
+  nome: "Gabão", flag: "🇬🇦", continente: "africa",
+  iso: "GAB", capital: "Libreville",
+  presenca: "acreditacao",
+  presencaLabel: "Acreditado a partir de Yaoundé (Camarões)",
+  inicioRelacoes: 1960,
+  brasileiros: 800,
+  exportacoes: { total: "US$ 0,05 bi", principais: ["manufaturados"] },
+  importacoes: { total: "US$ 0,03 bi", principais: ["petróleo","madeira","manganês"] },
+  comercioTotal: "US$ 0,08 bi (2023)",
+  organismos: ["ONU","UA","CEDEAO","Francofonia","OPEP","G77"],
+  conflitos: "Golpe militar (2023): Brasil expressou preocupação. CEDEAO/UA pressionam por retorno democrático.",
+  aproximacoes: "Cooperação técnica mínima. Petróleo gabonês de interesse. Acreditação indireta."
+},
+
+"ERI": {
+  nome: "Eritreia", flag: "🇪🇷", continente: "africa",
+  iso: "ERI", capital: "Asmara",
+  presenca: "acreditacao",
+  presencaLabel: "Acreditado a partir de Adis Abeba (Etiópia)",
+  inicioRelacoes: 1993,
+  brasileiros: 200,
+  exportacoes: { total: "US$ 0,01 bi", principais: ["manufaturados"] },
+  importacoes: { total: "US$ 0,005 bi", principais: ["minerais"] },
+  comercioTotal: "US$ 0,015 bi (2023)",
+  organismos: ["ONU","UA","IGAD","NAM","G77"],
+  conflitos: "Eritreia é um dos regimes mais fechados do mundo — O Brasil mantém acreditação indireta.",
+  aproximacoes: "Cooperação humanitária via ONU."
+},
+
+"DJI": {
+  nome: "Djibouti", flag: "🇩🇯", continente: "africa",
+  iso: "DJI", capital: "Djibouti",
+  presenca: "acreditacao",
+  presencaLabel: "Acreditado a partir de Adis Abeba (Etiópia)",
+  inicioRelacoes: 1977,
+  brasileiros: 200,
+  exportacoes: { total: "US$ 0,01 bi", principais: ["alimentos","manufaturados"] },
+  importacoes: { total: "US$ 0,005 bi", principais: ["sal","pescado"] },
+  comercioTotal: "US$ 0,015 bi (2023)",
+  organismos: ["ONU","UA","IGAD","Liga Árabe","OCI","NAM","G77"],
+  conflitos: "Djibouti é hub militar estratégico (EUA, China, França, Japão têm bases). Importância geopolítica para rotas comerciais.",
+  aproximacoes: "Cooperação humanitária. Djibouti é porta de entrada para o Corno da África."
+},
+
+"IND3": {
+  nome: "Timor-Leste", flag: "🇹🇱", continente: "asia",
+  iso: "TLS", capital: "Díli",
+  presenca: "embaixada",
+  presencaLabel: "Embaixada em Díli",
+  inicioRelacoes: 2002,
+  brasileiros: 1500,
+  exportacoes: { total: "US$ 0,04 bi", principais: ["manufaturados","alimentos","medicamentos"] },
+  importacoes: { total: "US$ 0,01 bi", principais: ["café","petróleo"] },
+  comercioTotal: "US$ 0,05 bi (2023)",
+  organismos: ["ONU","CPLP","ASEAN (candidato)","G77"],
+  conflitos: "Brasil mediou o processo de independência de Timor (1999–2002) — papel histórico de Celso Amorim no Itamaraty e da INTERFET. Questão de petróleo no Mar de Timor.",
+  aproximacoes: "CPLP: membro pleno desde 2002. Brasil foi fundamental na independência timorense. Cooperação técnica intensa (saúde, educação, língua portuguesa). Brasil treina médicos e professores timorenses."
+},
+
+"PNG": {
+  nome: "Papua-Nova Guiné", flag: "🇵🇬", continente: "oceania",
+  iso: "PNG", capital: "Porto Moresby",
+  presenca: "acreditacao",
+  presencaLabel: "Acreditado a partir de Camberra (Austrália)",
+  inicioRelacoes: 1975,
+  brasileiros: 300,
+  exportacoes: { total: "US$ 0,02 bi", principais: ["manufaturados"] },
+  importacoes: { total: "US$ 0,01 bi", principais: ["ouro","cobre","petróleo"] },
+  comercioTotal: "US$ 0,03 bi (2023)",
+  organismos: ["ONU","Commonwealth","Fórum das Ilhas do Pacífico","OMC","NAM"],
+  conflitos: "Nenhum conflito significativo bilateral.",
+  aproximacoes: "PNG tem uma das maiores biodiversidades do mundo — convergência com posição brasileira sobre biodiversidade. Cooperação mínima."
+},
+
+"SAM": {
+  nome: "Samoa", flag: "🇼🇸", continente: "oceania",
+  iso: "WSM", capital: "Apia",
+  presenca: "acreditacao",
+  presencaLabel: "Acreditado a partir de Wellington (Nova Zelândia)",
+  inicioRelacoes: 1976,
+  brasileiros: 100,
+  exportacoes: { total: "US$ 0,005 bi", principais: ["manufaturados"] },
+  importacoes: { total: "US$ 0,002 bi", principais: ["fruta","peixe"] },
+  comercioTotal: "US$ 0,007 bi (2023)",
+  organismos: ["ONU","Commonwealth","Fórum das Ilhas do Pacífico","AOSIS","OMC"],
+  conflitos: "Nenhum conflito bilateral. Brasil apoia ilhas do Pacífico em negociações climáticas.",
+  aproximacoes: "Brasil defende posições dos SIDS (Small Island Developing States) nas negociações de clima. Samoa dá nome ao Protocolo de Samoa (ACP-UE)."
+},
+
+"TON": {
+  nome: "Tonga", flag: "🇹🇴", continente: "oceania",
+  iso: "TON", capital: "Nukualofa",
+  presenca: "acreditacao",
+  presencaLabel: "Acreditado a partir de Wellington (Nova Zelândia)",
+  inicioRelacoes: 1970,
+  brasileiros: 100,
+  exportacoes: { total: "US$ 0,003 bi", principais: ["manufaturados"] },
+  importacoes: { total: "US$ 0,001 bi", principais: ["artesanato"] },
+  comercioTotal: "US$ 0,004 bi (2023)",
+  organismos: ["ONU","Commonwealth","Fórum das Ilhas do Pacífico","AOSIS"],
+  conflitos: "Nenhum conflito bilateral.",
+  aproximacoes: "Brasil apoia agenda climática das ilhas do Pacífico. Relações simbólicas."
+},
+
+"VAN": {
+  nome: "Vanuatu", flag: "🇻🇺", continente: "oceania",
+  iso: "VUT", capital: "Port Vila",
+  presenca: "acreditacao",
+  presencaLabel: "Acreditado a partir de Camberra (Austrália)",
+  inicioRelacoes: 1980,
+  brasileiros: 100,
+  exportacoes: { total: "US$ 0.002 bi", principais: ["manufaturados"] },
+  importacoes: { total: "US$ 0,001 bi", principais: ["artesanato","noz moscada"] },
+  comercioTotal: "US$ 0.003 bi (2023)",
+  organismos: ["ONU","Fórum das Ilhas do Pacífico","AOSIS","NAM"],
+  conflitos: "Nenhum conflito bilateral.",
+  aproximacoes: "Brasil apoia ilhas insulares em negociações de clima. Acreditação indireta."
+},
+
+"PAL": {
+  nome: "Palau", flag: "🇵🇼", continente: "oceania",
+  iso: "PLW", capital: "Ngerulmud",
+  presenca: "acreditacao",
+  presencaLabel: "Acreditado a partir de Manila (Filipinas)",
+  inicioRelacoes: 1994,
+  brasileiros: 50,
+  exportacoes: { total: "US$ 0,001 bi", principais: ["manufaturados"] },
+  importacoes: { total: "US$ 0", principais: [] },
+  comercioTotal: "Mínimo (2023)",
+  organismos: ["ONU","Fórum das Ilhas do Pacífico","AOSIS"],
+  conflitos: "Palau reconhece Taiwan — diferente da posição brasileira (Brasil segue política de 'Uma só China').",
+  aproximacoes: "Relações simbólicas. Acreditação indireta."
+},
+
+"MIC": {
+  nome: "Micronésia", flag: "🇫🇲", continente: "oceania",
+  iso: "FSM", capital: "Palikir",
+  presenca: "acreditacao",
+  presencaLabel: "Acreditado a partir de Manila (Filipinas)",
+  inicioRelacoes: 1991,
+  brasileiros: 50,
+  exportacoes: { total: "US$ 0,001 bi", principais: ["manufaturados"] },
+  importacoes: { total: "US$ 0", principais: [] },
+  comercioTotal: "Mínimo (2023)",
+  organismos: ["ONU","Fórum das Ilhas do Pacífico","AOSIS"],
+  conflitos: "Nenhum conflito bilateral.",
+  aproximacoes: "Brasil apoia posição dos SIDS no clima. Acreditação indireta."
+},
+
+"KIR": {
+  nome: "Kiribati", flag: "🇰🇮", continente: "oceania",
+  iso: "KIR", capital: "Tarawa do Sul",
+  presenca: "acreditacao",
+  presencaLabel: "Acreditado a partir de Wellington (Nova Zelândia)",
+  inicioRelacoes: 1979,
+  brasileiros: 50,
+  exportacoes: { total: "US$ 0,001 bi", principais: ["manufaturados"] },
+  importacoes: { total: "US$ 0", principais: [] },
+  comercioTotal: "Mínimo (2023)",
+  organismos: ["ONU","Commonwealth","Fórum das Ilhas do Pacífico","AOSIS"],
+  conflitos: "Kiribati reconheceu a China sobre Taiwan em 2019. Kiribati é símbolo das mudanças climáticas (afundando).",
+  aproximacoes: "Brasil defende urgência climática nas negociações da ONU — Kiribati é o símbolo mais eloquente dessa urgência."
+},
+
+"NAU": {
+  nome: "Nauru", flag: "🇳🇷", continente: "oceania",
+  iso: "NRU", capital: "Yaren",
+  presenca: "acreditacao",
+  presencaLabel: "Acreditado a partir de Camberra (Austrália)",
+  inicioRelacoes: 1968,
+  brasileiros: 30,
+  exportacoes: { total: "US$ 0,001 bi", principais: ["manufaturados"] },
+  importacoes: { total: "US$ 0", principais: [] },
+  comercioTotal: "Mínimo (2023)",
+  organismos: ["ONU","Commonwealth","Fórum das Ilhas do Pacífico","AOSIS"],
+  conflitos: "Nauru reconheceu Taiwan (alternando com China ao longo dos anos). Retornou à China em 2024.",
+  aproximacoes: "Relações simbólicas. Brasil apoia agenda climática dos SIDS."
+},
+
+"SOL": {
+  nome: "Ilhas Salomão", flag: "🇸🇧", continente: "oceania",
+  iso: "SLB", capital: "Honiara",
+  presenca: "acreditacao",
+  presencaLabel: "Acreditado a partir de Camberra (Austrália)",
+  inicioRelacoes: 1978,
+  brasileiros: 80,
+  exportacoes: { total: "US$ 0,002 bi", principais: ["manufaturados"] },
+  importacoes: { total: "US$ 0,001 bi", principais: ["madeira","peixe"] },
+  comercioTotal: "US$ 0,003 bi (2023)",
+  organismos: ["ONU","Commonwealth","Fórum das Ilhas do Pacífico","AOSIS"],
+  conflitos: "Ilhas Salomão assinou acordo de segurança com a China (2022): gerou preocupação ocidental sobre influência chinesa no Pacífico.",
+  aproximacoes: "Brasil apoia ilhas do Pacífico na agenda climática."
+},
+
+"TUV": {
+  nome: "Tuvalu", flag: "🇹🇻", continente: "oceania",
+  iso: "TUV", capital: "Funafuti",
+  presenca: "acreditacao",
+  presencaLabel: "Acreditado a partir de Wellington (Nova Zelândia)",
+  inicioRelacoes: 1978,
+  brasileiros: 30,
+  exportacoes: { total: "US$ 0,001 bi", principais: ["manufaturados"] },
+  importacoes: { total: "US$ 0", principais: [] },
+  comercioTotal: "Mínimo (2023)",
+  organismos: ["ONU","Commonwealth","Fórum das Ilhas do Pacífico","AOSIS"],
+  conflitos: "Nenhum conflito. Tuvalu é o país mais vulnerável às mudanças climáticas do mundo.",
+  aproximacoes: "Tuvalu é símbolo da crise climática. Brasil apoia posição dos SIDS. Lula citou Tuvalu em discursos sobre clima."
+},
+
+"MAR2": {
+  nome: "Ilhas Marshall", flag: "🇲🇭", continente: "oceania",
+  iso: "MHL", capital: "Majuro",
+  presenca: "acreditacao",
+  presencaLabel: "Acreditado a partir de Manila (Filipinas)",
+  inicioRelacoes: 1991,
+  brasileiros: 30,
+  exportacoes: { total: "US$ 0,001 bi", principais: ["manufaturados"] },
+  importacoes: { total: "US$ 0", principais: [] },
+  comercioTotal: "Mínimo (2023)",
+  organismos: ["ONU","Fórum das Ilhas do Pacífico","AOSIS"],
+  conflitos: "Ilhas Marshall reconhecem Taiwan — diferente da posição brasileira.",
+  aproximacoes: "Brasil apoia ilhas do Pacífico na agenda climática. Acreditação indireta."
+},
+
+// ─── PAÍSES EUROPEUS MENORES ───
+"AND": {
+  nome: "Andorra", flag: "🇦🇩", continente: "europa",
+  iso: "AND", capital: "Andorra la Vella",
+  presenca: "acreditacao",
+  presencaLabel: "Acreditado a partir de Madri (Espanha)",
+  inicioRelacoes: 1995,
+  brasileiros: 3000,
+  exportacoes: { total: "US$ 0,01 bi", principais: ["manufaturados"] },
+  importacoes: { total: "US$ 0,005 bi", principais: ["produtos duty-free"] },
+  comercioTotal: "US$ 0,015 bi (2023)",
+  organismos: ["ONU","OMC"],
+  conflitos: "Nenhum conflito significativo.",
+  aproximacoes: "Andorra é destino de brasileiros em trânsito pela Europa. Relações via Espanha e França."
+},
+
+"LIE": {
+  nome: "Liechtenstein", flag: "🇱🇮", continente: "europa",
+  iso: "LIE", capital: "Vaduz",
+  presenca: "acreditacao",
+  presencaLabel: "Acreditado a partir de Berna (Suíça)",
+  inicioRelacoes: 1960,
+  brasileiros: 500,
+  exportacoes: { total: "US$ 0,02 bi", principais: ["manufaturados"] },
+  importacoes: { total: "US$ 0,01 bi", principais: ["instrumentos de precisão","produtos financeiros"] },
+  comercioTotal: "US$ 0,03 bi (2023)",
+  organismos: ["ONU","EEA","OMC","OCDE"],
+  conflitos: "Sigilo bancário: Liechtenstein é praça financeira — investigada por Lava Jato por contas de empresas brasileiras.",
+  aproximacoes: "Centro financeiro. Cooperação via Suíça."
+},
+
+"MON2": {
+  nome: "Mônaco", flag: "🇲🇨", continente: "europa",
+  iso: "MCO", capital: "Mônaco",
+  presenca: "acreditacao",
+  presencaLabel: "Acreditado a partir de Paris (França)",
+  inicioRelacoes: 1956,
+  brasileiros: 2000,
+  exportacoes: { total: "US$ 0,01 bi", principais: ["manufaturados","jatos particulares"] },
+  importacoes: { total: "US$ 0,01 bi", principais: ["iatismo","produtos de luxo"] },
+  comercioTotal: "US$ 0,02 bi (2023)",
+  organismos: ["ONU","OSCE","OMC"],
+  conflitos: "Nenhum conflito significativo. Mônaco é centro financeiro offshore.",
+  aproximacoes: "Brasileiros ricos residem em Mônaco. Cooperação ambiental marinha (Fundação Albert II)."
+},
+
+"SMR": {
+  nome: "San Marino", flag: "🇸🇲", continente: "europa",
+  iso: "SMR", capital: "Cidade de San Marino",
+  presenca: "acreditacao",
+  presencaLabel: "Acreditado a partir de Roma (Itália)",
+  inicioRelacoes: 1968,
+  brasileiros: 500,
+  exportacoes: { total: "US$ 0,005 bi", principais: ["manufaturados"] },
+  importacoes: { total: "US$ 0,002 bi", principais: ["artigos colecionáveis","cerâmica"] },
+  comercioTotal: "US$ 0,007 bi (2023)",
+  organismos: ["ONU","OSCE","OMC","Conselho da Europa"],
+  conflitos: "Nenhum conflito significativo.",
+  aproximacoes: "Relações simbólicas e turísticas. Via Itália."
+},
+
+"VAT": {
+  nome: "Santa Sé (Vaticano)", flag: "🇻🇦", continente: "europa",
+  iso: "VAT", capital: "Vaticano",
+  presenca: "embaixada",
+  presencaLabel: "Embaixada junto à Santa Sé em Roma",
+  inicioRelacoes: 1825,
+  brasileiros: 200,
+  exportacoes: { total: "Mínimo", principais: ["arte sacra","serviços religiosos"] },
+  importacoes: { total: "Mínimo", principais: ["produtos religiosos","arte"] },
+  comercioTotal: "Não se aplica (2023)",
+  organismos: ["ONU (observador)","OEA (observador)","OMC (observador)"],
+  conflitos: "Nenhum conflito diplomático significativo. Brasil é o maior país católico do mundo — relação historicamente próxima. Papa Francisco (argentino) gerou posição geopolítica ambígua.",
+  aproximacoes: "Brasil tem Embaixada junto à Santa Sé e o Vaticano tem Núncio Apostólico em Brasília. Papa Francisco visitou o Brasil para a JMJ 2013 (Rio de Janeiro). Concordata de 2008 — estatuto jurídico da Igreja. Brasil é maior nação católica com ~123 milhões de fiéis."
+},
+
+"MAL3": {
+  nome: "Malta", flag: "🇲🇹", continente: "europa",
+  iso: "MLT", capital: "Valeta",
+  presenca: "acreditacao",
+  presencaLabel: "Acreditado a partir de Roma (Itália)",
+  inicioRelacoes: 1966,
+  brasileiros: 5000,
+  exportacoes: { total: "US$ 0,05 bi", principais: ["café","carnes"] },
+  importacoes: { total: "US$ 0,03 bi", principais: ["farmacêuticos","eletrônicos"] },
+  comercioTotal: "US$ 0,08 bi (2023)",
+  organismos: ["ONU","UE","Commonwealth","OMC","NATO (parceiro)"],
+  conflitos: "Nenhum conflito significativo.",
+  aproximacoes: "Malta é hub de serviços financeiros. Cidadania maltesa demandada por brasileiros (UE). Cooperação via UE."
+},
+
+"LUX": {
+  nome: "Luxemburgo", flag: "🇱🇺", continente: "europa",
+  iso: "LUX", capital: "Luxemburgo",
+  presenca: "embaixada",
+  presencaLabel: "Embaixada em Luxemburgo",
+  inicioRelacoes: 1967,
+  brasileiros: 15000,
+  exportacoes: { total: "US$ 0,2 bi", principais: ["celulose","soja","carnes"] },
+  importacoes: { total: "US$ 0,5 bi", principais: ["aço (ArcelorMittal)","serviços financeiros","produtos químicos"] },
+  comercioTotal: "US$ 0,7 bi (2023)",
+  organismos: ["ONU","NATO","UE","OMC","OCDE"],
+  conflitos: "Luxemburgo é sede de fundos de investimento — investigados por evasão fiscal de brasileiros.",
+  aproximacoes: "ArcelorMittal (empresa de aço) tem sede em Luxemburgo e opera no Brasil. Luxemburgo é importante centro financeiro para emissão de títulos brasileiros. Grande diáspora brasileira."
+},
+
+"SLO": {
+  nome: "Eslováquia", flag: "🇸🇰", continente: "europa",
+  iso: "SVK", capital: "Bratislava",
+  presenca: "embaixada",
+  presencaLabel: "Embaixada em Bratislava",
+  inicioRelacoes: 1993,
+  brasileiros: 5000,
+  exportacoes: { total: "US$ 0,15 bi", principais: ["café","carnes","manufaturados"] },
+  importacoes: { total: "US$ 0,12 bi", principais: ["veículos","maquinário","eletroeletrônicos"] },
+  comercioTotal: "US$ 0,27 bi (2023)",
+  organismos: ["ONU","NATO","UE","OMC","OCDE"],
+  conflitos: "Nenhum conflito bilateral.",
+  aproximacoes: "Volkswagen tem fábrica na Eslováquia — cooperação industrial com Brasil. Relações via UE."
+},
+
+"SLV": {
+  nome: "Eslovênia", flag: "🇸🇮", continente: "europa",
+  iso: "SVN", capital: "Liubliana",
+  presenca: "acreditacao",
+  presencaLabel: "Acreditado a partir de Viena (Áustria)",
+  inicioRelacoes: 1992,
+  brasileiros: 3000,
+  exportacoes: { total: "US$ 0,08 bi", principais: ["café","carnes"] },
+  importacoes: { total: "US$ 0,06 bi", principais: ["maquinário","farmacêuticos"] },
+  comercioTotal: "US$ 0,14 bi (2023)",
+  organismos: ["ONU","NATO","UE","OMC","OCDE"],
+  conflitos: "Nenhum conflito bilateral.",
+  aproximacoes: "Relações estáveis via UE. Eslovênia presidiu o Conselho da UE em 2021."
+},
+
+"CRO": {
+  nome: "Croácia", flag: "🇭🇷", continente: "europa",
+  iso: "HRV", capital: "Zagreb",
+  presenca: "acreditacao",
+  presencaLabel: "Acreditado a partir de Viena (Áustria)",
+  inicioRelacoes: 1992,
+  brasileiros: 8000,
+  exportacoes: { total: "US$ 0,1 bi", principais: ["café","carnes","soja"] },
+  importacoes: { total: "US$ 0,06 bi", principais: ["produtos navais","maquinário","vinho"] },
+  comercioTotal: "US$ 0,16 bi (2023)",
+  organismos: ["ONU","NATO","UE","OMC"],
+  conflitos: "Nenhum conflito bilateral.",
+  aproximacoes: "Imigração croata histórica no Sul do Brasil. Relações culturais. Via UE."
+},
+
+"SER": {
+  nome: "Sérvia", flag: "🇷🇸", continente: "europa",
+  iso: "SRB", capital: "Belgrado",
+  presenca: "embaixada",
+  presencaLabel: "Embaixada em Belgrado",
+  inicioRelacoes: 1919,
+  brasileiros: 5000,
+  exportacoes: { total: "US$ 0,1 bi", principais: ["café","carnes","manufaturados"] },
+  importacoes: { total: "US$ 0,08 bi", principais: ["maquinário","produtos farmacêuticos"] },
+  comercioTotal: "US$ 0,18 bi (2023)",
+  organismos: ["ONU","OMC","OSCE","NAM","G77"],
+  conflitos: "Kosovo: Brasil não reconhece a independência do Kosovo — posição similar à da Sérvia (e de Rússia/China). Gerou aproximação diplomática.",
+  aproximacoes: "Posição sobre Kosovo cria convergência. Imigração eslava (incluindo sérvios) no Sul do Brasil. Cooperação bilateral em crescimento."
+},
+
+"BOS": {
+  nome: "Bósnia e Herzegovina", flag: "🇧🇦", continente: "europa",
+  iso: "BIH", capital: "Sarajevo",
+  presenca: "acreditacao",
+  presencaLabel: "Acreditado a partir de Belgrado (Sérvia) ou Zagreb (Croácia)",
+  inicioRelacoes: 1992,
+  brasileiros: 3000,
+  exportacoes: { total: "US$ 0,04 bi", principais: ["manufaturados"] },
+  importacoes: { total: "US$ 0,02 bi", principais: ["maquinário","aço"] },
+  comercioTotal: "US$ 0,06 bi (2023)",
+  organismos: ["ONU","OSCE","G77"],
+  conflitos: "Brasil participou de missões de paz da ONU na ex-Iugoslávia (UNPROFOR, IFOR). Genocídio de Srebrenica (1995): Brasil reconheceu como genocídio.",
+  aproximacoes: "Cooperação humanitária. Legado das missões de paz. Imigração de bósnios refugiados para o Brasil nos anos 1990."
+},
+
+"ALB": {
+  nome: "Albânia", flag: "🇦🇱", continente: "europa",
+  iso: "ALB", capital: "Tirana",
+  presenca: "acreditacao",
+  presencaLabel: "Acreditado a partir de Roma (Itália)",
+  inicioRelacoes: 1960,
+  brasileiros: 2000,
+  exportacoes: { total: "US$ 0,03 bi", principais: ["manufaturados"] },
+  importacoes: { total: "US$ 0,01 bi", principais: ["cromita","petróleo"] },
+  comercioTotal: "US$ 0,04 bi (2023)",
+  organismos: ["ONU","NATO","OSCE","OMC"],
+  conflitos: "Nenhum conflito bilateral.",
+  aproximacoes: "Relações de baixa intensidade. Via Itália."
+},
+
+"MKD": {
+  nome: "Macedônia do Norte", flag: "🇲🇰", continente: "europa",
+  iso: "MKD", capital: "Skopje",
+  presenca: "acreditacao",
+  presencaLabel: "Acreditado a partir de Atenas (Grécia)",
+  inicioRelacoes: 1993,
+  brasileiros: 1000,
+  exportacoes: { total: "US$ 0,02 bi", principais: ["manufaturados"] },
+  importacoes: { total: "US$ 0,01 bi", principais: ["maquinário"] },
+  comercioTotal: "US$ 0,03 bi (2023)",
+  organismos: ["ONU","NATO","OSCE","OMC"],
+  conflitos: "Nenhum conflito bilateral.",
+  aproximacoes: "Relações de baixa intensidade."
+},
+
+"MON3": {
+  nome: "Montenegro", flag: "🇲🇪", continente: "europa",
+  iso: "MNE", capital: "Podgorica",
+  presenca: "acreditacao",
+  presencaLabel: "Acreditado a partir de Belgrado (Sérvia)",
+  inicioRelacoes: 2006,
+  brasileiros: 800,
+  exportacoes: { total: "US$ 0,02 bi", principais: ["manufaturados"] },
+  importacoes: { total: "US$ 0,01 bi", principais: ["alumínio","minérios"] },
+  comercioTotal: "US$ 0,03 bi (2023)",
+  organismos: ["ONU","NATO","OSCE","OMC"],
+  conflitos: "Nenhum conflito bilateral.",
+  aproximacoes: "Relações de baixa intensidade. Montenegro reconheceu Kosovo — Brasil não."
+},
+
+"KOS": {
+  nome: "Kosovo", flag: "🇽🇰", continente: "europa",
+  iso: "XKX", capital: "Pristina",
+  presenca: "acreditacao",
+  presencaLabel: "Não reconhecido pelo Brasil — sem representação formal",
+  inicioRelacoes: 0,
+  brasileiros: 500,
+  exportacoes: { total: "Mínimo", principais: [] },
+  importacoes: { total: "Mínimo", principais: [] },
+  comercioTotal: "Mínimo (2023)",
+  organismos: ["ONU (sem assento — não-membro)","FMI","BIRD","OMC"],
+  conflitos: "Brasil não reconhece a independência do Kosovo (declarada em 2008) — posição alinhada com Rússia, China, Sérvia e outros. Questão dos precedentes de autodeterminação.",
+  aproximacoes: "Apesar de não reconhecer, o Brasil mantém contatos consulares informais. A posição sobre Kosovo é coerente com a oposição a declarações unilaterais de independência (incluindo em relação ao Tibet, Taiwan, etc.)."
+},
+
+// AMÉRICAS CENTRAIS E CARIBE
+"GUA": {
+  nome: "Guatemala", flag: "🇬🇹", continente: "americas",
+  iso: "GTM", capital: "Cidade da Guatemala",
+  presenca: "embaixada",
+  presencaLabel: "Embaixada na Cidade da Guatemala",
+  inicioRelacoes: 1906,
+  brasileiros: 5000,
+  exportacoes: { total: "US$ 0,4 bi", principais: ["manufaturados","açúcar","soja","café"] },
+  importacoes: { total: "US$ 0,2 bi", principais: ["café","bananas","palm oil"] },
+  comercioTotal: "US$ 0,6 bi (2023)",
+  organismos: ["ONU","OEA","SICA","CELAC","BID","OMC"],
+  conflitos: "Nenhum conflito bilateral significativo.",
+  aproximacoes: "Relações estáveis. CELAC. Cooperação técnica."
+},
+
+"HON": {
+  nome: "Honduras", flag: "🇭🇳", continente: "americas",
+  iso: "HND", capital: "Tegucigalpa",
+  presenca: "embaixada",
+  presencaLabel: "Embaixada em Tegucigalpa",
+  inicioRelacoes: 1935,
+  brasileiros: 3000,
+  exportacoes: { total: "US$ 0,3 bi", principais: ["manufaturados","açúcar","café"] },
+  importacoes: { total: "US$ 0,1 bi", principais: ["café","bananas"] },
+  comercioTotal: "US$ 0,4 bi (2023)",
+  organismos: ["ONU","OEA","SICA","CELAC","BID","OMC"],
+  conflitos: "Honduras reconheceu Taiwan por décadas — mudou para China em 2023. Isso afeta as dinâmicas regionais.",
+  aproximacoes: "Relações estáveis. CELAC. Cooperação técnica brasileira."
+},
+
+"ELS": {
+  nome: "El Salvador", flag: "🇸🇻", continente: "americas",
+  iso: "SLV", capital: "San Salvador",
+  presenca: "embaixada",
+  presencaLabel: "Embaixada em San Salvador",
+  inicioRelacoes: 1900,
+  brasileiros: 4000,
+  exportacoes: { total: "US$ 0,25 bi", principais: ["manufaturados","soja","açúcar"] },
+  importacoes: { total: "US$ 0,1 bi", principais: ["café","açúcar","têxteis"] },
+  comercioTotal: "US$ 0,35 bi (2023)",
+  organismos: ["ONU","OEA","SICA","CELAC","BID","OMC"],
+  conflitos: "Bitcoin: El Salvador adotou Bitcoin como moeda legal (2021) — posição questionada pelo FMI; Brasil observa de longe.",
+  aproximacoes: "Relações estáveis. Cooperação técnica."
+},
+
+"NIC": {
+  nome: "Nicarágua", flag: "🇳🇮", continente: "americas",
+  iso: "NIC", capital: "Manágua",
+  presenca: "embaixada",
+  presencaLabel: "Embaixada em Manágua",
+  inicioRelacoes: 1912,
+  brasileiros: 2000,
+  exportacoes: { total: "US$ 0,15 bi", principais: ["manufaturados","açúcar"] },
+  importacoes: { total: "US$ 0,08 bi", principais: ["café","carne bovina"] },
+  comercioTotal: "US$ 0,23 bi (2023)",
+  organismos: ["ONU","OEA","SICA","CELAC","ALBA","BID","OMC"],
+  conflitos: "Crise política: Ortega preso opositores e fechou organizações civis. Brasil criticou nas instâncias multilaterais (ONU, OEA). Tensão entre não-intervenção e defesa da democracia.",
+  aproximacoes: "Relações de cooperação técnica. Diálogo Sul-Sul."
+},
+
+"CRC": {
+  nome: "Costa Rica", flag: "🇨🇷", continente: "americas",
+  iso: "CRI", capital: "San José",
+  presenca: "embaixada",
+  presencaLabel: "Embaixada em San José",
+  inicioRelacoes: 1907,
+  brasileiros: 8000,
+  exportacoes: { total: "US$ 0,4 bi", principais: ["manufaturados","petróleo","açúcar"] },
+  importacoes: { total: "US$ 0,3 bi", principais: ["equipamentos médicos","frutas tropicais","café"] },
+  comercioTotal: "US$ 0,7 bi (2023)",
+  organismos: ["ONU","OEA","SICA","CELAC","BID","OMC","OCDE (candidato)"],
+  conflitos: "Nenhum conflito bilateral.",
+  aproximacoes: "Costa Rica é modelo de democracia e sustentabilidade — convergência com valores brasileiros. Cooperação em energias renováveis e biodiversidade."
+},
+
+"PAN": {
+  nome: "Panamá", flag: "🇵🇦", continente: "americas",
+  iso: "PAN", capital: "Cidade do Panamá",
+  presenca: "embaixada",
+  presencaLabel: "Embaixada na Cidade do Panamá",
+  inicioRelacoes: 1904,
+  brasileiros: 10000,
+  exportacoes: { total: "US$ 0,7 bi", principais: ["manufaturados","petróleo","açúcar","café"] },
+  importacoes: { total: "US$ 1,2 bi", principais: ["reexportações diversas","derivados de petróleo","manufaturados"] },
+  comercioTotal: "US$ 1,9 bi (2023)",
+  comercioObs: "Canal do Panamá: indireto mas crucial",
+  organismos: ["ONU","OEA","SICA","CELAC","BID","OMC"],
+  conflitos: "Panama Papers: documentos revelaram empresas brasileiras com contas no Panamá — investigadas pela Receita Federal e pelo MPF.",
+  aproximacoes: "Canal do Panamá: rota vital para exportações brasileiras para a Ásia. Cooperação em logística marítima. Centro financeiro offshore usado por empresas brasileiras."
+},
+
+"TTO": {
+  nome: "Trinidad e Tobago", flag: "🇹🇹", continente: "americas",
+  iso: "TTO", capital: "Porto Espanha",
+  presenca: "embaixada",
+  presencaLabel: "Embaixada em Porto Espanha",
+  inicioRelacoes: 1962,
+  brasileiros: 3000,
+  exportacoes: { total: "US$ 0,5 bi", principais: ["manufaturados","açúcar","alimentos"] },
+  importacoes: { total: "US$ 0,3 bi", principais: ["LNG","petróleo","produtos petroquímicos"] },
+  comercioTotal: "US$ 0,8 bi (2023)",
+  organismos: ["ONU","OEA","CARICOM","CELAC","BID","Commonwealth","OMC"],
+  conflitos: "Nenhum conflito bilateral.",
+  aproximacoes: "Trinidad é o maior produtor de gás natural do Caribe — de interesse energético para o Brasil. Cooperação em biocombustíveis."
+},
+
+"BAR": {
+  nome: "Barbados", flag: "🇧🇧", continente: "americas",
+  iso: "BRB", capital: "Bridgetown",
+  presenca: "acreditacao",
+  presencaLabel: "Acreditado a partir de Porto Espanha (Trinidad)",
+  inicioRelacoes: 1967,
+  brasileiros: 1500,
+  exportacoes: { total: "US$ 0,08 bi", principais: ["manufaturados","açúcar"] },
+  importacoes: { total: "US$ 0,03 bi", principais: ["rum","açúcar bruto"] },
+  comercioTotal: "US$ 0,11 bi (2023)",
+  organismos: ["ONU","OEA","CARICOM","CELAC","Commonwealth","BID","OMC"],
+  conflitos: "Nenhum conflito bilateral. Barbados tornou-se república em 2021 (saiu da Commonwealth Realm).",
+  aproximacoes: "Parceira no CARICOM. Cooperação em turismo e energia renovável."
+},
+
+"GRD": {
+  nome: "Granada", flag: "🇬🇩", continente: "americas",
+  iso: "GRD", capital: "São Jorge",
+  presenca: "acreditacao",
+  presencaLabel: "Acreditado a partir de Porto Espanha (Trinidad)",
+  inicioRelacoes: 1974,
+  brasileiros: 500,
+  exportacoes: { total: "US$ 0,02 bi", principais: ["manufaturados"] },
+  importacoes: { total: "US$ 0,01 bi", principais: ["noz-moscada","cacau"] },
+  comercioTotal: "US$ 0,03 bi (2023)",
+  organismos: ["ONU","OEA","CARICOM","CELAC","Commonwealth","BID","OMC"],
+  conflitos: "Nenhum conflito bilateral.",
+  aproximacoes: "Cooperação Sul-Sul via CARICOM."
+},
+
+"ANT": {
+  nome: "Antígua e Barbuda", flag: "🇦🇬", continente: "americas",
+  iso: "ATG", capital: "São João",
+  presenca: "acreditacao",
+  presencaLabel: "Acreditado a partir de Porto Espanha (Trinidad)",
+  inicioRelacoes: 1981,
+  brasileiros: 600,
+  exportacoes: { total: "US$ 0,02 bi", principais: ["manufaturados"] },
+  importacoes: { total: "US$ 0,01 bi", principais: ["rum"] },
+  comercioTotal: "US$ 0,03 bi (2023)",
+  organismos: ["ONU","OEA","CARICOM","CELAC","Commonwealth","BID","OMC"],
+  conflitos: "Nenhum conflito bilateral.",
+  aproximacoes: "Cooperação Sul-Sul via CARICOM."
+},
+
+"SKN": {
+  nome: "São Cristóvão e Névis", flag: "🇰🇳", continente: "americas",
+  iso: "KNA", capital: "Basseterre",
+  presenca: "acreditacao",
+  presencaLabel: "Acreditado a partir de Porto Espanha (Trinidad)",
+  inicioRelacoes: 1983,
+  brasileiros: 300,
+  exportacoes: { total: "US$ 0,01 bi", principais: ["manufaturados"] },
+  importacoes: { total: "US$ 0,005 bi", principais: ["rum","açúcar"] },
+  comercioTotal: "US$ 0,015 bi (2023)",
+  organismos: ["ONU","OEA","CARICOM","CELAC","Commonwealth","BID","OMC"],
+  conflitos: "Nenhum conflito bilateral.",
+  aproximacoes: "Cooperação Sul-Sul via CARICOM."
+},
+
+"SLU": {
+  nome: "Santa Lúcia", flag: "🇱🇨", continente: "americas",
+  iso: "LCA", capital: "Castries",
+  presenca: "acreditacao",
+  presencaLabel: "Acreditado a partir de Porto Espanha (Trinidad)",
+  inicioRelacoes: 1979,
+  brasileiros: 400,
+  exportacoes: { total: "US$ 0,02 bi", principais: ["manufaturados","açúcar"] },
+  importacoes: { total: "US$ 0,01 bi", principais: ["bananas","rum"] },
+  comercioTotal: "US$ 0,03 bi (2023)",
+  organismos: ["ONU","OEA","CARICOM","CELAC","Commonwealth","BID","OMC"],
+  conflitos: "Nenhum conflito bilateral.",
+  aproximacoes: "Cooperação Sul-Sul via CARICOM."
+},
+
+"SVG": {
+  nome: "São Vicente e Granadinas", flag: "🇻🇨", continente: "americas",
+  iso: "VCT", capital: "Kingstown",
+  presenca: "acreditacao",
+  presencaLabel: "Acreditado a partir de Porto Espanha (Trinidad)",
+  inicioRelacoes: 1979,
+  brasileiros: 300,
+  exportacoes: { total: "US$ 0,01 bi", principais: ["manufaturados"] },
+  importacoes: { total: "US$ 0,005 bi", principais: ["bananas","rum"] },
+  comercioTotal: "US$ 0,015 bi (2023)",
+  organismos: ["ONU","OEA","CARICOM","CELAC","Commonwealth","ALBA","BID","OMC"],
+  conflitos: "Nenhum conflito bilateral.",
+  aproximacoes: "Cooperação Sul-Sul via CARICOM e ALBA."
+},
+
+"BLZ": {
+  nome: "Belize", flag: "🇧🇿", continente: "americas",
+  iso: "BLZ", capital: "Belmopan",
+  presenca: "acreditacao",
+  presencaLabel: "Acreditado a partir de Cidade da Guatemala",
+  inicioRelacoes: 1981,
+  brasileiros: 1500,
+  exportacoes: { total: "US$ 0,05 bi", principais: ["manufaturados","açúcar"] },
+  importacoes: { total: "US$ 0,02 bi", principais: ["frutas tropicais","madeira"] },
+  comercioTotal: "US$ 0,07 bi (2023)",
+  organismos: ["ONU","OEA","SICA","CARICOM","CELAC","Commonwealth","BID","OMC"],
+  conflitos: "Nenhum conflito bilateral. Belize tem disputa territorial com Guatemala.",
+  aproximacoes: "Cooperação técnica Sul-Sul. Belize é um dos poucos Estados do Continente Americano com língua oficial inglesa."
+},
+
+"GUY2": {
+  nome: "Guiana Francesa", flag: "🇬🇫", continente: "americas",
+  iso: "GUF", capital: "Caiena",
+  presenca: "escritorio",
+  presencaLabel: "Consulado-Geral em Caiena (território francês)",
+  inicioRelacoes: 1500,
+  brasileiros: 50000,
+  exportacoes: { total: "US$ 0,3 bi", principais: ["alimentos","manufaturados","serviços de construção"] },
+  importacoes: { total: "US$ 0,05 bi", principais: ["ouro (garimpo)","rum"] },
+  comercioTotal: "US$ 0,35 bi (2023)",
+  organismos: ["ONU (via França)","UE (via França)","OMC (via França)"],
+  conflitos: "Garimpo ilegal: brasileiros extraem ouro ilegalmente na Guiana Francesa — problema fronteiriço grave com mortes, violência e danos ambientais. Operação Harpia: operações conjuntas para combater garimpo. Macron e presidentes brasileiros têm tratado do tema.",
+  aproximacoes: "Centro Espacial de Kourou: Brasil negocia uso do centro de lançamento europeu (ESA/Arianespace) para satélites brasileiros. Acordo Kourou (1998). Fronteira compartilhada de 730 km (Rio Oiapoque)."
+},
+
+"SUR2": {
+  nome: "Guiana (Sint Maarten/Saint Martin)", flag: "🇸🇽", continente: "americas",
+  iso: "SXM", capital: "Philipsburg",
+  presenca: "acreditacao",
+  presencaLabel: "Relações via Países Baixos",
+  inicioRelacoes: 2010,
+  brasileiros: 5000,
+  exportacoes: { total: "US$ 0,01 bi", principais: ["manufaturados"] },
+  importacoes: { total: "US$ 0,005 bi", principais: ["produtos de luxo"] },
+  comercioTotal: "US$ 0,015 bi (2023)",
+  organismos: ["ONU (via Países Baixos)"],
+  conflitos: "Nenhum conflito bilateral.",
+  aproximacoes: "Brasileiros trabalham em turismo na ilha. Relações via Países Baixos."
+}
+
+,
+"BEN":{"iso":"BEN","nome":"Benin","flag":"🇧🇯","continente":"africa","presenca":"acreditacao","presencaDesc":"Acreditado a partir de Abuja (Nigéria).","desde":1968,"br":300,"ct":"US$ 0,04 bi","exp":{"t":"US$ 0,03 bi","i":["manufaturados","alimentos"]},"imp":{"t":"US$ 0,01 bi","i":["algodão","óleo de palma","pescado"]},"org":["ONU","UA","CEDEAO","Francofonia","G77","OCI","OMC"],"apr":"Benin tem laços históricos com o Candomblé brasileiro — o antigo Daomé foi origem de muitas tradições religiosas afro-brasileiras. Cooperação cultural afrobrasileira. EMBRAPA coopera em culturas tropicais.","conf":"Sem conflitos bilaterais."},
+"BRN":{"iso":"BRN","nome":"Brunei","flag":"🇧🇳","continente":"asia","presenca":"acreditacao","presencaDesc":"Acreditado a partir de Jacarta (Indonésia).","desde":1984,"br":200,"ct":"US$ 0,05 bi","exp":{"t":"US$ 0,03 bi","i":["manufaturados"]},"imp":{"t":"US$ 0,02 bi","i":["petróleo","gás natural"]},"org":["ONU","ASEAN","OCI","Commonwealth","G77","APEC","OMC"],"apr":"Brunei é produtor de petróleo e gás — de interesse energético. Relações de baixa intensidade no âmbito da ASEAN.","conf":"Sem conflitos bilaterais."},
+"BTN":{"iso":"BTN","nome":"Butão","flag":"🇧🇹","continente":"asia","presenca":"acreditacao","presencaDesc":"Acreditado a partir de Nova Delhi (Índia).","desde":1985,"br":100,"ct":"US$ 0,01 bi","exp":{"t":"US$ 0,005 bi","i":["manufaturados"]},"imp":{"t":"US$ 0,005 bi","i":["energia hidrelétrica","madeira"]},"org":["ONU","SAARC","NAM","G77"],"apr":"Butão é modelo de desenvolvimento sustentável (Índice de Felicidade Bruta) — convergência com o discurso brasileiro sobre bem-estar além do PIB.","conf":"Sem conflitos bilaterais."},
+"CAF":{"iso":"CAF","nome":"Rep. Centro-Africana","flag":"🇨🇫","continente":"africa","presenca":"acreditacao","presencaDesc":"Acreditado a partir de Yaoundé (Camarões).","desde":1965,"br":200,"ct":"US$ 0,01 bi","exp":{"t":"US$ 0,005 bi","i":["manufaturados"]},"imp":{"t":"US$ 0,005 bi","i":["diamantes","madeira","ouro"]},"org":["ONU","UA","CEEAC","G77","Francofonia"],"apr":"Brasil participou da missão MINUSCA via ONU. Cooperação humanitária em contexto de crise prolongada.","conf":"Guerra civil crônica. Presença do Grupo Wagner russo. Sem conflitos bilaterais com o Brasil."},
+"COG":{"iso":"COG","nome":"Congo (República)","flag":"🇨🇬","continente":"africa","presenca":"acreditacao","presencaDesc":"Acreditado a partir de Kinshasa (RD Congo).","desde":1964,"br":500,"ct":"US$ 0,06 bi","exp":{"t":"US$ 0,04 bi","i":["manufaturados"]},"imp":{"t":"US$ 0,02 bi","i":["petróleo","madeira","potássio"]},"org":["ONU","UA","CEEAC","Francofonia","OPEP","G77"],"apr":"Petróleo congolês de interesse. Cooperação técnica. Português falado em partes do país por influência da vizinha RD Congo.","conf":"Sem conflitos bilaterais."},
+"COM":{"iso":"COM","nome":"Comoros","flag":"🇰🇲","continente":"africa","presenca":"acreditacao","presencaDesc":"Acreditado a partir de Nairóbi (Quênia).","desde":1975,"br":200,"ct":"US$ 0,01 bi","exp":{"t":"US$ 0,005 bi","i":["manufaturados"]},"imp":{"t":"US$ 0,005 bi","i":["baunilha","ylang-ylang","cravo"]},"org":["ONU","UA","Liga Árabe","OCI","Francofonia","G77","AOSIS"],"apr":"Cooperação humanitária mínima. Brasil apoia posições dos SIDS no clima.","conf":"Instabilidade política recorrente. Sem conflitos bilaterais."},
+"CYP":{"iso":"CYP","nome":"Chipre","flag":"🇨🇾","continente":"europa","presenca":"acreditacao","presencaDesc":"Acreditado a partir de Atenas (Grécia).","desde":1960,"br":5000,"ct":"US$ 0,1 bi","exp":{"t":"US$ 0,05 bi","i":["café","manufaturados"]},"imp":{"t":"US$ 0,05 bi","i":["serviços financeiros","cobre"]},"org":["ONU","UE","Commonwealth","OMC"],"apr":"Centro financeiro offshore. Cidadania cipriota buscada por brasileiros para acesso à UE.","conf":"Questão cipriota: Brasil não reconhece a República Turca do Chipre do Norte. Sem conflitos bilaterais diretos."},
+"DMA":{"iso":"DMA","nome":"Dominica","flag":"🇩🇲","continente":"americas","presenca":"acreditacao","presencaDesc":"Acreditado a partir de Porto Espanha (Trinidad).","desde":1978,"br":300,"ct":"US$ 0,02 bi","exp":{"t":"US$ 0,01 bi","i":["manufaturados"]},"imp":{"t":"US$ 0,005 bi","i":["bananas","frutas tropicais"]},"org":["ONU","OEA","CARICOM","CELAC","Commonwealth","ALBA","BID","OMC"],"apr":"Cooperação Sul-Sul via CARICOM. Dominica é conhecida como a 'Ilha da Natureza' — convergência com agenda ambiental brasileira.","conf":"Sem conflitos bilaterais."},
+"EST":{"iso":"EST","nome":"Estônia","flag":"🇪🇪","continente":"europa","presenca":"acreditacao","presencaDesc":"Acreditado a partir de Helsinque (Finlândia).","desde":1991,"br":1500,"ct":"US$ 0,1 bi","exp":{"t":"US$ 0,05 bi","i":["manufaturados","café"]},"imp":{"t":"US$ 0,05 bi","i":["eletroeletrônicos","serviços digitais"]},"org":["ONU","NATO","UE","OMC","OCDE"],"apr":"Estônia é referência mundial em governo digital (e-Estonia) — experiência estudada pelo Brasil em transformação digital do Estado.","conf":"Sem conflitos bilaterais."},
+"GMB":{"iso":"GMB","nome":"Gâmbia","flag":"🇬🇲","continente":"africa","presenca":"acreditacao","presencaDesc":"Acreditado a partir de Dacar (Senegal).","desde":1965,"br":200,"ct":"US$ 0,01 bi","exp":{"t":"US$ 0,005 bi","i":["manufaturados"]},"imp":{"t":"US$ 0,005 bi","i":["amendoim","pescado"]},"org":["ONU","UA","CEDEAO","OCI","Commonwealth","G77","OMC"],"apr":"Cooperação técnica mínima. Gâmbia é o menor país da África continental.","conf":"Sem conflitos bilaterais."},
+"GNQ":{"iso":"GNQ","nome":"Guiné Equatorial","flag":"🇬🇶","continente":"africa","presenca":"acreditacao","presencaDesc":"Acreditado a partir de Yaoundé (Camarões).","desde":1968,"br":300,"ct":"US$ 0,05 bi","exp":{"t":"US$ 0,03 bi","i":["manufaturados"]},"imp":{"t":"US$ 0,02 bi","i":["petróleo","LNG","madeira"]},"org":["ONU","UA","CPLP","OPEP","G77","CEEAC"],"apr":"CPLP: membro desde 2014 — único membro africano onde o espanhol também é língua oficial. Petróleo de interesse energético para o Brasil.","conf":"Regime autoritário de Teodoro Obiang. Questões de direitos humanos afetam a imagem do país, mas o Brasil mantém relações normais."},
+"KGZ":{"iso":"KGZ","nome":"Quirguistão","flag":"🇰🇬","continente":"asia","presenca":"acreditacao","presencaDesc":"Acreditado a partir de Astana (Cazaquistão).","desde":1992,"br":200,"ct":"US$ 0,03 bi","exp":{"t":"US$ 0,02 bi","i":["manufaturados"]},"imp":{"t":"US$ 0,01 bi","i":["ouro","minerais"]},"org":["ONU","CEI","SCO","CSTO","NAM","G77","OMC"],"apr":"Relações de baixa intensidade. Quirguistão tem reservas de ouro e minerais estratégicos.","conf":"Sem conflitos bilaterais."},
+"LAO":{"iso":"LAO","nome":"Laos","flag":"🇱🇦","continente":"asia","presenca":"acreditacao","presencaDesc":"Acreditado a partir de Bancoc (Tailândia).","desde":1975,"br":200,"ct":"US$ 0,03 bi","exp":{"t":"US$ 0,02 bi","i":["manufaturados"]},"imp":{"t":"US$ 0,01 bi","i":["cobre","madeira","energia hidrelétrica"]},"org":["ONU","ASEAN","NAM","G77","OMC"],"apr":"Relações de baixa intensidade no âmbito da ASEAN. Acordo Mercosul-ASEAN em negociação.","conf":"Sem conflitos bilaterais."},
+"LBR":{"iso":"LBR","nome":"Libéria","flag":"🇱🇷","continente":"africa","presenca":"acreditacao","presencaDesc":"Acreditado a partir de Dacar (Senegal).","desde":1961,"br":300,"ct":"US$ 0,03 bi","exp":{"t":"US$ 0,02 bi","i":["manufaturados"]},"imp":{"t":"US$ 0,01 bi","i":["minério de ferro","borracha","madeira"]},"org":["ONU","UA","CEDEAO","G77","OMC"],"apr":"Brasil participou da UNMIL (missão de paz da ONU na Libéria). Cooperação humanitária. Ellen Johnson Sirleaf (Nobel da Paz 2011) foi recebida por Lula.","conf":"Sem conflitos bilaterais."},
+"LSO":{"iso":"LSO","nome":"Lesoto","flag":"🇱🇸","continente":"africa","presenca":"acreditacao","presencaDesc":"Acreditado a partir de Pretória (África do Sul).","desde":1966,"br":200,"ct":"US$ 0,02 bi","exp":{"t":"US$ 0,01 bi","i":["manufaturados"]},"imp":{"t":"US$ 0,01 bi","i":["diamantes","água","têxteis"]},"org":["ONU","UA","SADC","Commonwealth","G77","OMC"],"apr":"Lesoto tem reservas de diamantes e exporta água para a África do Sul. Cooperação técnica mínima.","conf":"Sem conflitos bilaterais."},
+"LTU":{"iso":"LTU","nome":"Lituânia","flag":"🇱🇹","continente":"europa","presenca":"acreditacao","presencaDesc":"Acreditado a partir de Varsóvia (Polônia).","desde":1991,"br":1000,"ct":"US$ 0,06 bi","exp":{"t":"US$ 0,03 bi","i":["manufaturados"]},"imp":{"t":"US$ 0,03 bi","i":["lasers","equipamentos ópticos","âmbar"]},"org":["ONU","NATO","UE","OMC","OCDE"],"apr":"Lituânia é referência mundial em lasers e equipamentos ópticos de precisão. Relações via UE e Mercosul.","conf":"Sem conflitos bilaterais."},
+"LVA":{"iso":"LVA","nome":"Letônia","flag":"🇱🇻","continente":"europa","presenca":"acreditacao","presencaDesc":"Acreditado a partir de Estocolmo (Suécia).","desde":1991,"br":1000,"ct":"US$ 0,06 bi","exp":{"t":"US$ 0,03 bi","i":["manufaturados"]},"imp":{"t":"US$ 0,03 bi","i":["madeira","farmacêuticos","produtos TI"]},"org":["ONU","NATO","UE","OMC","OCDE"],"apr":"Relações de baixa intensidade. Letônia é exportadora de madeira e produtos de valor agregado. Via UE.","conf":"Sem conflitos bilaterais."},
+"MDA":{"iso":"MDA","nome":"Moldávia","flag":"🇲🇩","continente":"europa","presenca":"acreditacao","presencaDesc":"Acreditado a partir de Bucareste (Romênia).","desde":1992,"br":500,"ct":"US$ 0,03 bi","exp":{"t":"US$ 0,02 bi","i":["manufaturados"]},"imp":{"t":"US$ 0,01 bi","i":["vinho","frutas","noz"]},"org":["ONU","CEI","G77","OMC"],"apr":"Relações de baixa intensidade. Via Romênia e UE (Moldávia é candidata à UE desde 2022).","conf":"Transnístria: região separatista com presença militar russa. Instabilidade regional. Sem conflitos bilaterais."},
+"MDV":{"iso":"MDV","nome":"Maldivas","flag":"🇲🇻","continente":"asia","presenca":"acreditacao","presencaDesc":"Acreditado a partir de Colombo (Sri Lanka).","desde":1965,"br":200,"ct":"US$ 0,02 bi","exp":{"t":"US$ 0,01 bi","i":["manufaturados"]},"imp":{"t":"US$ 0,01 bi","i":["peixe atum","artesanato"]},"org":["ONU","Commonwealth","OCI","SAARC","AOSIS","G77","OMC"],"apr":"Maldivas é símbolo das mudanças climáticas (nação em risco de afundamento) — Brasil apoia posição dos SIDS nas negociações climáticas da ONU.","conf":"Sem conflitos bilaterais."},
+"MRT":{"iso":"MRT","nome":"Mauritânia","flag":"🇲🇷","continente":"africa","presenca":"acreditacao","presencaDesc":"Acreditado a partir de Dacar (Senegal).","desde":1966,"br":300,"ct":"US$ 0,03 bi","exp":{"t":"US$ 0,02 bi","i":["manufaturados"]},"imp":{"t":"US$ 0,01 bi","i":["minério de ferro","pescado","ouro"]},"org":["ONU","UA","CEDEAO","Liga Árabe","OCI","Francofonia","G77"],"apr":"Mauritânia tem grandes reservas de minério de ferro e recursos pesqueiros. Recém-descoberta de gás natural off-shore é de interesse estratégico.","conf":"Tensão sobre Saara Ocidental. Sem conflitos bilaterais com o Brasil."},
+"MUS":{"iso":"MUS","nome":"Maurício","flag":"🇲🇺","continente":"africa","presenca":"acreditacao","presencaDesc":"Acreditado a partir de Pretória (África do Sul).","desde":1968,"br":800,"ct":"US$ 0,1 bi","exp":{"t":"US$ 0,06 bi","i":["manufaturados","café"]},"imp":{"t":"US$ 0,04 bi","i":["açúcar","produtos têxteis","serviços financeiros"]},"org":["ONU","UA","SADC","Commonwealth","G77","OMC","Francofonia"],"apr":"Maurício é hub financeiro offshore — empresas brasileiras usam o país para treaty shopping e estruturação de investimentos. Centro de serviços com mão de obra qualificada.","conf":"Sem conflitos bilaterais."},
+"MWI":{"iso":"MWI","nome":"Malawi","flag":"🇲🇼","continente":"africa","presenca":"acreditacao","presencaDesc":"Acreditado a partir de Pretória (África do Sul).","desde":1964,"br":400,"ct":"US$ 0,04 bi","exp":{"t":"US$ 0,03 bi","i":["manufaturados"]},"imp":{"t":"US$ 0,01 bi","i":["tabaco","chá","açúcar","café"]},"org":["ONU","UA","SADC","Commonwealth","G77","OMC"],"apr":"EMBRAPA coopera em culturas tropicais. Malawi é grande produtor de tabaco. Cooperação Sul-Sul.","conf":"Sem conflitos bilaterais."},
+"PRK":{"iso":"PRK","nome":"Coreia do Norte","flag":"🇰🇵","continente":"asia","presenca":"acreditacao","presencaDesc":"Acreditado a partir de Pequim (China). Sem embaixada residente.","desde":1962,"br":100,"ct":"Mínimo","exp":{"t":"Mínimo","i":[]},"imp":{"t":"Mínimo","i":[]},"org":["ONU","NAM","G77"],"apr":"Brasil mantém canal diplomático aberto — tradição de engajamento diplomático mesmo com regimes isolados.","conf":"Programa nuclear e de mísseis: Brasil defende não-proliferação e resolução diplomática. Sanções da ONU limitam drasticamente o comércio bilateral."},
+"PSE":{"iso":"PSE","nome":"Palestina","flag":"🇵🇸","continente":"asia","presenca":"embaixada","presencaDesc":"Embaixada em Ramallah (Autoridade Nacional Palestina). Brasil reconheceu o Estado palestino em 2010.","desde":2010,"br":3000,"ct":"US$ 0,05 bi","exp":{"t":"US$ 0,03 bi","i":["manufaturados","alimentos"]},"imp":{"t":"US$ 0,02 bi","i":["azeite","artesanato de oliveira"]},"org":["ONU (observador)","Liga Árabe","OCI","G77","NAM"],"apr":"Brasil reconheceu o Estado Palestino em 2010 (governo Lula). Posição firme em favor da solução de dois Estados e do cessar-fogo em Gaza (2024). Comunidade palestina e árabe significativa no Brasil.","conf":"Crise diplomática com Israel (2024) agravada pela posição pró-Palestina de Lula. Tensão entre a comunidade judaica e árabe no Brasil sobre a posição do governo."},
+"SLE":{"iso":"SLE","nome":"Serra Leoa","flag":"🇸🇱","continente":"africa","presenca":"acreditacao","presencaDesc":"Acreditado a partir de Dacar (Senegal).","desde":1961,"br":300,"ct":"US$ 0,02 bi","exp":{"t":"US$ 0,01 bi","i":["manufaturados"]},"imp":{"t":"US$ 0,01 bi","i":["diamantes","rutilo","bauxita"]},"org":["ONU","UA","CEDEAO","Commonwealth","G77","OMC"],"apr":"Brasil participou de missões de paz da ONU em Serra Leoa (UNAMSIL, 1999-2005). Cooperação humanitária. Diamantes serraleoneses de interesse para a joalheria.","conf":"Sem conflitos bilaterais."},
+"SSD":{"iso":"SSD","nome":"Sudão do Sul","flag":"🇸🇸","continente":"africa","presenca":"embaixada","presencaDesc":"Embaixada em Juba. Brasil reconheceu o Sudão do Sul na independência em 2011.","desde":2011,"br":400,"ct":"US$ 0,05 bi","exp":{"t":"US$ 0,03 bi","i":["manufaturados","alimentos"]},"imp":{"t":"US$ 0,02 bi","i":["petróleo"]},"org":["ONU","UA","IGAD","EAC","G77"],"apr":"Brasil reconheceu o Sudão do Sul na independência (2011). Ajuda humanitária via ONU e participação na MINUSS (missão de paz). Cooperação técnica em agricultura.","conf":"Guerra civil recorrente desde 2013. Crise humanitária grave. Sem conflitos bilaterais."},
+"SWZ":{"iso":"SWZ","nome":"Eswatini","flag":"🇸🇿","continente":"africa","presenca":"acreditacao","presencaDesc":"Acreditado a partir de Pretória (África do Sul).","desde":1968,"br":200,"ct":"US$ 0,02 bi","exp":{"t":"US$ 0,01 bi","i":["manufaturados"]},"imp":{"t":"US$ 0,01 bi","i":["açúcar","têxteis","madeira"]},"org":["ONU","UA","SADC","Commonwealth","G77","OMC"],"apr":"Cooperação técnica mínima. Eswatini exporta açúcar e têxteis.","conf":"Eswatini é um dos poucos países que ainda reconhecem Taiwan — divergência com a política brasileira de 'Uma só China'."},
+"SYC":{"iso":"SYC","nome":"Seychelles","flag":"🇸🇨","continente":"africa","presenca":"acreditacao","presencaDesc":"Acreditado a partir de Nairóbi (Quênia).","desde":1976,"br":300,"ct":"US$ 0,02 bi","exp":{"t":"US$ 0,01 bi","i":["manufaturados"]},"imp":{"t":"US$ 0,01 bi","i":["atum","artigos de luxo"]},"org":["ONU","UA","SADC","Commonwealth","G77","AOSIS","OMC"],"apr":"Brasil apoia posições dos SIDS no clima. Cooperação em pesca sustentável. Seychelles é ponto estratégico no Oceano Índico.","conf":"Sem conflitos bilaterais."},
+"TCD":{"iso":"TCD","nome":"Chade","flag":"🇹🇩","continente":"africa","presenca":"acreditacao","presencaDesc":"Acreditado a partir de Yaoundé (Camarões).","desde":1965,"br":200,"ct":"US$ 0,02 bi","exp":{"t":"US$ 0,01 bi","i":["manufaturados"]},"imp":{"t":"US$ 0,01 bi","i":["petróleo","algodão","minerais"]},"org":["ONU","UA","CEEAC","OCI","G77","Francofonia"],"apr":"Chade é ponto estratégico para o Sahel. Brasil apoiou missões de paz da ONU na região. Cooperação humanitária.","conf":"Conflito persistente no Sahel. Golpe militar (2021). Sem conflitos bilaterais com o Brasil."},
+"TJK":{"iso":"TJK","nome":"Tajiquistão","flag":"🇹🇯","continente":"asia","presenca":"acreditacao","presencaDesc":"Acreditado a partir de Astana (Cazaquistão).","desde":1992,"br":200,"ct":"US$ 0,02 bi","exp":{"t":"US$ 0,01 bi","i":["manufaturados"]},"imp":{"t":"US$ 0,01 bi","i":["alumínio","algodão","ouro"]},"org":["ONU","CEI","SCO","CSTO","NAM","G77","OMC"],"apr":"Relações de baixa intensidade. Tajiquistão tem reservas de alumínio e algodão.","conf":"Sem conflitos bilaterais."},
+"TKM":{"iso":"TKM","nome":"Turcomenistão","flag":"🇹🇲","continente":"asia","presenca":"acreditacao","presencaDesc":"Acreditado a partir de Teerã (Irã).","desde":1992,"br":200,"ct":"US$ 0,05 bi","exp":{"t":"US$ 0,03 bi","i":["manufaturados"]},"imp":{"t":"US$ 0,02 bi","i":["gás natural","petróleo","algodão"]},"org":["ONU","CEI","NAM","G77"],"apr":"Turcomenistão tem a 4ª maior reserva de gás natural do mundo. Neutralidade permanente reconhecida pela ONU — convergência com não-alinhamento brasileiro.","conf":"País extremamente fechado. Sem conflitos bilaterais."},
+"TWN":{"iso":"TWN","nome":"Taiwan","flag":"🇹🇼","continente":"asia","presenca":"escritorio","presencaDesc":"Escritório Comercial em Taipé (sem status diplomático formal). CCBT (Câmara de Comércio) representa os interesses comerciais.","desde":0,"br":10000,"ct":"US$ 4,2 bi","exp":{"t":"US$ 2,1 bi","i":["minério de ferro","soja","petróleo","celulose","algodão"]},"imp":{"t":"US$ 2,1 bi","i":["eletroeletrônicos","máquinas","semicondutores","produtos químicos"]},"org":[],"apr":"Relações comerciais expressivas apesar da ausência de relações diplomáticas formais. CCBT atua como representação informal de Taiwan no Brasil e vice-versa. Taiwan investe em eletrônicos e semicondutores no Brasil.","conf":"Brasil segue a política de 'Uma só China' desde 1974 — não reconhece Taiwan como Estado soberano. O Paraguai foi por décadas o único país sul-americano que reconhecia Taiwan, gerando atritos no Mercosul. Em 2023, o Paraguai mudou para China."}
+,"GRL":{"iso":"GRL","nome":"Groenlândia","flag":"🇬🇱","continente":"americas","presenca":"acreditacao","presencaDesc":"Território autônomo da Dinamarca. Relações via Copenhague.","desde":1721,"br":100,"ct":"Mínimo","exp":{"t":"Mínimo","i":["pescado","minerais"]},"imp":{"t":"Mínimo","i":["manufaturados"]},"org":["ONU (via Dinamarca)","UE (saiu em 1985)","Conselho Ártico"],"apr":"Groenlândia é território autônomo da Dinamarca desde 1953 (estatuto especial desde 1979). O Brasil tem relações com a Groenlândia indiretamente via Copenhague. Interesse estratégico crescente dada sua posição no Ártico e reservas minerais.","conf":"Groenlândia debateu independência (referendo 2009: maioria quer independência gradual). EUA demonstraram interesse em comprar a ilha (Trump, 2019 e 2025). Sem conflitos bilaterais com o Brasil."}
+};
+
+// ═══════════════════════════════════════════════
+// CORES POR TIPO DE PRESENÇA
+// ═══════════════════════════════════════════════
+const CORES = {
+  embaixada:    { fill: '#2d5a1b', border: '#4ade80', label: 'Embaixada' },
+  consulado:    { fill: '#1b3a5a', border: '#60a5fa', label: 'Consulado' },
+  escritorio:   { fill: '#5a3a00', border: '#f59e0b', label: 'Escritório/Missão' },
+  honorario:    { fill: '#3a1b5a', border: '#a78bfa', label: 'Cônsul Honorário' },
+  acreditacao:  { fill: '#1a2e1e', border: '#6b7280', label: 'Acreditação/Sem sede' }
+};
+
+// ═══════════════════════════════════════════════
+// MAPA LEAFLET
+// ═══════════════════════════════════════════════
+const map = L.map('map', {
+  center: [10, 0],
+  zoom: 2,
+  minZoom: 1.5,
+  maxZoom: 8,
+  zoomControl: true,
+  worldCopyJump: false
+});
+
+// Tile escuro
+L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}{r}.png', {
+  subdomains: 'abcd',
+  maxZoom: 20
+}).addTo(map);
+
+let geoLayer = null;
+let currentFilter = 'all';
+let currentSearch = '';
+
+// ═══════════════════════════════════════════════
+// CARREGAR GEOJSON MUNDIAL
+// ═══════════════════════════════════════════════
+fetch('https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/world.geojson')
+  .then(r => r.json())
+  .then(geo => {
+    // Patch: corrigir features com ISO_A3 = "-99" usando nome do país
+    geo.features.forEach(f => {
+      const p = f.properties || {};
+      const iso = p.ISO_A3 || p.id || '';
+      if (iso && iso !== '-99' && iso.length === 3) return;
+      const n = p.ADMIN || p.admin || p.NAME || p.name || p.SOVEREIGNT || p.GEOUNIT || '';
+      // Debug: logar países com ISO -99 para diagnóstico
+      if (n) console.log('[ISO-99]', JSON.stringify({iso, ADMIN:p.ADMIN, NAME:p.NAME, id:p.id, SOVEREIGNT:p.SOVEREIGNT, WB_A3:p.WB_A3}));
+      const mapped = _NAME_MAP[n] || _NAME_MAP[p.WB_A3] || _NAME_MAP[p.NE_ID];
+      if (mapped) { p.ISO_A3 = mapped; p.id = mapped; }
+      else {
+        // Busca parcial em todos os campos de texto disponíveis
+        const allNames = Object.values(p).filter(v => typeof v === 'string' && v.length > 2);
+        for (const an of allNames) {
+          if (_NAME_MAP[an]) { p.ISO_A3 = _NAME_MAP[an]; p.id = _NAME_MAP[an]; break; }
+        }
+      }
+    });
+    document.getElementById('loading').style.display = 'none';
+    buildMap(geo);
+    buildSidebar();
+  })
+  .catch(() => {
+    fetch('https://raw.githubusercontent.com/datasets/geo-countries/master/data/countries.geojson')
+      .then(r => r.json())
+      .then(geo => {
+        geo.features.forEach(f => {
+          const p = f.properties || {};
+          const iso = p.ISO_A3 || p.id || '';
+          if (iso && iso !== '-99' && iso.length === 3) return;
+          const n = p.ADMIN || p.admin || p.NAME || p.name || p.SOVEREIGNT || '';
+          const mapped = _NAME_MAP[n];
+          if (mapped) { p.ISO_A3 = mapped; p.id = mapped; }
+        });
+        document.getElementById('loading').style.display = 'none';
+        buildMap(geo);
+        buildSidebar();
+      })
+      .catch(() => {
+        document.getElementById('loading').textContent = '⚠ Erro ao carregar mapa. Verifique a conexão.';
+      });
+  });
+
+// ═══════════════════════════════════════════════
+// CONSTRUIR MAPA
+// ═══════════════════════════════════════════════
+// Índice ISO3 -> dados do país (construído uma vez)
+const _ISO_IDX = {};
+for (const v of Object.values(PAISES)) {
+  if (v.iso) _ISO_IDX[v.iso.toUpperCase()] = v;
+}
+
+// Mapa nome-em-inglês (GeoJSON) -> ISO3
+// Inclui variantes do Natural Earth que usa "-99" para alguns países
+const _NAME_MAP = {
+  // Américas
+  "United States of America":"USA","United States":"USA","USA":"USA",
+  "Greenland":"GRL","Groenlandia":"GRL","Grönland":"GRL","Kalaallit Nunaat":"GRL",
+  "United Kingdom":"GBR","Great Britain":"GBR","England":"GBR","Scotland":"GBR","Wales":"GBR","Northern Ireland":"GBR","U.K.":"GBR",
+  "France":"FRA","China":"CHN","Russia":"RUS","Germany":"DEU",
+  "Brazil":"BRA","Argentina":"ARG","Canada":"CAN","Australia":"AUS",
+  "India":"IND","Japan":"JPN","Mexico":"MEX","Indonesia":"IDN",
+  "South Korea":"KOR","Turkey":"TUR","Saudi Arabia":"SAU",
+  "Iran":"IRN","Egypt":"EGY","Nigeria":"NGA","South Africa":"ZAF",
+  "Colombia":"COL","Spain":"ESP","Algeria":"DZA","Sudan":"SDN",
+  "Ethiopia":"ETH","Tanzania":"TZA","Kenya":"KEN","Angola":"AGO",
+  "Mozambique":"MOZ","Cameroon":"CMR","Ivory Coast":"CIV",
+  "Côte d'Ivoire":"CIV","Cote d'Ivoire":"CIV","Niger":"NER",
+  "Mali":"MLI","Burkina Faso":"BFA","Zimbabwe":"ZWE","Zambia":"ZMB",
+  "Senegal":"SEN","Tunisia":"TUN","Guinea":"GIN","Bolivia":"BOL",
+  "Ecuador":"ECU","Paraguay":"PRY","Uruguay":"URY","Venezuela":"VEN",
+  "Peru":"PER","Chile":"CHL","Guyana":"GUY","Suriname":"SUR",
+  "United Arab Emirates":"ARE","Iraq":"IRQ","Syria":"SYR","Yemen":"YEM",
+  "Jordan":"JOR","Lebanon":"LBN","Oman":"OMN","Kuwait":"KWT",
+  "Qatar":"QAT","Bahrain":"BHR","Israel":"ISR","Palestine":"PSE",
+  "Pakistan":"PAK","Bangladesh":"BGD","Sri Lanka":"LKA","Nepal":"NPL",
+  "Vietnam":"VNM","Viet Nam":"VNM","Thailand":"THA","Malaysia":"MYS",
+  "Philippines":"PHL","Cambodia":"KHM","Myanmar":"MMR","Mongolia":"MNG",
+  "Kazakhstan":"KAZ","Uzbekistan":"UZB","Turkmenistan":"TKM",
+  "Kyrgyzstan":"KGZ","Tajikistan":"TJK","Afghanistan":"AFG",
+  "Georgia":"GEO","Armenia":"ARM","Azerbaijan":"AZE","Belarus":"BLR",
+  "Ukraine":"UKR","Moldova":"MDA","Lithuania":"LTU","Latvia":"LVA",
+  "Estonia":"EST","Poland":"POL","Czech Republic":"CZE","Czechia":"CZE",
+  "Slovakia":"SVK","Hungary":"HUN","Romania":"ROU","Bulgaria":"BGR",
+  "Croatia":"HRV","Serbia":"SRB","Bosnia and Herzegovina":"BIH",
+  "Montenegro":"MNE","North Macedonia":"MKD","Albania":"ALB",
+  "Kosovo":"XKX","Greece":"GRC","Portugal":"PRT","Belgium":"BEL",
+  "Netherlands":"NLD","Switzerland":"CHE","Austria":"AUT",
+  "Sweden":"SWE","Norway":"NOR","Finland":"FIN","Denmark":"DNK",
+  "Ireland":"IRL","Iceland":"ISL","Luxembourg":"LUX",
+  "Vatican":"VAT","Holy See":"VAT","San Marino":"SMR","Malta":"MLT",
+  "Cyprus":"CYP","Andorra":"AND","Monaco":"MCO","Liechtenstein":"LIE",
+  "Morocco":"MAR","Libya":"LBY","Mauritania":"MRT",
+  "Western Sahara":"ESH","Cape Verde":"CPV","Cabo Verde":"CPV",
+  "Gambia":"GMB","The Gambia":"GMB","Guinea-Bissau":"GNB",
+  "Sierra Leone":"SLE","Liberia":"LBR","Ghana":"GHA","Togo":"TGO",
+  "Benin":"BEN","Equatorial Guinea":"GNQ","Gabon":"GAB",
+  "Republic of the Congo":"COG","Congo":"COG",
+  "Democratic Republic of the Congo":"COD","Dem. Rep. Congo":"COD",
+  "Central African Republic":"CAF","Chad":"TCD","Somalia":"SOM",
+  "Djibouti":"DJI","Eritrea":"ERI","Rwanda":"RWA","Uganda":"UGA",
+  "South Sudan":"SSD","Madagascar":"MDG","Malawi":"MWI",
+  "Namibia":"NAM","Botswana":"BWA","Lesotho":"LSO",
+  "Swaziland":"SWZ","eSwatini":"SWZ","Eswatini":"SWZ",
+  "Mauritius":"MUS","Seychelles":"SYC","Comoros":"COM",
+  "New Zealand":"NZL","Fiji":"FJI","Papua New Guinea":"PNG",
+  "Vanuatu":"VUT","Samoa":"WSM","Tonga":"TON",
+  "Solomon Islands":"SLB","Kiribati":"KIR","Micronesia":"FSM",
+  "Palau":"PLW","Marshall Islands":"MHL","Nauru":"NRU","Tuvalu":"TUV",
+  "Cuba":"CUB","Haiti":"HTI","Dominican Republic":"DOM","Jamaica":"JAM",
+  "Trinidad and Tobago":"TTO","Barbados":"BRB","Grenada":"GRD",
+  "Saint Lucia":"LCA","Saint Vincent and the Grenadines":"VCT",
+  "Antigua and Barbuda":"ATG","Saint Kitts and Nevis":"KNA",
+  "Belize":"BLZ","Guatemala":"GTM","Honduras":"HND",
+  "El Salvador":"SLV","Nicaragua":"NIC","Costa Rica":"CRI",
+  "Panama":"PAN","Dominica":"DMA","Bahamas":"BHS",
+  "Timor-Leste":"TLS","East Timor":"TLS","North Korea":"PRK",
+  "Taiwan":"TWN","Laos":"LAO","Brunei":"BRN","Singapore":"SGP",
+  "Bhutan":"BTN","Maldives":"MDV","Italy":"ITA","Kosovo":"XKX",
+  "Comoros":"COM","Sao Tome and Principe":"STP",
+  "São Tomé and Príncipe":"STP","Cabo Verde":"CPV",
+  "Somaliland":"SOM","W. Sahara":"ESH",
+  "Dem. Rep. Korea":"PRK","S. Korea":"KOR",
+  "Bosnia and Herz.":"BIH","Eq. Guinea":"GNQ",
+  "Dominican Rep.":"DOM","Falkland Is.":"ARG",
+  "Fr. S. Antarctic Lands":"FRA","Antarctica":"ATA",
+  "N. Cyprus":"CYP","Kosovo":"XKX",
+  "Central African Rep.":"CAF","S. Sudan":"SSD",
+  "Czechia":"CZE","North Korea":"PRK"
+};
+
+function getPaisData(feature) {
+  const p = feature.properties || {};
+  // 1) ISO direto — vários campos possíveis
+  const isoFields = [p.id, p.ISO_A3, p.iso_a3, p.ADM0_A3, p.SOV_A3, p.BRK_A3, p.ISO_A3_EH, p.ADM0_ISO];
+  for (const c of isoFields) {
+    if (!c || c === '-99' || c === 'N/A' || c.length < 2) continue;
+    const up = c.toUpperCase();
+    if (_ISO_IDX[up]) return _ISO_IDX[up];
+  }
+  // 2) Nome exato ou abreviado
+  const nameFields = [p.ADMIN, p.admin, p.NAME, p.name, p.NAME_EN, p.GEOUNIT, p.SOVEREIGNT, p.NAME_LONG, p.FORMAL_EN];
+  for (const n of nameFields) {
+    if (!n) continue;
+    if (_NAME_MAP[n] && _ISO_IDX[_NAME_MAP[n]]) return _ISO_IDX[_NAME_MAP[n]];
+  }
+  // 3) Busca parcial nos nomes
+  for (const n of nameFields) {
+    if (!n || n.length < 3) continue;
+    for (const [mapName, iso] of Object.entries(_NAME_MAP)) {
+      if (n === mapName || n.startsWith(mapName) || mapName.startsWith(n)) {
+        if (_ISO_IDX[iso]) return _ISO_IDX[iso];
+      }
+    }
+  }
+  return null;
+}
+
+
+// Cores por continente (fill escuro + border = cor do filtro)
+const CONT_COLOR = {
+  americas: '#4ade80',
+  europa:   '#60a5fa',
+  africa:   '#f59e0b',
+  asia:     '#f87171',
+  oceania:  '#a78bfa',
+};
+
+function hexToRgb(hex) {
+  const r = parseInt(hex.slice(1,3),16);
+  const g = parseInt(hex.slice(3,5),16);
+  const b = parseInt(hex.slice(5,7),16);
+  return `${r},${g},${b}`;
+}
+
+function getStyle(feature) {
+  const p = feature.properties || {};
+  const isoFields = [p.ISO_A3, p.iso_a3, p.ADM0_A3, p.SOV_A3, p.id].filter(Boolean);
+  for (const c of isoFields) {
+    if (c && c.toUpperCase() === 'BRA') {
+      return { fillColor: '#1a4a22', fillOpacity: 0.9, color: '#FFDF00', weight: 2, opacity: 1 };
+    }
+  }
+  const pais = getPaisData(feature);
+  if (!pais) {
+    // Inferir continente pelo centroid geográfico do polígono
+    let contColor = null;
+    try {
+      const coords = feature.geometry && feature.geometry.coordinates;
+      if (coords && coords.length) {
+        // Pegar um ponto representativo
+        let pt = coords[0];
+        while (Array.isArray(pt[0])) pt = pt[0];
+        const lng = pt[0], lat = pt[1];
+        // Classificação grosseira por longitude/latitude
+        if (lat > 34 && lng > -30 && lng < 70) contColor = '#60a5fa';       // Europa
+        else if (lat > -40 && lat < 40 && lng > -20 && lng < 55) contColor = '#f59e0b'; // África
+        else if (lat > -15 && lng > 25 && lng < 180) contColor = '#f87171'; // Ásia
+        else if (lat < -10 && lng > 100) contColor = '#a78bfa';             // Oceania
+        else if (lng < -30) contColor = '#4ade80';                          // Américas
+        else contColor = '#f59e0b';                                          // África por padrão
+      }
+    } catch(e) {}
+    if (contColor) {
+      const r = parseInt(contColor.slice(1,3),16);
+      const g = parseInt(contColor.slice(3,5),16);
+      const b = parseInt(contColor.slice(5,7),16);
+      return { fillColor: `rgba(${r},${g},${b},0.06)`, fillOpacity: 1, color: contColor, opacity: 0.3, weight: 0.5 };
+    }
+    return { fillColor: '#1c1c1c', fillOpacity: 1, color: '#2e2e2e', weight: 0.5, opacity: 0.8 };
+  }
+
+  // Cor base = cor do continente
+  const contBorder = CONT_COLOR[pais.continente] || '#6b7280';
+  const rgb = hexToRgb(contBorder);
+
+  // Intensidade varia por tipo de presença
+  const alpha = { embaixada: 0.22, consulado: 0.16, escritorio: 0.14, honorario: 0.12, acreditacao: 0.07 };
+  const fillAlpha = alpha[pais.presenca] || 0.07;
+  const borderAlpha = { embaixada: 1, consulado: 0.85, escritorio: 0.75, honorario: 0.65, acreditacao: 0.45 };
+  const bAlpha = borderAlpha[pais.presenca] || 0.45;
+  const weight = { embaixada: 1.0, consulado: 0.9, escritorio: 0.8, honorario: 0.7, acreditacao: 0.5 };
+  const w = weight[pais.presenca] || 0.5;
+
+  return {
+    fillColor: `rgba(${rgb},${fillAlpha})`,
+    fillOpacity: 1,
+    color: contBorder,
+    opacity: bAlpha,
+    weight: w
+  };
+}
+
+function buildMap(geo) {
+  geoLayer = L.geoJSON(geo, {
+    style: getStyle,
+    onEachFeature: (feature, layer) => {
+      const fp = feature.properties || {};
+      const isoVals = [fp.ISO_A3, fp.iso_a3, fp.ADM0_A3, fp.SOV_A3, fp.id].filter(Boolean);
+      if (isoVals.some(c => c.toUpperCase() === 'BRA')) {
+        layer.bindTooltip('<b>🇧🇷 Brasil</b>', { direction: 'top', className: 'cacd-tooltip' });
+        return;
+      }
+      const pais = getPaisData(feature);
+      if (!pais) return;
+      const cor = CORES[pais.presenca] || CORES.acreditacao;
+  // Cor de destaque = cor do continente
+  const contBorder = CONT_COLOR[pais.continente] || cor.border;
+      const tipLabel = pais.presencaLabel || cor.label;
+      layer.bindTooltip(
+        `<b>${pais.flag} ${pais.nome}</b><br><span style="opacity:.7">${tipLabel}</span>`,
+        { direction: 'top', className: 'cacd-tooltip' }
+      );
+      layer.on('click', () => openPopup(pais));
+      layer.on('mouseover', function() { this.setStyle({ fillOpacity: 0.97, weight: 1.5, color: '#fff' }); });
+      layer.on('mouseout', function() { geoLayer.resetStyle(this); });
+    }
+  }).addTo(map);
+}
+
+// ═══════════════════════════════════════════════
+// SIDEBAR
+// ═══════════════════════════════════════════════
+function buildSidebar() {
+  const sl = document.getElementById('slist');
+  sl.innerHTML = '';
+  const continentes = {
+    americas: '● Américas',
+    europa: '● Europa',
+    africa: '● África',
+    asia: '● Ásia',
+    oceania: '● Oceania'
+  };
+  
+  // Agrupar por continente
+  const grupos = {};
+  Object.values(PAISES).forEach(p => {
+    if (!grupos[p.continente]) grupos[p.continente] = [];
+    grupos[p.continente].push(p);
+  });
+
+  Object.entries(continentes).forEach(([cont, label]) => {
+    const grupo = grupos[cont] || [];
+    if (!grupo.length) return;
+    
+    const header = document.createElement('div');
+    header.style.cssText = 'padding:5px 12px;font-family:"IBM Plex Mono",monospace;font-size:8px;letter-spacing:.15em;color:var(--gold);text-transform:uppercase;border-bottom:1px solid var(--border);background:rgba(201,168,76,.04)';
+    header.dataset.cont = cont;
+    header.textContent = label;
+    sl.appendChild(header);
+    
+    grupo.sort((a, b) => a.nome.localeCompare(b.nome)).forEach(pais => {
+      const d = document.createElement('div');
+      d.className = 'si';
+      d.dataset.cont = pais.continente;
+      d.dataset.nome = pais.nome.toLowerCase();
+      d.onclick = () => openPopup(pais);
+      const cor = CORES[pais.presenca] || CORES.acreditacao;
+      const capital = pais.capital || '';
+      const contC = CONT_COLOR[pais.continente] || cor.border;
+      d.innerHTML = `
+        <div class="si-flag">${pais.flag}</div>
+        <div>
+          <div class="si-name">${pais.nome}</div>
+          <div class="si-sub" style="color:${contC}">${capital}</div>
+          <span class="si-pres" style="background:rgba(0,0,0,0.3);color:${contC};border:1px solid ${contC}44">${cor.label}</span>
+        </div>`;
+      sl.appendChild(d);
+    });
+  });
+  
+  updateCount();
+}
+
+function updateCount() {
+  let vis = 0;
+  document.querySelectorAll('.si').forEach(el => {
+    if (!el.classList.contains('hidden')) vis++;
+  });
+  document.getElementById('count').textContent = vis;
+}
+
+// ═══════════════════════════════════════════════
+// FILTROS
+// ═══════════════════════════════════════════════
+function filterCont(cont) {
+  currentFilter = cont;
+  document.querySelectorAll('.era-btn').forEach(b => b.classList.remove('active'));
+  const btn = document.getElementById('btn-' + (cont === 'all' ? 'all' : cont));
+  if (btn) btn.classList.add('active');
+  applyFilters();
+}
+
+function searchCountry(term) {
+  currentSearch = term.toLowerCase();
+  applyFilters();
+}
+
+function applyFilters() {
+  document.querySelectorAll('.si, [data-cont]').forEach(el => {
+    if (!el.classList.contains('si')) return;
+    const matchCont = currentFilter === 'all' || el.dataset.cont === currentFilter;
+    const matchSearch = !currentSearch || el.dataset.nome.includes(currentSearch);
+    el.classList.toggle('hidden', !(matchCont && matchSearch));
+  });
+
+  // Headers
+  document.querySelectorAll('[data-cont]:not(.si)').forEach(header => {
+    const cont = header.dataset.cont;
+    const hasVisible = Array.from(document.querySelectorAll(`.si[data-cont="${cont}"]`))
+      .some(el => !el.classList.contains('hidden'));
+    header.style.display = hasVisible ? '' : 'none';
+  });
+  
+  // Filtro especial "sem embaixada"
+  if (currentFilter === 'parlamento') {
+    document.querySelectorAll('.si').forEach(el => {
+      // mostrar só acreditação
+    });
+  }
+  
+  updateCount();
+}
+
+// ═══════════════════════════════════════════════
+// POPUP
+// ═══════════════════════════════════════════════
+function openPopup(pais) {
+  const cor = CORES[pais.presenca] || CORES.acreditacao;
+  // Cor do continente para destaque visual
+  const contBorder = CONT_COLOR[pais.continente] || cor.border;
+  // Normalizar campos — suporta formato antigo e novo
+  const presLabel = pais.presencaLabel || pais.presencaDesc || cor.label;
+  const desde = pais.inicioRelacoes || pais.desde || null;
+  const brs = pais.brasileiros || pais.br || null;
+  const ct = pais.comercioTotal || pais.ct || null;
+  // Exportações
+  const expT = (pais.exportacoes && pais.exportacoes.total) || (pais.exp && pais.exp.t) || null;
+  const expI = (pais.exportacoes && pais.exportacoes.principais) || (pais.exp && pais.exp.i) || [];
+  // Importações
+  const impT = (pais.importacoes && pais.importacoes.total) || (pais.imp && pais.imp.t) || null;
+  const impI = (pais.importacoes && pais.importacoes.principais) || (pais.imp && pais.imp.i) || [];
+  // Organismos
+  const orgs = pais.organismos || pais.org || [];
+  // Textos
+  const aprox = pais.aproximacoes || pais.apr || null;
+  const conf = pais.conflitos || pais.conf || null;
+  const continenteMap = {americas:'Américas',europa:'Europa',africa:'África',asia:'Ásia',oceania:'Oceania'};
+
+  document.getElementById('p-flag').textContent = pais.flag;
+  const ptag = document.getElementById('p-tag');
+  ptag.textContent = presLabel;
+  ptag.style.cssText = `background:rgba(0,0,0,0.3);color:${contBorder};border:1px solid ${contBorder}55`;
+  document.getElementById('p-title').textContent = pais.nome;
+  document.getElementById('popup').style.borderTop = `3px solid ${contBorder}`;
+
+  document.getElementById('p-meta').innerHTML =
+    `<div>🌍 <span>${continenteMap[pais.continente] || pais.continente}</span></div>` +
+    (desde ? `<div>📅 Relações desde <span>${desde}</span></div>` : '') +
+    (brs ? `<div>👥 Brasileiros: <span>${Number(brs).toLocaleString('pt-BR')}</span></div>` : '') +
+    (ct ? `<div>💱 Comércio: <span>${ct}</span></div>` : '');
+
+  const grid = document.getElementById('popup-grid');
+  grid.innerHTML = '';
+
+  // Presença
+  addBox(grid, 'full', '🏛 Presença Diplomática Brasileira',
+    `<p style="color:${contBorder};font-size:13px;font-weight:500;margin-bottom:5px">${presLabel}</p>` +
+    `<p>${cor.label === 'Embaixada' ? 'Brasil mantém embaixada residente.' :
+        cor.label === 'Acreditação/Sem sede' || cor.label === 'Acreditação' ? 'Brasil está acreditado a partir de outro país — sem sede permanente.' :
+        cor.label === 'Escritório/Missão' ? 'Brasil mantém escritório ou missão especial.' :
+        'Consulado ou representação brasileira presente.'}</p>`);
+
+  // Exportações
+  if (expT || expI.length) {
+    addBox(grid, '', '📦 Exportações BR →',
+      (expT ? `<div class="big-num">${expT}</div><div class="sub-num">Total 2023</div>` : '') +
+      `<div style="margin-top:8px">${expI.map(x => `<span style="display:inline-block;margin:2px 3px 2px 0;font-size:10px;padding:2px 7px;background:rgba(74,222,128,.07);border:1px solid rgba(74,222,128,.2);border-radius:2px;color:#86efac">${x}</span>`).join('')}</div>`);
+  }
+
+  // Importações
+  if (impT || impI.length) {
+    addBox(grid, '', '🚢 Importações BR ←',
+      (impT ? `<div class="big-num">${impT}</div><div class="sub-num">Total 2023</div>` : '') +
+      `<div style="margin-top:8px">${impI.map(x => `<span style="display:inline-block;margin:2px 3px 2px 0;font-size:10px;padding:2px 7px;background:rgba(96,165,250,.07);border:1px solid rgba(96,165,250,.2);border-radius:2px;color:#93c5fd">${x}</span>`).join('')}</div>`);
+  }
+
+  // Organismos
+  if (orgs.length) {
+    addBox(grid, 'full', '🌐 Organismos Internacionais em Comum',
+      `<div class="tag-list">${orgs.map(o => `<span class="org-tag">${o}</span>`).join('')}</div>`);
+  }
+
+  // Aproximações e Conflitos
+  if (aprox) addBox(grid, conf ? '' : 'full', '🤝 Aproximações e Parcerias', `<p>${aprox}</p>`);
+  if (conf) addBox(grid, aprox ? '' : 'full', '⚡ Tensões e Conflitos', `<p>${conf}</p>`);
+
+  document.getElementById('overlay').classList.add('open');
+}
+
+function addBox(parent, cls, title, content) {
+  const div = document.createElement('div');
+  div.className = 'pbox' + (cls ? ' ' + cls : '');
+  div.innerHTML = `<h3>${title}</h3>${content}`;
+  parent.appendChild(div);
+}
+
+function closePopup() {
+  document.getElementById('overlay').classList.remove('open');
+}
+
+function closeIfBg(e) {
+  if (e.target === document.getElementById('overlay')) closePopup();
+}
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closePopup();
+});
+</script>
+</body>
+</html>
