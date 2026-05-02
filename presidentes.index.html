@@ -248,6 +248,49 @@ ul.mini li::marker { color: var(--gold); }
 .col-parceiros   { min-width: 150px; }
 .col-vizinhos    { min-width: 180px; }
 .col-const       { min-width: 100px; }
+
+/* ═══════════════════════════════════════════
+   MOBILE RESPONSIVE — max-width: 768px
+═══════════════════════════════════════════ */
+.mobile-cards { display: none; }
+.m-era-hdr {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.55rem; letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--gold); padding: 16px 0 6px;
+  border-bottom: 1px solid var(--border); margin-bottom: 8px;
+}
+@media (max-width: 768px) {
+  html, body { height: auto !important; overflow: auto !important; }
+  .fixed-top  { position: relative !important; }
+  .page-header { padding: 12px 14px !important; flex-direction: column !important; gap: 6px !important; align-items: flex-start !important; }
+  .page-header h1 { font-size: clamp(1rem, 5.5vw, 1.3rem) !important; line-height: 1.2 !important; }
+  .page-header > div > p { font-size: 0.6rem !important; }
+  .filter-bar { padding: 8px 12px !important; gap: 5px !important; overflow-x: auto; flex-wrap: nowrap !important; scrollbar-width: none; }
+  .filter-bar::-webkit-scrollbar { display: none; }
+  .filter-btn { font-size: 0.52rem !important; padding: 5px 9px !important; white-space: nowrap; flex-shrink: 0; }
+  .scroll-area { flex: none !important; overflow: visible !important; min-height: auto !important; padding: 10px 12px 50px !important; }
+  table { display: none !important; }
+  .mobile-cards { display: flex !important; flex-direction: column; gap: 10px; }
+  .m-card { background: var(--surface); border: 1px solid var(--border); border-left: 3px solid var(--gold); border-radius: 3px; padding: 13px 14px; cursor: pointer; -webkit-tap-highlight-color: transparent; transition: background 0.15s; }
+  .m-card:active { background: var(--surface2); }
+  .m-card-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; margin-bottom: 5px; }
+  .m-card-name { font-family: 'Playfair Display', serif; font-size: 1rem; font-weight: 700; color: var(--cream); line-height: 1.2; }
+  .m-card-period { font-family: 'IBM Plex Mono', monospace; font-size: 0.52rem; color: var(--gold); letter-spacing: 0.06em; white-space: nowrap; flex-shrink: 0; padding-top: 3px; }
+  .m-card-meta { font-family: 'IBM Plex Mono', monospace; font-size: 0.52rem; color: var(--muted); letter-spacing: 0.04em; margin-bottom: 7px; }
+  .m-card-tags { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 8px; }
+  .m-card-tag { font-family: 'IBM Plex Mono', monospace; font-size: 0.46rem; padding: 2px 7px; border-radius: 2px; letter-spacing: 0.05em; text-transform: uppercase; background: rgba(212,168,67,0.1); border: 1px solid rgba(212,168,67,0.28); color: var(--gold); }
+  .m-card-preview { font-family: 'Crimson Pro', serif; font-size: 0.9rem; color: var(--muted); line-height: 1.62; margin-bottom: 9px; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+  .m-card-cta { font-family: 'IBM Plex Mono', monospace; font-size: 0.46rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold); opacity: 0.6; }
+  .overlay { align-items: flex-end !important; padding: 0 !important; }
+  .popup { width: 100vw !important; max-width: 100vw !important; max-height: 88vh !important; border-radius: 10px 10px 0 0 !important; padding: 16px 14px 24px !important; overflow-y: auto !important; margin: 0 !important; }
+  .popup-header h2 { font-size: 1.1rem !important; line-height: 1.25 !important; }
+  .info-grid { grid-template-columns: 1fr !important; gap: 8px !important; }
+  .tabs { gap: 3px !important; overflow-x: auto !important; flex-wrap: nowrap !important; scrollbar-width: none; padding-bottom: 4px; }
+  .tabs::-webkit-scrollbar { display: none; }
+  .tab-btn { font-size: 0.48rem !important; padding: 6px 10px !important; white-space: nowrap; flex-shrink: 0; }
+  .close-btn { width: 28px !important; height: 28px !important; font-size: 0.8rem !important; }
+}
+
 </style>
 </head>
 <body>
@@ -1062,27 +1105,319 @@ ul.mini li::marker { color: var(--gold); }
 
   </tbody>
   </table>
+<div class="mobile-cards" id="mobileCards">
+<div class="m-era-hdr">⬛ REPÚBLICA DA ESPADA (1889–1894)</div>
+<div class="m-card" data-era="imp" >
+  <div class="m-card-top"><div class="m-card-name">Deodoro da Fonseca</div><div class="m-card-period">1889–1891</div></div>
+  <div class="m-card-meta">Rio Grande do Sul · Rep. da Espada</div>
+  <div class="m-card-tags"><span class="m-card-tag">Positivismo</span><span class="m-card-tag">Militarismo</span></div>
+  <div class="m-card-preview">Republicanismo autoritário; influência positivista do Exército.</div>
+  <div class="m-card-cta">▸ ver detalhes</div>
+</div>
+<div class="m-card" data-era="imp" >
+  <div class="m-card-top"><div class="m-card-name">Floriano Peixoto</div><div class="m-card-period">1891–1894</div></div>
+  <div class="m-card-meta">Alagoas · Rep. da Espada</div>
+  <div class="m-card-tags"><span class="m-card-tag">Positivismo</span><span class="m-card-tag">Nacionalismo</span></div>
+  <div class="m-card-preview">"Marechal de Ferro". Republicanismo intransigente, centralização, combate às forças monarquistas.</div>
+  <div class="m-card-cta">▸ ver detalhes</div>
+</div>
+<div class="m-era-hdr">🟤 REPÚBLICA VELHA / OLIGÁRQUICA (1894–1930)</div>
+<div class="m-card" data-era="vrep" >
+  <div class="m-card-top"><div class="m-card-name">Prudente de Morais</div><div class="m-card-period">1894–1898</div></div>
+  <div class="m-card-meta">São Paulo · Rep. Velha</div>
+  <div class="m-card-tags"><span class="m-card-tag">Liberalismo</span></div>
+  <div class="m-card-preview">1º presidente civil. Liberalismo oligárquico paulista. Consolidação do regime civil contra o militarismo.</div>
+  <div class="m-card-cta">▸ ver detalhes</div>
+</div>
+<div class="m-card" data-era="vrep" >
+  <div class="m-card-top"><div class="m-card-name">Campos Sales</div><div class="m-card-period">1898–1902</div></div>
+  <div class="m-card-meta">São Paulo · Rep. Velha</div>
+  <div class="m-card-tags"><span class="m-card-tag">Liberalismo</span></div>
+  <div class="m-card-preview">Consolidador do sistema oligárquico. Criador da "Política dos Governadores". Ortodoxia financeira.</div>
+  <div class="m-card-cta">▸ ver detalhes</div>
+</div>
+<div class="m-card" data-era="vrep" >
+  <div class="m-card-top"><div class="m-card-name">Rodrigues Alves</div><div class="m-card-period">1902–1906</div></div>
+  <div class="m-card-meta">São Paulo · Rep. Velha</div>
+  <div class="m-card-tags"><span class="m-card-tag">Liberalismo</span><span class="m-card-tag">Modernização</span></div>
+  <div class="m-card-preview">Modernização urbana (reforma do Rio de Janeiro). Rio Branco como chanceler — auge da política externa.</div>
+  <div class="m-card-cta">▸ ver detalhes</div>
+</div>
+<div class="m-card" data-era="vrep" >
+  <div class="m-card-top"><div class="m-card-name">Afonso Pena</div><div class="m-card-period">1906–1909</div></div>
+  <div class="m-card-meta">Minas Gerais · Rep. Velha</div>
+  <div class="m-card-tags"><span class="m-card-tag">Liberalismo</span></div>
+  <div class="m-card-preview">Café com leite: 1ª vez de Minas na presidência. Política de desenvolvimento e imigração.</div>
+  <div class="m-card-cta">▸ ver detalhes</div>
+</div>
+<div class="m-card" data-era="vrep" >
+  <div class="m-card-top"><div class="m-card-name">Nilo Peçanha</div><div class="m-card-period">1909–1910</div></div>
+  <div class="m-card-meta">Rio de Janeiro · Rep. Velha</div>
+  <div class="m-card-tags"><span class="m-card-tag">Liberalismo</span></div>
+  <div class="m-card-preview">Assumiu com morte de Afonso Pena. Governo de transição. Criação do Serviço de Proteção ao Índio (SPI).</div>
+  <div class="m-card-cta">▸ ver detalhes</div>
+</div>
+<div class="m-card" data-era="vrep" >
+  <div class="m-card-top"><div class="m-card-name">Hermes da Fonseca</div><div class="m-card-period">1910–1914</div></div>
+  <div class="m-card-meta">Rio Grande do Sul · Rep. Velha</div>
+  <div class="m-card-tags"><span class="m-card-tag">Militarismo</span><span class="m-card-tag">Positivismo</span></div>
+  <div class="m-card-preview">"Política das Salvações": intervenção federal em estados para derrubar oligarquias locais. Influência militar.</div>
+  <div class="m-card-cta">▸ ver detalhes</div>
+</div>
+<div class="m-card" data-era="vrep" >
+  <div class="m-card-top"><div class="m-card-name">Wenceslau Brás</div><div class="m-card-period">1914–1918</div></div>
+  <div class="m-card-meta">Minas Gerais · Rep. Velha</div>
+  <div class="m-card-tags"><span class="m-card-tag">Liberalismo</span></div>
+  <div class="m-card-preview">Governo da 1ª Guerra Mundial. Posição inicial de neutralidade, depois de beligerância ao lado dos Aliados.</div>
+  <div class="m-card-cta">▸ ver detalhes</div>
+</div>
+<div class="m-card" data-era="vrep" >
+  <div class="m-card-top"><div class="m-card-name">Epitácio Pessoa</div><div class="m-card-period">1919–1922</div></div>
+  <div class="m-card-meta">Paraíba · Rep. Velha</div>
+  <div class="m-card-tags"><span class="m-card-tag">Liberalismo</span></div>
+  <div class="m-card-preview">Único nordestino da República Velha. Chegou à presidência vindo de Paris (Conferência de Paz). Obras contra as secas.</div>
+  <div class="m-card-cta">▸ ver detalhes</div>
+</div>
+<div class="m-card" data-era="vrep" >
+  <div class="m-card-top"><div class="m-card-name">Arthur Bernardes</div><div class="m-card-period">1922–1926</div></div>
+  <div class="m-card-meta">Minas Gerais · Rep. Velha</div>
+  <div class="m-card-tags"><span class="m-card-tag">Liberalismo</span></div>
+  <div class="m-card-preview">Governo sob estado de sítio permanente. Combate ao tenentismo. Saída do Brasil da Liga das Nações.</div>
+  <div class="m-card-cta">▸ ver detalhes</div>
+</div>
+<div class="m-card" data-era="vrep" >
+  <div class="m-card-top"><div class="m-card-name">Washington Luís</div><div class="m-card-period">1926–1930</div></div>
+  <div class="m-card-meta">São Paulo · Rep. Velha</div>
+  <div class="m-card-tags"><span class="m-card-tag">Liberalismo</span></div>
+  <div class="m-card-preview">Último presidente da República Velha. "O problema do Brasil é um problema de viação." Derrubado em outubro de 1930.</div>
+  <div class="m-card-cta">▸ ver detalhes</div>
+</div>
+<div class="m-era-hdr">🔴 ERA VARGAS (1930–1945 / 1950–1954)
+
+
+  
+    Getúlio Vargas
+    1930–1945
+    Rio Grande do Sul
+    Era Vargas
+   
+  NacionalismoDesenvolvimentismoTrabalhismoEstado forte, industrialização, trabalhismo como política de massas. Autoritarismo (Estado Novo, 1937–45).
+  Ruptura com liberalismo agroexportador. ISI (Industrialização por Substituição de Importações). Criação de estatais: CSN (1941), Vale do Rio Doce (1942). CLT (1943). Intervencionismo estatal profundo.
+  Equidistância pragmática entre EUA e Alemanha (1930–42). "Barganha nacionalista": negociação da siderúrgica de Volta Redonda com os EUA em troca de alinhamento na 2ª Guerra. Entrada ao lado dos Aliados em 1942.
+  
+    
+      Afundamentos de navios por submarinos alemães → declaração de guerra ao Eixo (1942)
+      Negociação de Volta Redonda com EUA (1940–41): financiamento americano da CSN
+      Envio da FEB (Força Expedicionária Brasileira) à Itália (1944–45)
+    
+   
+  EUA (guerra, financiamento), Argentina (rivalidade), Reino Unido, Alemanha (até 1942)
+  Rivalidade histórica com Argentina (Perón x Vargas). Relação próxima com Uruguai e Paraguai como zonas de influência. Tensão com Argentina sobre hegemonia platina.
+  Const. 1934Const. 1937(Estado Novo)</div>
+<div class="m-era-hdr">🟢 DEMOCRACIA LIBERAL (1945–1964)
+
+
+  
+    Dutra
+    1946–1951
+    Mato Grosso
+    Democracia
+   
+  LiberalismoAnticomunismoAlinhamento automático com EUA. Cassação do PCB. Liberal conservador. Constituição de 1946.
+  Liberalismo econômico inicial: abertura de importações, esgotamento das reservas acumuladas na guerra. Depois, controle cambial. Plano SALTE (Saúde, Alimentação, Transporte, Energia) — limitado.
+  Alinhamento automático com os EUA. Entrada na Guerra Fria do lado ocidental. Cassação do PCB e ruptura com a URSS. Participação no sistema ONU e OEA.
+  
+    
+      Assinatura do TIAR — Tratado Interamericano de Assistência Recíproca (1947)
+      Cassação do PCB e ruptura diplomática com URSS (1947)
+      Constituição de 1946 — redemocratização
+    
+   
+  EUA (alinhamento total), Europa Ocidental
+  Estáveis. Brasil lidera bloco anticomunista na América do Sul junto com EUA.
+  Const. 1946</div>
+<div class="m-card" data-era="var" >
+  <div class="m-card-top"><div class="m-card-name">Getúlio Vargas</div><div class="m-card-period">1951–1954</div></div>
+  <div class="m-card-meta">Rio Grande do Sul · Era Vargas</div>
+  <div class="m-card-tags"><span class="m-card-tag">Nacionalismo</span><span class="m-card-tag">Desenvolvimentismo</span><span class="m-card-tag">Trabalhismo</span></div>
+  <div class="m-card-preview">Retorno pela via eleitoral. Nacionalismo econômico mais acentuado. "O petróleo é nosso."</div>
+  <div class="m-card-cta">▸ ver detalhes</div>
+</div>
+<div class="m-card" data-era="demo" >
+  <div class="m-card-top"><div class="m-card-name">Café Filho</div><div class="m-card-period">1954–1955</div></div>
+  <div class="m-card-meta">Rio Grande do Norte · Democracia</div>
+  <div class="m-card-tags"><span class="m-card-tag">Liberalismo</span></div>
+  <div class="m-card-preview">Vice que assumiu com suicídio de Vargas. Governo de transição. Tentativa de golpe para impedir posse de JK.</div>
+  <div class="m-card-cta">▸ ver detalhes</div>
+</div>
+<div class="m-card" data-era="demo" >
+  <div class="m-card-top"><div class="m-card-name">Juscelino Kubitschek</div><div class="m-card-period">1956–1961</div></div>
+  <div class="m-card-meta">Minas Gerais · Democracia</div>
+  <div class="m-card-tags"><span class="m-card-tag">Desenvolvimentismo</span></div>
+  <div class="m-card-preview">"50 anos em 5." Nacional-desenvolvimentismo com capital estrangeiro. Construção de Brasília. Plano de Metas.</div>
+  <div class="m-card-cta">▸ ver detalhes</div>
+</div>
+<div class="m-card" data-era="demo" >
+  <div class="m-card-top"><div class="m-card-name">Jânio Quadros</div><div class="m-card-period">1961</div></div>
+  <div class="m-card-meta">Mato Grosso do Sul · Democracia</div>
+  <div class="m-card-tags"><span class="m-card-tag">Liberalismo</span><span class="m-card-tag">Nacionalismo</span></div>
+  <div class="m-card-preview">Personalismo. Política externa independente (PEI) avant la lettre. Renúncia após 7 meses.</div>
+  <div class="m-card-cta">▸ ver detalhes</div>
+</div>
+<div class="m-card" data-era="demo" >
+  <div class="m-card-top"><div class="m-card-name">João Goulart (Jango)</div><div class="m-card-period">1961–1964</div></div>
+  <div class="m-card-meta">Rio Grande do Sul · Democracia</div>
+  <div class="m-card-tags"><span class="m-card-tag">Trabalhismo</span><span class="m-card-tag">Nacionalismo</span></div>
+  <div class="m-card-preview">Reformas de Base. Trabalhismo varguista. Derrubado pelo golpe militar de 1964.</div>
+  <div class="m-card-cta">▸ ver detalhes</div>
+</div>
+<div class="m-era-hdr">⬜ DITADURA MILITAR (1964–1985)
+
+
+  
+    Castello Branco
+    1964–1967
+    Ceará
+    Ditadura
+   
+  MilitarismoLiberalismoAla "Sorbonne" do Exército: tecnocratas. Alinhamento automático com EUA. Institucionalização do regime.
+  PAEG (Programa de Ação Econômica do Governo): combate à inflação via arrocho salarial, reforma fiscal, reforma bancária. Criação do FGTS, BNH, ORTN. Abertura ao capital estrangeiro.
+  Interdependência com os EUA. Rompimento com Cuba. Envio de tropas à República Dominicana (1965). Abandono da PEI. "Fronteiras ideológicas" substituem princípio da não-intervenção.
+  
+    
+      Rompimento de relações com Cuba (1964)
+      Participação na Força Interamericana de Paz na Rep. Dominicana (1965)
+      Constituição de 1967 — institucionalização do regime
+    
+   
+  EUA (alinhamento total), Europa Ocidental, FMI
+  Apoio a golpes militares em países vizinhos (Doutrina de Segurança Nacional). Operação Condor em gestação.
+  Const. 1967</div>
+<div class="m-card" data-era="mil" >
+  <div class="m-card-top"><div class="m-card-name">Costa e Silva</div><div class="m-card-period">1967–1969</div></div>
+  <div class="m-card-meta">Rio Grande do Sul · Ditadura</div>
+  <div class="m-card-tags"><span class="m-card-tag">Militarismo</span><span class="m-card-tag">Nacionalismo</span></div>
+  <div class="m-card-preview">Ala "linha dura". AI-5 (1968). Repressão intensa. "Brasil grande potência."</div>
+  <div class="m-card-cta">▸ ver detalhes</div>
+</div>
+<div class="m-card" data-era="mil" >
+  <div class="m-card-top"><div class="m-card-name">Médici</div><div class="m-card-period">1969–1974</div></div>
+  <div class="m-card-meta">Rio Grande do Sul · Ditadura</div>
+  <div class="m-card-tags"><span class="m-card-tag">Militarismo</span><span class="m-card-tag">Nacionalismo</span></div>
+  <div class="m-card-preview">Ápice da repressão (DOI-CODI, torturas). "Milagre econômico". Ufanismo: "Brasil, ame-o ou deixe-o."</div>
+  <div class="m-card-cta">▸ ver detalhes</div>
+</div>
+<div class="m-card" data-era="mil" >
+  <div class="m-card-top"><div class="m-card-name">Geisel</div><div class="m-card-period">1974–1979</div></div>
+  <div class="m-card-meta">Rio Grande do Sul · Ditadura</div>
+  <div class="m-card-tags"><span class="m-card-tag">Militarismo</span><span class="m-card-tag">Nacionalismo</span></div>
+  <div class="m-card-preview">Distensão "lenta, gradual e segura". Abertura política controlada. Chanceler Azeredo da Silveira — grande diplomacia.</div>
+  <div class="m-card-cta">▸ ver detalhes</div>
+</div>
+<div class="m-card" data-era="mil" >
+  <div class="m-card-top"><div class="m-card-name">Figueiredo</div><div class="m-card-period">1979–1985</div></div>
+  <div class="m-card-meta">Rio de Janeiro · Ditadura</div>
+  <div class="m-card-tags"><span class="m-card-tag">Militarismo</span></div>
+  <div class="m-card-preview">Último general-presidente. Lei da Anistia (1979). Abertura democrática. Crise da dívida externa (1982).</div>
+  <div class="m-card-cta">▸ ver detalhes</div>
+</div>
+<div class="m-era-hdr">🟣 NOVA REPÚBLICA (1985–presente)
+
+
+  
+    Sarney
+    1985–1990
+    Maranhão
+    Nova República
+   
+  LiberalismoVice que assumiu com morte de Tancredo Neves. Constituinte de 1987–88. Plano Cruzado. Inflação crônica.
+  Plano Cruzado (1986): congelamento de preços e câmbio — fracasso. Plano Bresser (1987), Plano Verão (1989). Hiperinflação. Moratória da dívida (1987). Dívida externa como grande questão.
+  Redemocratização reforça legitimidade externa. Constituição de 1988 constitucionaliza princípios de política externa. Declaração de Iguaçu com Argentina. Fundação do Mercosul (embrião).
+  
+    
+      Declaração de Iguaçu (1985): início da integração Brasil-Argentina
+      Constituição de 1988: Art. 4º constitucionaliza princípios de PE
+      Tratado de Integração Brasil-Argentina (1988): precursor do Mercosul
+    
+   
+  EUA, Europa, Argentina (integração), Japão
+  Virada histórica: reconciliação com Argentina. Fim da rivalidade platina. Base do Mercosul.
+  Const. 1988</div>
+<div class="m-card" data-era="nova" >
+  <div class="m-card-top"><div class="m-card-name">Collor</div><div class="m-card-period">1990–1992</div></div>
+  <div class="m-card-meta">Alagoas · Nova República</div>
+  <div class="m-card-tags"><span class="m-card-tag">Neoliberalismo</span></div>
+  <div class="m-card-preview">1º presidente eleito diretamente desde 1960. Abertura econômica. Impeachment por corrupção.</div>
+  <div class="m-card-cta">▸ ver detalhes</div>
+</div>
+<div class="m-card" data-era="nova" >
+  <div class="m-card-top"><div class="m-card-name">Itamar Franco</div><div class="m-card-period">1992–1995</div></div>
+  <div class="m-card-meta">Minas Gerais · Nova República</div>
+  <div class="m-card-tags"><span class="m-card-tag">Desenvolvimentismo</span><span class="m-card-tag">Moderado</span></div>
+  <div class="m-card-preview">Vice que assumiu. Governo de transição. Plano Real. Estabilização histórica da inflação.</div>
+  <div class="m-card-cta">▸ ver detalhes</div>
+</div>
+<div class="m-card" data-era="nova" >
+  <div class="m-card-top"><div class="m-card-name">FHC</div><div class="m-card-period">1995–2003</div></div>
+  <div class="m-card-meta">São Paulo · Nova República</div>
+  <div class="m-card-tags"><span class="m-card-tag">Social-Liberalismo</span></div>
+  <div class="m-card-preview">Sociólogo. Reformas estruturais (privatizações, Lei de Responsabilidade Fiscal). Estabilidade com âncora cambial. Crise cambial 1999.</div>
+  <div class="m-card-cta">▸ ver detalhes</div>
+</div>
+<div class="m-card" data-era="nova" >
+  <div class="m-card-top"><div class="m-card-name">Lula I e II</div><div class="m-card-period">2003–2011</div></div>
+  <div class="m-card-meta">Pernambuco · Nova República</div>
+  <div class="m-card-tags"><span class="m-card-tag">Trabalhismo</span><span class="m-card-tag">Desenvolvimentismo</span></div>
+  <div class="m-card-preview">PT. Boom das commodities. Bolsa Família. Redução da desigualdade. "Autonomia pela diversificação."</div>
+  <div class="m-card-cta">▸ ver detalhes</div>
+</div>
+<div class="m-card" data-era="nova" >
+  <div class="m-card-top"><div class="m-card-name">Dilma I e II</div><div class="m-card-period">2011–2016</div></div>
+  <div class="m-card-meta">Minas Gerais · Nova República</div>
+  <div class="m-card-tags"><span class="m-card-tag">Novo Desenvolvimentismo</span></div>
+  <div class="m-card-preview">PT. 1ª presidenta mulher. Expansão fiscal. Desaceleração econômica. Impeachment (2016).</div>
+  <div class="m-card-cta">▸ ver detalhes</div>
+</div>
+<div class="m-card" data-era="nova" >
+  <div class="m-card-top"><div class="m-card-name">Temer</div><div class="m-card-period">2016–2019</div></div>
+  <div class="m-card-meta">São Paulo · Nova República</div>
+  <div class="m-card-tags"><span class="m-card-tag">Neoliberalismo</span></div>
+  <div class="m-card-preview">PMDB. Vice que assumiu. Reforma trabalhista, teto de gastos (EC 95). Ajuste fiscal duro.</div>
+  <div class="m-card-cta">▸ ver detalhes</div>
+</div>
+<div class="m-card" data-era="nova" >
+  <div class="m-card-top"><div class="m-card-name">Bolsonaro</div><div class="m-card-period">2019–2022</div></div>
+  <div class="m-card-meta">Rio de Janeiro · Nova República</div>
+  <div class="m-card-tags"><span class="m-card-tag">Neoliberalismo</span><span class="m-card-tag">Conservadorismo</span></div>
+  <div class="m-card-preview">Ultradireita. Paulo Guedes (Chicago Boys). Alinhamento com Trump. Anticomunismo. Negacionismo climático.</div>
+  <div class="m-card-cta">▸ ver detalhes</div>
+</div>
+<div class="m-card" data-era="nova" >
+  <div class="m-card-top"><div class="m-card-name">Lula III</div><div class="m-card-period">2023–presente</div></div>
+  <div class="m-card-meta">Pernambuco · Nova República</div>
+  <div class="m-card-tags"><span class="m-card-tag">Trabalhismo</span><span class="m-card-tag">Desenvolvimentismo</span></div>
+  <div class="m-card-preview">PT. Retomada da agenda social e ambiental. "Nova Missão Desenvolvimentista." Volta ao multilateralismo ativo.</div>
+  <div class="m-card-cta">▸ ver detalhes</div>
+</div>
+</div>
 </div>
 
 <script>
 function filterEra(era, btn) {
-  // Atualizar botões ativos
   document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
   if (btn) btn.classList.add('active');
-
-  // Filtrar linhas
   document.querySelectorAll('tr.pres-row').forEach(row => {
     row.classList.toggle('hidden', era !== 'all' && row.dataset.era !== era);
   });
-
-  // Mostrar/ocultar separadores de era
   document.querySelectorAll('tr.era-header').forEach(h => {
     h.style.display = era === 'all' ? '' : 'none';
   });
-
-  // Rolar de volta ao topo da tabela
-  const scrollArea = document.querySelector('.scroll-area');
-  if (scrollArea) scrollArea.scrollTo({ top: 0, behavior: 'smooth' });
+  document.querySelectorAll('#mobileCards .m-card').forEach(card => {
+    card.style.display = (era === 'all' || card.dataset.era === era) ? '' : 'none';
+  });
+  document.querySelectorAll('#mobileCards .m-era-hdr').forEach(h => {
+    h.style.display = era === 'all' ? '' : 'none';
+  });
 }
 
 // Indicador de scroll horizontal
@@ -1100,6 +1435,25 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }, { passive: true });
 });
+
+// ── MOBILE CARDS: delega clique via data-attributes ──────────────
+document.addEventListener('DOMContentLoaded', function() {
+  document.querySelectorAll('.m-card[data-onclick]').forEach(function(card) {
+    card.addEventListener('click', function() {
+      var fn = card.getAttribute('data-onclick');
+      var args = card.getAttribute('data-args');
+      if (fn && window[fn]) {
+        try {
+          var parsed = JSON.parse(args);
+          window[fn].apply(null, parsed);
+        } catch(e) {
+          window[fn]();
+        }
+      }
+    });
+  });
+});
+
 </script>
 </body>
 </html>
