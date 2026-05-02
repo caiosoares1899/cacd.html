@@ -99,6 +99,49 @@ ul.mini li::marker { color: var(--gold); }
 .popup .pper { font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--gold); }
 .pcls { position:absolute; top:12px; right:16px; background:none; border:none; color:var(--muted); font-size:22px; cursor:pointer; transition:color 0.15s; }
 .pcls:hover { color:var(--cream); }
+
+/* ═══════════════════════════════════════════
+   MOBILE RESPONSIVE — max-width: 768px
+═══════════════════════════════════════════ */
+.mobile-cards { display: none; }
+.m-era-hdr {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.55rem; letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--gold); padding: 16px 0 6px;
+  border-bottom: 1px solid var(--border); margin-bottom: 8px;
+}
+@media (max-width: 768px) {
+  html, body { height: auto !important; overflow: auto !important; }
+  .fixed-top  { position: relative !important; }
+  .page-header { padding: 12px 14px !important; flex-direction: column !important; gap: 6px !important; align-items: flex-start !important; }
+  .page-header h1 { font-size: clamp(1rem, 5.5vw, 1.3rem) !important; line-height: 1.2 !important; }
+  .page-header > div > p { font-size: 0.6rem !important; }
+  .filter-bar { padding: 8px 12px !important; gap: 5px !important; overflow-x: auto; flex-wrap: nowrap !important; scrollbar-width: none; }
+  .filter-bar::-webkit-scrollbar { display: none; }
+  .filter-btn { font-size: 0.52rem !important; padding: 5px 9px !important; white-space: nowrap; flex-shrink: 0; }
+  .scroll-area { flex: none !important; overflow: visible !important; min-height: auto !important; padding: 10px 12px 50px !important; }
+  table { display: none !important; }
+  .mobile-cards { display: flex !important; flex-direction: column; gap: 10px; }
+  .m-card { background: var(--surface); border: 1px solid var(--border); border-left: 3px solid var(--gold); border-radius: 3px; padding: 13px 14px; cursor: pointer; -webkit-tap-highlight-color: transparent; transition: background 0.15s; }
+  .m-card:active { background: var(--surface2); }
+  .m-card-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; margin-bottom: 5px; }
+  .m-card-name { font-family: 'Playfair Display', serif; font-size: 1rem; font-weight: 700; color: var(--cream); line-height: 1.2; }
+  .m-card-period { font-family: 'IBM Plex Mono', monospace; font-size: 0.52rem; color: var(--gold); letter-spacing: 0.06em; white-space: nowrap; flex-shrink: 0; padding-top: 3px; }
+  .m-card-meta { font-family: 'IBM Plex Mono', monospace; font-size: 0.52rem; color: var(--muted); letter-spacing: 0.04em; margin-bottom: 7px; }
+  .m-card-tags { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 8px; }
+  .m-card-tag { font-family: 'IBM Plex Mono', monospace; font-size: 0.46rem; padding: 2px 7px; border-radius: 2px; letter-spacing: 0.05em; text-transform: uppercase; background: rgba(212,168,67,0.1); border: 1px solid rgba(212,168,67,0.28); color: var(--gold); }
+  .m-card-preview { font-family: 'Crimson Pro', serif; font-size: 0.9rem; color: var(--muted); line-height: 1.62; margin-bottom: 9px; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+  .m-card-cta { font-family: 'IBM Plex Mono', monospace; font-size: 0.46rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold); opacity: 0.6; }
+  .overlay { align-items: flex-end !important; padding: 0 !important; }
+  .popup { width: 100vw !important; max-width: 100vw !important; max-height: 88vh !important; border-radius: 10px 10px 0 0 !important; padding: 16px 14px 24px !important; overflow-y: auto !important; margin: 0 !important; }
+  .popup-header h2 { font-size: 1.1rem !important; line-height: 1.25 !important; }
+  .info-grid { grid-template-columns: 1fr !important; gap: 8px !important; }
+  .tabs { gap: 3px !important; overflow-x: auto !important; flex-wrap: nowrap !important; scrollbar-width: none; padding-bottom: 4px; }
+  .tabs::-webkit-scrollbar { display: none; }
+  .tab-btn { font-size: 0.48rem !important; padding: 6px 10px !important; white-space: nowrap; flex-shrink: 0; }
+  .close-btn { width: 28px !important; height: 28px !important; font-size: 0.8rem !important; }
+}
+
 </style>
 </head>
 <body>
@@ -202,6 +245,275 @@ ul.mini li::marker { color: var(--gold); }
 <tr class="chan-row" data-era="nova"><td class="name-col"><span class="chan-name" onclick="openPopup('Carlos França','2021–2022','https://upload.wikimedia.org/wikipedia/commons/thumb/f/f4/Carlos_Alberto_Franco_Fran%C3%A7a_%28cropped%29.jpg/440px-Carlos_Alberto_Franco_Fran%C3%A7a_%28cropped%29.jpg')">Carlos França</span><span class="chan-period">2021 – 2022</span><span class="chan-origin">Rio de Janeiro</span><span class="era-tag era-nova">Bolsonaro</span></td><td class="col-pens"><span class="tag-pill tag-dev">Pragmatismo</span><span class="tag-pill tag-mil2">Gestão de Danos</span><br>Diplomata de carreira. Substituiu Araújo — gestão de normalização e redução de danos após os excessos do antecessor.</td><td class="col-caract">Tentativa de normalização das relações com a China e a UE após os danos causados por Araújo. Manutenção do discurso conservador sem os excessos anteriores. COP26 (Glasgow, 2021) como marca.</td><td class="col-eventos"><ul class="mini"><li>Normalização das relações com a China — retomada do diálogo após a crise das vacinas</li><li>COP26 (Glasgow, 2021) — Brasil comparece com metas, mas credibilidade comprometida pelas queimadas</li><li>Eleições de 2022 e transição diplomática para o governo Lula III</li></ul></td><td class="col-parc">China (normalização), EUA, UE (recomposição parcial), Argentina</td><td class="col-trat">Sem grandes tratados; gestão de recomposição</td><td class="col-pres"><div class="pres-badge">Jair Bolsonaro</div></td><td class="col-leg">Gestão de contenção de danos. Estabilizou o que Araújo havia destruído, restaurando relações mínimas com a China e a UE. Deixou uma herança administrável para o governo Lula.</td></tr>
 </tbody>
 </table>
+<div class="mobile-cards" id="mobileCards">
+<div class="m-era-hdr">⬛ BRASIL COLONIAL — GOVERNADORES-GERAIS E SECRETÁRIOS DE ESTADO (1549–1807)</div>
+<div class="m-card" data-era="colonial" data-onclick="openPopup" data-args='["Tom\u00e9 de Sousa", "1549\u20131553", "https://upload.wikimedia.org/wikipedia/commons/thumb/7/77/Tom%C3%A9_de_Sousa.png/440px-Tom%C3%A9_de_Sousa.png"]'>
+  <div class="m-card-top"><div class="m-card-name">Tomé de Sousa</div><div class="m-card-period">1549 – 1553</div></div>
+  <div class="m-card-meta">Portugal · 1º Gov.-Geral</div>
+  <div class="m-card-tags"><span class="m-card-tag">Mercantilismo</span></div>
+  <div class="m-card-preview">Colonialismo centralizador. Fundação do aparato administrativo e da parceria Coroa-Igreja como pilares da colonização.</div>
+  <div class="m-card-cta">▸ ver detalhes</div>
+</div>
+<div class="m-card" data-era="colonial" data-onclick="openPopup" data-args='["Mem de S\u00e1", "1558\u20131572", "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Mem_de_S%C3%A1.jpg/440px-Mem_de_S%C3%A1.jpg"]'>
+  <div class="m-card-top"><div class="m-card-name">Mem de Sá</div><div class="m-card-period">1558 – 1572</div></div>
+  <div class="m-card-meta">Portugal · 3º Gov.-Geral</div>
+  <div class="m-card-tags"><span class="m-card-tag">Mercantilismo</span><span class="m-card-tag">Expansionismo</span></div>
+  <div class="m-card-preview">Consolidação territorial e expulsão de ameaças estrangeiras. Parceria intensa com os jesuítas.</div>
+  <div class="m-card-cta">▸ ver detalhes</div>
+</div>
+<div class="m-card" data-era="colonial" data-onclick="openPopup" data-args='["Marqu\u00eas de Pombal", "1750\u20131777", "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f4/Pombal.jpg/440px-Pombal.jpg"]'>
+  <div class="m-card-top"><div class="m-card-name">Marquês de Pombal</div><div class="m-card-period">1750 – 1777</div></div>
+  <div class="m-card-meta">Portugal · Secretário de Estado</div>
+  <div class="m-card-tags"><span class="m-card-tag">Iluminismo</span><span class="m-card-tag">Despotismo Esclarecido</span></div>
+  <div class="m-card-preview">Reformismo ilustrado aplicado ao Império. Fortalecimento do Estado, expulsão dos jesuítas, modernização administrativa.</div>
+  <div class="m-card-cta">▸ ver detalhes</div>
+</div>
+<div class="m-era-hdr">🟡 PERÍODO JOANINO E INDEPENDÊNCIA (1808–1831)</div>
+<div class="m-card" data-era="joanino" data-onclick="openPopup" data-args='["D. Rodrigo de Sousa Coutinho (Conde de Linhares)", "1808\u20131812", "https://upload.wikimedia.org/wikipedia/commons/thumb/2/27/Dom_Rodrigo_de_Sousa_Coutinho.jpg/440px-Dom_Rodrigo_de_Sousa_Coutinho.jpg"]'>
+  <div class="m-card-top"><div class="m-card-name">D. Rodrigo de Sousa Coutinho</div><div class="m-card-period">1808 – 1812</div></div>
+  <div class="m-card-meta">Portugal · Período Joanino</div>
+  <div class="m-card-tags"><span class="m-card-tag">Iluminismo Luso</span><span class="m-card-tag">Reformismo</span></div>
+  <div class="m-card-preview">Primeiro grande estadista do Brasil sede do Império. Defensor da abertura econômica e da modernização do Estado.</div>
+  <div class="m-card-cta">▸ ver detalhes</div>
+</div>
+<div class="m-card" data-era="joanino" data-onclick="openPopup" data-args='["Jos\u00e9 Bonif\u00e1cio de Andrada e Silva", "1822\u20131823", "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1e/Jos%C3%A9_Bonif%C3%A1cio_de_Andrada_e_Silva.jpg/440px-Jos%C3%A9_Bonif%C3%A1cio_de_Andrada_e_Silva.jpg"]'>
+  <div class="m-card-top"><div class="m-card-name">José Bonifácio de Andrada e Silva</div><div class="m-card-period">1822 – 1823</div></div>
+  <div class="m-card-meta">São Paulo · Independência</div>
+  <div class="m-card-tags"><span class="m-card-tag">Liberalismo Ilustrado</span><span class="m-card-tag">Nacionalismo</span></div>
+  <div class="m-card-preview">"Patriarca da Independência". 1º ministro do Brasil independente. Monarquia constitucional, soberania nacional, abolição gradual da escravidão.</div>
+  <div class="m-card-cta">▸ ver detalhes</div>
+</div>
+<div class="m-era-hdr">👑 IMPÉRIO DO BRASIL (1831–1889)</div>
+<div class="m-card" data-era="imp" data-onclick="openPopup" data-args='["Paulino Soares de Sousa (Visconde do Uruguai)", "1849\u20131853", "https://upload.wikimedia.org/wikipedia/commons/thumb/7/70/Visconde_do_Uruguai.jpg/440px-Visconde_do_Uruguai.jpg"]'>
+  <div class="m-card-top"><div class="m-card-name">Paulino Soares de Sousa<br><small style="font-size:10px">(Visconde do Uruguai)</small></div><div class="m-card-period">1849 – 1853</div></div>
+  <div class="m-card-meta">Rio de Janeiro · II Reinado</div>
+  <div class="m-card-tags"><span class="m-card-tag">Conservadorismo</span><span class="m-card-tag">Realismo Político</span></div>
+  <div class="m-card-preview">Um dos maiores chanceleres do Império. Pragmatismo e defesa dos interesses nacionais na Bacia do Prata. Hegemonia imperial como objetivo.</div>
+  <div class="m-card-cta">▸ ver detalhes</div>
+</div>
+<div class="m-card" data-era="imp" data-onclick="openPopup" data-args='["Jos\u00e9 Maria da Silva Paranhos (Visconde do Rio Branco)", "1871\u20131876", "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2b/Visconde_do_Rio_Branco.jpg/440px-Visconde_do_Rio_Branco.jpg"]'>
+  <div class="m-card-top"><div class="m-card-name">José M. da Silva Paranhos<br><small style="font-size:10px">(Visconde do Rio Branco)</small></div><div class="m-card-period">1871 – 1876</div></div>
+  <div class="m-card-meta">Rio de Janeiro · II Reinado</div>
+  <div class="m-card-tags"><span class="m-card-tag">Conservadorismo Mod.</span><span class="m-card-tag">Pragmatismo</span></div>
+  <div class="m-card-preview">Pai do Barão do Rio Branco. Grande negociador imperial. A Lei do Ventre Livre (1871) foi aprovada em seu governo como Presidente do Conselho.</div>
+  <div class="m-card-cta">▸ ver detalhes</div>
+</div>
+<div class="m-era-hdr">🟤 REPÚBLICA VELHA (1889–1930) — O BARÃO DO RIO BRANCO E A ERA DE OURO DA DIPLOMACIA</div>
+<div class="m-card" data-era="vrep" data-onclick="openPopup" data-args='["Quintino Bocai\u00fava", "1889\u20131891", "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d7/Quintino_Bocaiuva.jpg/440px-Quintino_Bocaiuva.jpg"]'>
+  <div class="m-card-top"><div class="m-card-name">Quintino Bocaiúva</div><div class="m-card-period">1889 – 1891</div></div>
+  <div class="m-card-meta">Rio de Janeiro · Rep. da Espada</div>
+  <div class="m-card-tags"><span class="m-card-tag">Republicanismo</span><span class="m-card-tag">Pan-americanismo</span></div>
+  <div class="m-card-preview">1º chanceler da República. Jornalista republicano histórico. Tentativa polêmica de aproximação com a Argentina.</div>
+  <div class="m-card-cta">▸ ver detalhes</div>
+</div>
+<div class="m-card" data-era="vrep" data-onclick="openPopup" data-args='["Bar\u00e3o do Rio Branco", "1902\u20131912", "https://upload.wikimedia.org/wikipedia/commons/thumb/0/02/Bar%C3%A3o_do_Rio_Branco.jpg/440px-Bar%C3%A3o_do_Rio_Branco.jpg"]'>
+  <div class="m-card-top"><div class="m-card-name">Barão do Rio Branco</div><div class="m-card-period">1902 – 1912</div></div>
+  <div class="m-card-meta">Rio de Janeiro · Rep. Velha</div>
+  <div class="m-card-tags"><span class="m-card-tag">Realismo</span><span class="m-card-tag">Americanismo</span><span class="m-card-tag">Pacifismo Territorial</span></div>
+  <div class="m-card-preview">O maior diplomata da história brasileira. Definiu as fronteiras sem guerras, pelo arbitramento e negociação. "Americanismo" como contrapeso estratégico.</div>
+  <div class="m-card-cta">▸ ver detalhes</div>
+</div>
+<div class="m-card" data-era="vrep" data-onclick="openPopup" data-args='["Lauro M\u00fcller", "1912\u20131917", "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/Lauro_Muller.jpg/440px-Lauro_Muller.jpg"]'>
+  <div class="m-card-top"><div class="m-card-name">Lauro Müller</div><div class="m-card-period">1912 – 1917</div></div>
+  <div class="m-card-meta">Santa Catarina · Rep. Velha</div>
+  <div class="m-card-tags"><span class="m-card-tag">Americanismo</span><span class="m-card-tag">Neutralismo</span></div>
+  <div class="m-card-preview">Herdou o Itamaraty após Rio Branco. Descendente de alemães — acusado de simpatia à Alemanha na 1ª Guerra. Resignou por pressão americana.</div>
+  <div class="m-card-cta">▸ ver detalhes</div>
+</div>
+<div class="m-card" data-era="vrep" data-onclick="openPopup" data-args='["Nilo Pe\u00e7anha", "1917\u20131918", "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e9/Nilo_Pe%C3%A7anha.jpg/440px-Nilo_Pe%C3%A7anha.jpg"]'>
+  <div class="m-card-top"><div class="m-card-name">Nilo Peçanha</div><div class="m-card-period">1917 – 1918</div></div>
+  <div class="m-card-meta">Rio de Janeiro · Rep. Velha</div>
+  <div class="m-card-tags"><span class="m-card-tag">Americanismo</span><span class="m-card-tag">Pró-Aliados</span></div>
+  <div class="m-card-preview">Político e ex-presidente. Conduziu a virada do Brasil para os Aliados e a declaração de guerra à Alemanha.</div>
+  <div class="m-card-cta">▸ ver detalhes</div>
+</div>
+<div class="m-card" data-era="vrep" data-onclick="openPopup" data-args='["Epit\u00e1cio Pessoa", "1919", "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e6/Epit%C3%A1cio_Pessoa.jpg/440px-Epit%C3%A1cio_Pessoa.jpg"]'>
+  <div class="m-card-top"><div class="m-card-name">Epitácio Pessoa</div><div class="m-card-period">1919 (delegação em Paris)</div></div>
+  <div class="m-card-meta">Paraíba · Rep. Velha</div>
+  <div class="m-card-tags"><span class="m-card-tag">Multilateralismo</span><span class="m-card-tag">Internacionalismo Liberal</span></div>
+  <div class="m-card-preview">Jurista e político. Liderou a delegação brasileira na Conferência de Paz de Paris — a de maior peso da América do Sul.</div>
+  <div class="m-card-cta">▸ ver detalhes</div>
+</div>
+<div class="m-card" data-era="vrep" data-onclick="openPopup" data-args='["F\u00e9lix Pacheco", "1922\u20131926", "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8d/F%C3%A9lix_Pacheco.jpg/440px-F%C3%A9lix_Pacheco.jpg"]'>
+  <div class="m-card-top"><div class="m-card-name">Félix Pacheco</div><div class="m-card-period">1922 – 1926</div></div>
+  <div class="m-card-meta">Piauí · Rep. Velha</div>
+  <div class="m-card-tags"><span class="m-card-tag">Conservadorismo</span><span class="m-card-tag">Multilateralismo</span></div>
+  <div class="m-card-preview">Jornalista e político. Chanceler do conturbado governo Bernardes — presenciou a saída do Brasil da Liga das Nações.</div>
+  <div class="m-card-cta">▸ ver detalhes</div>
+</div>
+<div class="m-card" data-era="vrep" data-onclick="openPopup" data-args='["Oct\u00e1vio Mangabeira", "1926\u20131930", "https://upload.wikimedia.org/wikipedia/commons/thumb/7/76/Oct%C3%A1vio_Mangabeira.jpg/440px-Oct%C3%A1vio_Mangabeira.jpg"]'>
+  <div class="m-card-top"><div class="m-card-name">Octávio Mangabeira</div><div class="m-card-period">1926 – 1930</div></div>
+  <div class="m-card-meta">Bahia · Rep. Velha</div>
+  <div class="m-card-tags"><span class="m-card-tag">Liberalismo</span><span class="m-card-tag">Pan-americanismo</span></div>
+  <div class="m-card-preview">Político baiano. Último chanceler da República Velha — tentativa de reintegração ao multilateralismo pós-saída da Liga.</div>
+  <div class="m-card-cta">▸ ver detalhes</div>
+</div>
+<div class="m-era-hdr">🔴 ERA VARGAS (1930–1945 / 1950–1954)</div>
+<div class="m-card" data-era="var" data-onclick="openPopup" data-args='["Afr\u00e2nio de Melo Franco", "1930\u20131933", "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a3/Afr%C3%A2nio_de_Melo_Franco.jpg/440px-Afr%C3%A2nio_de_Melo_Franco.jpg"]'>
+  <div class="m-card-top"><div class="m-card-name">Afrânio de Melo Franco</div><div class="m-card-period">1930 – 1933</div></div>
+  <div class="m-card-meta">Minas Gerais · Vargas</div>
+  <div class="m-card-tags"><span class="m-card-tag">Liberalismo</span><span class="m-card-tag">Multilateralismo</span></div>
+  <div class="m-card-preview">Diplomata e político mineiro. Primeiro chanceler de Vargas — perfil moderado, ligação com o antigo regime. Chanceler da normalização.</div>
+  <div class="m-card-cta">▸ ver detalhes</div>
+</div>
+<div class="m-card" data-era="var" data-onclick="openPopup" data-args='["Jos\u00e9 Carlos de Macedo Soares", "1934\u20131936", "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3a/Jos%C3%A9_Carlos_de_Macedo_Soares.jpg/440px-Jos%C3%A9_Carlos_de_Macedo_Soares.jpg"]'>
+  <div class="m-card-top"><div class="m-card-name">José C. de Macedo Soares</div><div class="m-card-period">1934 – 1936</div></div>
+  <div class="m-card-meta">São Paulo · Vargas</div>
+  <div class="m-card-tags"><span class="m-card-tag">Liberalismo</span><span class="m-card-tag">Pan-americanismo</span></div>
+  <div class="m-card-preview">Industrialista paulista. Implementou a estratégia de equidistância pragmática de Vargas — jogando EUA e Alemanha um contra o outro.</div>
+  <div class="m-card-cta">▸ ver detalhes</div>
+</div>
+<div class="m-card" data-era="var" data-onclick="openPopup" data-args='["Oswaldo Aranha", "1938\u20131944", "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c0/Oswaldo_Aranha.jpg/440px-Oswaldo_Aranha.jpg"]'>
+  <div class="m-card-top"><div class="m-card-name">Oswaldo Aranha</div><div class="m-card-period">1938 – 1944</div></div>
+  <div class="m-card-meta">Rio Grande do Sul · Vargas / Estado Novo</div>
+  <div class="m-card-tags"><span class="m-card-tag">Pan-americanismo</span><span class="m-card-tag">Pró-EUA</span><span class="m-card-tag">Internacionalismo</span></div>
+  <div class="m-card-preview">O maior chanceler da Era Vargas. Pivô da virada para os Aliados e da negociação de Volta Redonda. Presidiu a AGNU em 1947–48.</div>
+  <div class="m-card-cta">▸ ver detalhes</div>
+</div>
+<div class="m-card" data-era="var" data-onclick="openPopup" data-args='["Jo\u00e3o Neves da Fontoura", "1951\u20131953", "https://upload.wikimedia.org/wikipedia/commons/thumb/3/38/Jo%C3%A3o_Neves_da_Fontoura.jpg/440px-Jo%C3%A3o_Neves_da_Fontoura.jpg"]'>
+  <div class="m-card-top"><div class="m-card-name">João Neves da Fontoura</div><div class="m-card-period">1951 – 1953</div></div>
+  <div class="m-card-meta">Rio Grande do Sul · 2º Vargas</div>
+  <div class="m-card-tags"><span class="m-card-tag">Conservadorismo</span><span class="m-card-tag">Pan-americanismo</span></div>
+  <div class="m-card-preview">Político gaúcho, aliado de Vargas. Ala conservadora do varguismo — resistência ao monopólio do petróleo. Pró-americano.</div>
+  <div class="m-card-cta">▸ ver detalhes</div>
+</div>
+<div class="m-era-hdr">🟢 DEMOCRACIA LIBERAL (1945–1964) — DA PAN-AMERICANA À POLÍTICA EXTERNA INDEPENDENTE</div>
+<div class="m-card" data-era="demo" data-onclick="openPopup" data-args='["Raul Fernandes", "1946\u20131951", "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2e/Raul_Fernandes.jpg/440px-Raul_Fernandes.jpg"]'>
+  <div class="m-card-top"><div class="m-card-name">Raul Fernandes</div><div class="m-card-period">1946 – 1951</div></div>
+  <div class="m-card-meta">Rio de Janeiro · Dutra</div>
+  <div class="m-card-tags"><span class="m-card-tag">Ocidentalismo</span><span class="m-card-tag">Anticomunismo</span></div>
+  <div class="m-card-preview">Jurista internacionalista. Alinhamento automático com os EUA. Cassação do PCB e ruptura com a URSS. Contraponto teórico da PEI.</div>
+  <div class="m-card-cta">▸ ver detalhes</div>
+</div>
+<div class="m-card" data-era="demo" data-onclick="openPopup" data-args='["Francisco Negr\u00e3o de Lima", "1958\u20131959", "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/Francisco_Negrao_de_Lima.jpg/440px-Francisco_Negrao_de_Lima.jpg"]'>
+  <div class="m-card-top"><div class="m-card-name">Francisco Negrão de Lima</div><div class="m-card-period">1958 – 1959</div></div>
+  <div class="m-card-meta">Minas Gerais · JK</div>
+  <div class="m-card-tags"><span class="m-card-tag">Desenvolvimentismo</span><span class="m-card-tag">Multilateralismo</span></div>
+  <div class="m-card-preview">Chanceler do lançamento da Operação Pan-Americana (OPA). Defensor do multilateralismo como ferramenta de desenvolvimento para o Sul Global.</div>
+  <div class="m-card-cta">▸ ver detalhes</div>
+</div>
+<div class="m-card" data-era="demo" data-onclick="openPopup" data-args='["Afonso Arinos de Melo Franco", "1961", "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a1/Afonso_Arinos_de_Melo_Franco.jpg/440px-Afonso_Arinos_de_Melo_Franco.jpg"]'>
+  <div class="m-card-top"><div class="m-card-name">Afonso Arinos de Melo Franco</div><div class="m-card-period">1961</div></div>
+  <div class="m-card-meta">Minas Gerais · Jânio Quadros</div>
+  <div class="m-card-tags"><span class="m-card-tag">Política Ext. Independente</span><span class="m-card-tag">Terceiro-mundismo</span></div>
+  <div class="m-card-preview">Intelectual e jurista. Arquiteto da PEI — autonomia, não-alinhamento, abertura ao Sul Global. A maior ruptura doutrinária da diplomacia brasileira do século XX.</div>
+  <div class="m-card-cta">▸ ver detalhes</div>
+</div>
+<div class="m-card" data-era="demo" data-onclick="openPopup" data-args='["San Tiago Dantas", "1962\u20131963", "https://upload.wikimedia.org/wikipedia/commons/thumb/3/38/San_Tiago_Dantas.jpg/440px-San_Tiago_Dantas.jpg"]'>
+  <div class="m-card-top"><div class="m-card-name">San Tiago Dantas</div><div class="m-card-period">1962 – 1963</div></div>
+  <div class="m-card-meta">Rio de Janeiro · Goulart</div>
+  <div class="m-card-tags"><span class="m-card-tag">Política Ext. Independente</span><span class="m-card-tag">Desenvolvimentismo</span></div>
+  <div class="m-card-preview">Jurista e político trabalhista. O mais brilhante chanceler da PEI. Defensor absoluto da soberania, da não-intervenção e do universalismo.</div>
+  <div class="m-card-cta">▸ ver detalhes</div>
+</div>
+<div class="m-card" data-era="demo" data-onclick="openPopup" data-args='["Jo\u00e3o Augusto de Ara\u00fajo Castro", "1963\u20131964", "https://upload.wikimedia.org/wikipedia/commons/thumb/0/04/Jo%C3%A3o_Augusto_de_Ara%C3%BAjo_Castro.jpg/440px-Jo%C3%A3o_Augusto_de_Ara%C3%BAjo_Castro.jpg"]'>
+  <div class="m-card-top"><div class="m-card-name">João A. de Araújo Castro</div><div class="m-card-period">1963 – 1964</div></div>
+  <div class="m-card-meta">Rio Grande do Norte · Goulart</div>
+  <div class="m-card-tags"><span class="m-card-tag">Política Ext. Independente</span><span class="m-card-tag">Autonomia</span></div>
+  <div class="m-card-preview">Diplomata de carreira. Formulou os "3Ds": Desarmamento, Desenvolvimento, Descolonização — os pilares da PEI na ONU. Leitura obrigatória para o CACD.</div>
+  <div class="m-card-cta">▸ ver detalhes</div>
+</div>
+<div class="m-era-hdr">⬜ DITADURA MILITAR (1964–1985) — DO ALINHAMENTO AO PRAGMATISMO RESPONSÁVEL</div>
+<div class="m-card" data-era="mil" data-onclick="openPopup" data-args='["Vasco Leit\u00e3o da Cunha", "1964\u20131966", "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b5/Vasco_Leit%C3%A3o_da_Cunha.jpg/440px-Vasco_Leit%C3%A3o_da_Cunha.jpg"]'>
+  <div class="m-card-top"><div class="m-card-name">Vasco Leitão da Cunha</div><div class="m-card-period">1964 – 1966</div></div>
+  <div class="m-card-meta">Rio Grande do Sul · Castello Branco</div>
+  <div class="m-card-tags"><span class="m-card-tag">Ocidentalismo</span><span class="m-card-tag">Anticomunismo</span></div>
+  <div class="m-card-preview">Diplomata de carreira. Ruptura total com a PEI — alinhamento automático com os EUA. "Fronteiras ideológicas" substituem não-intervenção.</div>
+  <div class="m-card-cta">▸ ver detalhes</div>
+</div>
+<div class="m-card" data-era="mil" data-onclick="openPopup" data-args='["Juracy Magalh\u00e3es", "1966\u20131967", "https://upload.wikimedia.org/wikipedia/commons/thumb/c/ce/Juracy_Magalh%C3%A3es.jpg/440px-Juracy_Magalh%C3%A3es.jpg"]'>
+  <div class="m-card-top"><div class="m-card-name">Juracy Magalhães</div><div class="m-card-period">1966 – 1967</div></div>
+  <div class="m-card-meta">Bahia · Castello Branco</div>
+  <div class="m-card-tags"><span class="m-card-tag">Conservadorismo</span><span class="m-card-tag">Pró-EUA</span></div>
+  <div class="m-card-preview">Ex-governador da Bahia. Famosa frase: "O que é bom para os Estados Unidos é bom para o Brasil." Símbolo do que a diplomacia deveria evitar.</div>
+  <div class="m-card-cta">▸ ver detalhes</div>
+</div>
+<div class="m-card" data-era="mil" data-onclick="openPopup" data-args='["Jos\u00e9 de Magalh\u00e3es Pinto", "1967\u20131969", "https://upload.wikimedia.org/wikipedia/commons/thumb/4/43/Jos%C3%A9_de_Magalh%C3%A3es_Pinto.jpg/440px-Jos%C3%A9_de_Magalh%C3%A3es_Pinto.jpg"]'>
+  <div class="m-card-top"><div class="m-card-name">José de Magalhães Pinto</div><div class="m-card-period">1967 – 1969</div></div>
+  <div class="m-card-meta">Minas Gerais · Costa e Silva</div>
+  <div class="m-card-tags"><span class="m-card-tag">Desenvolvimentismo</span><span class="m-card-tag">Autonomia Relativa</span></div>
+  <div class="m-card-preview">Ex-governador de MG. "Diplomacia da Prosperidade": desenvolvimento como objetivo central. Primeiro esboço de autonomia em relação ao alinhamento automático.</div>
+  <div class="m-card-cta">▸ ver detalhes</div>
+</div>
+<div class="m-card" data-era="mil" data-onclick="openPopup" data-args='["M\u00e1rio Gibson Barboza", "1969\u20131974", "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ef/Mario_Gibson_Barboza.jpg/440px-Mario_Gibson_Barboza.jpg"]'>
+  <div class="m-card-top"><div class="m-card-name">Mário Gibson Barboza</div><div class="m-card-period">1969 – 1974</div></div>
+  <div class="m-card-meta">Rio de Janeiro · Médici</div>
+  <div class="m-card-tags"><span class="m-card-tag">Pragmatismo</span><span class="m-card-tag">Autonomia Moderada</span></div>
+  <div class="m-card-preview">Diplomata de carreira. Ampliou o interesse brasileiro na África e no Oriente Médio. Preparação ao Pragmatismo Responsável.</div>
+  <div class="m-card-cta">▸ ver detalhes</div>
+</div>
+<div class="m-card" data-era="mil" data-onclick="openPopup" data-args='["Ant\u00f4nio Azeredo da Silveira", "1974\u20131979", "https://upload.wikimedia.org/wikipedia/commons/thumb/9/96/Azeredo_da_silveira.jpg/440px-Azeredo_da_silveira.jpg"]'>
+  <div class="m-card-top"><div class="m-card-name">Antônio Azeredo da Silveira</div><div class="m-card-period">1974 – 1979</div></div>
+  <div class="m-card-meta">Rio Grande do Sul · Geisel</div>
+  <div class="m-card-tags"><span class="m-card-tag">Pragmatismo Responsável</span><span class="m-card-tag">Sul-Sul</span></div>
+  <div class="m-card-preview">O grande chanceler da Ditadura. Formulador do "Pragmatismo Responsável e Ecumênico" — diversificação, autonomia, interesse nacional acima da ideologia.</div>
+  <div class="m-card-cta">▸ ver detalhes</div>
+</div>
+<div class="m-card" data-era="mil" data-onclick="openPopup" data-args='["Ramiro Saraiva Guerreiro", "1979\u20131985", "https://upload.wikimedia.org/wikipedia/commons/thumb/4/46/Ramiro_Saraiva_Guerreiro.jpg/440px-Ramiro_Saraiva_Guerreiro.jpg"]'>
+  <div class="m-card-top"><div class="m-card-name">Ramiro Saraiva Guerreiro</div><div class="m-card-period">1979 – 1985</div></div>
+  <div class="m-card-meta">Rio Grande do Sul · Figueiredo</div>
+  <div class="m-card-tags"><span class="m-card-tag">Pragmatismo Responsável</span><span class="m-card-tag">Sul-Sul</span></div>
+  <div class="m-card-preview">Diplomata de carreira. Continuidade do PR. Aprofundamento da relação com África e aproximação histórica com a Argentina — semente do Mercosul.</div>
+  <div class="m-card-cta">▸ ver detalhes</div>
+</div>
+<div class="m-era-hdr">🟣 NOVA REPÚBLICA (1985–presente) — DA REDEMOCRATIZAÇÃO À MULTIPOLARIDADE</div>
+<div class="m-card" data-era="nova" data-onclick="openPopup" data-args='["Roberto de Abreu Sodr\u00e9", "1986\u20131990", "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a8/Roberto_Costa_de_Abreu_Sodre.jpg/440px-Roberto_Costa_de_Abreu_Sodre.jpg"]'>
+  <div class="m-card-top"><div class="m-card-name">Roberto de Abreu Sodré</div><div class="m-card-period">1986 – 1990</div></div>
+  <div class="m-card-meta">São Paulo · Sarney</div>
+  <div class="m-card-tags"><span class="m-card-tag">Liberalismo</span><span class="m-card-tag">Multilateralismo</span></div>
+  <div class="m-card-preview">Ex-governador de SP. Conduziu o processo de integração com a Argentina até o Tratado de 1988 e a preparação do Mercosul.</div>
+  <div class="m-card-cta">▸ ver detalhes</div>
+</div>
+<div class="m-card" data-era="nova" data-onclick="openPopup" data-args='["Francisco Rezek", "1990\u20131992 / 1997\u20131998", "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4f/Jos%C3%A9_Francisco_Rezek.jpg/440px-Jos%C3%A9_Francisco_Rezek.jpg"]'>
+  <div class="m-card-top"><div class="m-card-name">Francisco Rezek</div><div class="m-card-period">1990–1992; 1997–1998</div></div>
+  <div class="m-card-meta">Minas Gerais · Collor / FHC</div>
+  <div class="m-card-tags"><span class="m-card-tag">Neoliberalismo</span><span class="m-card-tag">Multilateralismo</span></div>
+  <div class="m-card-preview">Jurista internacionalista e ex-ministro do STF. Abertura econômica e inserção liberal na globalização como paradigmas.</div>
+  <div class="m-card-cta">▸ ver detalhes</div>
+</div>
+<div class="m-card" data-era="nova" data-onclick="openPopup" data-args='["Luiz Felipe Lampreia", "1995\u20132001", "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7b/Lampreia.jpg/440px-Lampreia.jpg"]'>
+  <div class="m-card-top"><div class="m-card-name">Luiz Felipe Lampreia</div><div class="m-card-period">1995 – 2001</div></div>
+  <div class="m-card-meta">Rio de Janeiro · FHC</div>
+  <div class="m-card-tags"><span class="m-card-tag">Internacionalismo Liberal</span><span class="m-card-tag">Multilateralismo</span></div>
+  <div class="m-card-preview">Diplomata de carreira. "Autonomia pela participação e pelo compromisso". Inserção do Brasil no sistema multilateral como global trader.</div>
+  <div class="m-card-cta">▸ ver detalhes</div>
+</div>
+<div class="m-card" data-era="nova" data-onclick="openPopup" data-args='["Celso Amorim", "2003\u20132010 / 2023\u2013presente", "https://upload.wikimedia.org/wikipedia/commons/thumb/4/43/Celso_Amorim.jpg/440px-Celso_Amorim.jpg"]'>
+  <div class="m-card-top"><div class="m-card-name">Celso Amorim</div><div class="m-card-period">2003–2010; 2023–presente</div></div>
+  <div class="m-card-meta">Rio de Janeiro · Lula I-II / Lula III</div>
+  <div class="m-card-tags"><span class="m-card-tag">Autonomia pela Diversificação</span><span class="m-card-tag">Sul-Sul</span><span class="m-card-tag">Multilateralismo Ativo</span></div>
+  <div class="m-card-preview">O maior chanceler da era democrática e um dos maiores da história do Brasil. Eleito melhor do mundo pela Foreign Policy (2009).</div>
+  <div class="m-card-cta">▸ ver detalhes</div>
+</div>
+<div class="m-card" data-era="nova" data-onclick="openPopup" data-args='["Antonio Patriota", "2011\u20132013", "https://upload.wikimedia.org/wikipedia/commons/thumb/2/26/Antonio_Patriota.jpg/440px-Antonio_Patriota.jpg"]'>
+  <div class="m-card-top"><div class="m-card-name">Antonio Patriota</div><div class="m-card-period">2011 – 2013</div></div>
+  <div class="m-card-meta">Rio de Janeiro · Dilma I</div>
+  <div class="m-card-tags"><span class="m-card-tag">Autonomia pela Diversificação</span><span class="m-card-tag">Multilateralismo</span></div>
+  <div class="m-card-preview">Diplomata de carreira, discípulo de Celso Amorim. Continuidade da agenda Lula-Amorim com menor proatividade.</div>
+  <div class="m-card-cta">▸ ver detalhes</div>
+</div>
+<div class="m-card" data-era="nova" data-onclick="openPopup" data-args='["Mauro Vieira", "2015\u20132016 / 2023", "https://upload.wikimedia.org/wikipedia/commons/thumb/0/09/Mauro_Vieira_%282%29.jpg/440px-Mauro_Vieira_%282%29.jpg"]'>
+  <div class="m-card-top"><div class="m-card-name">Mauro Vieira</div><div class="m-card-period">2015–2016; jan-fev 2023</div></div>
+  <div class="m-card-meta">Rio de Janeiro · Dilma II / Lula III</div>
+  <div class="m-card-tags"><span class="m-card-tag">Multilateralismo</span><span class="m-card-tag">Pragmatismo</span></div>
+  <div class="m-card-preview">Diplomata de carreira. Gestão em dois momentos: fim do governo Dilma (impeachment) e transição inicial do Lula III.</div>
+  <div class="m-card-cta">▸ ver detalhes</div>
+</div>
+<div class="m-card" data-era="nova" data-onclick="openPopup" data-args='["Ernesto Ara\u00fajo", "2019\u20132021", "https://upload.wikimedia.org/wikipedia/commons/thumb/2/25/Ernesto_Ara%C3%BAjo.jpg/440px-Ernesto_Ara%C3%BAjo.jpg"]'>
+  <div class="m-card-top"><div class="m-card-name">Ernesto Araújo</div><div class="m-card-period">2019 – 2021</div></div>
+  <div class="m-card-meta">Minas Gerais · Bolsonaro</div>
+  <div class="m-card-tags"><span class="m-card-tag">Ultraconservadorismo</span><span class="m-card-tag">Antiglobalismo</span></div>
+  <div class="m-card-preview">Diplomata radicalmente alinhado com o bolsonarismo. Ideologia acima do interesse nacional. Anti-China, anticlimático, anti-multilateral.</div>
+  <div class="m-card-cta">▸ ver detalhes</div>
+</div>
+<div class="m-card" data-era="nova" data-onclick="openPopup" data-args='["Carlos Fran\u00e7a", "2021\u20132022", "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f4/Carlos_Alberto_Franco_Fran%C3%A7a_%28cropped%29.jpg/440px-Carlos_Alberto_Franco_Fran%C3%A7a_%28cropped%29.jpg"]'>
+  <div class="m-card-top"><div class="m-card-name">Carlos França</div><div class="m-card-period">2021 – 2022</div></div>
+  <div class="m-card-meta">Rio de Janeiro · Bolsonaro</div>
+  <div class="m-card-tags"><span class="m-card-tag">Pragmatismo</span><span class="m-card-tag">Gestão de Danos</span></div>
+  <div class="m-card-preview">Diplomata de carreira. Substituiu Araújo — gestão de normalização e redução de danos após os excessos do antecessor.</div>
+  <div class="m-card-cta">▸ ver detalhes</div>
+</div>
+</div>
 </div>
 
 <div class="overlay" id="overlay" onclick="closePopupOverlay(event)">
@@ -216,11 +528,17 @@ ul.mini li::marker { color: var(--gold); }
 <script>
 function filterEra(era, btn) {
   document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
+  if (btn) btn.classList.add('active');
   document.querySelectorAll('tr.chan-row').forEach(row => {
     row.classList.toggle('hidden', era !== 'all' && row.dataset.era !== era);
   });
   document.querySelectorAll('tr.era-header').forEach(h => {
+    h.style.display = era === 'all' ? '' : 'none';
+  });
+  document.querySelectorAll('#mobileCards .m-card').forEach(card => {
+    card.style.display = (era === 'all' || card.dataset.era === era) ? '' : 'none';
+  });
+  document.querySelectorAll('#mobileCards .m-era-hdr').forEach(h => {
     h.style.display = era === 'all' ? '' : 'none';
   });
 }
@@ -238,6 +556,25 @@ function closePopupOverlay(e) {
 document.addEventListener('keydown', e => {
   if (e.key === 'Escape') document.getElementById('overlay').classList.remove('active');
 });
+
+// ── MOBILE CARDS: delega clique via data-attributes ──────────────
+document.addEventListener('DOMContentLoaded', function() {
+  document.querySelectorAll('.m-card[data-onclick]').forEach(function(card) {
+    card.addEventListener('click', function() {
+      var fn = card.getAttribute('data-onclick');
+      var args = card.getAttribute('data-args');
+      if (fn && window[fn]) {
+        try {
+          var parsed = JSON.parse(args);
+          window[fn].apply(null, parsed);
+        } catch(e) {
+          window[fn]();
+        }
+      }
+    });
+  });
+});
+
 </script>
 </body>
 </html>
