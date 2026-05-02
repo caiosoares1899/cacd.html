@@ -95,6 +95,7 @@ body{display:flex;flex-direction:column;font-family:'IBM Plex Sans',sans-serif;f
     <div class="leg-item"><div class="leg-dot" style="background:#f59e0b;opacity:.8"></div>Parcial</div>
     <div class="leg-item"><div class="leg-dot" style="background:#f87171;opacity:.8"></div>Fracasso</div>
     <div class="leg-item"><div class="leg-dot" style="background:#a78bfa;opacity:.8"></div>Norte (sem coloniz.)</div>
+    <div class="leg-item"><div class="leg-dot" style="background:#6b7280;opacity:.8"></div>Terras Não Distribuídas</div>
     <div class="leg-item" style="border-left:1px solid var(--border);padding-left:10px"><div class="leg-line" style="background:#c9a84c;opacity:.8"></div>Tordesilhas</div>
     <div class="leg-item"><div class="leg-line" style="background:#60a5fa;opacity:.6;border-top:2px dashed #60a5fa"></div>Litoral</div>
   </div>
@@ -135,6 +136,7 @@ const COR = {
   parcial:  {fill:'#451a03', border:'#f59e0b', label:'Colonização parcial'},
   fracasso: {fill:'#450a0a', border:'#f87171', label:'Fracasso / extinção'},
   norte:    {fill:'#2e1065', border:'#a78bfa', label:'Norte — sem colonização efetiva'},
+  tnd:      {fill:'#1a1a1a', border:'#6b7280', label:'Terras Não Distribuídas'},
 };
 
 const CAPS = [
@@ -151,7 +153,7 @@ const CAPS = [
     legado:'Origem do futuro Estado do Maranhão. O fracasso das capitanias do Norte abriu caminho para a criação do Estado do Maranhão e Grão-Pará (1621), com administração separada de Lisboa.',
     fonte:'Cintra (2013): limites por meridianos, não paralelos. Turiaçú como Abra de Diogo Leite (extremo NW).',
     // Polígono: [lat, lng]
-    poly:[[-1.64, -45.25], [-2.33, -44.36], [-6.68, -44.36], [-6.68, -48.7], [-1.64, -48.7]]
+    poly:[[-1.64, -45.25], [-2.33, -44.36], [-6.68, -44.36], [-6.68, -45.25]]
   },
   {
     id:'MA2', n:2, nome:'Maranhão 2º Lote', donatario:'João de Barros',
@@ -377,6 +379,20 @@ const CAPS = [
     fonte:'Cintra (2013): a linha da costa no Sul é inclinada a nordeste — por isso as divisas seguem rumo noroeste, ampliando a área das capitanias. Santana tem largura mínima em muitos trechos.',
     poly:[[-25.55, -48.36], [-25.55, -48.7], [-28.33, -48.7], [-28.33, -48.5], [-26.5, -48.4], [-25.55, -48.36]]
   }
+,{
+    id:'TND', n:0, nome:'Terras Não Distribuídas', donatario:'Coroa Portuguesa',
+    leguas:'Não distribuídas — reservadas à Coroa',
+    resultado:'tnd',
+    capital:'—',
+    economia:'Sem exploração colonial no séc. XVI. Região do futuro Maranhão e Grão-Pará, com vastíssimo território amazônico praticamente desconhecido pelos portugueses.',
+    politica:'Terras mantidas sob domínio direto da Coroa, deliberadamente não concedidas em 1534-36. A Abra de Diogo Leite (foz do rio Turiaçú) marcava o limite NE da terra distribuída. A Carta de Mineração (1536) reconhece a existência de 50 léguas extras para MA1+MA2 que começam "na abra de Diogo Leite" — o que indica que o limite NW do sistema era exatamente esse ponto.',
+    portugal:'Política consciente da Coroa: a região era de difícil acesso, hostil e de pouca atratividade econômica imediata. D. João III optou por reservá-la. A criação do Estado do Maranhão e Grão-Pará (1621) foi a solução encontrada para administrar essa vasta região separada de Lisboa.',
+    lideres:'— (sem donatário)',
+    conflitos:'Franceses instalaram-se na região e fundaram São Luís em 1612 (colônia denominada "França Equinocial"). Portugueses expulsaram-nos em 1615, liderados por Alexandre de Moura. Holandeses também frequentaram a região.',
+    legado:'O Estado do Maranhão e Grão-Pará (1621-1774) foi administrado diretamente de Lisboa, não subordinado ao Governo-Geral da Bahia — criando uma trajetória histórica distinta para o Norte. A Companhia Geral do Comércio do Grão-Pará e Maranhão (Pombal, 1755) dinamizou a região.',
+    fonte:'Cintra (2013), Figura 9: área cinza à esquerda das capitanias do Norte, entre Tordesilhas e a Abra de Diogo Leite (-45.25°W). Cintra demonstra que as cartas de doação só distribuíram terras a partir desse ponto para leste.',
+    poly:[[0.0,-48.70],[-1.64,-45.25],[-6.68,-45.25],[-6.68,-48.70]]
+  }
 ];
 
 // ══════════════════════════════════════════════════════════════════
@@ -435,7 +451,7 @@ CAPS.forEach(cap => {
 function buildSidebar() {
   const sl = document.getElementById('slist');
   const groups = [
-    {label:'▸ Norte — Meridianos', ids:['MA1','MA2','PI','CE','RN1','RN2']},
+    {label:'▸ Norte — Meridianos', ids:['TND','MA1','MA2','PI','CE','RN1','RN2']},
     {label:'▸ Centro — Paralelos', ids:['IT','PE','BA','IL','PS','ES']},
     {label:'▸ Sul — Rumo Noroeste', ids:['ST','SV1','SA','SV2','SAN']},
   ];
