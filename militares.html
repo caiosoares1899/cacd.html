@@ -1,0 +1,1356 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Militares na Política Brasileira | 1500–2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Source+Serif+4:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold: #C9A84C;
+    --gold-light: #E8C97A;
+    --gold-dark: #8B6914;
+    --olive: #3D4A2E;
+    --olive-mid: #5A6B42;
+    --cream: #F5F0E8;
+    --cream-dark: #E8E0CC;
+    --ink: #1A1A14;
+    --ink-mid: #2D2D22;
+    --ink-soft: #4A4A38;
+    --red: #8B2222;
+    --red-light: #C0392B;
+    --blue-dim: #2C3E5A;
+    --line: rgba(201,168,76,0.35);
+    --modal-bg: rgba(10,10,8,0.92);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--ink);
+    color: var(--cream);
+    font-family: 'Source Serif 4', Georgia, serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ── HEADER ── */
+  header {
+    background: linear-gradient(180deg, #0D0D0A 0%, #1A1A14 60%, transparent 100%);
+    padding: 4rem 2rem 3rem;
+    text-align: center;
+    position: relative;
+    border-bottom: 1px solid var(--line);
+  }
+
+  header::before {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 50%;
+    transform: translateX(-50%);
+    width: 80px; height: 1px;
+    background: var(--gold);
+  }
+
+  .header-label {
+    font-family: 'Courier Prime', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.3em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-weight: 900;
+    line-height: 1.1;
+    color: var(--cream);
+    margin-bottom: 0.5rem;
+  }
+
+  h1 span {
+    color: var(--gold);
+    font-style: italic;
+  }
+
+  .header-sub {
+    font-size: 0.9rem;
+    color: rgba(245,240,232,0.5);
+    margin-top: 1rem;
+    font-style: italic;
+  }
+
+  /* ── FILTER BAR ── */
+  .filter-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    justify-content: center;
+    padding: 1.5rem 2rem;
+    background: rgba(26,26,20,0.9);
+    border-bottom: 1px solid var(--line);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  .filter-btn {
+    font-family: 'Courier Prime', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 0.35rem 0.9rem;
+    border: 1px solid var(--line);
+    background: transparent;
+    color: rgba(245,240,232,0.6);
+    cursor: pointer;
+    transition: all 0.25s;
+    border-radius: 2px;
+  }
+
+  .filter-btn:hover, .filter-btn.active {
+    background: var(--gold);
+    color: var(--ink);
+    border-color: var(--gold);
+  }
+
+  /* ── TIMELINE LAYOUT ── */
+  .timeline-wrapper {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 3rem 1.5rem 6rem;
+    position: relative;
+  }
+
+  /* Central spine */
+  .timeline-wrapper::before {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 0; bottom: 0;
+    width: 1px;
+    background: linear-gradient(180deg, transparent, var(--gold) 5%, var(--gold) 95%, transparent);
+    transform: translateX(-50%);
+    opacity: 0.4;
+  }
+
+  /* ── ERA DIVIDER ── */
+  .era-divider {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 3rem 0 2rem;
+    position: relative;
+    z-index: 5;
+  }
+
+  .era-divider-inner {
+    background: var(--ink);
+    padding: 0.6rem 2rem;
+    border: 1px solid var(--gold-dark);
+    text-align: center;
+  }
+
+  .era-divider h2 {
+    font-family: 'Courier Prime', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.3em;
+    color: var(--gold);
+    text-transform: uppercase;
+  }
+
+  .era-divider p {
+    font-size: 0.75rem;
+    color: rgba(245,240,232,0.4);
+    font-style: italic;
+    margin-top: 0.2rem;
+  }
+
+  /* ── EVENT CARD ── */
+  .event {
+    display: grid;
+    grid-template-columns: 1fr 60px 1fr;
+    gap: 0;
+    margin-bottom: 1.5rem;
+    position: relative;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.5s, transform 0.5s;
+  }
+
+  .event.visible { opacity: 1; transform: translateY(0); }
+  .event.hidden { display: none; }
+
+  /* Left events: card on left, dot center */
+  .event.left .card { grid-column: 1; text-align: right; padding-right: 2rem; }
+  .event.left .dot-col { grid-column: 2; }
+  .event.left .spacer { grid-column: 3; }
+
+  /* Right events: spacer left, dot center, card right */
+  .event.right .spacer { grid-column: 1; }
+  .event.right .dot-col { grid-column: 2; }
+  .event.right .card { grid-column: 3; text-align: left; padding-left: 2rem; }
+
+  .dot-col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    z-index: 5;
+  }
+
+  .dot {
+    width: 14px; height: 14px;
+    border-radius: 50%;
+    border: 2px solid var(--gold);
+    background: var(--ink);
+    margin-top: 0.9rem;
+    flex-shrink: 0;
+    transition: transform 0.2s;
+    cursor: pointer;
+    position: relative;
+  }
+
+  .dot::after {
+    content: '';
+    position: absolute;
+    inset: -4px;
+    border-radius: 50%;
+    border: 1px solid transparent;
+    transition: border-color 0.2s;
+  }
+
+  .dot:hover::after { border-color: var(--gold); }
+  .dot:hover { transform: scale(1.3); }
+
+  .dot.type-colonial { background: var(--olive); border-color: var(--olive-mid); }
+  .dot.type-imperio { background: #3A2E5A; border-color: #6B5A9E; }
+  .dot.type-republica { background: var(--blue-dim); border-color: #4A6FA5; }
+  .dot.type-golpe { background: var(--red); border-color: var(--red-light); }
+  .dot.type-ditadura { background: #5A1A1A; border-color: #922B2B; }
+  .dot.type-ri { background: #1A4A3A; border-color: #2D8A6A; }
+  .dot.type-resistencia { background: #4A3A00; border-color: #C9A84C; }
+
+  .card {
+    cursor: pointer;
+    transition: transform 0.2s;
+  }
+
+  .card:hover { transform: translateX(4px); }
+  .event.right .card:hover { transform: translateX(-4px); }
+
+  .card-inner {
+    display: inline-block;
+    background: rgba(30,30,22,0.8);
+    border: 1px solid rgba(201,168,76,0.2);
+    padding: 0.9rem 1.1rem;
+    text-align: left;
+    transition: border-color 0.2s, background 0.2s;
+    position: relative;
+  }
+
+  .card:hover .card-inner {
+    border-color: rgba(201,168,76,0.5);
+    background: rgba(40,38,28,0.9);
+  }
+
+  .card-inner .date {
+    font-family: 'Courier Prime', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.2em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 0.3rem;
+  }
+
+  .card-inner h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--cream);
+    line-height: 1.3;
+    margin-bottom: 0.3rem;
+  }
+
+  .card-inner p {
+    font-size: 0.78rem;
+    color: rgba(245,240,232,0.55);
+    line-height: 1.5;
+    font-style: italic;
+  }
+
+  .card-type-badge {
+    display: inline-block;
+    font-family: 'Courier Prime', monospace;
+    font-size: 0.55rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 0.15rem 0.5rem;
+    margin-bottom: 0.4rem;
+    border-radius: 2px;
+  }
+
+  .badge-colonial { background: rgba(61,74,46,0.6); color: #A8C080; }
+  .badge-imperio { background: rgba(58,46,90,0.6); color: #B09ADE; }
+  .badge-republica { background: rgba(44,62,90,0.6); color: #7AAFDE; }
+  .badge-golpe { background: rgba(139,34,34,0.6); color: #F08080; }
+  .badge-ditadura { background: rgba(90,26,26,0.6); color: #E09090; }
+  .badge-ri { background: rgba(26,74,58,0.6); color: #70D4A8; }
+  .badge-resistencia { background: rgba(74,58,0,0.6); color: var(--gold-light); }
+
+  .click-hint {
+    font-family: 'Courier Prime', monospace;
+    font-size: 0.55rem;
+    color: rgba(201,168,76,0.4);
+    margin-top: 0.4rem;
+    letter-spacing: 0.1em;
+  }
+
+  /* ── MODAL ── */
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: var(--modal-bg);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s;
+    backdrop-filter: blur(4px);
+  }
+
+  .modal-overlay.open { opacity: 1; pointer-events: all; }
+
+  .modal {
+    background: #1C1C14;
+    border: 1px solid var(--gold-dark);
+    max-width: 720px;
+    width: 100%;
+    max-height: 88vh;
+    overflow-y: auto;
+    position: relative;
+    transform: translateY(20px);
+    transition: transform 0.3s;
+  }
+
+  .modal-overlay.open .modal { transform: translateY(0); }
+
+  .modal-header {
+    padding: 1.8rem 2rem 1.2rem;
+    border-bottom: 1px solid rgba(201,168,76,0.2);
+    position: relative;
+  }
+
+  .modal-close {
+    position: absolute;
+    top: 1.2rem; right: 1.5rem;
+    background: none;
+    border: 1px solid var(--line);
+    color: var(--cream);
+    width: 32px; height: 32px;
+    cursor: pointer;
+    font-size: 1.1rem;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.2s;
+  }
+
+  .modal-close:hover { background: var(--gold); color: var(--ink); border-color: var(--gold); }
+
+  .modal-date {
+    font-family: 'Courier Prime', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.25em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+  }
+
+  .modal h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    font-weight: 900;
+    color: var(--cream);
+    line-height: 1.25;
+  }
+
+  .modal-body {
+    padding: 1.5rem 2rem 2rem;
+  }
+
+  .modal-section {
+    margin-bottom: 1.5rem;
+  }
+
+  .modal-section-title {
+    font-family: 'Courier Prime', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.3em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 0.6rem;
+    padding-bottom: 0.4rem;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .modal-section p {
+    font-size: 0.88rem;
+    color: rgba(245,240,232,0.8);
+    line-height: 1.75;
+  }
+
+  .modal-section ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  .modal-section ul li {
+    font-size: 0.85rem;
+    color: rgba(245,240,232,0.75);
+    padding: 0.3rem 0;
+    border-bottom: 1px solid rgba(201,168,76,0.08);
+    line-height: 1.6;
+  }
+
+  .modal-section ul li::before {
+    content: '▸ ';
+    color: var(--gold);
+    font-size: 0.7rem;
+  }
+
+  .modal-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin-top: 1.2rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--line);
+  }
+
+  .modal-tag {
+    font-family: 'Courier Prime', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.1em;
+    color: rgba(201,168,76,0.7);
+    border: 1px solid rgba(201,168,76,0.2);
+    padding: 0.2rem 0.6rem;
+    border-radius: 2px;
+  }
+
+  /* Legend */
+  .legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.8rem;
+    justify-content: center;
+    padding: 1rem 2rem;
+    background: rgba(26,26,20,0.6);
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    margin-bottom: 0;
+  }
+
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-family: 'Courier Prime', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.1em;
+    color: rgba(245,240,232,0.6);
+    text-transform: uppercase;
+  }
+
+  .legend-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+  }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: var(--ink); }
+  ::-webkit-scrollbar-thumb { background: var(--gold-dark); border-radius: 2px; }
+
+  /* Mobile */
+  @media (max-width: 640px) {
+    .timeline-wrapper::before { left: 20px; }
+    .event { grid-template-columns: 40px 1fr; }
+    .event.left .card, .event.right .card { grid-column: 2; text-align: left; padding-left: 1.2rem; padding-right: 0; }
+    .event.left .dot-col, .event.right .dot-col { grid-column: 1; }
+    .event.left .spacer, .event.right .spacer { display: none; }
+    .modal h2 { font-size: 1.2rem; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-label">Linha do Tempo · CACD 2026</div>
+  <h1>Militares na<br><span>Política Nacional</span></h1>
+  <p class="header-sub">1500 – 2026 · Do descobrimento ao debate democrático contemporâneo</p>
+</header>
+
+<div class="legend">
+  <div class="legend-item"><div class="legend-dot" style="background:var(--olive-mid)"></div>Colonial</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#6B5A9E"></div>Império</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#4A6FA5"></div>República</div>
+  <div class="legend-item"><div class="legend-dot" style="background:var(--red-light)"></div>Golpe/Intervenção</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#922B2B"></div>Ditadura</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#2D8A6A"></div>Rel. Internacionais</div>
+  <div class="legend-item"><div class="legend-dot" style="background:var(--gold)"></div>Resistência</div>
+</div>
+
+<div class="filter-bar">
+  <button class="filter-btn active" data-filter="all">Todos</button>
+  <button class="filter-btn" data-filter="colonial">Colonial</button>
+  <button class="filter-btn" data-filter="imperio">Império</button>
+  <button class="filter-btn" data-filter="republica">República Velha</button>
+  <button class="filter-btn" data-filter="golpe">Golpes</button>
+  <button class="filter-btn" data-filter="ditadura">Ditadura 64–85</button>
+  <button class="filter-btn" data-filter="ri">Rel. Internacionais</button>
+  <button class="filter-btn" data-filter="resistencia">Resistência</button>
+</div>
+
+<div class="timeline-wrapper" id="timeline">
+</div>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modal-overlay">
+  <div class="modal" id="modal">
+    <div class="modal-header">
+      <button class="modal-close" id="modal-close">✕</button>
+      <div class="modal-date" id="modal-date"></div>
+      <h2 id="modal-title"></h2>
+    </div>
+    <div class="modal-body" id="modal-body"></div>
+  </div>
+</div>
+
+<script>
+const EVENTS = [
+  {
+    date: "1500–1549",
+    type: "colonial",
+    side: "right",
+    title: "Capitanias e estrutura militar colonial",
+    summary: "Administração portuguesa funde poder civil e militar desde o início.",
+    modal: {
+      contexto: "Portugal organiza o território colonial sob uma lógica militar-administrativa. Os capitães-donatários exercem poderes de governador, juiz e comandante militar simultaneamente. A figura do militar é inseparável do administrador colonial.",
+      fatos: [
+        "Capitanias hereditárias (1534): donatários com poderes civis e militares plenos",
+        "Criação de fortes e feitorias ao longo do litoral como postos militares",
+        "Primeira expedição colonizadora (Tomé de Sousa, 1549): acompanhada de 1.000 soldados",
+        "Organização das Ordenanças: milícias locais subordinadas ao governador-geral"
+      ],
+      ri: "A estrutura militar colonial responde à competição europeia pelo Atlântico Sul. França e Espanha pressionam o domínio português; os fortes militares demarcam soberania antes que tratados o façam. O Tratado de Tordesilhas (1494) já era um instrumento geopolítico que antecede e fundamenta a militarização do território.",
+      legado: "O modelo de poder misto civil-militar no Brasil nasce na colônia. A confusão entre as esferas permanecerá como traço estrutural até o século XX.",
+      tags: ["Colônia", "Capitanias", "Portugal", "Tordesilhas"]
+    }
+  },
+  {
+    date: "1624–1654",
+    type: "colonial",
+    side: "left",
+    title: "Invasões Holandesas e o primeiro conflito militar-geopolítico",
+    summary: "Holanda ocupa Pernambuco; batalhas definem fronteiras do domínio português.",
+    modal: {
+      contexto: "A Companhia das Índias Ocidentais (WIC) invade a Bahia em 1624 e o Nordeste a partir de 1630. O Brasil Holandês dura 24 anos e é a primeira experiência de administração não-portuguesa do território. A retomada portuguesa envolve articulação entre elites locais, tropas regulares e milícias.",
+      fatos: [
+        "1624: Holandeses tomam Salvador — portugueses retomam em 1625 com frota de socorro",
+        "1630: Invasão de Pernambuco — início do Brasil Holandês sob o Conde Maurício de Nassau",
+        "1645–1648: Insurreição Pernambucana — guerra de guerrilha liderada por André Vidal de Negreiros, Henrique Dias e Felipe Camarão",
+        "Batalhas dos Guararapes (1648 e 1649): vitórias decisivas que expulsam os holandeses"
+      ],
+      ri: "O conflito é um episódio da Guerra dos 80 Anos e das disputas pelo domínio colonial Atlântico. A restauração portuguesa (1640) e o Tratado de Westminster (1654) encerram formalmente o conflito. O Brasil torna-se peça de barganha diplomática europeia. A diplomacia portuguesa com a Inglaterra é reforçada como contrabalança à Holanda.",
+      legado: "Os Guararapes são elevados a mito fundador do Exército Brasileiro. O episódio demonstra pela primeira vez a capacidade de articulação militar entre grupos étnicos distintos (brancos, negros, indígenas) sob comando luso-brasileiro. Legado historiográfico de 'exército multiétnico' é instrumentalizado politicamente até hoje.",
+      tags: ["Holanda", "WIC", "Guararapes", "Pernambuco", "Atlântico"]
+    }
+  },
+  {
+    date: "1695",
+    type: "resistencia",
+    side: "right",
+    title: "Destruição de Palmares e militarização do controle racial",
+    summary: "Domingos Jorge Velho destrói Quilombo dos Palmares — bandeiras como braço militar do Estado.",
+    modal: {
+      contexto: "Palmares existiu por quase um século (c.1600–1695) como Estado quilombola no agreste pernambucano. Sua destruição representa a articulação entre poder estatal, interesses senhoriais e capacidade militar privada (bandeirantes) contra a resistência escravizada.",
+      fatos: [
+        "Zumbi dos Palmares resistiu a inúmeras expedições militares ao longo de décadas",
+        "Coroa portuguesa contrata Domingos Jorge Velho — bandeirante paulista — para destruir Palmares",
+        "1695: Cerco final e destruição do Mocambo do Macaco; Zumbi capturado e executado em 20/11",
+        "Bandeirantes como exército informal do Estado: força privatizada de expansão e controle"
+      ],
+      ri: "A manutenção do escravismo era pressuposto do modelo agroexportador colonial — e o modelo colonial era sustentáculo da inserção do Brasil no sistema mercantil atlântico. Palmares representava ameaça não só interna mas ao sistema de produção que alimentava as trocas comerciais com Europa.",
+      legado: "Zumbi torna-se símbolo da resistência negra brasileira. O 20 de novembro é Dia da Consciência Negra. A militarização do controle racial estabelece precedente de uso da força armada para manutenção de hierarquias sociais — padrão que reaparece na repressão a movimentos populares nos séculos XIX e XX.",
+      tags: ["Escravidão", "Palmares", "Zumbi", "Bandeirantes", "Resistência"]
+    }
+  },
+  {
+    date: "1808",
+    type: "imperio",
+    side: "left",
+    title: "Chegada da Família Real — Militarização do Estado Imperial",
+    summary: "A Corte portuguesa chega com tropa; reorganização militar é prioridade imediata.",
+    modal: {
+      contexto: "A transferência da Corte portuguesa para o Brasil, pressionada pela invasão napoleônica, traz consigo aproximadamente 15.000 pessoas — incluindo parte significativa do aparato militar e burocrático de Lisboa. O Brasil deixa de ser colônia administrativa e passa a sediar o Estado imperial.",
+      fatos: [
+        "1808: Criação da Academia Real Militar — primeiro ensino superior militar no Brasil",
+        "Reorganização do Exército: incorporação de tropas regulares portuguesas e mercenários europeus",
+        "1811–1812: Intervenção militar na Banda Oriental (atual Uruguai) — expansão territorial sul",
+        "1816: Invasão da Banda Oriental, declarando-a Província Cisplatina",
+        "Criação da Marinha como força estratégica atlântica"
+      ],
+      ri: "A vinda da Corte é resultado direto das Guerras Napoleônicas e da aliança luso-britânica (Tratados de Methuen, 1703). A Convenção Secreta (1807) e os Tratados de 1810 — abrindo portos e concedendo tarifas preferenciais à Grã-Bretanha — refletem a dependência estratégica portuguesa. O Brasil assume funções de Estado soberano sem romper com a dinâmica de subordinação. A militarização do Estado é resposta às ameaças externas (Napoleão, Espanha, movimentos independentistas sul-americanos).",
+      legado: "A Academia Real Militar forma as primeiras gerações de oficiais brasileiros com formação científica. O padrão de modernização militar via importação europeia (instrutores, técnicas, armamento) permanecerá como traço estrutural. A intervenção na Banda Oriental estabelece o precedente de uso da força nas relações com os países platinos.",
+      tags: ["Família Real", "Napoleão", "Academia Militar", "Platina", "Reino Unido"]
+    }
+  },
+  {
+    date: "1822",
+    type: "imperio",
+    side: "right",
+    title: "Independência: militares entre a ruptura e a manutenção",
+    summary: "D. Pedro I lidera a Independência; oficiais dividem-se entre Portugal e Brasil.",
+    modal: {
+      contexto: "A Independência do Brasil é um processo conservador: mantém a monarquia, a escravidão e as estruturas de poder. Os militares estão no centro da disputa — parte permanece leal a Portugal, outra adere ao projeto de D. Pedro I. A guerra de independência ocorre principalmente no Norte e Nordeste.",
+      fatos: [
+        "1821: Tropas portuguesas tentam recolonizar o Brasil — 'A Viradeira'",
+        "7/9/1822: D. Pedro I declara Independência — o 'Grito do Ipiranga'",
+        "1822–1823: Guerras de independência na Bahia, Maranhão, Piauí e Pará contra forças lusas",
+        "Contratação de mercenários: Thomas Cochrane lidera a Marinha; militares europeus na tropa terrestre",
+        "1823: Dissolução da Assembleia Constituinte — primeiro 'golpe' imperial"
+      ],
+      ri: "Reconhecimento britânico é condicionado: em 1825, o Brasil paga 2 milhões de libras a Portugal como 'indenização' pela independência — negociado sob mediação britânica. O Tratado com os EUA (1824) e o reconhecimento de Portugal (1825) consolidam a soberania. A dívida com a Inglaterra e a perpetuação do tráfico negreiro expõem as contradições da 'independência dependente'.",
+      legado: "A Independência estabelece o padrão do militar como árbitro político nacional. D. Pedro I exerce um papel que antecipa futuros 'salvadores da pátria' fardados. A contratação de mercenários revela a fragilidade das Forças Armadas nacionais — problema que mobilizará reformadores por décadas.",
+      tags: ["Independência", "D. Pedro I", "Inglaterra", "Soberania", "1822"]
+    }
+  },
+  {
+    date: "1825–1828",
+    type: "ri",
+    side: "left",
+    title: "Guerra da Cisplatina e derrota para a Argentina",
+    summary: "Brasil perde o Uruguai; surge o Estado-tampão platino como solução britânica.",
+    modal: {
+      contexto: "A disputa pela Banda Oriental (Cisplatina) resulta em guerra entre Brasil e Províncias Unidas do Rio da Prata (Argentina). A derrota militar brasileira e a mediação britânica resultam na criação do Uruguai como Estado independente e neutro.",
+      fatos: [
+        "1825: Uruguaios proclamam independência e pedem anexação às Províncias Unidas",
+        "1825: Declaração de guerra entre Brasil e Argentina",
+        "Batalha de Ituzaingó (1827): derrota do Exército Imperial",
+        "1828: Tratado do Rio de Janeiro — mediação britânica cria o Uruguai independente",
+        "Desgaste militar e financeiro fragiliza D. Pedro I internamente"
+      ],
+      ri: "A criação do Uruguai é arquitetada por Canning (Grã-Bretanha) para evitar hegemonia de qualquer potência platina — seja Brasil ou Argentina. O 'Estado-tampão' é instrumento clássico da geopolítica britânica. O Brasil perde território mas cede à pressão de sua principal credora e parceira comercial. A derrota precipita a abdicação de D. Pedro I (1831) e expõe a vulnerabilidade das FA brasileiras.",
+      legado: "Primeiro grande fracasso militar externo do Brasil independente. Gera crise de legitimidade que resulta na abdicação. Revela a limitação do poderio militar imperial e a dependência estrutural da diplomacia brasileira em relação à Grã-Bretanha. O Uruguai como 'Estado-tampão' é referência da geopolítica platina até hoje.",
+      tags: ["Cisplatina", "Uruguai", "Argentina", "Grã-Bretanha", "Geopolítica platina"]
+    }
+  },
+  {
+    date: "1831–1840",
+    type: "resistencia",
+    side: "right",
+    title: "Regências e Revoltas: militares nas revoltas populares",
+    summary: "Período de instabilidade; revoltas regionais expõem contradições do Estado imperial.",
+    modal: {
+      contexto: "Com a abdicação de D. Pedro I, o Brasil entra numa fase de regências instáveis. O Exército está fragmentado e politizado. Revoltas regionais eclodem em diversas províncias, com participação de militares de todos os lados.",
+      fatos: [
+        "Cabanagem (1835–40, Pará): revolta popular; militares do Exército reprimem com violência extrema — 30.000 mortos",
+        "Balaiada (1838–41, Maranhão): ex-militares e desertores entre os líderes",
+        "Sabinada (1837–38, Bahia): militares republicanos tentam separar a Bahia",
+        "Farroupilha (1835–45, RS): oficiais gaúchos proclamam República Rio-Grandense",
+        "Revolução Liberal de 1842 (SP/MG): civis e militares contra o Regresso conservador"
+      ],
+      ri: "O período coincide com pressão britânica para abolição do tráfico negreiro (Aberdeen Act, 1845). A instabilidade interna fragiliza a capacidade de resposta às demandas externas. A Grã-Bretanha aproveita o caos das regências para impor condições comerciais desfavoráveis. Internamente, o Estado recorre à força militar para manter a unidade territorial — diferentemente das repúblicas vizinhas que se fragmentaram.",
+      legado: "As revoltas das regências são o laboratório das contradições sociais do Império. O uso do Exército para reprimir movimentos populares define um padrão de relação entre FA e sociedade civil que perdurará. O 'Regresso' conservador e o 'Ato Adicional' de 1834 revelam que centralização e força militar são inseparáveis na manutenção da ordem imperial.",
+      tags: ["Regências", "Cabanagem", "Farroupilha", "Balaiada", "Revoltas populares"]
+    }
+  },
+  {
+    date: "1864–1870",
+    type: "ri",
+    side: "left",
+    title: "Guerra do Paraguai — o maior conflito da América do Sul",
+    summary: "Tríplice Aliança destrói o Paraguai; militares brasileiros ganham protagonismo político.",
+    modal: {
+      contexto: "O Brasil entra em guerra contra o Paraguai de Francisco Solano López em aliança com Argentina e Uruguai (Tríplice Aliança, 1865). O conflito dura 5 anos, mata estimadamente 60% da população paraguaia e transforma a estrutura política interna do Brasil.",
+      fatos: [
+        "1864: Brasil intervém no Uruguai — Solano López declara guerra ao Brasil",
+        "1865: Tratado da Tríplice Aliança — BR, ARG, URU contra Paraguai",
+        "Duque de Caxias lidera o Exército Imperial nas vitórias decisivas",
+        "1869: Queda de Assunção; 1870: morte de López — fim da guerra",
+        "60.000–100.000 soldados brasileiros participam; dezenas de milhares morrem",
+        "Paraguai perde 80% da população masculina adulta"
+      ],
+      ri: "A guerra tem dimensão geopolítica ampla: envolve disputa britânica e argentina sobre a região platina; há debate historiográfico sobre influência do capital britânico (tese de Leon Pomer, rebatida por Francisco Doratioto). O Tratado da Tríplice Aliança é secreto e assimétrico — Argentina e Brasil dividem territórios paraguaios. Brasil adquire Mato Grosso do Sul. O Paraguai perde acesso ao mar e fica na periferia econômica regional por décadas.",
+      legado: "A guerra transforma o Exército. O prestígio militar cresce exponencialmente; surgem lideranças como Caxias, Osório e Deodoro da Fonseca. O Exército passa a se ver como instituição salvadora da pátria — com missão política acima da hierarquia civil. O positivismo comtiano penetra nas escolas militares. O conflito acelera a crise do Império: a monarquia que comanda a guerra vitoriosa emerge politicamente fragilizada.",
+      tags: ["Paraguai", "Tríplice Aliança", "Caxias", "Deodoro", "Geopolítica platina", "Positivismo"]
+    }
+  },
+  {
+    date: "15 Nov 1889",
+    type: "golpe",
+    side: "right",
+    title: "Proclamação da República — o primeiro golpe militar brasileiro",
+    summary: "Deodoro da Fonseca depõe D. Pedro II; militares instalam a República sem eleições.",
+    modal: {
+      contexto: "A Proclamação é liderada pelo Marechal Deodoro da Fonseca e pelo Marechal Floriano Peixoto. Não há participação popular significativa. Benjamin Constant introduz o positivismo como ideologia do movimento republicano militar. D. Pedro II é exilado em Portugal.",
+      fatos: [
+        "13/5/1888: Abolição da Escravidão fragiliza base agrária do Império — militares apoiam",
+        "15/11/1889: Deodoro cerca o Ministério da Guerra — governo imperial rende-se sem combate",
+        "O próprio Deodoro relata que 'não sabia o que estava fazendo' — golpe quase acidental",
+        "Benjamin Constant: Positivismo como filosofia do novo Estado ('Ordem e Progresso')",
+        "1891: Deodoro fecha o Congresso — Floriano Peixoto o depõe"
+      ],
+      ri: "O reconhecimento internacional da República é rápido: EUA reconhecem em 3 dias. A República brasileira nasce na esteira do expansionismo norte-americano no Hemisfério (Doutrina Monroe). O Barão do Rio Branco, futuro chanceler, está em missão diplomática quando a República é proclamada. A República mantém a estrutura de inserção dependente na economia mundial — exportação de café, importação de manufaturados.",
+      legado: "O 15 de Novembro estabelece o padrão do golpe militar como mecanismo de mudança de regime no Brasil. A 'República dos Militares' (Deodoro e Floriano) revela desde o início a tensão entre tutela militar e governo civil. O positivismo das escolas militares justifica a intervenção: os militares como 'poder moderador' laico. Floriano Peixoto — 'o Marechal de Ferro' — usa a força para manter a república contra monarquistas e federalistas.",
+      tags: ["República", "Deodoro", "Floriano", "Positivismo", "Golpe", "1889"]
+    }
+  },
+  {
+    date: "1893–1895",
+    type: "golpe",
+    side: "left",
+    title: "Revolta da Armada e Federalista — militares contra militares",
+    summary: "Marinha vs. Exército; guerra civil no Sul expõe fraturas da República recém-nascida.",
+    modal: {
+      contexto: "A República Velha começa com crises militares simultâneas: a Revolta da Armada no Rio (Marinha contra Floriano) e a Revolução Federalista no Rio Grande do Sul (maragatos vs. chimangos). Os dois conflitos revelam que a República era frágil e dependia do equilíbrio de forças militares internas.",
+      fatos: [
+        "1893: Almirante Custódio de Melo proclama a revolta da Marinha contra Floriano Peixoto",
+        "Navios de guerra bombardeiam o Rio de Janeiro — inédito na história do país",
+        "1893–95: Revolução Federalista no RS — guerra civil entre republicanos e federalistas",
+        "Decapitações e violência extrema — o 'Degola' federalista",
+        "Floriano esmaga os dois movimentos e consolida a República oligárquica"
+      ],
+      ri: "A Revolta da Armada tem dimensão internacional: esquadra portuguesa e britânica ancorada na baía pressionam pelo reconhecimento dos rebeldes. EUA, sob Cleveland, recusam e apoiam Floriano — afirmando a Doutrina Monroe e sua influência na região. O chefe da estação naval americana no Rio, capitão Picking, age em favor de Floriano, impedindo o bloqueio rebelde.",
+      legado: "A derrota da Marinha consolida a hegemonia do Exército sobre a Marinha nas disputas políticas internas. O padrão de intervenção norte-americana, discreta mas decisiva, em favor do governo estabelecido é sinal do que será a relação Brasil-EUA no século XX.",
+      tags: ["Armada", "Floriano", "Federalistas", "EUA", "Doutrina Monroe"]
+    }
+  },
+  {
+    date: "1897",
+    type: "resistencia",
+    side: "right",
+    title: "Canudos — Exército contra o sertão",
+    summary: "Quatro expedições militares destroem Canudos; massacre expõe a República excludente.",
+    modal: {
+      contexto: "Antônio Conselheiro funda Canudos no sertão baiano em 1893. Até 1897, a comunidade reúne 35.000 pessoas. A República envia quatro expedições militares — as três primeiras são derrotadas humilhantemente pela resistência sertaneja. A quarta expedição, liderada pelo General Arthur Oscar de Andrade Guimarães, destrói Canudos em outubro de 1897.",
+      fatos: [
+        "1896: Primeira expedição — 100 soldados derrotados; segunda derrota humilhante em 1897",
+        "1897: Terceira expedição (3.000 soldados) derrotada — coronel Moreira César morto",
+        "Agosto-outubro 1897: Quarta expedição (8.000 soldados) — cerco e destruição total",
+        "Estima-se 15.000–25.000 mortos — homens, mulheres e crianças",
+        "Euclides da Cunha cobreo conflito para o jornal O Estado de S. Paulo"
+      ],
+      ri: "Canudos é episódio de política interna, mas sua repercussão internacional é significativa. A imprensa europeia e norte-americana acompanha o conflito. A narrativa republicana de 'monarquismo' e 'fanatismo' serve para justificar internacionalmente o massacro. A Questão de Missões (Acre) e o ativismo diplomático do Barão do Rio Branco ocorrem em paralelo — mostrando como o Estado brasileiro projetava poder externamente enquanto massacrava internamente.",
+      legado: "'Os Sertões' (1902) de Euclides da Cunha é o mais importante documento do conflito e da violência estatal. O texto revela as contradições entre o discurso civilizatório da República e a realidade do extermínio. Canudos torna-se referência central de qualquer análise sobre militarismo, exclusão social e violência de Estado no Brasil.",
+      tags: ["Canudos", "Euclides da Cunha", "Sertão", "Violência de Estado", "República"]
+    }
+  },
+  {
+    date: "1904",
+    type: "resistencia",
+    side: "left",
+    title: "Revolta da Vacina — militares na rebelião popular",
+    summary: "Soldados e civis se unem contra vacinação compulsória; Rio de Janeiro revoltado.",
+    modal: {
+      contexto: "A campanha de vacinação compulsória contra a varíola, liderada por Oswaldo Cruz e apoiada pelo presidente Rodrigues Alves, provoca revolta popular no Rio de Janeiro. Militares positivistas da Escola Militar da Praia Vermelha se juntam aos revoltosos, tentando um golpe.",
+      fatos: [
+        "Novembro 1904: Revolta popular contra obrigatoriedade da vacina — barricadas no Rio",
+        "Alunos da Escola Militar da Praia Vermelha aderem à revolta",
+        "General Travassos tenta aderir com tropas regulares — fracassa",
+        "Governo derrota a revolta e fecha a Escola Militar",
+        "Florianistas e jacobinos civis aproveitam para tentar golpe republicano radical"
+      ],
+      ri: "A vacinação compulsória tem como pano de fundo a necessidade de 'saneamento' do Rio de Janeiro para projetar imagem de civilização europeia e atrair investimentos externos. O 'bota-abaixo' de Pereira Passos e a política sanitarista de Oswaldo Cruz eram parte de um projeto de modernização urbana voltado para o mercado externo. A revolta popular expõe as contradições entre modernização cosmética e exclusão social.",
+      legado: "A Revolta da Vacina é referência sobre as tensões entre modernização autoritária e direitos populares. O episódio revela que o Exército não era monolítico: havia uma ala positivista-jacobina disposta a insurgência. A derrota da revolta consolida o poder das oligarquias cafeeiras sobre o Estado republican.",
+      tags: ["Vacina", "Rio de Janeiro", "Positivismo", "Revolta", "Escola Militar"]
+    }
+  },
+  {
+    date: "1910",
+    type: "resistencia",
+    side: "right",
+    title: "Revolta da Chibata — marinheiros negros contra o castigo corporal",
+    summary: "João Cândido lidera revolta na Marinha; questão racial e militarismo se cruzam.",
+    modal: {
+      contexto: "Marinheiros, em sua maioria negros e mestiços, se rebelam contra o castigo da chibata ainda vigente na Marinha brasileira — 22 anos após a abolição. João Cândido 'o Almirante Negro' lidera a tomada de navios de guerra. O governo cede, mas depois prende e tortura os revoltosos.",
+      fatos: [
+        "22/11/1910: Marinheiros tomam 4 navios de guerra, inclusive o Minas Gerais",
+        "João Cândido negocia com o Congresso — governo cede e aboliu a chibata",
+        "Governo decreta anistia, mas logo reverte — centenas de marinheiros são presos",
+        "22/11–3/12: Revolta da Ilha das Cobras — reprimida com violência; mortos e deportados para a Amazônia",
+        "João Cândido é preso e declarado louco — internado no Hospício Nacional"
+      ],
+      ri: "O Brasil havia adquirido o Minas Gerais e o São Paulo — os maiores navios de guerra da época — como parte de uma política de poder naval que pretendia rivalizar com a Argentina (que também comprara navios). A Revolta da Chibata expõe que o gigante naval brasileiro era operado por marinheiros submetidos a condições análogas à escravidão. A imprensa internacional, especialmente britânica, cobre a revolta com atenção.",
+      legado: "João Cândido é símbolo maior da resistência negra no contexto militar. A Revolta da Chibata é marco do movimento negro brasileiro e da crítica à continuidade das hierarquias raciais nas instituições militares pós-abolição. A historiografia recente recupera o episódio como central na compreensão da República excludente.",
+      tags: ["Chibata", "João Cândido", "Marinha", "Raça", "Revolta", "1910"]
+    }
+  },
+  {
+    date: "1922",
+    type: "resistencia",
+    side: "left",
+    title: "O 18 do Forte de Copacabana — o tenentismo",
+    summary: "Revolta tenentista inaugura geração que moldará décadas de política brasileira.",
+    modal: {
+      contexto: "Jovens tenentes e capitães do Exército se rebelam contra a República Velha e as oligarquias do café-com-leite. O movimento tenentista (1922–1930) é a primeira crise sistêmica do Exército Brasileiro e antecipa a Revolução de 1930. Os '18 do Forte' são o episódio mais simbólico.",
+      fatos: [
+        "Julho 1922: Revolta militar no Rio, Mato Grosso e no Nordeste",
+        "18 do Forte de Copacabana: grupo de revoltosos marcha pela praia em confronto suicida",
+        "Sobreviventes: Siqueira Campos e Eduardo Gomes — tornam-se ícones tenentistas",
+        "1924: Segunda revolta tenentista em São Paulo — semanas de combates urbanos",
+        "1925–27: Coluna Prestes percorre 25.000 km pelo interior do Brasil"
+      ],
+      ri: "O tenentismo reflete influências externas: o reformismo militar latino-americano da época, o impacto da Primeira Guerra Mundial nas concepções de Estado e modernização. A Coluna Prestes percorre o Brasil enquanto internacionalmente os ventos do comunismo (URSS), fascismo (Itália) e liberalismo democrático competem. Luís Carlos Prestes — 'o Cavaleiro da Esperança' — se tornará líder comunista após exílio na Argentina.",
+      legado: "O tenentismo é a 'escola política' de Juarez Távora, Eduardo Gomes, Eurico Gaspar Dutra, e indiretamente de toda a geração de militares que dominou a política brasileira até 1985. O movimento critica a corrupção oligárquica mas não tem projeto social claro — abrindo espaço para ser instrumentalizado por Vargas em 1930.",
+      tags: ["Tenentismo", "Copacabana", "Coluna Prestes", "República Velha", "1922"]
+    }
+  },
+  {
+    date: "1930",
+    type: "golpe",
+    side: "right",
+    title: "Revolução de 1930 — militares instalam Vargas no poder",
+    summary: "Golpe liderado por tenentes e generais encerra a República Velha; Vargas governa por 15 anos.",
+    modal: {
+      contexto: "A eleição fraudada de Júlio Prestes (SP) contra Getúlio Vargas (RS) leva à aliança entre tenentes, oligarquias dissidentes (MG, RS, PB) e facções militares. O Exército derruba Washington Luís e entrega o poder a Vargas. É o fim da política do café-com-leite.",
+      fatos: [
+        "Pacto entre RGS, MG, PB — a Aliança Liberal",
+        "Assassinato de João Pessoa (PB) serve de pretexto para a revolta",
+        "Outubro 1930: Juntas militares depõem Washington Luís e entregam o poder a Vargas",
+        "Vargas governa como ditador provisório (1930–34), presidente constitucional (1934–37), ditador do Estado Novo (1937–45)",
+        "Golpe dentro do golpe: Estado Novo (1937) é articulado pelos militares com Vargas"
+      ],
+      ri: "A Revolução de 1930 ocorre no contexto da Grande Depressão (1929). O colapso do preço do café expõe a fragilidade do modelo agroexportador. A Revolução representa uma inflexão industrializante — mas mantém a inserção dependente. Vargas navegará habilmente entre EUA e Alemanha na Segunda Guerra, até a entrada do Brasil ao lado dos Aliados em 1942.",
+      legado: "Getúlio Vargas é o político mais importante do século XX brasileiro. A Revolução de 1930 inaugura o Estado desenvolvimentista, o trabalhismo e a industrialização via Estado. Os militares tornam-se árbitros permanentes do sistema político — o golpe de 1930 estabelece que o Exército pode e deve intervir quando a 'ordem' estiver ameaçada.",
+      tags: ["Vargas", "1930", "República Velha", "Golpe", "Grande Depressão"]
+    }
+  },
+  {
+    date: "1932",
+    type: "resistencia",
+    side: "left",
+    title: "Revolução Constitucionalista — São Paulo contra Vargas",
+    summary: "SP mobiliza milícias civis; Exército Federal esmaga a revolta em 3 meses.",
+    modal: {
+      contexto: "São Paulo — excluída do poder federal pela Revolução de 1930 — se rebela exigindo constituição e governo civil. A revolta mobiliza civis paulistas (MMDC) e forças militares locais contra o Exército Federal. Derrota militar, mas vitória política: Vargas convoca a Constituinte.",
+      fatos: [
+        "9/7/1932: Início da revolta em São Paulo",
+        "Tropas federais de quatro direções cercam SP",
+        "Voluntários civis compõem a maioria das forças paulistas",
+        "Outubro 1932: Capitulação paulista após 87 dias",
+        "Vargas convoca a Assembleia Constituinte — SP 'vence perdendo'"
+      ],
+      ri: "A revolta tem dimensão simbólica no campo das relações federativas e da identidade paulista. São Paulo tentou importar armas e munições — com resultados limitados. O conflito mostrou que a hegemonia militar federal era irreversível. A derrota paulista consolida o poder centralizador de Vargas que usará o período para reorganizar o Estado segundo modelo inspirado no corporativismo europeu.",
+      legado: "A Revolução de 32 é o último conflito armado interno de grande escala no Brasil. O MMDC e os 'constitucionalistas' tornam-se símbolos da identidade paulista. A derrota militar/vitória política antecipa o padrão de negociação-dentro-da-derrota que marcará futuras relações entre oposição e poder militar no Brasil.",
+      tags: ["São Paulo", "1932", "Constitucionalismo", "Vargas", "Federalismo"]
+    }
+  },
+  {
+    date: "1935",
+    type: "golpe",
+    side: "right",
+    title: "Intentona Comunista — o anticomunismo entra na doutrina militar",
+    summary: "Revolta do PCB fracassa; Vargas usa o evento para consolidar o Estado de exceção.",
+    modal: {
+      contexto: "O Partido Comunista Brasileiro (PCB), com apoio da Internacional Comunista (Komintern), organiza revoltas em Natal, Recife e Rio de Janeiro. As revoltas são debeladas em dias. Vargas usa o episódio para decretar estado de guerra e preparar o caminho para o Estado Novo (1937).",
+      fatos: [
+        "Novembro 1935: Revoltas em Natal (domina a cidade por 4 dias), Recife e Rio",
+        "No Rio: oficiais comunistas tentam tomar a base da Aviação — mortos no dormitório",
+        "Luís Carlos Prestes e Olga Benario (alemã-judia) presos",
+        "Olga deportada para a Alemanha nazista — morta em campo de concentração",
+        "Vargas usa o 'Plano Cohen' (forjado!) para justificar o Estado Novo em 1937"
+      ],
+      ri: "A Intentona está inserida na dinâmica global da Guerra Fria avant la lettre: URSS/Komintern vs. potências liberais e fascistas. O caso Olga Benario tem repercussão internacional — denúncias de grupos antifascistas europeus. Vargas, ao mesmo tempo, negociava aproximação com a Alemanha nazista (missões comerciais, fornecimento de algodão e minerais). O anticomunismo torna-se elemento central da doutrina militar brasileira — persistindo até 1985.",
+      legado: "O anticomunismo passa a ser pilar ideológico das Forças Armadas. A 'Intentona' é usada e reusada como justificativa de intervenção política militar até o golpe de 1964. A história de Olga Benario — deportada pelo governo Vargas para a morte — é um dos maiores escândalos humanitários do período.",
+      tags: ["PCB", "Comunismo", "Vargas", "Estado Novo", "Olga Benario", "URSS"]
+    }
+  },
+  {
+    date: "1937",
+    type: "golpe",
+    side: "left",
+    title: "Estado Novo — golpe de Vargas com apoio militar",
+    summary: "Ditadura civil-militar; censura, sindicatos controlados, industrialização autoritária.",
+    modal: {
+      contexto: "Em novembro de 1937, Vargas — com apoio dos generais Eurico Dutra e Góes Monteiro — cancela as eleições presidenciais previstas, fecha o Congresso e outorga uma nova Constituição de inspiração fascista (a 'Polaca'). O Estado Novo dura até 1945.",
+      fatos: [
+        "Plano Cohen: documento forjado pelo integralista Olímpio Mourão — inventou ameaça comunista",
+        "10/11/1937: Vargas anuncia o Estado Novo pelo rádio",
+        "General Góes Monteiro: arquiteto militar do Estado Novo",
+        "CLT (1943): legislação trabalhista que cooptou o movimento operário",
+        "1938: Revolta integralista fracassa — Vargas também reprime a direita"
+      ],
+      ri: "O Estado Novo navega entre os Aliados e o Eixo até 1942. Vargas negocia a usina de Volta Redonda com os EUA (1940) e mantém relações com a Alemanha. A entrada do Brasil na 2ª Guerra (1942) — após afundamento de navios brasileiros por submarinos alemães — é decisão também militar. A Missão Militar Americana (1942) institutionaliza a influência dos EUA nas FA brasileiras.",
+      legado: "O Estado Novo é o modelo de modernização autoritária brasileiro. A industrialização por substituição de importações, a legislação trabalhista corporativa e o Estado forte são heranças do período. A relação entre militares e desenvolvimento nacional é forjada neste momento — e reaparece no golpe de 1964.",
+      tags: ["Estado Novo", "Vargas", "Ditadura", "Fascismo", "Industrialização"]
+    }
+  },
+  {
+    date: "1942–1945",
+    type: "ri",
+    side: "right",
+    title: "FEB na 2ª Guerra Mundial — Brasil no front italiano",
+    summary: "Força Expedicionária Brasileira combate na Itália; 'cobra fumando' vira símbolo.",
+    modal: {
+      contexto: "O Brasil entra na Segunda Guerra em agosto de 1942, após afundamento de navios por submarinos do Eixo. A Força Expedicionária Brasileira (FEB) — 25.000 homens — combate na Itália entre 1944 e 1945, sob o comando do General Mascarenhas de Morais, integrada ao V Exército americano.",
+      fatos: [
+        "1942: 31 navios brasileiros afundados por submarinos alemães — comoção nacional",
+        "22/8/1942: Declaração de guerra ao Eixo",
+        "1944: FEB parte para a Itália — 'Cobra fumando' como mascote sarcástica",
+        "Monte Castelo: batalha símbolo da FEB — tomada em fevereiro de 1945",
+        "FEB captura 20.573 prisioneiros alemães e italianos — mais do que qualquer outra força aliada proporcionalmente"
+      ],
+      ri: "A participação na guerra é resultado da política de equidistância pragmática de Vargas: ele negociou com EUA (base de Natal, financiamento de Volta Redonda) em troca de participar do esforço de guerra. A base de Natal foi a maior base aérea dos Aliados no Atlântico. A Conferência de Bretton Woods (1944), o FMI e o Banco Mundial surgem nesse contexto — Brasil participa como aliado dos vencedores. O general Dutra, futuro presidente, coordena a relação com o Estado-Maior americano.",
+      legado: "A FEB é o único exército sul-americano a combater na Europa na 2ª Guerra. O retorno dos 'pracinhas' reforça a contradição: soldados que lutaram contra o nazifascismo voltam para uma ditadura. Essa tensão acelera a queda de Vargas (1945). A interoperabilidade com o Exército americano institucionaliza a influência militar dos EUA no Brasil — laço que dura até o golpe de 1964 e além.",
+      tags: ["FEB", "Segunda Guerra", "Itália", "EUA", "Monte Castelo", "Pracinhas"]
+    }
+  },
+  {
+    date: "Out 1945",
+    type: "golpe",
+    side: "left",
+    title: "Deposição de Vargas — militares restauram a democracia",
+    summary: "Generais Dutra e Góes Monteiro depõem Vargas; eleições livres em dezembro.",
+    modal: {
+      contexto: "Com o fim da 2ª Guerra e a contradição insustentável entre ditadura interna e luta antifascista externa, os militares pressionam Vargas a deixar o poder. Em outubro de 1945, os generais apresentam-lhe o ultimato. Vargas renuncia. Em dezembro, Dutra é eleito presidente.",
+      fatos: [
+        "1945: Vargas anuncia eleições — mas procrastina e cria o 'queremismo' popular",
+        "29/10/1945: Exército exige a renúncia — Vargas aceita",
+        "General Góes Monteiro e Eurico Dutra lideram o movimento deposicionista",
+        "Dezembro 1945: Dutra eleito presidente — primeira eleição livre desde 1930",
+        "1946: Promulgada nova Constituição democrática"
+      ],
+      ri: "A deposição de Vargas é influenciada pelo clima internacional pós-guerra: a ONU, os princípios da Carta do Atlântico e a retórica democrática dos Aliados tornam insustentável a manutenção de ditaduras na América Latina. Os EUA, parceiros privilegiados do Brasil, pressionam pela democratização. A Guerra Fria está começando — e os militares brasileiros precisam se posicionar no novo eixo anticomunismo.",
+      legado: "O episódio revela que as Forças Armadas não tinham compromisso com nenhum líder específico — nem mesmo Vargas, que havia sido seu aliado por 15 anos. A lealdade era com a 'ordem' e com a preservação da instituição militar. O padrão se repetirá: os militares apoiam líderes até que os considerem inconvenientes ou perigosos para a ordem.",
+      tags: ["Vargas", "Deposição", "1945", "Democracia", "Dutra", "Pós-guerra"]
+    }
+  },
+  {
+    date: "Ago 1954",
+    type: "golpe",
+    side: "right",
+    title: "Crise do Segundo Vargas — suicídio e a 'carta testamento'",
+    summary: "Militares pressionam Vargas; ele se mata e transforma a crise em vitória política.",
+    modal: {
+      contexto: "Vargas retorna ao poder pela eleição de 1950. Em 1954, uma crise militar acirrada — envolvendo a UDN, setores do Exército e a imprensa de Carlos Lacerda — leva a um ultimato para sua renúncia. Vargas escolhe o suicídio como gesto político.",
+      fatos: [
+        "Agosto 1954: Manifestos militares exigem a renúncia de Vargas",
+        "24/8/1954: Vargas se suicida com um tiro no coração no Palácio do Catete",
+        "Carta Testamento: 'Saio da vida para entrar na História'",
+        "Manifestações populares massivas contra a UDN e o golpismo",
+        "Vice Café Filho assume — mas o suicídio muda o jogo político"
+      ],
+      ri: "O suicídio de Vargas é interpretado como protesto contra a dependência externa e a pressão norte-americana sobre a política econômica brasileira. A carta testamento menciona explicitamente grupos internacionais e sua pressão sobre o Brasil. O contexto de Guerra Fria e anticomunismo americano havia isolado Vargas, visto como populista perigoso.",
+      legado: "O suicídio de Vargas é o momento político mais dramático da história republicana brasileira. Transforma uma derrota política em vitória simbólica. Vargas morto torna-se mais poderoso que Vargas vivo — seu projeto político é herdado por Jango e pelo PTB. A 'carta testamento' é lida e relida por décadas como manifesto do nacional-desenvolvimentismo.",
+      tags: ["Vargas", "Suicídio", "1954", "Nacional-desenvolvimentismo", "Guerra Fria"]
+    }
+  },
+  {
+    date: "1954–1961",
+    type: "ri",
+    side: "left",
+    title: "JK e Jânio: militares, OTAN e política externa independente",
+    summary: "JK navega entre EUA e URSS; Jânio condecora Che e renuncia misteriosamente.",
+    modal: {
+      contexto: "Juscelino Kubitschek (1956–61) implementa o Plano de Metas e constrói Brasília. Sua política externa é marcada pela 'Operação Pan-Americana' — proposta de desenvolvimento multilateral para o hemisfério. Jânio Quadros (1961) adota uma política externa 'independente' que irrita os EUA.",
+      fatos: [
+        "JK cria Brasília — decisão estratégica de interiorização e integração nacional",
+        "1958: 'Operação Pan-Americana' — proposta ao Eisenhower de plano Marshall para a AL",
+        "JK mantém relações com URSS, recusa rompimento com Cuba",
+        "1961: Jânio condecora Che Guevara com a Ordem do Cruzeiro do Sul",
+        "Agosto 1961: Jânio renuncia abruptamente — motivos jamais esclarecidos"
+      ],
+      ri: "A 'Política Externa Independente' tem raízes no CACD: representa a percepção de que o Brasil devia navegar entre os blocos e ampliar seu espaço de manobra. JK e Jânio antecipam o modelo não-alinhado que Jango e depois a ditadura (em versão diferente) desenvolverão. Os militares observam com desconfiança — a política externa autônoma e a proximidade com Cuba são alvos dos que planejam o golpe de 1964.",
+      legado: "A 'Política Externa Independente' do período JK-Jânio-Jango é a primeira formulação sistemática da autonomia brasileira nas relações internacionais. É precursora do conceito de 'autonomia pela participação' (Fonseca Jr.) e referência para a análise da inserção internacional brasileira.",
+      tags: ["JK", "Jânio", "Política Externa Independente", "Cuba", "Brasília", "PEI"]
+    }
+  },
+  {
+    date: "Ago–Set 1961",
+    type: "golpe",
+    side: "right",
+    title: "Crise da Renúncia de Jânio e o Veto Militar a Jango",
+    summary: "Ministros militares veiam a posse de Jango; RS mobiliza-se; solução parlamentarista.",
+    modal: {
+      contexto: "Com a renúncia de Jânio Quadros, o vice-presidente João Goulart (Jango) deveria assumir. Mas os ministros militares (Odílio Denys, Sílvio Heck e Gabriel Grün Moss) veiam sua posse, alegando que Jango era comunista. O Rio Grande do Sul, sob Leonel Brizola, mobiliza 'Cadeia da Legalidade'. Solução: parlamentarismo, que dilui os poderes de Jango.",
+      fatos: [
+        "25/8/1961: Jânio renuncia; ministros militares veiam a posse de Jango",
+        "Brizola lidera a 'Campanha da Legalidade' no RS",
+        "General Machado Lopes, com a tropa gaúcha, apoia a legalidade",
+        "Solução: Emenda Constitucional parlamentarista — Jango assume com poderes reduzidos",
+        "1963: Referendo restaura o presidencialismo — Jango com plenos poderes"
+      ],
+      ri: "A crise ocorre no contexto da Revolução Cubana (1959) e da máxima tensão da Guerra Fria. Os militares brasileiros, treinados pela doutrina anticomunista americana (Escola das Américas), veem Jango como vetor da expansão cubana. Os EUA apoiam discretamente o veto militar. A solução parlamentarista é um compromisso que adia mas não resolve a crise.",
+      legado: "A 'Campanha da Legalidade' é o maior movimento civil em defesa da Constituição até então. O general Machado Lopes — que apoiou a legalidade — é figura rara: militar que resiste ao golpismo. A solução parlamentarista cria o precedente de alterar o sistema de governo via pressão militar — sem eleições, sem referendo.",
+      tags: ["Jânio", "Jango", "Legalidade", "Brizola", "Guerra Fria", "Cuba"]
+    }
+  },
+  {
+    date: "31 Mar–1 Abr 1964",
+    type: "golpe",
+    side: "left",
+    title: "Golpe Militar de 1964 — a ditadura que duraria 21 anos",
+    summary: "Militares depõem Jango; apoio dos EUA; início da ditadura civil-militar.",
+    modal: {
+      contexto: "O golpe de 31 de março/1º de abril de 1964 derruba o presidente João Goulart. Articulado pelos generais Castelo Branco, Costa e Silva e pelo empresariado civil (IPES/IBAD), conta com apoio dos EUA (Operação Brother Sam) e de setores da Igreja, imprensa e classe média. Jango parte para o Uruguai sem resistir.",
+      fatos: [
+        "13/3/1964: Comício das Reformas de Base — Jango anuncia reformas radicais",
+        "19/3/1964: 'Marcha da Família com Deus pela Liberdade' — 500.000 em SP",
+        "31/3/1964: General Olímpio Mourão Filho inicia movimento em Juiz de Fora",
+        "1/4/1964: Jango parte para o Uruguai sem resistência",
+        "Operação Brother Sam: porta-aviões e petroleiros americanos a caminho do Brasil — desnecessários",
+        "9/4/1964: Primeiro Ato Institucional — cassações e poderes de exceção"
+      ],
+      ri: "Os EUA reconhecem o novo governo em 24 horas — antes mesmo da confirmação constitucional. A 'Operação Brother Sam' (navios de guerra americanos) demonstra que Washington aprovara o golpe preventivamente. Lincoln Gordon, embaixador dos EUA, teve papel ativo. O golpe é parte do padrão americano de apoio a regimes militares na América Latina durante a Guerra Fria.",
+      legado: "O golpe de 1964 inaugura a mais longa e sistemática ditadura da história brasileira. 21 anos de regime autoritário, com cinco generais-presidentes, torturas, exílios, mortes e desaparecidos. A Lei da Anistia (1979) e a Comissão Nacional da Verdade (2014) são marcos do processo incompleto de justiça de transição.",
+      tags: ["1964", "Golpe", "EUA", "Guerra Fria", "Castelo Branco", "Ditadura"]
+    }
+  },
+  {
+    date: "1964–1968",
+    type: "ditadura",
+    side: "right",
+    title: "Castelo Branco e Costa e Silva — institucionalizando a ditadura",
+    summary: "AI-1 a AI-5: os atos institucionais aprofundam o regime; oposição é esmagada.",
+    modal: {
+      contexto: "Os primeiros anos da ditadura são marcados pela disputa entre 'linha dura' (radicalização) e 'castelistas' (institucionalização). Castelo Branco tenta dar aparência legal ao regime; Costa e Silva cede à 'linha dura' e decreta o AI-5 em 1968.",
+      fatos: [
+        "1964: AI-1 — primeiras cassações e suspensão de direitos políticos",
+        "1965: AI-2 — extingue os partidos; cria MDB e ARENA",
+        "1967: Nova Constituição — formaliza o regime",
+        "13/12/1968: AI-5 — o golpe dentro do golpe; fecha o Congresso; censura total",
+        "Torturas sistematizadas nos DOI-CODIs; OBAN financiada por empresas"
+      ],
+      ri: "O Brasil sob a ditadura aprofunda os laços com os EUA. A Escola Superior de Guerra (ESG) e a Doutrina de Segurança Nacional (DSN) institucionalizam a influência da doutrina anticomunista americana. O Brasil participa ativamente da Operação Condor — rede de cooperação repressiva entre ditaduras sul-americanas (argentina, chilena, paraguaia, uruguaia, boliviana) com suporte da CIA.",
+      legado: "O AI-5 é o instrumento mais autoritário da ditadura. Fecha o Congresso, suspende habeas corpus, institucionaliza a tortura. Os '10 anos de chumbo' que se seguem são o período mais violento. A Operação Condor coloca o Brasil no centro de uma rede de crimes contra a humanidade de escala regional.",
+      tags: ["AI-5", "Ditadura", "Castelo Branco", "Costa e Silva", "Tortura", "Condor"]
+    }
+  },
+  {
+    date: "1968–1974",
+    type: "ditadura",
+    side: "left",
+    title: "Anos de Chumbo — repressão máxima e 'milagre econômico'",
+    summary: "Tortura, guerrilha, milagre econômico: a face mais violenta da ditadura.",
+    modal: {
+      contexto: "O período Médici (1969–74) combina repressão máxima com crescimento econômico acelerado. A guerrilha urbana (ALN, MR-8, VAR-Palmares) e rural (Araguaia) é esmagada. A tortura torna-se política de Estado. O 'milagre econômico' legitima internamente o regime.",
+      fatos: [
+        "1969: Sequestro do embaixador americano Burke Elbrick — trocado por 15 presos políticos",
+        "1972–74: Guerrilha do Araguaia — PCdoB; 69 guerrilheiros mortos e desaparecidos",
+        "DOI-CODI e OBAN: centros de tortura em São Paulo e no Rio",
+        "Carlos Lamarca e Carlos Marighella: líderes guerrilheiros assassinados",
+        "'Milagre econômico': PIB cresce 11% ao ano (1968–73)"
+      ],
+      ri: "O sequestro de Burke Elbrick (embaixador americano) e de diplomatas de outros países cria tensão nas relações externas. O Brasil é alvo de denúncias internacionais de tortura na ONU e em Anistia Internacional. A ditadura responde com propaganda ('Brasil: ame-o ou deixe-o'). O 'milagre' é financiado por endividamento externo — a dívida externa saltará de US$5bi em 1964 para US$100bi em 1985.",
+      legado: "A Guerrilha do Araguaia é o episódio mais sangrento da repressão — com desaparecimentos que permanecem sem resolução judicial. A CNV (2014) documentou 434 mortos e desaparecidos políticos. O modelo econômico do 'milagre' — crescimento com endividamento e desigualdade — cria a 'crise da dívida' dos anos 1980.",
+      tags: ["Anos de Chumbo", "Médici", "Tortura", "Guerrilha", "Araguaia", "Milagre Econômico"]
+    }
+  },
+  {
+    date: "1974–1985",
+    type: "ditadura",
+    side: "right",
+    title: "Abertura, Anistia e Transição — a saída negociada",
+    summary: "Geisel e Figueiredo conduzem a 'distensão lenta, gradual e segura'; civis retornam em 1985.",
+    modal: {
+      contexto: "Ernesto Geisel (1974–79) inicia a abertura política 'lenta, gradual e segura'. A 'linha dura' resiste — bombas em bancas de jornais, morte do jornalista Herzog, tentativa de bomba no Riocentro (1981). Figueiredo conduz a transição; em 1985, Tancredo Neves é eleito pelo Colégio Eleitoral.",
+      fatos: [
+        "1974: Geisel anuncia a 'distensão' — MDB vence as eleições parlamentares",
+        "1975: Morte de Vladimir Herzog nas dependências do DOI-CODI — repercussão nacional",
+        "1977: 'Pacote de Abril' — Geisel fecha o Congresso para garantir maioria",
+        "1979: Lei de Anistia — anistia a presos políticos E a torturadores",
+        "1984: Diretas Já — maior movimento popular da história brasileira",
+        "1985: Tancredo Neves eleito; morre antes de tomar posse — Sarney assume"
+      ],
+      ri: "A abertura brasileira ocorre no contexto de crise da dívida externa (choque do petróleo 1973/79, alta dos juros americanos em 1979). A pressão do FMI, do Banco Mundial e dos credores externos é determinante. O declínio da ditadura é também declínio do modelo econômico. Internacionalmente, o Brasil começa a adotar posições mais autônomas — reconhece Angola (MPLA, 1975), assume relação com a África independente.",
+      legado: "A transição 'pelo alto' — sem ruptura, sem julgamento dos torturadores — é o calcanhar de Aquiles da democracia brasileira. A Lei de Anistia (1979), reinterpretada pelo STF em 2010 como abrangendo também os agentes do Estado, impede a responsabilização penal. O debate sobre impunidade persiste e reaparece nos momentos de crise democrática.",
+      tags: ["Abertura", "Anistia", "Diretas Já", "Geisel", "Figueiredo", "Transição"]
+    }
+  },
+  {
+    date: "1985–1989",
+    type: "republica",
+    side: "left",
+    title: "Nova República — militares sob tutela constitucional (ainda que parcial)",
+    summary: "Constituição de 1988 redefine o papel das FA; militares mantêm poder de tutela informal.",
+    modal: {
+      contexto: "A Constituição de 1988 é o marco jurídico da Nova República. O artigo 142, que atribui às FA a missão de 'garantir os poderes constitucionais' e a 'lei e a ordem', torna-se alvo de disputa interpretativa por décadas. Os militares aceitam a democracia formal mas preservam zonas de autonomia.",
+      fatos: [
+        "1988: Constituição Cidadã — FA subordinadas ao poder civil, mas art. 142 gera controvérsia",
+        "Ministério da Defesa só é criado em 1999 — até lá, militares respondiam diretamente à Presidência",
+        "Militares mantêm controle sobre Amazônia, fronteiras e questões de 'segurança nacional'",
+        "Alto comando indica nomes para o SNI (Serviço Nacional de Informações) — dissolvido em 1990",
+        "1989: Collor eleito — primeiro presidente civil eleito diretamente desde 1960"
+      ],
+      ri: "O Brasil redemocratizado retoma iniciativa na política externa. Sarney aprofunda a integração com a Argentina — processo que culminará no Mercosul (1991). A questão nuclear (Brasil e Argentina tinham programas militares secretos) é central: ambos os países desmilitarizam seus programas e criam a ABACC (1991). O Brasil assina o TNP somente em 1998.",
+      legado: "A Constituição de 1988 é a mais democrática da história brasileira, mas preserva ambiguidades sobre o papel das FA. O art. 142 será reinterpretado por militares e políticos como autorização para 'moderação' política — ressuscitando a tese do 'poder moderador' fardado que ressurge em 2022.",
+      tags: ["Constituição 88", "Nova República", "Art. 142", "Mercosul", "Nuclear", "Transição"]
+    }
+  },
+  {
+    date: "1992–1994",
+    type: "republica",
+    side: "right",
+    title: "Impeachment de Collor — militares ficam à margem",
+    summary: "Primeiro impeachment da história — sem intervenção militar; democracia se consolida.",
+    modal: {
+      contexto: "Fernando Collor de Mello é eleito em 1989 — primeiro presidente eleito diretamente desde 1960. Em 1992, escândalo de corrupção (PC Farias) leva ao impeachment. O processo é conduzido inteiramente por instituições civis. Os militares — diferentemente de crises anteriores — não intervêm.",
+      fatos: [
+        "1992: Denúncias do irmão Pedro Collor — esquema PC Farias",
+        "Caras pintadas: manifestações massivas de jovens pelo impeachment",
+        "29/12/1992: Collor renuncia antes da votação final",
+        "Itamar Franco assume — governa até 1994 sem crise militar",
+        "Plano Real (1994): estabilização econômica que elegerá FHC"
+      ],
+      ri: "O impeachment de Collor ocorre sob pressão internacional: o Brasil havia acabado de realizar a ECO-92 (Rio) e estava integrando o Mercosul. A crise política poderia desestabilizar o processo de integração regional. Mas a resolução institucional do conflito — ao contrário do padrão histórico — projetou internacionalmente a imagem de consolidação democrática do Brasil.",
+      legado: "O impeachment de Collor é o primeiro teste da democracia brasileira sem intervenção militar. Seu sucesso demonstra que as instituições civis podiam resolver crises sem tutor fardado. O precedente é invocado em 2016 (Dilma) e em 2022 (Bolsonaro). A ausência militar no processo é, em si, o legado mais importante.",
+      tags: ["Collor", "Impeachment", "Democracia", "1992", "Instituições"]
+    }
+  },
+  {
+    date: "1999–2001",
+    type: "ri",
+    side: "left",
+    title: "Ministério da Defesa e missões de paz — profissionalismo civil-militar",
+    summary: "Brasil cria o MD; MINUSTAH no Haiti consolida a projeção internacional das FA.",
+    modal: {
+      contexto: "Em 1999, o governo FHC cria o Ministério da Defesa — unificando as três FA sob um ministro civil. É a maior reforma na estrutura de controle civil das FA desde 1946. Em 2004, o Brasil assume o comando da MINUSTAH no Haiti — liderança inédita em operação de paz da ONU.",
+      fatos: [
+        "1999: Criação do Ministério da Defesa — Élcio Álvares, primeiro ministro civil",
+        "2004: Brasil assume comando da MINUSTAH (Haiti) — General Augusto Heleno",
+        "Mais de 37.000 militares brasileiros servem no Haiti entre 2004 e 2017",
+        "IBAS (2003): articulação Brasil-Índia-África do Sul; FA participam da cooperação sul-sul",
+        "Programa Nuclear da Marinha: submarino de propulsão nuclear em desenvolvimento"
+      ],
+      ri: "A MINUSTAH é a maior operação de paz já liderada pelo Brasil — e um instrumento da política externa do governo Lula de projeção de poder e liderança regional. O comando da missão pelo General Heleno e depois pelo General Santos Cruz consolida a imagem do Exército brasileiro como força capaz de operações internacionais complexas. O engajamento haitiano revela também as tensões: denúncias de abuso sexual por tropas da ONU incluem contingentes brasileiros.",
+      legado: "O Ministério da Defesa é o avanço mais concreto no controle civil das FA desde a redemocratização. A MINUSTAH projeta o Brasil como potência regional responsável — e é parte da estratégia de candidatura a assento permanente no CSNU. A retirada em 2017 e o terremoto de 2010 testam os limites da capacidade humanitária e militar brasileira.",
+      tags: ["Ministério da Defesa", "MINUSTAH", "Haiti", "ONU", "FHC", "Lula"]
+    }
+  },
+  {
+    date: "2016",
+    type: "golpe",
+    side: "right",
+    title: "Impeachment de Dilma — militares no pano de fundo",
+    summary: "Processo controverso; militares não intervêm mas Temer usa a retórica da 'ordem'.",
+    modal: {
+      contexto: "Dilma Rousseff é afastada em 2016 acusada de 'pedaladas fiscais'. O processo é amplamente contestado como 'golpe parlamentar'. O vice Michel Temer assume. Os militares permanecem formalmente à margem — mas figuras como o General Eduardo Villas Bôas e o Ministério da Defesa estão atentos.",
+      fatos: [
+        "Agosto 2016: Dilma afastada pelo Senado por pedaladas fiscais",
+        "Temer governa com ministros civis mas busca apoio militar para 'garantia da ordem'",
+        "2018: Intervenção Federal no Rio de Janeiro — General Braga Netto comanda a segurança",
+        "Abril 2018: General Villas Bôas twitta mensagem sobre o STF e o HC de Lula — pressão militar explícita",
+        "2018: Eleições — Bolsonaro eleito com forte apoio do Exército"
+      ],
+      ri: "O Brasil de 2016 está em crise econômica profunda e isolamento relativo na política externa (fim do ciclo de soft power da era Lula). O impeachment de Dilma coincide com o deslocamento do Brasil da liderança regional: Argentina elege Macri (2015), Venezuela em colapso. O tweet de Villas Bôas antes da decisão do STF sobre o HC de Lula é considerado a mais clara pressão militar sobre o Judiciário desde 1964.",
+      legado: "O tweet de Villas Bôas é marco do retorno da ameaça militar implícita à política brasileira. Rompe com o padrão de discrição das FA desde 1985. Abre caminho para a candidatura e eleição de Bolsonaro — capitão reformado que coloca militares no centro do governo.",
+      tags: ["Dilma", "Impeachment", "Temer", "Villas Bôas", "2016", "Golpe parlamentar"]
+    }
+  },
+  {
+    date: "2019–2022",
+    type: "ditadura",
+    side: "left",
+    title: "Governo Bolsonaro — militares no poder sem golpe formal",
+    summary: "Maior presença militar no governo desde a ditadura; tentativa de golpe derrotada em Jan 2023.",
+    modal: {
+      contexto: "Jair Bolsonaro (2019–22), capitão reformado, nomeia militares para 6.157 cargos civis. Os generais Hamilton Mourão (vice-presidente), Braga Netto (ministros), Paulo Sérgio Nogueira e outros dominam o primeiro escalão. Em 8 de janeiro de 2023, apoiadores invadem e depredam o Congresso, STF e Palácio do Planalto.",
+      fatos: [
+        "2019: Seis mil cargos civis ocupados por militares — recorde histórico",
+        "General Braga Netto: Ministério da Casa Civil, Ministério da Defesa",
+        "2020–21: Militares resistem à transparência sobre mortes por Covid",
+        "Outubro 2022: Reunião de Bolsonaro com embaixadores para atacar o TSE — militares presentes",
+        "8/1/2023: Invasão e depredação das sedes dos Três Poderes por bolsonaristas",
+        "Investigação do STF aponta tentativa de golpe de Estado — Bolsonaro e militares indiciados"
+      ],
+      ri: "Bolsonaro realinhou o Brasil aos EUA de Trump, rompeu com o multilateralismo, atacou o Acordo de Paris e o Mercosul. O isolamento internacional foi severo: Emmanuel Macron ameaçou bloquear o acordo UE-Mercosul; Joe Biden descreveu Bolsonaro como ameaça à democracia. O PCC (inquérito sobre o golpe) revelou que generais do alto-comando planejaram dar um golpe em dezembro de 2022 — e recuaram.",
+      legado: "O governo Bolsonaro representa o retorno mais explícito da tutela militar desde 1985 — sem golpe formal, mas com erosão sistemática das normas democráticas. O 8 de janeiro é o maior ataque às instituições democráticas desde o AI-5. O indiciamento de generais — incluindo o próprio Bolsonaro — cria precedente jurídico inédito de responsabilização de militares por tentativa de golpe.",
+      tags: ["Bolsonaro", "Militares", "8 de janeiro", "Golpe", "2022", "Democracia"]
+    }
+  },
+  {
+    date: "2023–2026",
+    type: "ri",
+    side: "right",
+    title: "Lula III — reposicionamento e o debate sobre o papel das FA",
+    summary: "Brasil volta ao multilateralismo; militares sob escrutínio jurídico e debate constitucional.",
+    modal: {
+      contexto: "O governo Lula III (2023–) promove o retorno do Brasil ao multilateralismo: COP, G20, BRICS, CSNU. Simultaneamente, o julgamento do golpe de 2022 avança; o papel das FA na democracia é debatido abertamente. A reforma do Art. 142 e o controle civil das FA estão na agenda.",
+      fatos: [
+        "2023: Lula retorna ao Acordo de Paris, reassume o Conselho de Segurança (membro rotativo)",
+        "2024: Brasil preside o G20 — militares integram a delegação de forma subordinada",
+        "2024: BRICS ampliado inclui países do Sul Global — nova geometria geopolítica",
+        "STF julga golpe de 2022 — generais e Bolsonaro são réus",
+        "Debate constitucional sobre revisão do Art. 142 da Constituição",
+        "2025: Brasil sedia COP30 em Belém — FA no esquema de segurança"
+      ],
+      ri: "O Brasil reassume papel de protagonismo na política externa multilateral. O governo Lula reequilibra as relações com China e EUA, aprofunda o BRICS e busca mediação nos conflitos Ucrânia e Gaza. As FA brasileiras participam de missões da ONU (UNIFIL, MONUSCO) e debatem sua doutrina de defesa num contexto de policentrismo crescente.",
+      legado: "O julgamento do golpe de 2022 é potencialmente o maior marco de responsabilização de militares na história republicana brasileira. A reforma do Art. 142 — se ocorrer — representaria a ruptura definitiva com a doutrina do 'poder moderador' fardado. O Brasil enfrenta a questão que não foi resolvida em 1985: como construir controle civil pleno sobre as Forças Armadas.",
+      tags: ["Lula", "G20", "BRICS", "Golpe 2022", "Art. 142", "Multilateralismo"]
+    }
+  }
+];
+
+// ── RENDER ──
+const timeline = document.getElementById('timeline');
+
+const eras = [
+  { before: "1500", label: "BRASIL COLONIAL", sub: "1500 – 1807" },
+  { before: "1808", label: "PERÍODO JOANINO & INDEPENDÊNCIA", sub: "1808 – 1889" },
+  { before: "1889", label: "REPÚBLICA VELHA", sub: "1889 – 1930" },
+  { before: "1930", label: "ERA VARGAS & DEMOCRACIA POPULISTA", sub: "1930 – 1964" },
+  { before: "1964", label: "DITADURA MILITAR", sub: "1964 – 1985" },
+  { before: "1985", label: "NOVA REPÚBLICA", sub: "1985 – Presente" },
+];
+
+function getEraFor(dateStr) {
+  for (let i = eras.length - 1; i >= 0; i--) {
+    const yearStr = eras[i].before;
+    const eventYear = parseInt(dateStr);
+    if (!isNaN(eventYear) && eventYear >= parseInt(yearStr)) return i;
+    if (dateStr.includes(yearStr)) return i;
+  }
+  return -1;
+}
+
+function renderEra(idx) {
+  const e = eras[idx];
+  const div = document.createElement('div');
+  div.className = 'era-divider';
+  div.innerHTML = `<div class="era-divider-inner"><h2>${e.label}</h2><p>${e.sub}</p></div>`;
+  return div;
+}
+
+function badgeClass(type) {
+  return `badge-${type}`;
+}
+
+function typeLabel(type) {
+  const map = {
+    colonial: 'Colonial',
+    imperio: 'Império',
+    republica: 'República',
+    golpe: 'Golpe',
+    ditadura: 'Ditadura',
+    ri: 'Rel. Internacionais',
+    resistencia: 'Resistência'
+  };
+  return map[type] || type;
+}
+
+let lastEra = -1;
+EVENTS.forEach((ev, i) => {
+  const eraIdx = getEraFor(ev.date);
+  if (eraIdx > lastEra) {
+    for (let j = lastEra + 1; j <= eraIdx; j++) {
+      timeline.appendChild(renderEra(j));
+    }
+    lastEra = eraIdx;
+  }
+
+  const div = document.createElement('div');
+  div.className = `event ${ev.side}`;
+  div.dataset.type = ev.type;
+  div.dataset.idx = i;
+
+  const card = `
+    <div class="card" onclick="openModal(${i})">
+      <div class="card-inner">
+        <div class="card-type-badge ${badgeClass(ev.type)}">${typeLabel(ev.type)}</div>
+        <div class="date">${ev.date}</div>
+        <h3>${ev.title}</h3>
+        <p>${ev.summary}</p>
+        <div class="click-hint">[ clique para expandir ]</div>
+      </div>
+    </div>`;
+
+  if (ev.side === 'left') {
+    div.innerHTML = `${card}<div class="dot-col"><div class="dot type-${ev.type}" onclick="openModal(${i})"></div></div><div class="spacer"></div>`;
+  } else {
+    div.innerHTML = `<div class="spacer"></div><div class="dot-col"><div class="dot type-${ev.type}" onclick="openModal(${i})"></div></div>${card}`;
+  }
+
+  timeline.appendChild(div);
+});
+
+// ── INTERSECTION OBSERVER (animate on scroll) ──
+const io = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      setTimeout(() => e.target.classList.add('visible'), 80);
+    }
+  });
+}, { threshold: 0.1 });
+
+document.querySelectorAll('.event').forEach(el => io.observe(el));
+
+// ── MODAL ──
+function openModal(idx) {
+  const ev = EVENTS[idx];
+  const m = ev.modal;
+  document.getElementById('modal-date').textContent = ev.date;
+  document.getElementById('modal-title').textContent = ev.title;
+
+  let body = '';
+
+  if (m.contexto) {
+    body += `<div class="modal-section"><div class="modal-section-title">Contexto</div><p>${m.contexto}</p></div>`;
+  }
+
+  if (m.fatos && m.fatos.length) {
+    body += `<div class="modal-section"><div class="modal-section-title">Fatos & Cronologia</div><ul>${m.fatos.map(f => `<li>${f}</li>`).join('')}</ul></div>`;
+  }
+
+  if (m.ri) {
+    body += `<div class="modal-section"><div class="modal-section-title">Relações Internacionais & Repercussão</div><p>${m.ri}</p></div>`;
+  }
+
+  if (m.legado) {
+    body += `<div class="modal-section"><div class="modal-section-title">Legado & Impacto</div><p>${m.legado}</p></div>`;
+  }
+
+  if (m.tags && m.tags.length) {
+    body += `<div class="modal-tags">${m.tags.map(t => `<span class="modal-tag">${t}</span>`).join('')}</div>`;
+  }
+
+  document.getElementById('modal-body').innerHTML = body;
+  document.getElementById('modal-overlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+document.getElementById('modal-close').onclick = closeModal;
+document.getElementById('modal-overlay').onclick = function(e) {
+  if (e.target === this) closeModal();
+};
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+function closeModal() {
+  document.getElementById('modal-overlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+// ── FILTERS ──
+document.querySelectorAll('.filter-btn').forEach(btn => {
+  btn.addEventListener('click', function() {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    this.classList.add('active');
+    const filter = this.dataset.filter;
+    document.querySelectorAll('.event').forEach(ev => {
+      if (filter === 'all' || ev.dataset.type === filter) {
+        ev.classList.remove('hidden');
+      } else {
+        ev.classList.add('hidden');
+      }
+    });
+  });
+});
+</script>
+</body>
+</html>
