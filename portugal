@@ -1,0 +1,1363 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Brasil – Portugal · Relações Internacionais · CACD</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=IBM+Plex+Mono:wght@300;400;600&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+/* ── TOKENS (mesclagem PEB dark + Militares gold) ── */
+:root {
+  --bg:        #0d1117;
+  --bg2:       #090d12;
+  --panel:     #13191f;
+  --panel2:    #171e26;
+  --border:    #2a3240;
+  --gold:      #c9a84c;
+  --gold-bright: #e8c97a;
+  --gold-dim:  rgba(201,168,76,0.12);
+  --gold-line: rgba(201,168,76,0.3);
+  --text:      #f0ece2;
+  --muted:     #7a8494;
+  --red:       #c0392b;
+  --green:     #5f9a6a;
+  --blue:      #4a7cb5;
+  --teal:      #3a8c84;
+  --purple:    #8e5ea0;
+  --orange:    #c47a35;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg);
+  font-family: "IBM Plex Mono", monospace;
+  color: var(--text);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ── HERO (do Militares) ── */
+.hero {
+  background: linear-gradient(180deg, #050709 0%, #0d1117 70%, transparent 100%);
+  padding: 4.5rem 2rem 3.5rem;
+  text-align: center;
+  position: relative;
+  border-bottom: 1px solid var(--gold-line);
+}
+.hero::before {
+  content: '';
+  position: absolute;
+  bottom: -1px; left: 50%;
+  transform: translateX(-50%);
+  width: 80px; height: 2px;
+  background: var(--gold);
+}
+.hero-label {
+  font-family: "IBM Plex Mono", monospace;
+  font-size: .58rem;
+  letter-spacing: .32em;
+  color: var(--gold);
+  text-transform: uppercase;
+  margin-bottom: 1.4rem;
+}
+.hero-flags {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  margin-bottom: 1.2rem;
+}
+.hflag {
+  width: 54px; height: 36px; border-radius: 3px;
+  border: 1px solid rgba(255,255,255,0.15);
+  overflow: hidden; position: relative;
+  flex-shrink: 0;
+}
+.hflag svg { width: 100%; height: 100%; display: block; }
+.hero-sep { color: var(--gold); font-size: 1.2rem; opacity: .7; }
+.hero h1 {
+  font-family: "Playfair Display", serif;
+  font-size: clamp(2rem, 5vw, 3.2rem);
+  font-weight: 900;
+  line-height: 1.1;
+  margin-bottom: .5rem;
+}
+.hero h1 em { color: var(--gold); font-style: italic; }
+.hero-sub {
+  font-family: "Crimson Pro", serif;
+  font-style: italic;
+  font-size: clamp(.9rem, 2vw, 1.1rem);
+  color: var(--muted);
+  margin-bottom: 2.2rem;
+}
+
+/* era legend dots */
+.era-legend {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  flex-wrap: wrap;
+}
+.era-legend-item {
+  display: flex; align-items: center; gap: 6px;
+  font-size: .5rem; letter-spacing: .08em;
+  text-transform: uppercase; color: var(--muted);
+}
+.era-legend-dot {
+  width: 8px; height: 8px; border-radius: 50%;
+}
+
+/* ── FILTER BAR (do Militares) ── */
+.filter-bar {
+  background: var(--bg2);
+  border-bottom: 1px solid var(--border);
+  padding: 12px 20px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+.filter-lbl {
+  font-size: .46rem;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-right: 4px;
+}
+.fbtn {
+  font-family: "IBM Plex Mono", monospace;
+  font-size: .5rem;
+  padding: 5px 14px;
+  letter-spacing: .09em;
+  text-transform: uppercase;
+  cursor: pointer;
+  border: 1.5px solid var(--border);
+  background: transparent;
+  color: var(--muted);
+  border-radius: 2px;
+  transition: all .15s;
+}
+.fbtn:hover, .fbtn.on {
+  border-color: var(--gold);
+  color: var(--gold);
+  background: var(--gold-dim);
+}
+.filter-spacer { flex: 1; }
+.search-box {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  color: var(--text);
+  font-family: "IBM Plex Mono", monospace;
+  font-size: .52rem;
+  padding: 5px 12px;
+  border-radius: 2px;
+  outline: none;
+  width: 180px;
+}
+.search-box:focus { border-color: var(--gold); }
+.search-box::placeholder { color: var(--muted); }
+
+/* ── MAIN SPLIT (do PEB) ── */
+.workspace {
+  display: grid;
+  grid-template-columns: 270px 1fr;
+  min-height: calc(100vh - 160px);
+}
+
+/* ── SIDEBAR (do PEB) ── */
+.sidebar {
+  background: var(--bg2);
+  border-right: 1px solid var(--border);
+  overflow-y: auto;
+  position: sticky;
+  top: 50px;
+  height: calc(100vh - 50px);
+}
+.sidebar-section {
+  border-bottom: 1px solid var(--border);
+}
+.section-era {
+  padding: 10px 16px 6px;
+  font-size: .58rem;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--gold);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.section-era::after {
+  content: ''; flex: 1; height: 1px;
+  background: var(--gold-line);
+}
+.nav-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 11px 16px;
+  cursor: pointer;
+  border-left: 2px solid transparent;
+  transition: all .15s;
+}
+.nav-item:hover { background: var(--gold-dim); }
+.nav-item.active {
+  background: var(--gold-dim);
+  border-left-color: var(--gold);
+}
+.nav-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%; margin-top: 5px; flex-shrink: 0;
+}
+.nav-info { flex: 1; min-width: 0; }
+.nav-year {
+  font-size: .62rem; font-weight: 600;
+  color: var(--muted); letter-spacing: .04em;
+}
+.nav-item.active .nav-year { color: var(--gold); }
+.nav-title {
+  font-size: .67rem; color: var(--text);
+  line-height: 1.35; margin-top: 2px;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.nav-tag {
+  font-size: .5rem; padding: 2px 7px; border-radius: 2px;
+  text-transform: uppercase; letter-spacing: .06em;
+  margin-top: 4px; display: inline-block;
+}
+
+/* ── CONTENT AREA ── */
+.content {
+  overflow-y: auto;
+}
+
+/* ── TIMELINE CENTRAL (do Militares) ── */
+.timeline-wrap {
+  padding: 50px 48px 100px;
+  position: relative;
+}
+.tl-line {
+  position: absolute;
+  left: 50%; top: 0; bottom: 0;
+  width: 2px;
+  transform: translateX(-50%);
+  background: linear-gradient(180deg, transparent, var(--border) 5%, var(--border) 95%, transparent);
+}
+
+/* era divider */
+.era-block {
+  position: relative;
+  text-align: center;
+  margin: 48px 0 32px;
+  z-index: 2;
+}
+.era-block-label {
+  display: inline-block;
+  font-size: .52rem;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  padding: 6px 20px;
+  border: 1px solid var(--gold-line);
+  background: var(--bg);
+  color: var(--gold);
+  position: relative;
+}
+
+/* event row — alternating sides (do Militares) */
+.ev-row {
+  display: grid;
+  grid-template-columns: 1fr 40px 1fr;
+  gap: 0;
+  align-items: start;
+  margin-bottom: 32px;
+  position: relative;
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity .4s, transform .4s;
+}
+.ev-row.visible { opacity: 1; transform: translateY(0); }
+.ev-row.hidden { display: none; }
+
+.ev-left, .ev-right { padding: 0; }
+.ev-left { text-align: right; padding-right: 28px; }
+.ev-right { text-align: left; padding-left: 28px; }
+.ev-empty { /* spacer */ }
+
+/* center column dot */
+.ev-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 14px;
+  position: relative;
+  z-index: 2;
+}
+.ev-dot {
+  width: 14px; height: 14px;
+  border-radius: 50%;
+  border: 2px solid var(--bg);
+  flex-shrink: 0;
+  cursor: pointer;
+  transition: transform .2s;
+}
+.ev-dot:hover { transform: scale(1.3); }
+
+/* card (PEB card style) */
+.ev-card {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  padding: 14px 16px;
+  cursor: pointer;
+  transition: border-color .2s, background .2s;
+  text-align: left;
+}
+.ev-card:hover { border-color: var(--gold); background: var(--panel2); }
+.ev-card.active { border-color: var(--gold); background: var(--panel2); }
+.ev-card-year {
+  font-family: "IBM Plex Mono", monospace;
+  font-size: .56rem; font-weight: 600;
+  letter-spacing: .06em;
+  margin-bottom: 5px;
+}
+.ev-card-tags { display: flex; gap: 4px; flex-wrap: wrap; margin-bottom: 7px; }
+.ev-card-title {
+  font-family: "Playfair Display", serif;
+  font-size: .92rem; font-weight: 700;
+  line-height: 1.3; margin-bottom: 5px;
+}
+.ev-card-sub {
+  font-family: "Crimson Pro", serif;
+  font-size: .82rem; color: var(--muted); line-height: 1.5;
+}
+
+/* right-side card: reversed tags alignment */
+.ev-right .ev-card-tags { justify-content: flex-start; }
+.ev-left .ev-card-tags { justify-content: flex-end; }
+.ev-left .ev-card { text-align: right; }
+
+/* ── DETAIL PANEL (do PEB) ── */
+.detail-overlay {
+  display: none;
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(5,7,9,0.7);
+  z-index: 200;
+  align-items: flex-end;
+}
+.detail-overlay.open { display: flex; }
+.detail-drawer {
+  width: 100%;
+  max-height: 75vh;
+  background: var(--panel);
+  border-top: 2px solid var(--gold);
+  display: flex;
+  flex-direction: column;
+  animation: slideUp .25s ease;
+}
+@keyframes slideUp {
+  from { transform: translateY(100%); }
+  to   { transform: translateY(0); }
+}
+.drawer-header {
+  padding: 16px 24px 12px;
+  border-bottom: 1px solid var(--border);
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 16px;
+  align-items: start;
+  flex-shrink: 0;
+}
+.drawer-meta {
+  font-size: .48rem;
+  color: var(--gold);
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+.drawer-title {
+  font-family: "Playfair Display", serif;
+  font-size: clamp(1.2rem, 3vw, 1.8rem);
+  font-weight: 900;
+  line-height: 1.2;
+  margin-bottom: 6px;
+}
+.drawer-sub {
+  font-family: "Crimson Pro", serif;
+  font-style: italic;
+  font-size: .9rem;
+  color: var(--muted);
+  line-height: 1.5;
+}
+.drawer-close {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  color: var(--muted);
+  width: 32px; height: 32px;
+  border-radius: 2px;
+  cursor: pointer;
+  font-size: .8rem;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  transition: border-color .15s;
+}
+.drawer-close:hover { border-color: var(--gold); color: var(--gold); }
+
+/* three-column meta row (do PEB) */
+.drawer-meta-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+.meta-col {
+  padding: 12px 20px;
+  border-right: 1px solid var(--border);
+}
+.meta-col:last-child { border-right: none; }
+.meta-col-label {
+  font-size: .44rem;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 6px;
+}
+.meta-col-content {
+  font-family: "Crimson Pro", serif;
+  font-size: .84rem;
+  color: var(--text);
+  line-height: 1.6;
+}
+
+/* tabs (do PEB) */
+.drawer-tabs {
+  display: flex;
+  border-bottom: 1px solid var(--border);
+  overflow-x: auto;
+  scrollbar-width: none;
+  flex-shrink: 0;
+}
+.drawer-tabs::-webkit-scrollbar { display: none; }
+.dtab {
+  font-family: "IBM Plex Mono", monospace;
+  font-size: .5rem;
+  padding: 10px 16px;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--muted);
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  white-space: nowrap;
+  transition: all .15s;
+}
+.dtab:hover { color: var(--text); }
+.dtab.active { color: var(--gold); border-bottom-color: var(--gold); }
+
+.drawer-body {
+  overflow-y: auto;
+  flex: 1;
+}
+.tab-panel { display: none; padding: 20px 24px 32px; }
+.tab-panel.active { display: block; }
+
+/* content widgets */
+.tp-section { margin-bottom: 20px; }
+.tp-label {
+  font-size: .46rem;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 8px;
+}
+.tp-text {
+  font-family: "Crimson Pro", serif;
+  font-size: .9rem;
+  line-height: 1.75;
+  color: var(--text);
+}
+.tp-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 10px;
+  margin-bottom: 20px;
+}
+.tp-stat {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  padding: 12px 14px;
+}
+.tp-stat-val {
+  font-family: "Playfair Display", serif;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--gold);
+  line-height: 1;
+}
+.tp-stat-lbl {
+  font-size: .44rem;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  margin-top: 3px;
+}
+.tp-list { list-style: none; }
+.tp-list li {
+  font-family: "Crimson Pro", serif;
+  font-size: .88rem;
+  color: var(--text);
+  padding: 5px 0;
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: flex-start; gap: 8px; line-height: 1.5;
+}
+.tp-list li::before { content: '›'; color: var(--gold); flex-shrink: 0; }
+.tp-actors { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
+.actor-chip {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  padding: 7px 12px;
+}
+.actor-name { font-size: .56rem; color: var(--text); font-weight: 600; }
+.actor-role { font-size: .46rem; color: var(--muted); margin-top: 2px; }
+.quote-block {
+  background: var(--bg);
+  border-left: 3px solid var(--gold);
+  padding: 14px 18px;
+  margin: 14px 0;
+  border-radius: 0 3px 3px 0;
+}
+.quote-text {
+  font-family: "Crimson Pro", serif;
+  font-style: italic;
+  font-size: .95rem;
+  color: var(--text);
+  line-height: 1.65;
+}
+.quote-author {
+  font-size: .46rem;
+  color: var(--muted);
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  margin-top: 8px;
+}
+
+/* tags */
+.tag {
+  font-size: .44rem;
+  padding: 2px 7px;
+  border-radius: 2px;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+}
+.tc { background:rgba(201,168,76,.10);  color:var(--gold);    border:1px solid rgba(201,168,76,.3);  }
+.ti { background:rgba(142,94,160,.12);  color:var(--purple);  border:1px solid rgba(142,94,160,.3);  }
+.tr { background:rgba(74,124,181,.12);  color:var(--blue);    border:1px solid rgba(74,124,181,.3);   }
+.tm { background:rgba(58,140,132,.12);  color:var(--teal);    border:1px solid rgba(58,140,132,.3);   }
+.tk { background:rgba(201,168,76,.14);  color:var(--gold-bright); border:1px solid rgba(201,168,76,.35); }
+.ta { background:rgba(95,154,106,.12);  color:var(--green);   border:1px solid rgba(95,154,106,.3);   }
+.tx { background:rgba(192,57,43,.12);   color:var(--red);     border:1px solid rgba(192,57,43,.3);    }
+.td { background:rgba(74,124,181,.12);  color:var(--blue);    border:1px solid rgba(74,124,181,.3);   }
+
+/* footer quick-access (do PEB) */
+.quick-bar {
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  background: var(--bg2);
+  border-top: 1px solid var(--border);
+  padding: 7px 20px;
+  display: flex;
+  gap: 6px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  z-index: 150;
+}
+.quick-bar::-webkit-scrollbar { display: none; }
+.qpill {
+  font-size: .44rem;
+  padding: 4px 10px;
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  color: var(--muted);
+  white-space: nowrap;
+  cursor: pointer;
+  transition: all .15s;
+  font-family: "IBM Plex Mono", monospace;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  background: transparent;
+}
+.qpill:hover { border-color: var(--gold); color: var(--gold); }
+
+/* scrollbar */
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: var(--bg2); }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--muted); }
+
+/* mobile */
+@media (max-width: 768px) {
+  .workspace { grid-template-columns: 1fr; }
+  .sidebar { display: none; }
+  .timeline-wrap { padding: 30px 16px 80px; }
+  .ev-row { grid-template-columns: 20px 1fr; }
+  .ev-left { display: none; }
+  .ev-right { padding-left: 14px; grid-column: 2; }
+  .ev-center { grid-column: 1; }
+  .tl-line { left: 20px; transform: none; }
+  .drawer-meta-row { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- ── HERO ── -->
+<section class="hero">
+  <div class="hero-label">Linha do Tempo · CACD 2026</div>
+  <div class="hero-flags">
+    <div class="hflag">
+      <svg viewBox="0 0 54 36" xmlns="http://www.w3.org/2000/svg">
+        <rect width="54" height="36" fill="#009c3b"/>
+        <polygon points="27,3 51,18 27,33 3,18" fill="#FFDF00"/>
+        <circle cx="27" cy="18" r="8.5" fill="#002776"/>
+        <path d="M19,16 Q27,13.5 35,16" stroke="white" stroke-width="1.1" fill="none" stroke-linecap="round"/>
+      </svg>
+    </div>
+    <span class="hero-sep">↔</span>
+    <div class="hflag">
+      <svg viewBox="0 0 54 36" xmlns="http://www.w3.org/2000/svg">
+        <rect width="54" height="36" fill="#d52b1e"/>
+        <rect width="22" height="36" fill="#006600"/>
+        <ellipse cx="22" cy="18" rx="7.5" ry="9" fill="#ffd700" stroke="#003399" stroke-width="0.7"/>
+        <ellipse cx="22" cy="18" rx="5.5" ry="6.5" fill="none" stroke="#003399" stroke-width="0.7"/>
+        <line x1="14.5" y1="18" x2="29.5" y2="18" stroke="#003399" stroke-width="0.7"/>
+        <line x1="22" y1="9" x2="22" y2="27" stroke="#003399" stroke-width="0.7"/>
+      </svg>
+    </div>
+  </div>
+  <h1>Brasil – <em>Portugal</em></h1>
+  <p class="hero-sub">Relações Internacionais · 1500 – hoje · Da colônia à parceria estratégica</p>
+  <div class="era-legend">
+    <div class="era-legend-item"><div class="era-legend-dot" style="background:#c9a84c"></div>Colonial</div>
+    <div class="era-legend-item"><div class="era-legend-dot" style="background:#8e5ea0"></div>Imperial</div>
+    <div class="era-legend-item"><div class="era-legend-dot" style="background:#4a7cb5"></div>República</div>
+    <div class="era-legend-item"><div class="era-legend-dot" style="background:#3a8c84"></div>Moderno</div>
+    <div class="era-legend-item"><div class="era-legend-dot" style="background:#e8c97a"></div>Contemporâneo</div>
+    <div class="era-legend-item"><div class="era-legend-dot" style="background:#5f9a6a"></div>Acordo</div>
+    <div class="era-legend-item"><div class="era-legend-dot" style="background:#c0392b"></div>Ruptura</div>
+  </div>
+</section>
+
+<!-- ── FILTER BAR ── -->
+<div class="filter-bar">
+  <span class="filter-lbl">Era:</span>
+  <button class="fbtn on" data-era="all">Todas</button>
+  <button class="fbtn" data-era="colonial">Colonial</button>
+  <button class="fbtn" data-era="imperial">Imperial</button>
+  <button class="fbtn" data-era="republican">República</button>
+  <button class="fbtn" data-era="modern">Moderno</button>
+  <button class="fbtn" data-era="contempor">Contemporâneo</button>
+  <div class="filter-spacer"></div>
+  <input class="search-box" id="searchInput" type="text" placeholder="buscar evento…">
+</div>
+
+<!-- ── WORKSPACE ── -->
+<div class="workspace">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar" id="sidebar"></aside>
+
+  <!-- TIMELINE -->
+  <div class="content">
+    <div class="timeline-wrap">
+      <div class="tl-line"></div>
+      <div id="timelineEl"></div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ── DETAIL DRAWER (do PEB) ── -->
+<div class="detail-overlay" id="detailOverlay">
+  <div class="detail-drawer" id="detailDrawer">
+    <div class="drawer-header">
+      <div>
+        <div class="drawer-meta" id="dMeta"></div>
+        <div class="drawer-title" id="dTitle"></div>
+        <div class="drawer-sub" id="dSub"></div>
+      </div>
+      <button class="drawer-close" id="drawerClose">✕</button>
+    </div>
+    <div class="drawer-meta-row" id="dMetaRow"></div>
+    <div class="drawer-tabs" id="dTabs"></div>
+    <div class="drawer-body" id="dBody"></div>
+  </div>
+</div>
+
+<!-- ── QUICK BAR ── -->
+<div class="quick-bar" id="quickBar"></div>
+
+<script>
+/* ── DATA ── */
+const EVENTS = [
+  {
+    id:"e1500", year:"1500", era:"colonial", dot:"#c9a84c",
+    title:"Chegada de Cabral e o início da relação colonial",
+    sub:"Portugal toma posse do território que será o Brasil, inaugurando 322 anos de dominação colonial",
+    tags:["colonial"],
+    meta:[
+      {lbl:"Documento central", val:"Tratado de Tordesilhas (1494)"},
+      {lbl:"Regime", val:"Metrópole–Colônia"},
+      {lbl:"Duração", val:"322 anos (1500–1822)"}
+    ],
+    tabs:{
+      "Contexto RI":[
+        {lbl:"Enquadramento do sistema colonial", txt:"A chegada de Cabral inseriu o Brasil no sistema colonial português e nas disputas ibéricas reguladas pelo Tratado de Tordesilhas (1494). Portugal estabelecia a mais longa relação colonial da história moderna."},
+        {lbl:"Tordesilhas como base jurídica", txt:"Seis anos antes, Portugal e Espanha dividiram o mundo com aval papal. A linha a 370 léguas de Cabo Verde garantiu a Portugal os territórios que viriam a ser o Brasil — fundamento jurídico-internacional de toda a relação."}
+      ],
+      "Atores":[],
+      "Impacto":[
+        {lbl:"Sistema de exploração", txt:"Portugal implementou Capitanias Hereditárias (1532) e Governo-Geral (1549), estruturando a extração de pau-brasil, cana-de-açúcar e o tráfico de africanos escravizados."},
+        {lbl:"Disputas externas", txt:"O Brasil foi alvo de conflitos com França (Rio de Janeiro, 1555–1565) e Holanda (Pernambuco, 1630–1654), demonstrando seu valor estratégico no sistema colonial internacional."}
+      ],
+      "Legado":[ {lbl:"", txt:"Inaugurou a relação assimétrica Brasil–Portugal que persistiria séculos além da independência: laços culturais e linguísticos profundos construídos sobre violência colonial e expropriação."}]
+    },
+    actors:[
+      {name:"Pedro Álvares Cabral", role:"Comandante da frota portuguesa"},
+      {name:"D. Manuel I", role:"Rei de Portugal"},
+      {name:"Papa Alexandre VI", role:"Mediador de Tordesilhas"}
+    ],
+    stats:[{val:"1494", lbl:"Tordesilhas"},{val:"300+", lbl:"Anos de colônia"},{val:"370", lbl:"Léguas (linha"}]
+  },
+  {
+    id:"e1640", year:"1640", era:"colonial", dot:"#c0392b",
+    title:"Restauração portuguesa e a retomada do Brasil",
+    sub:"Portugal recupera independência da Espanha; Brasil retorna à soberania lusitana após resistência à WIC holandesa",
+    tags:["colonial","ruptura"],
+    meta:[
+      {lbl:"Evento central", val:"Restauração de Portugal (1640)"},
+      {lbl:"Conflito", val:"Guerras Ibero-Holandesas"},
+      {lbl:"Desfecho", val:"Expulsão da WIC (1654)"}
+    ],
+    tabs:{
+      "Contexto RI":[
+        {lbl:"A União Ibérica e seus efeitos", txt:"Durante a União Ibérica (1580–1640), Portugal e seus territórios estiveram subordinados à Espanha. O Brasil tornou-se alvo das guerras ibero-holandesas — a WIC ocupou o Nordeste em 1630, instalando Maurício de Nassau."},
+        {lbl:"A Restauração de 1640", txt:"Com D. João IV, Portugal recuperou independência. A 'Insurreição Pernambucana' (1645–1654) expulsou os holandeses, consolidando a soberania portuguesa sobre o açúcar nordestino — a principal riqueza colonial."}
+      ],
+      "Atores":[],
+      "Impacto":[
+        {lbl:"Tratado de Haia (1661)", txt:"Portugal pagou à Holanda indenização de 4 milhões de cruzados pela expulsão da WIC, aprofundando a dependência financeira e reforçando os vínculos com a Inglaterra — base do Tratado de Methuen (1703)."}
+      ]
+    },
+    actors:[
+      {name:"D. João IV", role:"Rei restaurador de Portugal"},
+      {name:"Maurício de Nassau", role:"Governador da Nova Holanda"},
+      {name:"André Vidal de Negreiros", role:"Liderança da insurreição pernambucana"}
+    ],
+    stats:[{val:"1580", lbl:"União Ibérica"},{val:"1630", lbl:"Ocupação holandesa"},{val:"1654", lbl:"Expulsão da WIC"}]
+  },
+  {
+    id:"e1703", year:"1703", era:"colonial", dot:"#5f9a6a",
+    title:"Tratado de Methuen",
+    sub:"Aliança econômica luso-britânica vincula Portugal — e o ouro brasileiro — à economia inglesa",
+    tags:["colonial","acordo"],
+    meta:[
+      {lbl:"Partes", val:"Portugal e Grã-Bretanha"},
+      {lbl:"Objeto", val:"Panos ingleses × Vinhos portugueses"},
+      {lbl:"Impacto", val:"80% do ouro para a Inglaterra"}
+    ],
+    tabs:{
+      "Contexto RI":[
+        {lbl:"O 'Tratado dos Panos e Vinhos'", txt:"O Methuen estabeleceu preferências mútuas: tecidos ingleses no mercado português e vinhos portugueses na Inglaterra. Criou dependência estrutural que transferia o ouro do Brasil — descoberto em 1695 — para a Inglaterra."},
+        {lbl:"O ouro do Brasil como moeda de troca", txt:"A descoberta de ouro em Minas Gerais (1695) e de diamantes (1729) tornou o Brasil peça central no equilíbrio financeiro do Império. Estima-se que 80% do ouro extraído entre 1700–1760 foi para a Inglaterra via saldo comercial."}
+      ],
+      "Atores":[],
+      "Impacto":[
+        {lbl:"Triangulação Brasil–Portugal–Inglaterra", txt:"O Methuen criou um sistema onde o Brasil financiava a dependência metropolitana portuguesa em relação à Inglaterra. Isso influenciou o Marquês de Pombal (1750–77) em suas reformas para tentar reindustrializar Portugal."}
+      ]
+    },
+    actors:[
+      {name:"John Methuen", role:"Diplomata britânico — negociador"},
+      {name:"D. Pedro II de Portugal", role:"Rei signatário"},
+      {name:"Marquês de Pombal", role:"Reformador que tentou reverter os efeitos"}
+    ],
+    stats:[{val:"1695", lbl:"Ouro em Minas"},{val:"~80%", lbl:"Ouro→ Inglaterra"},{val:"1703", lbl:"Assinatura"}]
+  },
+  {
+    id:"e1808", year:"1808", era:"imperial", dot:"#8e5ea0",
+    title:"Transferência da Corte para o Rio de Janeiro",
+    sub:"Inédito na história colonial: a metrópole instala-se na colônia, invertendo a relação centro-periferia",
+    tags:["imperial"],
+    meta:[
+      {lbl:"Catalisador", val:"Invasão napoleônica (1807)"},
+      {lbl:"Mediador", val:"Escolta da Marinha britânica"},
+      {lbl:"Ato fundador", val:"Abertura dos Portos (jan. 1808)"}
+    ],
+    tabs:{
+      "Contexto RI":[
+        {lbl:"O contexto napoleônico", txt:"Com as guerras napoleônicas e a invasão de Portugal (novembro de 1807), D. João VI transferiu toda a Corte ao Brasil sob escolta britânica. Foi a única transferência da sede de um império europeu para uma colônia na história."},
+        {lbl:"Abertura dos Portos (1808)", txt:"Ao chegar ao Brasil, D. João rompeu o exclusivo comercial, abrindo os portos às nações amigas — especialmente a Inglaterra. Foi o primeiro ato formal de inserção autônoma do Brasil na economia internacional."}
+      ],
+      "Atores":[],
+      "Impacto":[
+        {lbl:"Inversão da hierarquia colonial", txt:"O Rio de Janeiro tornou-se capital de um império que incluía Portugal. O 'Reino Unido de Portugal, Brasil e Algarves' (1815) criou anomalia colonial que tornou a independência praticamente inevitável."},
+        {lbl:"Consequências diplomáticas", txt:"Os tratados de comércio favoráveis à Inglaterra (1810) — negociados em troca do apoio britânico — moldaram o perfil das relações externas do futuro Estado brasileiro, gerando assimetrias que duraram décadas."}
+      ]
+    },
+    actors:[
+      {name:"D. João VI", role:"Príncipe-regente / depois Rei"},
+      {name:"Lord Strangford", role:"Embaixador britânico — mediou a transferência"},
+      {name:"Napoleão Bonaparte", role:"Catalisador da crise europeia"}
+    ],
+    stats:[{val:"15.000", lbl:"Pessoas na Corte"},{val:"1808", lbl:"Abertura dos Portos"},{val:"14 anos", lbl:"Corte no Rio"}]
+  },
+  {
+    id:"e1822", year:"1822", era:"imperial", dot:"#c0392b",
+    title:"Independência do Brasil",
+    sub:"Ruptura formal com Portugal: nascimento de um Estado soberano e início de uma relação entre pares",
+    tags:["imperial","ruptura"],
+    meta:[
+      {lbl:"Data", val:"7 de setembro de 1822"},
+      {lbl:"Reconhecimento PT", val:"1825 (com indenização)"},
+      {lbl:"Mediador", val:"Grã-Bretanha (George Canning)"}
+    ],
+    tabs:{
+      "Contexto RI":[
+        {lbl:"O processo de separação", txt:"As Cortes de Lisboa (1820) exigiram o retorno de D. João VI e a recolonização do Brasil, gerando reação da elite colonial. D. Pedro I proclamou a independência em 7 de setembro de 1822, rompendo 322 anos de relação colonial."},
+        {lbl:"Reconhecimento internacional", txt:"Portugal só reconheceu a independência em 1825, mediante mediação britânica e pagamento de indenização de 2 milhões de libras. O Brasil assumiu parte da dívida portuguesa — condição imposta pela Grã-Bretanha como mediadora."}
+      ],
+      "Atores":[],
+      "Impacto":[
+        {lbl:"Nova natureza das relações", txt:"A independência inaugurou a relação bilateral entre Estados soberanos. Portugal e Brasil mantiveram laços dinásticos — D. Pedro I era herdeiro do trono português — gerando imbricações políticas como a Questão Portuguesa (1826–1834)."},
+        {lbl:"Padrão de 'amizade assimétrica'", txt:"Estabeleceu-se o padrão Brasil–Portugal: laços culturais e históricos profundos convivendo com disputas econômicas e identitárias. Estrutura que persistiu ao longo dos séculos XIX e XX."}
+      ]
+    },
+    actors:[
+      {name:"D. Pedro I", role:"Imperador do Brasil / Filho de D. João VI"},
+      {name:"D. João VI", role:"Rei de Portugal"},
+      {name:"George Canning", role:"Chanceler britânico — mediou o reconhecimento"},
+      {name:"José Bonifácio", role:"Ministro — articulador da independência"}
+    ],
+    stats:[{val:"1825", lbl:"Reconhecimento PT"},{val:"£2 mi", lbl:"Indenização a PT"},{val:"322", lbl:"Anos de colônia"}],
+    quote:{txt:"A amizade entre nações não é dádiva da natureza, mas conquista da diplomacia.", author:"Visconde do Uruguai, 1857"}
+  },
+  {
+    id:"e1825", year:"1825", era:"imperial", dot:"#5f9a6a",
+    title:"Tratado de Paz e Amizade",
+    sub:"Portugal reconhece a independência; mediação britânica define os termos do divórcio histórico",
+    tags:["imperial","acordo"],
+    meta:[
+      {lbl:"Partes", val:"Brasil, Portugal, Grã-Bretanha"},
+      {lbl:"Compensação", val:"£2 milhões + dívidas"},
+      {lbl:"Precedente", val:"Modelo para descolonizações futuras"}
+    ],
+    tabs:{
+      "Contexto RI":[
+        {lbl:"Termos do acordo", txt:"D. João VI reconheceu o Brasil como Estado independente em troca de: 1) compensação de 2 milhões de libras; 2) assunção pelo Brasil da dívida portuguesa com a Inglaterra; 3) manutenção do título honorário de 'Imperador do Brasil' por D. João até sua morte."},
+        {lbl:"Papel da Grã-Bretanha", txt:"Londres coordenou as negociações como 'potência amiga' — na prática, guardiã de seus interesses comerciais. Os tratados de 1810, favoráveis aos britânicos, foram de fato prorrogados como condição implícita."}
+      ],
+      "Atores":[],
+      "Impacto":[
+        {lbl:"Precedente jurídico-diplomático", txt:"O Tratado de 1825 estabeleceu que o reconhecimento de independências coloniais poderia ser negociado com indenização ao ex-soberano — precedente que influenciou processos de descolonização no século XIX."}
+      ]
+    },
+    actors:[
+      {name:"D. João VI", role:"Rei de Portugal — signatário"},
+      {name:"D. Pedro I", role:"Imperador do Brasil"},
+      {name:"Charles Stuart", role:"Representante britânico — mediador"}
+    ],
+    stats:[{val:"£2 mi", lbl:"Compensação"},{val:"1825", lbl:"Assinatura"},{val:"3", lbl:"Partes negociadoras"}]
+  },
+  {
+    id:"e1910", year:"1910", era:"republican", dot:"#4a7cb5",
+    title:"Proclamação da República Portuguesa",
+    sub:"Queda da monarquia em Lisboa redefine as bases identitárias da relação bilateral",
+    tags:["republican"],
+    meta:[
+      {lbl:"Data", val:"5 de outubro de 1910"},
+      {lbl:"Reconhecimento BR", val:"Novembro de 1910"},
+      {lbl:"Contexto", val:"Ambos países republicanos"}
+    ],
+    tabs:{
+      "Contexto RI":[
+        {lbl:"Impacto no Brasil", txt:"A proclamação da República em Portugal foi recebida com atenção no Brasil, que era república desde 1889. O Brasil foi dos primeiros países a reconhecer o novo regime português, em novembro de 1910."},
+        {lbl:"Comunidades imigrantes", txt:"A expressiva imigração portuguesa no Brasil gerou tensões internas nas comunidades entre monarquistas e republicanos. Esses conflitos tiveram reflexos diplomáticos nas relações bilaterais."}
+      ],
+      "Atores":[],
+      "Impacto":[
+        {lbl:"Relação república-república", txt:"Com ambos republicanos, as relações ganharam novo enquadramento. Compartilhavam instituições similares mas viviam momentos distintos: o Brasil consolidava a 'República do Café com Leite'; Portugal enfrentava instabilidade que levaria ao Estado Novo salazarista (1933)."}
+      ]
+    },
+    actors:[
+      {name:"Marechal Hermes da Fonseca", role:"Presidente do Brasil (1910–1914)"},
+      {name:"Teófilo Braga", role:"1º presidente da República Portuguesa"}
+    ],
+    stats:[{val:"1889", lbl:"República no BR"},{val:"1910", lbl:"República em PT"},{val:"1 mi+", lbl:"Portugueses no BR"}]
+  },
+  {
+    id:"e1933", year:"1933–1945", era:"republican", dot:"#4a7cb5",
+    title:"Estado Novo Salazarista e Vargas: afinidades autoritárias",
+    sub:"Dois regimes autoritários contemporâneos: corporativismo e o lusotropicalismo como instrumento de RI",
+    tags:["republican","diplomacia"],
+    meta:[
+      {lbl:"Teoria", val:"Lusotropicalismo (G. Freyre)"},
+      {lbl:"Uso geopolítico", val:"Legitimação do colonialismo africano"},
+      {lbl:"Paradoxo", val:"Brasil nunca aderiu oficialmente"}
+    ],
+    tabs:{
+      "Contexto RI":[
+        {lbl:"Paralelismo político", txt:"O Estado Novo de Salazar (1933) e o Estado Novo de Vargas (1937–1945) apresentaram afinidades estruturais: corporativismo, autoritarismo, anticomunismo. Salazar via o Brasil como extensão da 'civilização lusíada'."},
+        {lbl:"Lusotropicalismo como instrumento de RI", txt:"Portugal instrumentalizou o conceito de Gilberto Freyre — a ideia de colonização 'branda' e miscigenada — para legitimar internacionalmente o colonialismo africano. O Brasil foi usado como 'prova' desse modelo."}
+      ],
+      "Atores":[],
+      "Impacto":[
+        {lbl:"Legado para as RI", txt:"O lusotropicalismo moldou a autoimagem de Portugal perante a comunidade internacional até a Revolução dos Cravos (1974). O Brasil jamais aderiu oficialmente, mas o utilizou seletivamente para justificar laços com Portugal e com países africanos lusófonos."}
+      ]
+    },
+    actors:[
+      {name:"Getúlio Vargas", role:"Presidente do Brasil (Estado Novo, 1937–45)"},
+      {name:"António de Oliveira Salazar", role:"Ditador de Portugal (1932–1968)"},
+      {name:"Gilberto Freyre", role:"Sociólogo — teorizou o lusotropicalismo"}
+    ],
+    stats:[{val:"1933", lbl:"Estado Novo PT"},{val:"1937", lbl:"Estado Novo BR"},{val:"1974", lbl:"Revolução dos Cravos"}]
+  },
+  {
+    id:"e1961", year:"1961", era:"republican", dot:"#c0392b",
+    title:"Política Externa Independente e a crise com Lisboa",
+    sub:"Brasil apoia descolonização na ONU; Portugal reage com indignação — laços culturais não garantem alinhamento político",
+    tags:["republican","ruptura","diplomacia"],
+    meta:[
+      {lbl:"Doutrina", val:"Política Externa Independente (PEI)"},
+      {lbl:"Chanceler", val:"San Tiago Dantas"},
+      {lbl:"Desfecho", val:"Deterioração temporária bilateral"}
+    ],
+    tabs:{
+      "Contexto RI":[
+        {lbl:"A Política Externa Independente", txt:"Sob Jânio Quadros e João Goulart (1961–64), o Brasil adotou a PEI: apoio à autodeterminação dos povos, pragmatismo e não-alinhamento. Na ONU, votou a favor de resoluções de descolonização que constrangiam Portugal em Angola e Moçambique."},
+        {lbl:"A crise diplomática", txt:"Portugal reagiu com veemência ao voto brasileiro na ONU. Salazar considerou traição ao 'irmão lusíada'. Houve retaliações simbólicas e deterioração das relações. O episódio revelou a tensão estrutural entre laços culturais e interesses estratégicos distintos."}
+      ],
+      "Atores":[],
+      "Impacto":[
+        {lbl:"Lição para as RI", txt:"O episódio demonstrou que os laços histórico-culturais luso-brasileiros não se traduzem automaticamente em alinhamento político. A identidade compartilhada convive com interesses divergentes — princípio que o Itamaraty aprendeu a gerir com pragmatismo."}
+      ],
+      "Discurso":[{lbl:"", txt:""}]
+    },
+    actors:[
+      {name:"Jânio Quadros", role:"Presidente do Brasil (1961)"},
+      {name:"João Goulart", role:"Presidente do Brasil (1961–64)"},
+      {name:"San Tiago Dantas", role:"Chanceler — arquiteto da PEI"},
+      {name:"António Salazar", role:"Ditador português — reagiu com indignação"}
+    ],
+    stats:[{val:"1961", lbl:"Voto na ONU"},{val:"1964", lbl:"Fim da PEI"},{val:"1974", lbl:"Revolução dos Cravos"}],
+    quote:{txt:"O Brasil não pode ser advogado de colonialismos alheios quando luta pela emancipação de todos os povos.", author:"San Tiago Dantas, Chanceler, 1962"}
+  },
+  {
+    id:"e1974", year:"1974–1975", era:"modern", dot:"#3a8c84",
+    title:"Revolução dos Cravos e descolonização portuguesa",
+    sub:"Queda do Estado Novo em Lisboa abre nova fase; Brasil reconhece Angola antes dos EUA, priorizando interesses estratégicos",
+    tags:["modern","diplomacia"],
+    meta:[
+      {lbl:"Evento", val:"25 de Abril de 1974"},
+      {lbl:"Decisão BR", val:"Reconhecimento do MPLA/Angola (nov. 1975)"},
+      {lbl:"Doutrina", val:"Pragmatismo Responsável (Geisel)"}
+    ],
+    tabs:{
+      "Contexto RI":[
+        {lbl:"A Revolução de 25 de Abril", txt:"O Movimento das Forças Armadas derrubou o salazarismo, iniciando a descolonização acelerada. Portugal retirou-se de Angola, Moçambique, Guiné-Bissau, Cabo Verde e São Tomé e Príncipe em 1974–1975."},
+        {lbl:"Brasil e os novos países africanos", txt:"O Brasil, sob Geisel, reconheceu o MPLA em Angola em novembro de 1975, antes de muitos países ocidentais. Portugal reagiu com surpresa — o Brasil novamente priorizava interesses estratégicos sobre solidariedade ibérica."}
+      ],
+      "Atores":[],
+      "Impacto":[
+        {lbl:"CPLP em gestação", txt:"A descolonização criou a família lusófona de nações, institucionalizada na CPLP em 1996. Brasil e Portugal tornaram-se os dois maiores polos, com papéis complementares mas frequentemente concorrentes."}
+      ]
+    },
+    actors:[
+      {name:"Ernesto Geisel", role:"Presidente do Brasil (1974–79)"},
+      {name:"António de Spínola", role:"1º presidente pós-Revolução"},
+      {name:"Azeredo da Silveira", role:"Chanceler brasileiro — arquiteto do reconhecimento"}
+    ],
+    stats:[{val:"5", lbl:"Países lusófonos independentes"},{val:"1975", lbl:"Reconhecimento de Angola"},{val:"1976", lbl:"Nova Constituição PT"}]
+  },
+  {
+    id:"e1986", year:"1986", era:"modern", dot:"#3a8c84",
+    title:"Portugal entra na CEE",
+    sub:"Adesão europeia reposiciona Lisboa: passa a ser a 'ponte atlântica' do Brasil na Europa",
+    tags:["modern","diplomacia"],
+    meta:[
+      {lbl:"Evento", val:"Adesão à CEE (jan. 1986)"},
+      {lbl:"Efeito bilateral", val:"Negociações mediadas pela UE"},
+      {lbl:"Papel de Portugal", val:"'Ponte atlântica' do Brasil"}
+    ],
+    tabs:{
+      "Contexto RI":[
+        {lbl:"Integração europeia de Portugal", txt:"Em 1986, Portugal aderiu à CEE (junto com Espanha), integrando-se ao bloco que viria a ser a UE. A adesão condicionou a política externa portuguesa, que deveria alinhar-se às posições comunitárias."},
+        {lbl:"Impacto sobre as relações bilaterais", txt:"Parte das negociações Brasil–Portugal passou a ser mediada pelo enquadramento UE–Mercosul. Portugal tornou-se interlocutor preferencial do Brasil dentro da UE — 'ponte atlântica' — mas com autonomia limitada pelas posições comunitárias."}
+      ],
+      "Atores":[],
+      "Impacto":[
+        {lbl:"O papel de 'ponte'", txt:"Lisboa passou a exercer formalmente o papel de articulador das relações UE–Brasil e UE–América Latina, usando sua posição linguística e histórica como ativo diplomático — função reforçada na Presidência portuguesa do Conselho da UE (2021)."}
+      ]
+    },
+    actors:[
+      {name:"Mário Soares", role:"Presidente de Portugal (1986)"},
+      {name:"José Sarney", role:"Presidente do Brasil (1985–90)"}
+    ],
+    stats:[{val:"1986", lbl:"PT na CEE"},{val:"1991", lbl:"Mercosul criado"},{val:"1995", lbl:"PT na UE (Maastricht)"}]
+  },
+  {
+    id:"e1996", year:"1996", era:"modern", dot:"#5f9a6a",
+    title:"Fundação da CPLP",
+    sub:"Comunidade dos Países de Língua Portuguesa institucionaliza o eixo multilateral lusófono",
+    tags:["modern","acordo","diplomacia"],
+    meta:[
+      {lbl:"Data", val:"17 de julho de 1996 — Rio de Janeiro"},
+      {lbl:"Membros fundadores", val:"8 países (+Timor-Leste, 2002)"},
+      {lbl:"Iniciativa", val:"José Aparecido de Oliveira / Sarney"}
+    ],
+    tabs:{
+      "Contexto RI":[
+        {lbl:"A criação da CPLP", txt:"Em 17 de julho de 1996, no Rio de Janeiro, foi fundada a Comunidade dos Países de Língua Portuguesa, reunindo Brasil, Portugal e sete países africanos lusófonos. A iniciativa veio de José Aparecido de Oliveira e do ex-presidente José Sarney."},
+        {lbl:"Objetivos e instrumentos", txt:"A CPLP tem como objetivos a cooperação política, econômica, social, cultural e jurídica. O IILP (língua portuguesa) e mecanismos de mobilidade acadêmica simbolizam sua vocação integradora."}
+      ],
+      "Atores":[],
+      "Impacto":[
+        {lbl:"Brasil e Portugal na CPLP", txt:"Os dois maiores membros em PIB e população criam uma estrutura bipolar informal. Disputas sobre liderança, financiamento e agenda marcam a história — com o Brasil pressionando por maior protagonismo africano."},
+        {lbl:"Críticas", txt:"A CPLP é frequentemente criticada por déficit institucional e foco em projetos culturais. A cooperação econômica esbarra em assimetrias profundas e na inserção distinta em blocos regionais (UE, Mercosul, UA)."}
+      ]
+    },
+    actors:[
+      {name:"Fernando Henrique Cardoso", role:"Presidente do Brasil"},
+      {name:"Jorge Sampaio", role:"Presidente de Portugal"},
+      {name:"José Aparecido de Oliveira", role:"Idealizador brasileiro da CPLP"}
+    ],
+    stats:[{val:"9", lbl:"Membros atuais"},{val:"260 mi", lbl:"Falantes de português"},{val:"1996", lbl:"Fundação no Rio"}]
+  },
+  {
+    id:"e2000", year:"2000", era:"contempor", dot:"#e8c97a",
+    title:"Tratado de Amizade, Cooperação e Consulta",
+    sub:"Marco jurídico renovado: igualdade de direitos civis entre brasileiros e portugueses",
+    tags:["contempor","acordo","diplomacia"],
+    meta:[
+      {lbl:"Assinatura", val:"Porto Seguro, Bahia (2000)"},
+      {lbl:"Ocasião", val:"500 anos do Descobrimento"},
+      {lbl:"Inovação", val:"Igualdade de direitos civis"}
+    ],
+    tabs:{
+      "Contexto RI":[
+        {lbl:"O Tratado de Porto Seguro", txt:"Assinado por Fernando Henrique Cardoso e Jorge Sampaio nas comemorações dos 500 anos do Descobrimento, o Tratado modernizou o marco jurídico bilateral. Criou o estatuto de igualdade de direitos e deveres civis entre brasileiros em Portugal e portugueses no Brasil."},
+        {lbl:"Inovações diplomáticas", txt:"O tratado criou mecanismos de consulta política regulares e cimeiras bilaterais periódicas. Estabeleceu cooperação em defesa, educação, ciência e tecnologia."}
+      ],
+      "Atores":[],
+      "Impacto":[
+        {lbl:"Relevância contemporânea", txt:"Com mais de 1,5 milhão de brasileiros residindo em Portugal (2023), o Tratado de 2000 tornou-se instrumento central para questões consulares, trabalhistas e de cidadania. A expressiva comunidade brasileira é hoje o fator mais concreto da relação bilateral."}
+      ]
+    },
+    actors:[
+      {name:"Fernando Henrique Cardoso", role:"Presidente do Brasil"},
+      {name:"Jorge Sampaio", role:"Presidente de Portugal"},
+      {name:"Luís Felipe Lampreia", role:"Chanceler brasileiro"}
+    ],
+    stats:[{val:"2000", lbl:"Assinatura"},{val:"500", lbl:"Anos do Descobrimento"},{val:"1,5 mi", lbl:"Brasileiros em PT (2023)"}]
+  },
+  {
+    id:"e2011", year:"2011–2015", era:"contempor", dot:"#e8c97a",
+    title:"Crise da Eurozona e a inversão do fluxo migratório",
+    sub:"Colapso econômico português inverte 500 anos de fluxo: portugueses emigram ao Brasil pela primeira vez",
+    tags:["contempor"],
+    meta:[
+      {lbl:"Evento", val:"Resgate da troika (2011)"},
+      {lbl:"Desemprego PT", val:"17% em 2013"},
+      {lbl:"Fluxo", val:"150k+ portugueses ao Brasil"}
+    ],
+    tabs:{
+      "Contexto RI":[
+        {lbl:"A crise e o resgate", txt:"A crise da dívida soberana levou Portugal a solicitar resgate ao FMI/UE/BCE (troika) em 2011. O desemprego chegou a 17% (2013). O Brasil, então em crescimento acelerado, tornou-se destino de emigração portuguesa — fenômeno inédito desde o século XIX."},
+        {lbl:"Fluxo migratório invertido", txt:"Entre 2011 e 2015, mais de 150.000 portugueses emigraram ao Brasil. A histórica direção Brasil–Portugal do fluxo migratório foi temporariamente invertida — acontecimento de profundo significado simbólico para as relações bilaterais."}
+      ],
+      "Atores":[],
+      "Impacto":[
+        {lbl:"Empresas portuguesas no Brasil", txt:"A crise estimulou investimentos diretos de grandes grupos portugueses (EDP, Galp, Jerónimo Martins, Mota-Engil) no Brasil. O país tornou-se o principal destino de investimento português fora da Europa durante o período."}
+      ]
+    },
+    actors:[
+      {name:"Pedro Passos Coelho", role:"PM português — implementou austeridade"},
+      {name:"Dilma Rousseff", role:"Presidente do Brasil (2011–16)"}
+    ],
+    stats:[{val:"17%", lbl:"Desemprego PT (2013)"},{val:"150k+", lbl:"Portugueses→Brasil"},{val:"2011", lbl:"Resgate da troika"}]
+  },
+  {
+    id:"e2016", year:"2016–2023", era:"contempor", dot:"#e8c97a",
+    title:"Boom de imigração brasileira a Portugal",
+    sub:"Maior êxodo de brasileiros para Portugal da história: 1,5 milhão torna-se a maior comunidade estrangeira no país",
+    tags:["contempor"],
+    meta:[
+      {lbl:"Brasileiros em PT (2023)", val:"400k+ registrados / ~1,5 mi"},
+      {lbl:"Posição", val:"1ª maior comunidade estrangeira"},
+      {lbl:"Tensão", val:"Crise habitacional em Lisboa"}
+    ],
+    tabs:{
+      "Contexto RI":[
+        {lbl:"Fatores da emigração", txt:"Instabilidade política (impeachment de Dilma, 2016), crise econômica, insegurança e a pandemia de COVID-19 (2020) impulsionaram emigração de brasileiros qualificados a Portugal. A facilidade linguística, o Tratado de 2000 e o acesso à UE foram atrativos decisivos."},
+        {lbl:"Números e perfil", txt:"Em 2023, os brasileiros tornaram-se a maior comunidade estrangeira em Portugal, superando 400.000 residentes registrados. Estimativas informais chegam a 1,5 milhão. O perfil é predominantemente jovem e qualificado — gerando debate sobre 'fuga de cérebros' no Brasil."}
+      ],
+      "Atores":[],
+      "Impacto":[
+        {lbl:"Tensões e acolhimento", txt:"A expressiva presença brasileira contribuiu para a crise habitacional portuguesa e gerou debates sobre discriminação e 'brasilização' de setores da economia. A comunidade tornou-se variável política nas eleições portuguesas."},
+        {lbl:"Impacto nas RI", txt:"Os brasileiros tornaram-se agenda permanente das reuniões bilaterais de alto nível. Criaram também vínculos econômicos mais profundos via remessas e consumo — aprofundando a interdependência humana entre os dois países."}
+      ]
+    },
+    actors:[
+      {name:"Marcelo Rebelo de Sousa", role:"Presidente de Portugal"},
+      {name:"Lula da Silva / Bolsonaro", role:"Presidentes do Brasil no período"}
+    ],
+    stats:[{val:"400k+", lbl:"Registrados em PT"},{val:"1ª", lbl:"Maior comunidade"},{val:"2×", lbl:"Crescimento 2017–22"}]
+  },
+  {
+    id:"e2024", year:"2024–hoje", era:"contempor", dot:"#e8c97a",
+    title:"Acordo UE–Mercosul e parceria estratégica renovada",
+    sub:"Conclusão técnica do maior acordo birregional do mundo; Portugal consolida papel de 'ponte atlântica'",
+    tags:["contempor","acordo","diplomacia"],
+    meta:[
+      {lbl:"Acordo", val:"UE–Mercosul (conclusão dez. 2024)"},
+      {lbl:"Papel de Portugal", val:"Principal defensor na UE"},
+      {lbl:"CPLP", val:"30 anos em 2026"}
+    ],
+    tabs:{
+      "Contexto RI":[
+        {lbl:"O Acordo UE–Mercosul", txt:"As negociações iniciadas em 1999 chegaram a conclusão técnica em dezembro de 2024, após 25 anos. Portugal comemorou como resultado de seu esforço diplomático continuado. A ratificação pelos parlamentos nacionais europeus resta como próximo passo."},
+        {lbl:"Agenda do futuro", txt:"As relações Brasil–Portugal entram em fase madura: Brasil com 215 milhões de habitantes e economia emergente; Portugal com 10 milhões e inserção europeia. O Brasil precisa de Portugal como porta da UE; Portugal precisa do Brasil como base de projeção atlântica e lusófona."}
+      ],
+      "Atores":[],
+      "Impacto":[
+        {lbl:"Agenda 2025–2030", txt:"Transição energética (hidrogênio verde), cooperação científica e tecnológica, mobilidade estudantil e gestão da comunidade brasileira em Portugal dominam a agenda bilateral. A CPLP completa 30 anos em 2026, com debates sobre aprofundamento institucional."}
+      ]
+    },
+    actors:[
+      {name:"Luiz Inácio Lula da Silva", role:"Presidente do Brasil (2023–)"},
+      {name:"Marcelo Rebelo de Sousa", role:"Presidente de Portugal"},
+      {name:"Mauro Vieira", role:"Chanceler brasileiro"}
+    ],
+    stats:[{val:"2024", lbl:"Conclusão UE-Mercosul"},{val:"25 anos", lbl:"De negociações"},{val:"2026", lbl:"30 anos da CPLP"}]
+  }
+];
+
+/* ── ERA CONFIG ── */
+const ERA_LABELS = {colonial:"Período Colonial", imperial:"Período Imperial", republican:"República", modern:"Era Moderna", contempor:"Contemporâneo"};
+const ERA_ORDER  = ["colonial","imperial","republican","modern","contempor"];
+const TAG_LABELS = {colonial:"Colonial",imperial:"Imperial",republican:"República",modern:"Moderno",contempor:"Contemporâneo",acordo:"Acordo",ruptura:"Ruptura",diplomacia:"Diplomacia"};
+const TAG_CLS    = {colonial:"tc",imperial:"ti",republican:"tr",modern:"tm",contempor:"tk",acordo:"ta",ruptura:"tx",diplomacia:"td"};
+
+/* ── STATE ── */
+let activeEra = "all", activeSearch = "", activeEv = null;
+
+/* ── ELEMENTS ── */
+const sidebar    = document.getElementById("sidebar");
+const timelineEl = document.getElementById("timelineEl");
+const overlay    = document.getElementById("detailOverlay");
+const dTitle     = document.getElementById("dTitle");
+const dMeta      = document.getElementById("dMeta");
+const dSub       = document.getElementById("dSub");
+const dMetaRow   = document.getElementById("dMetaRow");
+const dTabs      = document.getElementById("dTabs");
+const dBody      = document.getElementById("dBody");
+const quickBar   = document.getElementById("quickBar");
+
+/* ── RENDER ── */
+function tagHtml(t) { return `<span class="tag ${TAG_CLS[t]||'tc'}">${TAG_LABELS[t]||t}</span>`; }
+
+function visible(ev) {
+  const eraOk = activeEra === "all" || ev.era === activeEra;
+  const search = activeSearch.toLowerCase();
+  const searchOk = !search || ev.title.toLowerCase().includes(search) || ev.year.includes(search) || ev.sub.toLowerCase().includes(search);
+  return eraOk && searchOk;
+}
+
+function render() {
+  timelineEl.innerHTML = "";
+  sidebar.innerHTML = "";
+  quickBar.innerHTML = "";
+
+  let currentEra = null;
+  let side = 0; // alternating
+
+  EVENTS.forEach(ev => {
+    if (!visible(ev)) return;
+
+    // Quick bar pill
+    const qp = document.createElement("button");
+    qp.className = "qpill";
+    qp.textContent = ev.year + " · " + ev.title.slice(0,28) + (ev.title.length>28?"…":"");
+    qp.onclick = () => openDetail(ev);
+    quickBar.appendChild(qp);
+
+    // Sidebar section header
+    if (ev.era !== currentEra) {
+      currentEra = ev.era;
+      const sh = document.createElement("div");
+      sh.className = "sidebar-section";
+      sh.innerHTML = `<div class="section-era">${ERA_LABELS[ev.era]}</div>`;
+      sidebar.appendChild(sh);
+    }
+
+    // Sidebar nav item
+    const ni = document.createElement("div");
+    ni.className = "nav-item" + (activeEv === ev.id ? " active" : "");
+    ni.id = "nav-" + ev.id;
+    ni.innerHTML = `
+      <div class="nav-dot" style="background:${ev.dot}"></div>
+      <div class="nav-info">
+        <div class="nav-year">${ev.year}</div>
+        <div class="nav-title">${ev.title}</div>
+        <span class="nav-tag tag ${TAG_CLS[ev.tags[0]]||'tc'}">${TAG_LABELS[ev.tags[0]]||ev.tags[0]}</span>
+      </div>`;
+    ni.onclick = () => { openDetail(ev); scrollToCard(ev.id); };
+    sidebar.appendChild(ni);
+
+    // Timeline row (alternating, like Militares)
+    const row = document.createElement("div");
+    row.className = "ev-row visible";
+    row.id = "row-" + ev.id;
+
+    const cardHtml = `
+      <div class="ev-card" data-id="${ev.id}">
+        <div class="ev-card-year" style="color:${ev.dot}">${ev.year}</div>
+        <div class="ev-card-tags">${ev.tags.map(tagHtml).join("")}</div>
+        <div class="ev-card-title">${ev.title}</div>
+        <div class="ev-card-sub">${ev.sub}</div>
+      </div>`;
+
+    if (side % 2 === 0) {
+      row.innerHTML = `
+        <div class="ev-left">${cardHtml}</div>
+        <div class="ev-center"><div class="ev-dot" style="background:${ev.dot}" data-id="${ev.id}"></div></div>
+        <div class="ev-right ev-empty"></div>`;
+    } else {
+      row.innerHTML = `
+        <div class="ev-left ev-empty"></div>
+        <div class="ev-center"><div class="ev-dot" style="background:${ev.dot}" data-id="${ev.id}"></div></div>
+        <div class="ev-right">${cardHtml}</div>`;
+    }
+
+    row.querySelectorAll(".ev-card, .ev-dot").forEach(el => {
+      el.onclick = () => openDetail(ev);
+    });
+
+    timelineEl.appendChild(row);
+    side++;
+  });
+}
+
+function scrollToCard(id) {
+  const el = document.getElementById("row-" + id);
+  el?.scrollIntoView({ behavior: "smooth", block: "center" });
+}
+
+/* ── DETAIL DRAWER ── */
+function openDetail(ev) {
+  activeEv = ev.id;
+  document.querySelectorAll(".nav-item").forEach(n => n.classList.remove("active"));
+  const ni = document.getElementById("nav-" + ev.id);
+  if (ni) ni.classList.add("active");
+
+  // Header
+  dMeta.textContent = ev.year + "  ·  " + ERA_LABELS[ev.era];
+  dTitle.textContent = ev.title;
+  dSub.textContent = ev.sub;
+
+  // 3-col meta row
+  if (ev.meta && ev.meta.length) {
+    dMetaRow.innerHTML = ev.meta.map(m =>
+      `<div class="meta-col"><div class="meta-col-label">${m.lbl}</div><div class="meta-col-content">${m.val}</div></div>`
+    ).join("");
+    dMetaRow.style.display = "grid";
+  } else {
+    dMetaRow.style.display = "none";
+  }
+
+  // Build tabs
+  const tabNames = ["Contexto RI", "Atores", "Impacto"];
+  const extraTabs = Object.keys(ev.tabs).filter(t => !tabNames.includes(t));
+  const allTabs = [...tabNames, ...extraTabs];
+
+  dTabs.innerHTML = allTabs.map((t,i) =>
+    `<div class="dtab${i===0?" active":""}" data-tab="${i}">${t}</div>`
+  ).join("");
+
+  dBody.innerHTML = allTabs.map((tabName, i) => {
+    let html = `<div class="tab-panel${i===0?" active":""}" data-panel="${i}">`;
+
+    if (tabName === "Atores") {
+      if (ev.actors && ev.actors.length) {
+        html += `<div class="tp-section"><div class="tp-label">Atores principais</div>
+          <div class="tp-actors">${ev.actors.map(a => `<div class="actor-chip"><div class="actor-name">${a.name}</div><div class="actor-role">${a.role}</div></div>`).join("")}</div></div>`;
+      } else {
+        html += `<div class="tp-section"><div class="tp-text" style="color:var(--muted)">Não especificado.</div></div>`;
+      }
+    } else {
+      // Stats
+      if (ev.stats && i === 0) {
+        html += `<div class="tp-grid">${ev.stats.map(s => `<div class="tp-stat"><div class="tp-stat-val">${s.val}</div><div class="tp-stat-lbl">${s.lbl}</div></div>`).join("")}</div>`;
+      }
+      // Sections
+      const sections = ev.tabs[tabName] || [];
+      sections.forEach(s => {
+        if (s.lbl) html += `<div class="tp-section"><div class="tp-label">${s.lbl}</div><div class="tp-text">${s.txt}</div></div>`;
+        else if (s.txt) html += `<div class="tp-section"><div class="tp-text">${s.txt}</div></div>`;
+      });
+      // Quote
+      if (ev.quote && tabName === "Impacto") {
+        html += `<div class="quote-block"><div class="quote-text">"${ev.quote.txt}"</div><div class="quote-author">— ${ev.quote.author}</div></div>`;
+      }
+    }
+
+    html += `</div>`;
+    return html;
+  }).join("");
+
+  dTabs.querySelectorAll(".dtab").forEach(tab => {
+    tab.onclick = () => {
+      const idx = tab.dataset.tab;
+      dTabs.querySelectorAll(".dtab").forEach(t => t.classList.remove("active"));
+      dBody.querySelectorAll(".tab-panel").forEach(p => p.classList.remove("active"));
+      tab.classList.add("active");
+      dBody.querySelector(`[data-panel="${idx}"]`)?.classList.add("active");
+    };
+  });
+
+  overlay.classList.add("open");
+}
+
+function closeDetail() {
+  overlay.classList.remove("open");
+  activeEv = null;
+  document.querySelectorAll(".nav-item").forEach(n => n.classList.remove("active"));
+}
+
+document.getElementById("drawerClose").onclick = closeDetail;
+overlay.onclick = e => { if (e.target === overlay) closeDetail(); };
+
+/* ── FILTERS ── */
+document.querySelectorAll("[data-era]").forEach(btn => {
+  btn.onclick = () => {
+    document.querySelectorAll("[data-era]").forEach(b => b.classList.remove("on"));
+    btn.classList.add("on");
+    activeEra = btn.dataset.era;
+    render();
+  };
+});
+
+document.getElementById("searchInput").oninput = e => {
+  activeSearch = e.target.value;
+  render();
+};
+
+/* ── INIT ── */
+render();
+</script>
+</body>
+</html>
