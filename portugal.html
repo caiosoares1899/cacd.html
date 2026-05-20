@@ -2,7 +2,10 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#090d12">
 <title>Brasil – Portugal · Relações Internacionais · CACD</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=IBM+Plex+Mono:wght@300;400;600&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap" rel="stylesheet">
@@ -594,23 +597,176 @@ body {
 }
 .qpill:hover { border-color: var(--gold); color: var(--gold); }
 
+/* ── SAFE AREA (iPhone notch/home bar) ── */
+@supports (padding-bottom: env(safe-area-inset-bottom)) {
+  .quick-bar {
+    padding-bottom: calc(7px + env(safe-area-inset-bottom));
+  }
+  @media (max-width: 768px) {
+    .detail-drawer {
+      padding-bottom: env(safe-area-inset-bottom);
+    }
+  }
+}
+
 /* scrollbar */
 ::-webkit-scrollbar { width: 5px; height: 5px; }
 ::-webkit-scrollbar-track { background: var(--bg2); }
 ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
 ::-webkit-scrollbar-thumb:hover { background: var(--muted); }
 
-/* mobile */
+/* ── MOBILE ── */
 @media (max-width: 768px) {
+
+  /* Hero compacto */
+  .hero {
+    padding: 2.2rem 1.2rem 2rem;
+  }
+  .hero-label {
+    font-size: .5rem;
+    letter-spacing: .18em;
+    margin-bottom: 1rem;
+  }
+  .hero h1 { font-size: 2rem; }
+  .hero-sub { font-size: .82rem; margin-bottom: 1.4rem; }
+  .hflag { width: 36px; height: 24px; }
+  .era-legend { gap: 10px; }
+  .era-legend-item { font-size: .44rem; }
+
+  /* Filter bar — scroll horizontal */
+  .filter-bar {
+    padding: 8px 12px;
+    gap: 6px;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .filter-bar::-webkit-scrollbar { display: none; }
+  .filter-lbl { display: none; }
+  .fbtn { font-size: .46rem; padding: 5px 10px; flex-shrink: 0; }
+  .filter-spacer { display: none; }
+  .search-box { display: none; } /* substituído por modal no mobile */
+
+  /* Layout — sem sidebar */
   .workspace { grid-template-columns: 1fr; }
   .sidebar { display: none; }
-  .timeline-wrap { padding: 30px 16px 80px; }
-  .ev-row { grid-template-columns: 20px 1fr; }
+
+  /* Timeline — coluna única, linha à esquerda */
+  .timeline-wrap {
+    padding: 20px 14px 100px 44px;
+  }
+  .tl-line {
+    left: 16px;
+    transform: none;
+  }
+  .ev-row {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 0;
+    margin-bottom: 20px;
+  }
   .ev-left { display: none; }
-  .ev-right { padding-left: 14px; grid-column: 2; }
-  .ev-center { grid-column: 1; }
-  .tl-line { left: 20px; transform: none; }
-  .drawer-meta-row { grid-template-columns: 1fr; }
+  .ev-empty { display: none; }
+  .ev-center {
+    flex-shrink: 0;
+    width: 28px;
+    padding-top: 12px;
+    margin-left: -28px;
+  }
+  .ev-dot { width: 12px; height: 12px; }
+  .ev-right {
+    flex: 1;
+    padding-left: 12px;
+    text-align: left;
+  }
+  /* cards no mobile */
+  .ev-card {
+    padding: 11px 13px;
+  }
+  .ev-card-year { font-size: .58rem; }
+  .ev-card-title { font-size: .82rem; }
+  .ev-card-sub { font-size: .75rem; }
+  .ev-card-tags { margin-bottom: 5px; }
+  .tag { font-size: .42rem; padding: 2px 6px; }
+
+  /* Era dividers */
+  .era-block-label { font-size: .44rem; padding: 5px 12px; letter-spacing: .12em; }
+
+  /* ── DRAWER — tela cheia no mobile */
+  .detail-overlay { align-items: flex-start; }
+  .detail-drawer {
+    max-height: 100vh;
+    height: 100dvh;
+    border-top: none;
+    border-bottom: 2px solid var(--gold);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  /* Header do drawer */
+  .drawer-header {
+    padding: 14px 16px 10px;
+    gap: 10px;
+  }
+  .drawer-title { font-size: 1.1rem; }
+  .drawer-sub { font-size: .78rem; }
+  .drawer-meta { font-size: .42rem; }
+  .drawer-close {
+    width: 28px; height: 28px; font-size: .7rem;
+    flex-shrink: 0;
+  }
+
+  /* Meta row — coluna única */
+  .drawer-meta-row {
+    grid-template-columns: 1fr !important;
+    border-bottom: 1px solid var(--border);
+  }
+  .meta-col {
+    padding: 8px 16px;
+    border-right: none !important;
+    border-bottom: 1px solid var(--border);
+  }
+  .meta-col:last-child { border-bottom: none; }
+  .meta-col-label { font-size: .42rem; }
+  .meta-col-content { font-size: .78rem; }
+
+  /* Tabs — scroll horizontal */
+  .drawer-tabs { flex-shrink: 0; }
+  .dtab { font-size: .46rem; padding: 9px 12px; }
+
+  /* Body do drawer — scrollável */
+  .drawer-body { flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch; }
+  .tab-panel { padding: 14px 16px 24px; }
+
+  /* Conteúdo das tabs */
+  .tp-text { font-size: .82rem; line-height: 1.7; }
+  .tp-label { font-size: .42rem; margin-bottom: 6px; }
+  .tp-grid { grid-template-columns: repeat(2, 1fr); gap: 8px; }
+  .tp-stat-val { font-size: .9rem; }
+  .tp-stat-lbl { font-size: .42rem; }
+  .tp-actors { gap: 6px; }
+  .actor-chip { padding: 6px 10px; }
+  .actor-name { font-size: .52rem; }
+  .actor-role { font-size: .42rem; }
+  .quote-block { padding: 10px 14px; }
+  .quote-text { font-size: .82rem; }
+  .quote-author { font-size: .42rem; }
+
+  /* Quick bar */
+  .quick-bar { padding: 6px 12px; gap: 5px; }
+  .qpill { font-size: .42rem; padding: 4px 8px; }
+}
+
+/* Extra pequeno — iPhone SE etc */
+@media (max-width: 380px) {
+  .hero h1 { font-size: 1.7rem; }
+  .timeline-wrap { padding: 16px 10px 100px 38px; }
+  .tl-line { left: 12px; }
+  .ev-center { margin-left: -24px; width: 24px; }
+  .ev-card-title { font-size: .78rem; }
+  .tp-grid { grid-template-columns: 1fr 1fr; }
 }
 </style>
 </head>
@@ -664,6 +820,7 @@ body {
   <button class="fbtn" data-era="contempor">Contemporâneo</button>
   <div class="filter-spacer"></div>
   <input class="search-box" id="searchInput" type="text" placeholder="buscar evento…">
+  <button class="fbtn" id="mobileSearchBtn" style="display:none" aria-label="Buscar">⌕</button>
 </div>
 
 <!-- ── WORKSPACE ── -->
@@ -708,7 +865,7 @@ const EVENTS = [
   {
     id:"e1500", year:"1500", era:"colonial", dot:"#c9a84c",
     title:"Chegada de Cabral e o início da relação colonial",
-    sub:"Portugal toma posse do território que será o Brasil, inaugurando 322 anos de dominação colonial",
+    sub:"Portugal toma posse do território que será o Brasil, inaugurando 322 anos de dominação colonial e os fundamentos de uma relação única na história moderna",
     tags:["colonial"],
     meta:[
       {lbl:"Documento central", val:"Tratado de Tordesilhas (1494)"},
@@ -717,104 +874,158 @@ const EVENTS = [
     ],
     tabs:{
       "Contexto RI":[
-        {lbl:"Enquadramento do sistema colonial", txt:"A chegada de Cabral inseriu o Brasil no sistema colonial português e nas disputas ibéricas reguladas pelo Tratado de Tordesilhas (1494). Portugal estabelecia a mais longa relação colonial da história moderna."},
-        {lbl:"Tordesilhas como base jurídica", txt:"Seis anos antes, Portugal e Espanha dividiram o mundo com aval papal. A linha a 370 léguas de Cabo Verde garantiu a Portugal os territórios que viriam a ser o Brasil — fundamento jurídico-internacional de toda a relação."}
+        {lbl:"O sistema colonial no quadro das RI do século XVI", txt:"A chegada de Cabral em 22 de abril de 1500 não foi um ato isolado, mas a expressão de uma política sistemática de expansão marítima portuguesa iniciada com Henrique O Navegador. O Brasil foi inserido no sistema colonial ibérico regulado pelo Tratado de Tordesilhas (1494), que dividiu o mundo entre Portugal e Espanha com aval da Bula Inter Caetera do Papa Alexandre VI. Esse enquadramento jurídico-teológico foi o primeiro instrumento de 'direito internacional' a regular a relação do que viria a ser o Brasil com o mundo."},
+        {lbl:"Tordesilhas e o equilíbrio de poder ibérico", txt:"A linha de Tordesilhas, fixada a 370 léguas a oeste de Cabo Verde, garantiu a Portugal o litoral oriental da América do Sul. A descoberta posterior de que o território se estendia muito além da linha — e a consequente expansão territorial portuguesa pelas bandeiras — foi fonte de tensão permanente com a Espanha, resolvida apenas pelo Tratado de Madri (1750) e o de Santo Ildefonso (1777), que estabeleceram as fronteiras do que seria o Brasil independente."},
+        {lbl:"O Pacto Colonial: estrutura da relação metrópole-colônia", txt:"A relação Brasil–Portugal foi estruturada sob o 'Pacto Colonial': monopólio comercial da metrópole sobre a colônia, proibição de manufaturas, obrigatoriedade de exportar matérias-primas para Lisboa. O Brasil foi explorado em ciclos — pau-brasil (séc. XVI), açúcar (séc. XVII), ouro e diamantes (séc. XVIII) — com cada ciclo reforçando a dependência estrutural que moldaria a economia brasileira por séculos."}
       ],
       "Atores":[],
-      "Impacto":[
-        {lbl:"Sistema de exploração", txt:"Portugal implementou Capitanias Hereditárias (1532) e Governo-Geral (1549), estruturando a extração de pau-brasil, cana-de-açúcar e o tráfico de africanos escravizados."},
-        {lbl:"Disputas externas", txt:"O Brasil foi alvo de conflitos com França (Rio de Janeiro, 1555–1565) e Holanda (Pernambuco, 1630–1654), demonstrando seu valor estratégico no sistema colonial internacional."}
+      "Tratados e Documentos":[
+        {lbl:"Bula Inter Caetera (1493)", txt:"Papa Alexandre VI dividiu o mundo entre Portugal e Espanha. Base teológica do direito colonial europeu. Portugal e Espanha a renegociaram em Tordesilhas no ano seguinte."},
+        {lbl:"Tratado de Tordesilhas (1494)", txt:"Fixa a linha divisória a 370 léguas de Cabo Verde. Garante a Portugal o território brasileiro. Ratificado por D. João II e os Reis Católicos. Referência jurídica de toda a expansão colonial portuguesa."},
+        {lbl:"Tratado de Madri (1750)", txt:"Substitui Tordesilhas pelo princípio do uti possidetis (quem ocupa, possui). Delimitou as fronteiras do Brasil colonial com a América espanhola. Negociado pelo Marquês de Pombal e Alexandre de Gusmão — este último, nascido no Brasil."},
+        {lbl:"Tratado de Santo Ildefonso (1777)", txt:"Revisão do Tratado de Madri após conflitos na Bacia do Prata. Confirmou as fronteiras meridionais do Brasil. Base jurídica que o Barão do Rio Branco utilizaria no século XIX para consolidar o território brasileiro."}
       ],
-      "Legado":[ {lbl:"", txt:"Inaugurou a relação assimétrica Brasil–Portugal que persistiria séculos além da independência: laços culturais e linguísticos profundos construídos sobre violência colonial e expropriação."}]
+      "Impacto":[
+        {lbl:"Estrutura econômica da colônia", txt:"Portugal implementou Capitanias Hereditárias (1532) — concessões a donatários particulares — e o Governo-Geral (1549), com Tomé de Sousa como primeiro governador-geral. O sistema estruturou a extração de pau-brasil, a produção açucareira com trabalho escravo africano e, posteriormente, a mineração. A Coroa controlava o comércio através da Mesa do Bem Comum e do monopólio sobre o pau-brasil."},
+        {lbl:"Disputas externas e defesa da colônia", txt:"O valor estratégico do Brasil suscitou ataques de potências rivais: corsários franceses ameaçaram o litoral desde 1503; a França Antártica estabeleceu-se no Rio de Janeiro (1555–1565) e a França Equinocial no Maranhão (1612–1615); a WIC holandesa ocupou o Nordeste (1630–1654). Portugal defendeu a colônia com milícias locais, tropas metropolitanas e, crucialmente, com o apoio da própria população colonial — revelando que o Brasil tinha interesses próprios de defesa."},
+        {lbl:"O tráfico atlântico de escravizados", txt:"A relação Brasil–Portugal foi estruturada sobre o tráfico transatlântico de africanos escravizados, o maior da história: estima-se que 4,9 milhões de africanos foram desembarcados no Brasil entre 1500 e 1850. Portugal controlava os principais portos escravistas africanos (Angola, Moçambique, Guiné) e o Brasil era o maior destino. Essa triangulação Portugal–África–Brasil é elemento central para compreender a formação cultural e social brasileira."}
+      ],
+      "Legado":[
+        {lbl:"Legado linguístico e cultural", txt:"A língua portuguesa tornou-se o principal elo da relação bilateral — e o fundamento da CPLP (1996). O catolicismo, o direito luso, as instituições administrativas e os padrões culturais portugueses foram transplantados e transformados no Brasil, criando uma civilização distinta mas profundamente marcada pela herança lusitana."},
+        {lbl:"Legado nas RI contemporâneas", txt:"A história colonial estruturou a relação bilateral em torno de assimetria e identidade compartilhada. O Brasil herdou de Portugal não apenas a língua, mas a tradição do Direito Internacional luso (Emer de Vattel foi lido no Itamaraty desde cedo) e a vocação para o equilíbrio e a mediação que o Barão do Rio Branco transformaria em política de Estado."},
+        {lbl:"Para o CACD", txt:"Questões sobre o período colonial são recorrentes na prova de História do Brasil e PEB. Pontos críticos: o Pacto Colonial, o uti possidetis como princípio de fronteiras, a Escola de Salamanca e o direito natural, e como a experiência colonial moldou a diplomacia imperial e republicana brasileira."}
+      ]
     },
     actors:[
-      {name:"Pedro Álvares Cabral", role:"Comandante da frota portuguesa"},
-      {name:"D. Manuel I", role:"Rei de Portugal"},
-      {name:"Papa Alexandre VI", role:"Mediador de Tordesilhas"}
+      {name:"Pedro Álvares Cabral", role:"Comandante da frota portuguesa — chegou ao Brasil em 22/04/1500"},
+      {name:"D. Manuel I", role:"Rei de Portugal — 'O Venturoso' — financiou as expedições"},
+      {name:"Papa Alexandre VI", role:"Mediador de Tordesilhas — emitiu as Bulas Alexandrinas"},
+      {name:"D. João II", role:"Rei de Portugal — negociou Tordesilhas em 1494"},
+      {name:"Alexandre de Gusmão", role:"Diplomata luso-brasileiro — negociou o Tratado de Madri (1750)"}
     ],
-    stats:[{val:"1494", lbl:"Tordesilhas"},{val:"300+", lbl:"Anos de colônia"},{val:"370", lbl:"Léguas (linha"}]
+    stats:[{val:"1494", lbl:"Tordesilhas"},{val:"322", lbl:"Anos de colônia"},{val:"4,9 mi", lbl:"Africanos escravizados"},{val:"3", lbl:"Tratados de fronteira"}]
   },
   {
     id:"e1640", year:"1640", era:"colonial", dot:"#c0392b",
     title:"Restauração portuguesa e a retomada do Brasil",
-    sub:"Portugal recupera independência da Espanha; Brasil retorna à soberania lusitana após resistência à WIC holandesa",
+    sub:"Portugal recupera independência da Espanha; Brasil retorna à soberania lusitana após resistência à WIC holandesa — primeiro grande conflito geopolítico envolvendo o território brasileiro",
     tags:["colonial","ruptura"],
     meta:[
       {lbl:"Evento central", val:"Restauração de Portugal (1640)"},
-      {lbl:"Conflito", val:"Guerras Ibero-Holandesas"},
-      {lbl:"Desfecho", val:"Expulsão da WIC (1654)"}
+      {lbl:"Conflito", val:"Guerras Ibero-Holandesas (1624–1654)"},
+      {lbl:"Desfecho", val:"Expulsão da WIC — Tratado de Haia (1661)"}
     ],
     tabs:{
       "Contexto RI":[
-        {lbl:"A União Ibérica e seus efeitos", txt:"Durante a União Ibérica (1580–1640), Portugal e seus territórios estiveram subordinados à Espanha. O Brasil tornou-se alvo das guerras ibero-holandesas — a WIC ocupou o Nordeste em 1630, instalando Maurício de Nassau."},
-        {lbl:"A Restauração de 1640", txt:"Com D. João IV, Portugal recuperou independência. A 'Insurreição Pernambucana' (1645–1654) expulsou os holandeses, consolidando a soberania portuguesa sobre o açúcar nordestino — a principal riqueza colonial."}
+        {lbl:"A União Ibérica (1580–1640) e seus efeitos sobre o Brasil", txt:"Quando Filipe II da Espanha assumiu o trono português em 1580 (sob o nome Filipe I de Portugal), o Brasil tornou-se tecnicamente território espanhol. Os inimigos da Espanha — em especial os Países Baixos em guerra de independência — passaram a atacar os territórios lusos. A Companhia das Índias Ocidentais (WIC), fundada em 1621, tinha explicitamente o objetivo de conquistar o Brasil açucareiro. O Brasil pagou o preço da União Ibérica com invasões, destruição e instabilidade por décadas."},
+        {lbl:"A ocupação holandesa do Nordeste (1624–1654)", txt:"A WIC ocupou Salvador em 1624 (retomada no ano seguinte) e Pernambuco em 1630. Johan Maurits van Nassau-Siegen governou a 'Nova Holanda' entre 1637 e 1644 com relativa tolerância religiosa e refinamento cultural. Contratou pintores como Frans Post e Albert Eckhout, produzindo o primeiro registro sistemático da flora, fauna e povos do Brasil. Apesar disso, a ocupação explorou o açúcar e endividou os moradores locais."},
+        {lbl:"A Restauração de 1640 e a Insurreição Pernambucana", txt:"A aclamação de D. João IV em Lisboa (1640) recolocou o Brasil sob Portugal, mas os holandeses permaneceram no Nordeste. Entre 1645 e 1654, uma insurreição liderada por André Vidal de Negreiros, Henrique Dias (negro liberto) e Filipe Camarão (indígena) expulsou a WIC. A Batalha dos Guararapes (1648 e 1649) tornou-se símbolo da 'primeira vitória do povo brasileiro' — narrativa que o Império depois instrumentalizou."}
       ],
       "Atores":[],
+      "Tratados e Documentos":[
+        {lbl:"Tratado de Haia (1661)", txt:"Portugal pagou à Holanda indenização de 4 milhões de cruzados pelo reconhecimento da posse do Brasil e dos territórios africanos. Esse pagamento agravou as finanças portuguesas e aprofundou a dependência em relação à Inglaterra. É o tratado que encerrou formalmente as guerras luso-holandesas e consolidou a soberania portuguesa sobre o Brasil."},
+        {lbl:"Tratado de Westminster (1654)", txt:"Firmado entre Inglaterra e Países Baixos após a Primeira Guerra Anglo-Holandesa. Garantiu a Portugal — aliado britânico — o apoio inglês contra as pretensões holandesas, contribuindo para o isolamento diplomático da WIC e facilitando a expulsão holandesa do Brasil."}
+      ],
       "Impacto":[
-        {lbl:"Tratado de Haia (1661)", txt:"Portugal pagou à Holanda indenização de 4 milhões de cruzados pela expulsão da WIC, aprofundando a dependência financeira e reforçando os vínculos com a Inglaterra — base do Tratado de Methuen (1703)."}
+        {lbl:"O custo financeiro e a dependência inglesa", txt:"Para financiar a Restauração e pagar as indenizações aos Países Baixos, Portugal contraiu dívidas com a Inglaterra e concedeu-lhe privilégios comerciais crescentes. A aliança luso-britânica — formalizada no Tratado de Windsor (1386) e renovada pelos Tratados de 1642, 1654 e 1661 — criou a estrutura de dependência que desembocaria no Tratado de Methuen (1703)."},
+        {lbl:"Precedente para as RI brasileiras", txt:"A insurreição pernambucana demonstrou que a população colonial tinha interesses próprios de defesa — e que esses interesses podiam divergir de Lisboa. A aliança entre colonos portugueses, negros libertos e indígenas contra uma potência estrangeira prefigurou a coalizão multiétnica que mais tarde sustentaria a independência. O episódio é relevante para compreender como o Itamaraty constrói a narrativa de 'nação pacífica mas capaz de se defender'."}
+      ],
+      "Legado":[
+        {lbl:"Legado para a fronteira norte do Brasil", txt:"A expulsão holandesa consolidou a soberania portuguesa sobre o Nordeste, mas os Países Baixos mantiveram o Suriname — enclave na América do Sul que gerou disputas territoriais com o Brasil até o século XX. O próprio princípio do uti possidetis, invocado por Rio Branco nas questões de fronteira, tem raízes nesse período."},
+        {lbl:"Para o CACD", txt:"A resistência holandesa é citada na prova como exemplo de 'defesa do território colonial' e como prefiguração da consciência nacional. Atenção ao Tratado de Haia (1661) como instrumento de RI — Portugal cedeu interesses em troca de reconhecimento, padrão que se repetiria em 1825 com o Brasil independente."}
       ]
     },
     actors:[
-      {name:"D. João IV", role:"Rei restaurador de Portugal"},
-      {name:"Maurício de Nassau", role:"Governador da Nova Holanda"},
-      {name:"André Vidal de Negreiros", role:"Liderança da insurreição pernambucana"}
+      {name:"D. João IV", role:"Rei restaurador de Portugal — aclamado em 1640"},
+      {name:"Maurício de Nassau", role:"Governador da Nova Holanda (1637–1644) — promoveu ciências e artes"},
+      {name:"André Vidal de Negreiros", role:"Líder da Insurreição Pernambucana"},
+      {name:"Henrique Dias", role:"Capitão negro liberto — símbolo da resistência afro-brasileira"},
+      {name:"Filipe Camarão", role:"Cacique potiguar — aliado português na expulsão holandesa"},
+      {name:"Filipe II/III de Portugal", role:"Rei espanhol durante a União Ibérica"}
     ],
-    stats:[{val:"1580", lbl:"União Ibérica"},{val:"1630", lbl:"Ocupação holandesa"},{val:"1654", lbl:"Expulsão da WIC"}]
+    stats:[{val:"1580", lbl:"Início União Ibérica"},{val:"1630", lbl:"Ocupação holandesa"},{val:"1654", lbl:"Expulsão da WIC"},{val:"4 mi", lbl:"Cruzados de indenização"}]
   },
   {
     id:"e1703", year:"1703", era:"colonial", dot:"#5f9a6a",
-    title:"Tratado de Methuen",
-    sub:"Aliança econômica luso-britânica vincula Portugal — e o ouro brasileiro — à economia inglesa",
+    title:"Tratado de Methuen e a triangulação luso-britânico-brasileira",
+    sub:"Aliança econômica luso-britânica cria estrutura de dependência que transfere o ouro brasileiro para a Inglaterra — o Brasil paga a conta da política externa portuguesa",
     tags:["colonial","acordo"],
     meta:[
       {lbl:"Partes", val:"Portugal e Grã-Bretanha"},
       {lbl:"Objeto", val:"Panos ingleses × Vinhos portugueses"},
-      {lbl:"Impacto", val:"80% do ouro para a Inglaterra"}
+      {lbl:"Efeito sobre o Brasil", val:"~80% do ouro vai para a Inglaterra"}
     ],
     tabs:{
       "Contexto RI":[
-        {lbl:"O 'Tratado dos Panos e Vinhos'", txt:"O Methuen estabeleceu preferências mútuas: tecidos ingleses no mercado português e vinhos portugueses na Inglaterra. Criou dependência estrutural que transferia o ouro do Brasil — descoberto em 1695 — para a Inglaterra."},
-        {lbl:"O ouro do Brasil como moeda de troca", txt:"A descoberta de ouro em Minas Gerais (1695) e de diamantes (1729) tornou o Brasil peça central no equilíbrio financeiro do Império. Estima-se que 80% do ouro extraído entre 1700–1760 foi para a Inglaterra via saldo comercial."}
+        {lbl:"O contexto da Guerra da Sucessão Espanhola (1701–1714)", txt:"O Tratado de Methuen foi negociado no contexto da Guerra da Sucessão Espanhola, em que Portugal precisava escolher entre apoiar a França (que sustentava Felipe V) ou a Inglaterra (que apoiava o Arquiduque Carlos). O Tratado de Methuen — assinado em 27 de dezembro de 1703 — foi a contrapartida econômica da aliança militar luso-britânica firmada no mesmo ano. Portugal entrou na guerra ao lado da Inglaterra, e o tratado comercial foi o preço pago pela proteção britânica."},
+        {lbl:"O 'Tratado dos Panos e Vinhos' — mecanismo e críticas", txt:"O tratado estabeleceu preferências mútuas: tecidos de lã ingleses poderiam entrar em Portugal com tarifa reduzida (um terço abaixo das demais nações); em troca, os vinhos portugueses entrariam na Inglaterra com tarifa menor que os vinhos franceses. A assimetria era estrutural: Portugal importava manufaturados e exportava produtos primários (vinho, cortiça) e, crucialmente, ouro. Os iluministas portugueses — e depois economistas clássicos como Adam Smith — debateram se o tratado era vantajoso ou desindustrializante."},
+        {lbl:"O ouro do Brasil como moeda de pagamento do mundo", txt:"A descoberta de ouro em Minas Gerais (1695) e de diamantes em Tijuco/Diamantina (1729) transformou o Brasil no maior produtor mundial de ouro do século XVIII. Estima-se que 800 toneladas de ouro foram extraídas entre 1700 e 1750. Esse ouro financiava o deficit comercial português com a Inglaterra: as importações de tecidos britânicos eram pagas com o metal que saía do Brasil. O resultado era a transferência sistêmica da riqueza colonial brasileira para a economia industrial inglesa."}
       ],
       "Atores":[],
+      "Tratados e Documentos":[
+        {lbl:"Tratado de Methuen (1703)", txt:"Texto de apenas 3 artigos. Artigo I: Portugal admite tecidos ingleses. Artigo II: Inglaterra admite vinhos portugueses com tarifa reduzida. Artigo III: vigência mútua. Simples na forma, revolucionário nos efeitos — moldou a economia portuguesa e, por extensão, a colonial brasileira por todo o século XVIII."},
+        {lbl:"Tratados de Lisboa (1703)", txt:"Tratado militar complementar ao Methuen, pelo qual Portugal se aliou à Grande Aliança (Inglaterra, Países Baixos, Áustria) contra a França na Guerra da Sucessão Espanhola. Ambos os tratados — comercial e militar — foram negociados pelo diplomata John Methuen, embaixador britânico em Lisboa."},
+        {lbl:"Tratado de Utrecht (1713)", txt:"Encerrou a Guerra da Sucessão Espanhola. Portugal cedeu à França a colônia de Sacramento e ganhou confirmação de suas fronteiras americanas. O Brasil ficou de fora dos principais ajustes — mas os efeitos econômicos do Methuen continuariam a drenar o ouro colonial."}
+      ],
       "Impacto":[
-        {lbl:"Triangulação Brasil–Portugal–Inglaterra", txt:"O Methuen criou um sistema onde o Brasil financiava a dependência metropolitana portuguesa em relação à Inglaterra. Isso influenciou o Marquês de Pombal (1750–77) em suas reformas para tentar reindustrializar Portugal."}
+        {lbl:"A estrutura triangular e o capitalismo mercantil", txt:"O Methuen criou uma triangulação clássica do capitalismo mercantil: Brasil exportava ouro → Portugal o recebia e pagava dívidas comerciais → Inglaterra acumulava capital que financiaria a Revolução Industrial. O historiador Jorge de Macedo estimou que, entre 1703 e 1760, 80% do ouro brasileiro acabou em Londres. A City of London e o Banco da Inglaterra foram, em parte, financiados pelo ouro das Minas Gerais."},
+        {lbl:"As reformas pombalinas como reação", txt:"O Marquês de Pombal (ministro de D. José I, 1750–1777) tentou reverter os efeitos do Methuen com políticas mercantilistas: criou companhias monopolistas (Grão-Pará e Maranhão, 1755; Pernambuco e Paraíba, 1759), protegeu manufaturas portuguesas e expulsou os jesuítas do Brasil (1759) para retomar o controle do trabalho indígena. Apesar do esforço, a dependência estrutural da economia portuguesa em relação à Inglaterra permaneceu."},
+        {lbl:"Impacto fiscal no Brasil colonial", txt:"Para compensar a saída do ouro, Portugal criou o sistema do 'quinto' (20% de toda produção mineral pertencia à Coroa) e a 'derrama' (cobrança compulsória de atrasados). A Derrama de 1789 deflagrou a Inconfidência Mineira — o primeiro movimento de ruptura colonial com ressonância política real. O Methuen está, portanto, na raiz indireta do processo de independência."}
+      ],
+      "Legado":[
+        {lbl:"Legado estrutural para as RI do Brasil", txt:"O Methuen estabeleceu o padrão que se repetiria na história brasileira: dependência de commodities primárias, subordinação comercial a potências industriais e ausência de política industrial autônoma. O debate sobre industrialização versus exportação de matérias-primas percorre toda a história econômica do Brasil — de Rui Barbosa a Celso Furtado, de Vargas ao debate contemporâneo sobre desindustrialização."},
+        {lbl:"Para o CACD", txt:"O Tratado de Methuen é tema recorrente em Economia e História do Brasil. Argumentos principais: (1) Portugal foi desindustrializado; (2) o ouro brasileiro financiou a Revolução Industrial inglesa; (3) a dependência luso-britânica moldou as primeiras relações externas do Brasil independente, que também assinou tratados assimétricos com a Inglaterra em 1810."}
       ]
     },
     actors:[
-      {name:"John Methuen", role:"Diplomata britânico — negociador"},
-      {name:"D. Pedro II de Portugal", role:"Rei signatário"},
-      {name:"Marquês de Pombal", role:"Reformador que tentou reverter os efeitos"}
+      {name:"John Methuen", role:"Embaixador britânico em Lisboa — negociador e signatário"},
+      {name:"D. Pedro II de Portugal", role:"Rei signatário — mas o poder estava com o Conselho de Estado"},
+      {name:"Marquês de Pombal", role:"Ministro que tentou reverter os efeitos (1750–77)"},
+      {name:"D. José I", role:"Rei de Portugal durante as reformas pombalinas"},
+      {name:"Tiradentes / José Joaquim da Silva Xavier", role:"Mártir da Inconfidência Mineira — consequência indireta do sistema Methuen/derrama"}
     ],
-    stats:[{val:"1695", lbl:"Ouro em Minas"},{val:"~80%", lbl:"Ouro→ Inglaterra"},{val:"1703", lbl:"Assinatura"}]
+    stats:[{val:"800t", lbl:"Ouro extraído (1700–50)"},{val:"~80%", lbl:"Ouro→ Inglaterra"},{val:"3", lbl:"Artigos do Tratado"},{val:"1703", lbl:"Assinatura"}]
   },
   {
     id:"e1808", year:"1808", era:"imperial", dot:"#8e5ea0",
     title:"Transferência da Corte para o Rio de Janeiro",
-    sub:"Inédito na história colonial: a metrópole instala-se na colônia, invertendo a relação centro-periferia",
+    sub:"Inédito na história colonial: a metrópole instala-se na colônia, invertendo a relação centro-periferia e preparando o terreno para a independência",
     tags:["imperial"],
     meta:[
-      {lbl:"Catalisador", val:"Invasão napoleônica (1807)"},
-      {lbl:"Mediador", val:"Escolta da Marinha britânica"},
-      {lbl:"Ato fundador", val:"Abertura dos Portos (jan. 1808)"}
+      {lbl:"Catalisador", val:"Invasão napoleônica (nov. 1807)"},
+      {lbl:"Mediador", val:"Escolta da Marinha britânica (Lord Strangford)"},
+      {lbl:"1º ato soberano", val:"Abertura dos Portos (28 jan. 1808)"}
     ],
     tabs:{
       "Contexto RI":[
-        {lbl:"O contexto napoleônico", txt:"Com as guerras napoleônicas e a invasão de Portugal (novembro de 1807), D. João VI transferiu toda a Corte ao Brasil sob escolta britânica. Foi a única transferência da sede de um império europeu para uma colônia na história."},
-        {lbl:"Abertura dos Portos (1808)", txt:"Ao chegar ao Brasil, D. João rompeu o exclusivo comercial, abrindo os portos às nações amigas — especialmente a Inglaterra. Foi o primeiro ato formal de inserção autônoma do Brasil na economia internacional."}
+        {lbl:"O contexto napoleônico e o Bloqueio Continental", txt:"Em novembro de 1807, Napoleão Bonaparte decretou o Bloqueio Continental, exigindo que todos os países europeus fechassem seus portos aos navios britânicos. Portugal, aliado histórico da Inglaterra pelo Tratado de Windsor (1386), recusou-se a aderir plenamente. A resposta de Napoleão foi o envio do exército de Junot para ocupar Portugal. Diante da invasão iminente, D. João VI — príncipe-regente desde 1799 — optou pela fuga para o Brasil, negociada com o embaixador britânico Lord Strangford."},
+        {lbl:"A transferência — logística e significado histórico", txt:"Em 29 de novembro de 1807, entre 10.000 e 15.000 pessoas embarcaram no Tejo sob chuva, levando arquivos, tesouro régio, biblioteca e a família real. A escolta era da Royal Navy. Em 22 de janeiro de 1808 chegaram a Salvador; em 7 de março, ao Rio de Janeiro. Foi a única vez na história moderna em que um monarca europeu governou seu império a partir de uma colônia. O Rio de Janeiro tornou-se, de um dia para o outro, capital de um vasto império."},
+        {lbl:"A Abertura dos Portos (28 de janeiro de 1808)", txt:"Ao aportar em Salvador, D. João VI assinou a Carta Régia de abertura dos portos às 'nações amigas' — na prática, à Inglaterra. O ato rompeu o exclusivo comercial de três séculos, integrando o Brasil ao comércio internacional. Foi o primeiro ato de política externa autônoma do território que viria a ser o Brasil e tornou o retorno à condição colonial praticamente impossível do ponto de vista econômico."}
       ],
       "Atores":[],
+      "Tratados e Documentos":[
+        {lbl:"Tratados de Comércio e Navegação com a Inglaterra (1810)", txt:"O Tratado de Comércio de 1810 concedeu à Inglaterra tarifas de apenas 15% sobre produtos importados — inferiores às cobradas dos próprios portugueses (16%). O Brasil ficou vinculado às condições da aliança luso-britânica, herdando as assimetrias do Methuen. O Barão do Rio Branco citou esses tratados como exemplos do que a diplomacia brasileira deveria evitar no futuro."},
+        {lbl:"Criação do Reino Unido de Portugal, Brasil e Algarves (1815)", txt:"Em 16 de dezembro de 1815, D. João VI elevou o Brasil à condição de reino, criando formalmente o 'Reino Unido de Portugal, Brasil e Algarves'. O ato foi motivado em parte pelo Congresso de Viena (1814–1815), no qual Portugal precisava apresentar-se como potência com território equivalente. O Brasil deixava formalmente de ser colônia — status que tornou a recolonização proposta pelas Cortes de 1820 ainda mais inaceitável."},
+        {lbl:"Carta Régia de Abertura dos Portos (1808)", txt:"Primeiro documento de política econômica externa do futuro Estado brasileiro. Rompeu o monopólio comercial português sobre o Brasil. Texto fundamental para entender a transição do sistema colonial para a economia de mercado no Brasil."}
+      ],
       "Impacto":[
-        {lbl:"Inversão da hierarquia colonial", txt:"O Rio de Janeiro tornou-se capital de um império que incluía Portugal. O 'Reino Unido de Portugal, Brasil e Algarves' (1815) criou anomalia colonial que tornou a independência praticamente inevitável."},
-        {lbl:"Consequências diplomáticas", txt:"Os tratados de comércio favoráveis à Inglaterra (1810) — negociados em troca do apoio britânico — moldaram o perfil das relações externas do futuro Estado brasileiro, gerando assimetrias que duraram décadas."}
+        {lbl:"Transformação institucional do Brasil", txt:"D. João criou no Rio de Janeiro as instituições que o Brasil independente herdaria: o Banco do Brasil (1808), a Imprensa Régia (1808), a Academia Real Militar (1810), a Biblioteca Real (1810 — hoje Biblioteca Nacional), o Jardim Botânico (1808), a Academia de Belas Artes (1816) e a primeira faculdade de medicina. O Rio de Janeiro foi urbanizado, saneado e transformado em capital imperial."},
+        {lbl:"A inversão da hierarquia colonial", txt:"A presença da Corte no Brasil inverteu a lógica colonial: era Portugal que enviava recursos e pessoas para o Brasil, e não o contrário. Quando as Cortes liberais de Lisboa (1820) exigiram o retorno de D. João e a recolonização do Brasil, encontraram uma elite colonial que havia governado o Império por 13 anos e não aceitaria retroceder à condição de colônia."},
+        {lbl:"Papel da Grã-Bretanha como 'terceiro ator'", txt:"A presença britânica foi decisiva em toda a transição: Lord Strangford negociou a transferência em 1807, a Royal Navy a executou, e os tratados de 1810 foram a conta apresentada ao Brasil pelo serviço. A GB atuou como poder estruturante da relação Brasil–Portugal — papel que manteria até o reconhecimento da independência em 1825."}
+      ],
+      "Legado":[
+        {lbl:"Legado para o Itamaraty", txt:"O período joanino (1808–1821) é considerado o embrião da diplomacia brasileira. D. João criou as primeiras missões diplomáticas permanentes e desenvolveu uma política exterior que equilibrava as pressões britânicas, as aspirações territoriais na Bacia do Prata e os interesses comerciais emergentes. O Arquivo Histórico do Itamaraty tem documentos desse período."},
+        {lbl:"Para o CACD", txt:"A Abertura dos Portos, o Tratado de Comércio de 1810 e a criação do Reino Unido são temas essenciais. Questão típica: 'Como a vinda da Corte transformou a inserção internacional do Brasil?' Resposta: de colônia fechada a agente econômico com mercado aberto — mas sob condições assimétricas que limitariam a soberania do Brasil independente."}
       ]
     },
     actors:[
-      {name:"D. João VI", role:"Príncipe-regente / depois Rei"},
-      {name:"Lord Strangford", role:"Embaixador britânico — mediou a transferência"},
-      {name:"Napoleão Bonaparte", role:"Catalisador da crise europeia"}
+      {name:"D. João VI", role:"Príncipe-regente (depois Rei) — governou o Império do Rio de Janeiro"},
+      {name:"Lord Strangford", role:"Embaixador britânico — negociou e viabilizou a transferência"},
+      {name:"Napoleão Bonaparte", role:"Catalisador da crise — seu Bloqueio Continental forçou a decisão"},
+      {name:"D. Carlota Joaquina", role:"Rainha consorte — conspirou por poder próprio na América"},
+      {name:"Rodrigo de Sousa Coutinho (Conde de Linhares)", role:"Ministro — idealizou a estratégia de transferência da Corte"}
     ],
-    stats:[{val:"15.000", lbl:"Pessoas na Corte"},{val:"1808", lbl:"Abertura dos Portos"},{val:"14 anos", lbl:"Corte no Rio"}]
+    stats:[{val:"15.000", lbl:"Pessoas na Corte"},{val:"1808", lbl:"Abertura dos Portos"},{val:"1815", lbl:"Reino Unido criado"},{val:"13 anos", lbl:"Corte no Rio"}]
   },
   {
     id:"e1822", year:"1822", era:"imperial", dot:"#c0392b",
@@ -1067,82 +1278,151 @@ const EVENTS = [
   {
     id:"e2011", year:"2011–2015", era:"contempor", dot:"#e8c97a",
     title:"Crise da Eurozona e a inversão do fluxo migratório",
-    sub:"Colapso econômico português inverte 500 anos de fluxo: portugueses emigram ao Brasil pela primeira vez",
+    sub:"Colapso econômico português inverte 500 anos de história: portugueses emigram ao Brasil enquanto grupos empresariais lusitanos investem maciçamente no mercado brasileiro em ascensão",
     tags:["contempor"],
     meta:[
-      {lbl:"Evento", val:"Resgate da troika (2011)"},
-      {lbl:"Desemprego PT", val:"17% em 2013"},
-      {lbl:"Fluxo", val:"150k+ portugueses ao Brasil"}
+      {lbl:"Resgate da troika", val:"€78 bi — FMI/UE/BCE (abril 2011)"},
+      {lbl:"Desemprego PT", val:"17,5% em 2013 — jovens: 40%"},
+      {lbl:"Fluxo invertido", val:"150k+ portugueses emigraram ao Brasil"}
     ],
     tabs:{
       "Contexto RI":[
-        {lbl:"A crise e o resgate", txt:"A crise da dívida soberana levou Portugal a solicitar resgate ao FMI/UE/BCE (troika) em 2011. O desemprego chegou a 17% (2013). O Brasil, então em crescimento acelerado, tornou-se destino de emigração portuguesa — fenômeno inédito desde o século XIX."},
-        {lbl:"Fluxo migratório invertido", txt:"Entre 2011 e 2015, mais de 150.000 portugueses emigraram ao Brasil. A histórica direção Brasil–Portugal do fluxo migratório foi temporariamente invertida — acontecimento de profundo significado simbólico para as relações bilaterais."}
+        {lbl:"A crise da dívida soberana portuguesa e o resgate", txt:"Em abril de 2011, Portugal solicitou resgate financeiro ao FMI, à UE e ao BCE, no valor de €78 bilhões. As condições impostas pela troika incluíam austeridade severa: corte de salários públicos, redução de pensões, privatizações e aumento de impostos. O desemprego chegou a 17,5% em 2013, com o desemprego jovem ultrapassando 40%. Portugal vivia sua pior crise econômica desde a Segunda Guerra Mundial, com PIB caindo mais de 4% em 2012."},
+        {lbl:"A emigração portuguesa — o fluxo histórico se inverte", txt:"Pela primeira vez desde o século XIX, Portugal tornou-se país emissor de emigrantes para o Brasil. Entre 2011 e 2015, mais de 150.000 portugueses emigraram ao Brasil, aproveitando o Estatuto de Igualdade do Tratado de 2000, que garantia direitos de trabalho automáticos. O perfil era de jovens qualificados — engenheiros, médicos, arquitetos e profissionais de TI — que não encontravam mercado em Portugal e encontravam no Brasil em crescimento oportunidades abundantes."},
+        {lbl:"O Brasil no auge — o contexto do 'milagre' Lula-Dilma", txt:"O Brasil vivia, entre 2010 e 2013, seu momento de maior protagonismo: 7ª maior economia do mundo, desemprego em mínimas históricas (4,6% em 2014), PIB crescendo 7,5% em 2010. O contraste com a Europa em crise era gritante. O governo Dilma não criou programa específico para receber emigrantes portugueses, mas o Tratado de 2000 garantia-lhes direitos automáticos — e o mercado de trabalho absorvia qualquer qualificação."}
       ],
       "Atores":[],
+      "Tratados e Documentos":[
+        {lbl:"Memorando de Entendimento Portugal–Troika (2011)", txt:"Documento que condicionou o resgate a 222 medidas de ajustamento estrutural — de privatizações a cortes nos serviços públicos. Não envolveu diretamente o Brasil, mas criou o contexto que impulsionou a emigração portuguesa e os investimentos portugueses no Brasil como estratégia de diversificação."},
+        {lbl:"Programa de Assistência Económica e Financeira — PAEF", txt:"O PAEF regeu os três anos de tutela da troika sobre Portugal (2011–2014). Incluía revisões trimestrais das contas públicas por auditores do FMI, UE e BCE. Portugal concluiu o programa em maio de 2014 sem 'linha de crédito precaucionária' — saída limpa que recuperou parcialmente a credibilidade internacional."},
+        {lbl:"Acordos de Cooperação Brasil–Portugal em Educação e Qualificação", txt:"No contexto da crise, Brasil e Portugal reforçaram acordos de cooperação académica: reconhecimento de diplomas, programas de intercâmbio e equivalência de qualificações profissionais. Instrumentos práticos para absorver profissionais portugueses qualificados que chegavam ao Brasil via Estatuto de Igualdade."}
+      ],
+      "Votações em OIs":[
+        {lbl:"FMI e G20 — posição do Brasil sobre austeridade europeia", txt:"O Brasil participou ativamente das reuniões do G20 que discutiram as condições do resgate português e da crise da Eurozona. A posição do chanceler Guido Mantega foi crítica da austeridade excessiva — defendendo políticas de crescimento como complemento às reformas fiscais. O Brasil tinha interesse direto na estabilidade europeia como principal destino de suas exportações manufaturadas."},
+        {lbl:"Reforma das quotas do FMI (2010–2016)", txt:"O Brasil apoiou a reforma das quotas do FMI aprovada em 2010 (implementada em 2016), que aumentou a participação dos países emergentes. Portugal, dentro da UE, apoiou diplomaticamente a posição brasileira por maior representação — em troca de solidariedade política nos fóruns multilaterais. A reforma foi um marco do reequilíbrio de poder nas instituições financeiras internacionais."},
+        {lbl:"AGNU — coordenação em questões econômicas", txt:"Brasil e Portugal coordenaram posições na Segunda Comissão da AGNU (questões econômicas e financeiras) sobre reforma do sistema monetário internacional, regulação financeira global e acesso a financiamento para países em desenvolvimento. Portugal usou sua posição na UE para aproximar posições europeias das demandas do Sul Global — onde o Brasil tem maior influência."}
+      ],
+      "Governos":[
+        {lbl:"Portugal", txt:"Pedro Passos Coelho (PM, 2011–15) — implementou as medidas de austeridade da troika. Aníbal Cavaco Silva (Presidente). O PSD e o CDS governaram em coligação aplicando o PAEF. A oposição socialista de António Costa criticou a austeridade e venceria as eleições de 2015."},
+        {lbl:"Brasil", txt:"Dilma Rousseff (2011–16) — período de auge (2011–13) e depois de crise econômica. O governo brasileiro recebeu os imigrantes portugueses sem programa específico, mas o Tratado de 2000 garantia-lhes direitos automáticos. A crise brasileira a partir de 2014 (Operação Lava-Jato, queda do PIB) reverteria parcialmente os fluxos."}
+      ],
       "Impacto":[
-        {lbl:"Empresas portuguesas no Brasil", txt:"A crise estimulou investimentos diretos de grandes grupos portugueses (EDP, Galp, Jerónimo Martins, Mota-Engil) no Brasil. O país tornou-se o principal destino de investimento português fora da Europa durante o período."}
+        {lbl:"Investimento empresarial português no Brasil", txt:"A crise estimulou grupos portugueses a diversificarem geograficamente: EDP (energia renovável — maior investidor estrangeiro no setor elétrico brasileiro), Galp (parceria com Petrobras no pré-sal), Jerónimo Martins (supermercados Pingo Doce no Brasil), Mota-Engil (construção civil), Sonae (retalho e tecnologia), Cimpor (cimento — depois adquirida pelo grupo brasileiro InterCement). O Brasil tornou-se o principal destino de investimento português fora da Europa entre 2011 e 2015."},
+        {lbl:"Impacto simbólico — a inversão da narrativa histórica", txt:"A inversão do fluxo migratório teve impacto simbólico profundo para as RI bilaterais: confirmou que a assimetria econômica havia se invertido completamente em favor do Brasil. Pela primeira vez na história, o Brasil era o destino de prosperidade e Portugal o país de emigração. Essa inversão alimentaria debates sobre identidade nacional em Portugal e prepararia o terreno para a chegada massiva de brasileiros a Portugal após 2016."}
+      ],
+      "Legado":[
+        {lbl:"Para o CACD", txt:"A crise da Eurozona é exemplo de como fatores econômicos internacionais condicionam as RI bilaterais. Questões: (1) como a crise reconfigurou o equilíbrio de poder na relação Brasil–Portugal?; (2) qual o papel do Tratado de 2000 na gestão dos fluxos migratórios?; (3) como o Brasil se posicionou nas instituições multilaterais diante da crise europeia? Relacionar com o G20, reforma do FMI e política externa do governo Dilma."}
       ]
     },
     actors:[
-      {name:"Pedro Passos Coelho", role:"PM português — implementou austeridade"},
-      {name:"Dilma Rousseff", role:"Presidente do Brasil (2011–16)"}
+      {name:"Pedro Passos Coelho", role:"PM português (2011–15) — implementou o PAEF/troika"},
+      {name:"Dilma Rousseff", role:"Presidente do Brasil (2011–16) — país em auge econômico"},
+      {name:"Aníbal Cavaco Silva", role:"Presidente de Portugal — pediu o resgate à troika"},
+      {name:"Guido Mantega", role:"Ministro da Fazenda do Brasil — crítico da austeridade europeia no G20"},
+      {name:"Christine Lagarde", role:"Diretora do FMI — coordenou o resgate português"}
     ],
-    stats:[{val:"17%", lbl:"Desemprego PT (2013)"},{val:"150k+", lbl:"Portugueses→Brasil"},{val:"2011", lbl:"Resgate da troika"}]
+    stats:[{val:"€78 bi", lbl:"Resgate da troika"},{val:"17,5%", lbl:"Desemprego PT (2013)"},{val:"150k+", lbl:"Portugueses→ Brasil"},{val:"7ª", lbl:"Economia mundial (BR, 2011)"}]
   },
   {
     id:"e2016", year:"2016–2023", era:"contempor", dot:"#e8c97a",
     title:"Boom de imigração brasileira a Portugal",
-    sub:"Maior êxodo de brasileiros para Portugal da história: 1,5 milhão torna-se a maior comunidade estrangeira no país",
+    sub:"Maior êxodo de brasileiros para Portugal da história: instabilidade política e econômica no Brasil dispara fluxo que transforma portugueses e brasileiros nos dois lados do Atlântico",
     tags:["contempor"],
     meta:[
-      {lbl:"Brasileiros em PT (2023)", val:"400k+ registrados / ~1,5 mi"},
-      {lbl:"Posição", val:"1ª maior comunidade estrangeira"},
-      {lbl:"Tensão", val:"Crise habitacional em Lisboa"}
+      {lbl:"Brasileiros registrados em PT", val:"400k+ (2023) — estimativas: 1,5 mi"},
+      {lbl:"Posição", val:"1ª maior comunidade estrangeira em PT"},
+      {lbl:"Tensão central", val:"Crise habitacional em Lisboa e Porto"}
     ],
     tabs:{
       "Contexto RI":[
-        {lbl:"Fatores da emigração", txt:"Instabilidade política (impeachment de Dilma, 2016), crise econômica, insegurança e a pandemia de COVID-19 (2020) impulsionaram emigração de brasileiros qualificados a Portugal. A facilidade linguística, o Tratado de 2000 e o acesso à UE foram atrativos decisivos."},
-        {lbl:"Números e perfil", txt:"Em 2023, os brasileiros tornaram-se a maior comunidade estrangeira em Portugal, superando 400.000 residentes registrados. Estimativas informais chegam a 1,5 milhão. O perfil é predominantemente jovem e qualificado — gerando debate sobre 'fuga de cérebros' no Brasil."}
+        {lbl:"Os fatores brasileiros da emigração", txt:"A combinação de instabilidade política (impeachment de Dilma Rousseff, 2016; eleição de Bolsonaro, 2018), crise econômica (recessão 2015–16, desemprego em 14%), violência urbana crescente e deterioração dos serviços públicos impulsionou emigração de brasileiros qualificados a Portugal. Para jovens urbanos escolarizados, Portugal oferecia: facilidade linguística, acesso à UE, segurança, saúde pública funcionante e o Estatuto de Igualdade do Tratado de 2000."},
+        {lbl:"Os fatores portugueses de atração — a virada econômica", txt:"Portugal recuperou-se da crise da troika com crescimento acelerado a partir de 2016: turismo em expansão (Lisboa e Porto tornaram-se destinos globais), setor imobiliário em alta, mercado de tecnologia emergindo (Web Summit em Lisboa desde 2016), escassez de mão de obra qualificada. A língua partilhada e os laços históricos tornaram os brasileiros a opção natural para suprir déficits de enfermeiros, médicos, engenheiros e profissionais de TI."},
+        {lbl:"A pandemia e o governo Bolsonaro como acelerador", txt:"O governo Bolsonaro (2019–22), com sua gestão controversa da pandemia de COVID-19, seu isolamento diplomático e seu discurso anti-institucional, acelerou a emigração de brasileiros qualificados — fenômeno denominado 'brain drain político'. Muitos brasileiros com dupla cidadania europeia ou com direito ao Estatuto de Igualdade anteciparam planos de emigração. Portugal tornou-se símbolo de democracia estável para essa geração."}
       ],
       "Atores":[],
+      "Tratados e Documentos":[
+        {lbl:"Lei da Migração portuguesa (Lei n.º 23/2007, revista em 2022)", txt:"A lei portuguesa de imigração, e suas sucessivas revisões, estruturou o sistema de visto e residência para os brasileiros. Em 2022, a demanda crescente gerou acúmulo de processos no SEF (Serviço de Estrangeiros e Fronteiras) — com esperas de 1–2 anos para regularização. A situação gerou crise diplomática bilateral e levou à extinção do SEF e criação da AIMA (Agência para a Integração, Migrações e Asilo) em 2023."},
+        {lbl:"Acordo Bilateral de Seguridade Social Brasil–Portugal (1991, atualizado)", txt:"Acordo que evita a dupla tributação previdenciária e garante portabilidade de tempo de contribuição entre os dois países. Instrumento central para os brasileiros que trabalham em Portugal e pretendem se aposentar pelo INSS ou pela Segurança Social portuguesa. Frequentemente revisado para adaptação ao crescimento do fluxo migratório."},
+        {lbl:"Protocolo Adicional ao Tratado de 2000 — negociações em curso", txt:"Diante do volume sem precedentes de brasileiros em Portugal, os dois governos negociaram desde 2020 um protocolo adicional ao Tratado de Amizade de 2000, para facilitar reconhecimento de diplomas profissionais — especialmente de médicos e enfermeiros — e regulamentar melhor o Estatuto de Igualdade."}
+      ],
+      "Votações em OIs":[
+        {lbl:"AGNU e direitos dos migrantes — coordenação bilateral", txt:"Brasil e Portugal coordenaram posições nas negociações do Pacto Global para a Migração Segura, Ordenada e Regular (adotado pela AGNU em dezembro de 2018). O Brasil de Bolsonaro retirou-se das negociações em 2019; Portugal, dentro da UE, permaneceu. A divergência foi um dos poucos casos de ruptura de voto bilateral na ONU durante o período Bolsonaro."},
+        {lbl:"Conselho de Direitos Humanos — candidatura portuguesa (2021–23)", txt:"Portugal candidatou-se ao Conselho de Direitos Humanos da ONU para o período 2022–24. O Brasil apoiou a candidatura portuguesa. Em contrapartida, Portugal apoiou posições brasileiras em outros fóruns multilaterais — padrão de reciprocidade que caracteriza a coordenação bilateral nas OIs."},
+        {lbl:"UPR — Revisão Periódica Universal (2022)", txt:"Tanto Brasil quanto Portugal passaram pelo Exame Periódico Universal (UPR) do CDH da ONU em 2022. Ambos receberam recomendações sobre direitos dos migrantes — Portugal pelas condições de recepção dos brasileiros; Brasil pelas condições de retorno dos emigrantes. O cruzamento de recomendações revelou a dimensão multilateral da questão migratória bilateral."}
+      ],
+      "Governos":[
+        {lbl:"Brasil", txt:"Michel Temer (2016–18). Jair Bolsonaro (2019–22) — gestão controversa, isolamento diplomático, acelerou emigração de quadros qualificados. Luiz Inácio Lula da Silva (2023–) — retomada da agenda diplomática bilateral e de cuidado com a diáspora brasileira."},
+        {lbl:"Portugal", txt:"António Costa (PM, 2015–2024) — socialista, recebeu os brasileiros com discurso de acolhimento. Marcelo Rebelo de Sousa (Presidente, 2016–) — relação próxima com a comunidade brasileira, visitas ao Brasil. Luís Montenegro (PM, 2024–) — governo de centro-direita que endureceu política migratória."}
+      ],
       "Impacto":[
-        {lbl:"Tensões e acolhimento", txt:"A expressiva presença brasileira contribuiu para a crise habitacional portuguesa e gerou debates sobre discriminação e 'brasilização' de setores da economia. A comunidade tornou-se variável política nas eleições portuguesas."},
-        {lbl:"Impacto nas RI", txt:"Os brasileiros tornaram-se agenda permanente das reuniões bilaterais de alto nível. Criaram também vínculos econômicos mais profundos via remessas e consumo — aprofundando a interdependência humana entre os dois países."}
+        {lbl:"Tensões no mercado habitacional", txt:"A chegada massiva de brasileiros (e de outros imigrantes, e do turismo) contribuiu para a crise habitacional em Lisboa e Porto: preços de arrendamento triplicaram entre 2016 e 2023. Inquéritos mostraram que portugueses culpabilizavam desproporcionalmente os imigrantes brasileiros — tema sensível que gerou episódios de xenofobia e discriminação documentados pela CNAI e pela Embaixada do Brasil."},
+        {lbl:"Impacto positivo — saúde, tecnologia e cultura", txt:"Os profissionais brasileiros supriram déficits críticos em setores como saúde (milhares de médicos e enfermeiros formados no Brasil trabalham no SNS português), tecnologia (desenvolvedores e engenheiros de software brasileiros são maioria em várias startups de Lisboa) e cultura (restaurantes, música, moda). A 'brasilização' de aspectos da cultura urbana portuguesa é fenômeno sociológico estudado por académicos de ambos os países."},
+        {lbl:"Impacto político — brasileiros nas eleições portuguesas", txt:"Com o Estatuto de Igualdade, os brasileiros residentes há mais de 2 anos em Portugal podem votar nas eleições autárquicas (municipais). Em Lisboa e Porto, os eleitores brasileiros são fator relevante. Partidos portugueses começaram a cortejar ativamente esse eleitorado — e a comunidade brasileira organizou-se politicamente para defender seus interesses."}
+      ],
+      "Legado":[
+        {lbl:"A relação bilateral transformada pelo fator humano", txt:"O fluxo de 1,5 milhão de brasileiros a Portugal transformou a relação bilateral de abstrata (tratados, acordos, cimeiras) para concreta e cotidiana. As RI entre Brasil e Portugal hoje são, em grande medida, geridas 'de baixo para cima' — pela sociedade civil, pelas comunidades imigrantes, pelas empresas e pelas famílias transnacionais que vivem entre os dois países."},
+        {lbl:"Para o CACD", txt:"O boom migratório brasileiro é questão contemporânea de alta relevância para o CACD. Pontos: (1) o Tratado de 2000 como instrumento de proteção consular — eficácia e limitações; (2) a diáspora brasileira como ator de política externa; (3) tensões entre acolhimento e xenofobia — implicações para as RI; (4) a questão do reconhecimento de diplomas como obstáculo à integração. Relacionar com o debate sobre Política Migratória do Brasil e o Estatuto do Estrangeiro vs. Lei de Migração."}
       ]
     },
     actors:[
-      {name:"Marcelo Rebelo de Sousa", role:"Presidente de Portugal"},
-      {name:"Lula da Silva / Bolsonaro", role:"Presidentes do Brasil no período"}
+      {name:"Marcelo Rebelo de Sousa", role:"Presidente de Portugal — próximo da comunidade brasileira, visitas ao Brasil"},
+      {name:"António Costa", role:"PM português (2015–24) — recebeu os brasileiros com discurso de acolhimento"},
+      {name:"Jair Bolsonaro", role:"Presidente do Brasil (2019–22) — sua gestão acelerou a emigração qualificada"},
+      {name:"Luiz Inácio Lula da Silva", role:"Presidente do Brasil (2023–) — retomou agenda de cuidado com a diáspora"},
+      {name:"Luís Montenegro", role:"PM português (2024–) — endureceu política migratória"}
     ],
-    stats:[{val:"400k+", lbl:"Registrados em PT"},{val:"1ª", lbl:"Maior comunidade"},{val:"2×", lbl:"Crescimento 2017–22"}]
+    stats:[{val:"400k+", lbl:"Registrados em PT"},{val:"1ª", lbl:"Maior comunidade estrangeira"},{val:"3×", lbl:"Alta de arrendamento (2016–23)"},{val:"2022", lbl:"Extinção do SEF→ AIMA"}]
   },
   {
     id:"e2024", year:"2024–hoje", era:"contempor", dot:"#e8c97a",
-    title:"Acordo UE–Mercosul e parceria estratégica renovada",
-    sub:"Conclusão técnica do maior acordo birregional do mundo; Portugal consolida papel de 'ponte atlântica'",
+    title:"Acordo UE–Mercosul e parceria estratégica para o século XXI",
+    sub:"Conclusão técnica do maior acordo birregional do mundo após 25 anos de negociações; Portugal como 'ponte atlântica' e a agenda Brasil–Portugal de transição energética, CPLP e multilateralismo",
     tags:["contempor","acordo","diplomacia"],
     meta:[
-      {lbl:"Acordo", val:"UE–Mercosul (conclusão dez. 2024)"},
-      {lbl:"Papel de Portugal", val:"Principal defensor na UE"},
-      {lbl:"CPLP", val:"30 anos em 2026"}
+      {lbl:"Acordo UE–Mercosul", val:"Conclusão técnica — dezembro 2024"},
+      {lbl:"Papel de Portugal", val:"Principal defensor do acordo dentro da UE"},
+      {lbl:"Próximo marco", val:"CPLP 30 anos — julho 2026"}
     ],
     tabs:{
       "Contexto RI":[
-        {lbl:"O Acordo UE–Mercosul", txt:"As negociações iniciadas em 1999 chegaram a conclusão técnica em dezembro de 2024, após 25 anos. Portugal comemorou como resultado de seu esforço diplomático continuado. A ratificação pelos parlamentos nacionais europeus resta como próximo passo."},
-        {lbl:"Agenda do futuro", txt:"As relações Brasil–Portugal entram em fase madura: Brasil com 215 milhões de habitantes e economia emergente; Portugal com 10 milhões e inserção europeia. O Brasil precisa de Portugal como porta da UE; Portugal precisa do Brasil como base de projeção atlântica e lusófona."}
+        {lbl:"O Acordo UE–Mercosul — 25 anos de negociações", txt:"As negociações entre a UE e o Mercosul iniciaram-se formalmente em 1999 e chegaram a acordo político em junho de 2019 — após 20 anos. A ratificação foi travada por questões ambientais (desmatamento na Amazônia durante o governo Bolsonaro) e resistências agrícolas europeias (França, Irlanda, Polônia). Em dezembro de 2024, sob o governo Lula, o acordo foi tecnicamente concluído com um Protocolo Adicional sobre sustentabilidade. Portugal liderou o campo pró-acordo dentro do Conselho da UE durante todo o processo."},
+        {lbl:"A agenda bilateral de transição energética", txt:"A partir de 2023, Brasil e Portugal aprofundaram a cooperação em energia renovável e transição energética. Portugal — com experiência em energia solar, eólica e hidrogênio verde — é parceiro relevante para as ambições brasileiras de exportar hidrogênio verde. Acordos de cooperação científica e tecnológica entre Petrobras e GALP e entre universidades dos dois países foram assinados no contexto da agenda climática."},
+        {lbl:"O Brasil de Lula III e a retomada do multilateralismo", txt:"O governo Lula III (a partir de 2023) retomou a agenda multilateralista e repriorizou as relações com Portugal e a CPLP. A presidência brasileira do G20 (2024) e a presidência do BRICS (2025) elevaram o perfil internacional do Brasil — e com ele a relevância da 'ponte atlântica' portuguesa. Portugal apoiou ativamente as candidaturas e iniciativas brasileiras no multilateralismo."}
       ],
       "Atores":[],
+      "Tratados e Documentos":[
+        {lbl:"Acordo UE–Mercosul (texto político de 2019, concluído em 2024)", txt:"O maior acordo de livre comércio birregional do mundo, cobrindo 780 milhões de pessoas e €88 bilhões em comércio bilateral. Inclui capítulo de sustentabilidade com compromissos climáticos vinculantes — novidade negociada em 2024 para superar as objeções ambientais europeias. Ainda sujeito a ratificação pelos parlamentos nacionais europeus e pelo Parlamento Europeu."},
+        {lbl:"Protocolo Adicional sobre Sustentabilidade (2024)", txt:"Complemento ao acordo político de 2019, adicionando: compromissos de combate ao desmatamento ilegal; mecanismos de monitoramento ambiental; cláusulas de revisão vinculadas ao Acordo de Paris; e cooperação em transição energética. Negociado com participação ativa de Portugal como mediador entre as posições ambientalistas europeias e as demandas do Mercosul."},
+        {lbl:"Acordo de Parceria Estratégica Brasil–Portugal (em negociação, 2024–25)", txt:"Os governos Lula e Marcelo Rebelo de Sousa/Montenegro negociam novo instrumento de parceria estratégica que atualizaria o Tratado de 2000 para incluir: cooperação em defesa e segurança cibernética; agenda climática e hidrogênio verde; gestão do fluxo migratório bilateral; e coordenação nas OIs. Previsto para ser assinado em 2025."}
+      ],
+      "Votações em OIs":[
+        {lbl:"AGNU — reforma do CSNU (2024–25)", txt:"O Brasil retomou, com Lula III, a candidatura a assento permanente no CSNU reformado (Grupo G4). Portugal apoia retoricamente, mas a posição da UE é de cautela. A divergência persiste: o Brasil quer transformar o CSNU; Portugal, como membro da UE e da OTAN, prefere reformas graduais. É o principal ponto de fricção entre os dois países nas OIs."},
+        {lbl:"COP — Agenda Climática Brasil–Portugal", txt:"O Brasil (COP30 em Belém, novembro 2025) e Portugal coordenaram posições nas negociações climáticas. Portugal, como membro da UE — o bloco mais ambicioso em clima —, pressionou o Brasil para compromissos mais robustos de desmatamento zero. O Protocolo de Sustentabilidade do Acordo UE-Mercosul foi, em parte, resultado desta pressão. A COP30 no Brasil foi oportunidade para estreitar a coordenação bilateral em clima."},
+        {lbl:"CSNU — questões regionais (2024)", txt:"Portugal (membro não permanente do CSNU em 2011–12 e candidato para novo mandato) e o Brasil (candidato periódico) têm coordenado previamente às sessões do CSNU. Em 2024–25, questões como o conflito em Gaza, a situação na África lusófona (Guiné-Bissau, Moçambique) e a reforma das operações de paz da ONU foram temas de coordenação bilateral."},
+        {lbl:"OMC — Acordo UE-Mercosul e as regras multilaterais", txt:"A conclusão do Acordo UE-Mercosul em 2024 foi notificada à OMC como acordo de livre comércio regional nos termos do Artigo XXIV do GATT. Brasil e Portugal trabalharam juntos para garantir que o acordo fosse compatível com as regras multilaterais e não gerasse disputas na OMC. Portugal assessorou o Mercosul nos procedimentos burocráticos europeus."}
+      ],
+      "Governos":[
+        {lbl:"Brasil", txt:"Luiz Inácio Lula da Silva (2023–) — retomada do multilateralismo, presidência do G20 (2024) e BRICS (2025). Mauro Vieira — Chanceler. Celso Amorim — Assessor especial para assuntos internacionais. O Brasil voltou a ser ator central no multilateralismo e na agenda climática."},
+        {lbl:"Portugal", txt:"Marcelo Rebelo de Sousa (Presidente, 2016–) — excelente relação pessoal com Lula; visitas mútuas frequentes. Luís Montenegro (PM, 2024–) — governo de centro-direita que manteve a agenda bilateral. João Cravinho — Chanceler português — coordenou com o Brasil as posições nos fóruns multilaterais."}
+      ],
       "Impacto":[
-        {lbl:"Agenda 2025–2030", txt:"Transição energética (hidrogênio verde), cooperação científica e tecnológica, mobilidade estudantil e gestão da comunidade brasileira em Portugal dominam a agenda bilateral. A CPLP completa 30 anos em 2026, com debates sobre aprofundamento institucional."}
+        {lbl:"O Acordo UE–Mercosul e suas implicações para o Brasil", txt:"Para o Brasil, o Acordo UE-Mercosul representa acesso preferencial ao maior mercado consumidor do mundo (450 milhões de europeus com alto poder de compra). As exportações brasileiras de alimentos, energia e commodities ganhariam preferências tarifárias; em contrapartida, o Brasil abriria seu mercado a manufaturados e serviços europeus. Os setores industriais brasileiros — automóveis, eletroeletrônicos — temem a concorrência europeia."},
+        {lbl:"A relação bilateral em 2025 — balanço e perspectivas", txt:"As relações Brasil–Portugal estão, em 2025, no nível mais denso de sua história: 1,5 milhão de brasileiros em Portugal; investimentos cruzados bilionários; cooperação em energia, saúde, educação e defesa; coordenação multilateral sistemática; e o Acordo UE-Mercosul em fase de ratificação. A relação superou definitivamente o modelo de 'amizade assimétrica' colonial para se tornar parceria estratégica entre iguais — ainda que com pesos muito diferentes no cenário global."}
+      ],
+      "Legado":[
+        {lbl:"O que une e o que separa Brasil e Portugal em 2025", txt:"Une: língua, história, 1,5 milhão de brasileiros em Portugal, investimentos cruzados, CPLP, Acordo UE-Mercosul, coordenação multilateral. Separa: inserção em blocos regionais diferentes (UE vs. Mercosul), posições distintas sobre reforma do CSNU, divergências na política migratória, diferentes estratégias climáticas. A relação é madura o suficiente para gerir as divergências sem abalar os fundamentos."},
+        {lbl:"Para o CACD", txt:"Questões contemporâneas essenciais: (1) qual o significado do Acordo UE-Mercosul para a relação Brasil–Portugal e para a inserção internacional do Brasil?; (2) como a COP30 em Belém (2025) articula-se com a agenda bilateral de transição energética?; (3) qual o papel do Brasil no G20 e no BRICS e como Portugal se posiciona nesse contexto?; (4) como a questão migratória bilateral tensiona e aprofunda ao mesmo tempo a relação? Relacionar com temas de Política Externa, Economia Internacional e Direito Internacional."}
       ]
     },
     actors:[
-      {name:"Luiz Inácio Lula da Silva", role:"Presidente do Brasil (2023–)"},
-      {name:"Marcelo Rebelo de Sousa", role:"Presidente de Portugal"},
-      {name:"Mauro Vieira", role:"Chanceler brasileiro"}
+      {name:"Luiz Inácio Lula da Silva", role:"Presidente do Brasil (2023–) — retomada do multilateralismo e da agenda bilateral"},
+      {name:"Marcelo Rebelo de Sousa", role:"Presidente de Portugal — relação pessoal próxima com Lula"},
+      {name:"Mauro Vieira", role:"Chanceler brasileiro — coordena agenda multilateral e bilateral"},
+      {name:"Celso Amorim", role:"Assessor especial — influência na política externa do governo Lula III"},
+      {name:"Luís Montenegro", role:"PM português (2024–) — manteve a agenda bilateral do governo anterior"},
+      {name:"Ursula von der Leyen", role:"Presidente da Comissão Europeia — conduziu a conclusão do Acordo UE-Mercosul"}
     ],
-    stats:[{val:"2024", lbl:"Conclusão UE-Mercosul"},{val:"25 anos", lbl:"De negociações"},{val:"2026", lbl:"30 anos da CPLP"}]
+    stats:[{val:"2024", lbl:"Conclusão UE-Mercosul"},{val:"780 mi", lbl:"Pessoas abrangidas"},{val:"€88 bi", lbl:"Comércio bilateral UE-Mercosul"},{val:"2026", lbl:"30 anos da CPLP"}]
   }
 ];
 
@@ -1279,10 +1559,12 @@ function openDetail(ev) {
     dMetaRow.style.display = "none";
   }
 
-  // Build tabs
-  const tabNames = ["Contexto RI", "Atores", "Impacto"];
-  const extraTabs = Object.keys(ev.tabs).filter(t => !tabNames.includes(t));
-  const allTabs = [...tabNames, ...extraTabs];
+  // Build tabs — ordem canônica + extras do evento
+  const TAB_ORDER = ["Contexto RI","Atores","Tratados e Documentos","Votações em OIs","Governos","Impacto","Legado","Discurso"];
+  const evTabKeys = Object.keys(ev.tabs);
+  const orderedTabs = TAB_ORDER.filter(t => evTabKeys.includes(t));
+  const remainingTabs = evTabKeys.filter(t => !TAB_ORDER.includes(t));
+  const allTabs = [...orderedTabs, ...remainingTabs];
 
   dTabs.innerHTML = allTabs.map((t,i) =>
     `<div class="dtab${i===0?" active":""}" data-tab="${i}">${t}</div>`
@@ -1291,25 +1573,79 @@ function openDetail(ev) {
   dBody.innerHTML = allTabs.map((tabName, i) => {
     let html = `<div class="tab-panel${i===0?" active":""}" data-panel="${i}">`;
 
+    // ── ATORES: chips especiais
     if (tabName === "Atores") {
       if (ev.actors && ev.actors.length) {
         html += `<div class="tp-section"><div class="tp-label">Atores principais</div>
-          <div class="tp-actors">${ev.actors.map(a => `<div class="actor-chip"><div class="actor-name">${a.name}</div><div class="actor-role">${a.role}</div></div>`).join("")}</div></div>`;
+          <div class="tp-actors">${ev.actors.map(a =>
+            `<div class="actor-chip"><div class="actor-name">${a.name}</div><div class="actor-role">${a.role}</div></div>`
+          ).join("")}</div></div>`;
       } else {
-        html += `<div class="tp-section"><div class="tp-text" style="color:var(--muted)">Não especificado.</div></div>`;
+        html += `<div class="tp-section"><div class="tp-text" style="color:var(--muted)">Não especificado para este evento.</div></div>`;
       }
+
+    // ── VOTAÇÕES EM OIs: com ícone e estilo diferenciado
+    } else if (tabName === "Votações em OIs") {
+      html += `<div class="tp-section" style="margin-bottom:6px">
+        <div class="tp-label" style="color:var(--blue)">Posições e votações em organismos internacionais</div>
+      </div>`;
+      const sections = ev.tabs[tabName] || [];
+      sections.forEach(s => {
+        html += `<div class="tp-section" style="border-left:2px solid rgba(74,124,181,0.4);padding-left:12px;margin-bottom:14px">
+          <div class="tp-label" style="color:var(--blue);font-size:.44rem">${s.lbl}</div>
+          <div class="tp-text">${s.txt}</div>
+        </div>`;
+      });
+
+    // ── TRATADOS: com estilo de documento
+    } else if (tabName === "Tratados e Documentos") {
+      html += `<div class="tp-section" style="margin-bottom:6px">
+        <div class="tp-label" style="color:var(--green)">Instrumentos jurídicos e documentos diplomáticos</div>
+      </div>`;
+      const sections = ev.tabs[tabName] || [];
+      sections.forEach(s => {
+        html += `<div class="tp-section" style="border-left:2px solid rgba(95,154,106,0.4);padding-left:12px;margin-bottom:14px">
+          <div class="tp-label" style="color:var(--green);font-size:.44rem">${s.lbl}</div>
+          <div class="tp-text">${s.txt}</div>
+        </div>`;
+      });
+
+    // ── GOVERNOS: grid de governantes
+    } else if (tabName === "Governos") {
+      html += `<div class="tp-section" style="margin-bottom:6px">
+        <div class="tp-label" style="color:var(--purple)">Governos e lideranças do período</div>
+      </div>`;
+      const sections = ev.tabs[tabName] || [];
+      sections.forEach(s => {
+        html += `<div class="tp-section" style="background:var(--bg);border:1px solid var(--border);border-radius:3px;padding:12px 14px;margin-bottom:10px">
+          <div class="tp-label" style="color:var(--purple);font-size:.46rem;margin-bottom:6px">${s.lbl}</div>
+          <div class="tp-text">${s.txt}</div>
+        </div>`;
+      });
+
+    // ── LEGADO: com destaque âmbar
+    } else if (tabName === "Legado") {
+      const sections = ev.tabs[tabName] || [];
+      sections.forEach(s => {
+        const isCACD = s.lbl && s.lbl.includes("CACD");
+        html += `<div class="tp-section" style="border-left:2px solid ${isCACD?'var(--gold)':'rgba(201,168,76,0.3)'};padding-left:12px;margin-bottom:14px;${isCACD?'background:var(--gold-dim);padding:10px 12px;border-radius:0 3px 3px 0':''}">
+          ${s.lbl ? `<div class="tp-label" style="color:var(--gold);font-size:.44rem">${s.lbl}</div>` : ''}
+          <div class="tp-text">${s.txt}</div>
+        </div>`;
+      });
+
+    // ── DEMAIS TABS: layout padrão com stats no Contexto RI
     } else {
-      // Stats
-      if (ev.stats && i === 0) {
-        html += `<div class="tp-grid">${ev.stats.map(s => `<div class="tp-stat"><div class="tp-stat-val">${s.val}</div><div class="tp-stat-lbl">${s.lbl}</div></div>`).join("")}</div>`;
+      if (ev.stats && tabName === "Contexto RI") {
+        html += `<div class="tp-grid">${ev.stats.map(s =>
+          `<div class="tp-stat"><div class="tp-stat-val">${s.val}</div><div class="tp-stat-lbl">${s.lbl}</div></div>`
+        ).join("")}</div>`;
       }
-      // Sections
       const sections = ev.tabs[tabName] || [];
       sections.forEach(s => {
         if (s.lbl) html += `<div class="tp-section"><div class="tp-label">${s.lbl}</div><div class="tp-text">${s.txt}</div></div>`;
         else if (s.txt) html += `<div class="tp-section"><div class="tp-text">${s.txt}</div></div>`;
       });
-      // Quote
       if (ev.quote && tabName === "Impacto") {
         html += `<div class="quote-block"><div class="quote-text">"${ev.quote.txt}"</div><div class="quote-author">— ${ev.quote.author}</div></div>`;
       }
@@ -1355,6 +1691,61 @@ document.getElementById("searchInput").oninput = e => {
   activeSearch = e.target.value;
   render();
 };
+
+/* ── MOBILE: busca e swipe ── */
+const mobileSearchBtn = document.getElementById("mobileSearchBtn");
+const searchInput     = document.getElementById("searchInput");
+
+// Mostrar botão de busca no mobile, esconder input
+function applyMobileLayout() {
+  const isMobile = window.innerWidth <= 768;
+  mobileSearchBtn.style.display = isMobile ? "block" : "none";
+  searchInput.style.display     = isMobile ? "none"  : "block";
+}
+applyMobileLayout();
+window.addEventListener("resize", applyMobileLayout);
+
+// Tap no ⌕ abre um prompt simples no mobile
+mobileSearchBtn.onclick = () => {
+  const q = prompt("Buscar evento:", activeSearch);
+  if (q !== null) {
+    activeSearch = q;
+    render();
+  }
+};
+
+// Swipe para baixo fecha o drawer
+(function swipeToClose() {
+  const drawer = document.getElementById("detailDrawer");
+  let startY = 0, isDragging = false;
+  drawer.addEventListener("touchstart", e => {
+    // Só ativa se o scroll do body estiver no topo
+    if (drawer.querySelector(".drawer-body").scrollTop === 0) {
+      startY = e.touches[0].clientY;
+      isDragging = true;
+    }
+  }, { passive: true });
+  drawer.addEventListener("touchmove", e => {
+    if (!isDragging) return;
+    const dy = e.touches[0].clientY - startY;
+    if (dy > 0) {
+      drawer.style.transform = `translateY(${Math.min(dy, 200)}px)`;
+      drawer.style.transition = "none";
+    }
+  }, { passive: true });
+  drawer.addEventListener("touchend", e => {
+    if (!isDragging) return;
+    isDragging = false;
+    const dy = e.changedTouches[0].clientY - startY;
+    drawer.style.transition = "";
+    if (dy > 90) {
+      closeDetail();
+      drawer.style.transform = "";
+    } else {
+      drawer.style.transform = "";
+    }
+  });
+})();
 
 /* ── INIT ── */
 render();
