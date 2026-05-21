@@ -118,6 +118,66 @@ header{background:var(--bg2);border-bottom:2px solid var(--gold);padding:10px 20
 .politem{border-left:3px solid var(--red);padding:13px 17px;background:rgba(239,83,80,.04)}
 .politem p{font-family:"Crimson Pro",serif;font-size:1.08rem;line-height:1.78;color:#c9d1d9}
 
+/* Lei card — bloco expandido para leis especiais */
+.lei-card{background:rgba(239,83,80,.04);border:1px solid rgba(239,83,80,.25);border-left:4px solid var(--red);padding:18px 20px;margin-bottom:14px}
+.lei-card-title{font-size:.62rem;letter-spacing:.15em;text-transform:uppercase;color:var(--red);margin-bottom:8px;display:flex;align-items:center;gap:8px}
+.lei-card-title span{font-family:"Playfair Display",serif;font-size:1.1rem;font-weight:700;color:var(--text);text-transform:none;letter-spacing:0}
+.lei-card p{font-family:"Crimson Pro",serif;font-size:1.08rem;line-height:1.78;color:#c9d1d9;margin-bottom:8px}
+.lei-card p:last-child{margin-bottom:0}
+.lei-sub{font-size:.56rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin:10px 0 5px}
+
+/* MODAL ATOS INSTITUCIONAIS */
+.ai-modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.82);z-index:9000;display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;pointer-events:none;transition:opacity .25s}
+.ai-modal-overlay.open{opacity:1;pointer-events:all}
+.ai-modal{background:var(--bg2);border:1px solid var(--border);border-top:3px solid var(--red);width:100%;max-width:780px;max-height:90vh;display:flex;flex-direction:column;position:relative;box-shadow:0 0 60px rgba(239,83,80,.15);transform:translateY(16px);transition:transform .25s}
+.ai-modal-overlay.open .ai-modal{transform:translateY(0)}
+
+/* modal top bar */
+.ai-modal-topbar{background:var(--bg);border-bottom:1px solid var(--border);padding:14px 20px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+.ai-modal-eyebrow{font-size:.52rem;letter-spacing:.18em;text-transform:uppercase;color:var(--red)}
+.ai-modal-close{background:transparent;border:1px solid var(--border);color:var(--muted);width:26px;height:26px;cursor:pointer;font-size:.7rem;display:flex;align-items:center;justify-content:center;transition:all .2s;flex-shrink:0}
+.ai-modal-close:hover{border-color:var(--red);color:var(--red)}
+
+/* nav strip */
+.ai-nav{border-bottom:1px solid var(--border);background:var(--bg);overflow-x:auto;scrollbar-width:none;display:flex;flex-shrink:0}
+.ai-nav::-webkit-scrollbar{display:none}
+.ai-nav-btn{font-family:"IBM Plex Mono",monospace;font-size:.5rem;letter-spacing:.1em;text-transform:uppercase;padding:10px 14px;cursor:pointer;color:var(--muted);border:none;background:transparent;border-bottom:2px solid transparent;white-space:nowrap;transition:all .2s;border-right:1px solid var(--border)}
+.ai-nav-btn:hover{color:var(--text)}
+.ai-nav-btn.on{color:var(--red);border-bottom-color:var(--red);background:rgba(239,83,80,.05)}
+
+/* modal body */
+.ai-modal-body{overflow-y:auto;scrollbar-width:thin;scrollbar-color:var(--border) transparent;flex:1;padding:0}
+.ai-page{display:none;padding:26px 28px 36px}
+.ai-page.on{display:block}
+
+.ai-page-hero{margin-bottom:22px;padding-bottom:18px;border-bottom:1px solid var(--border)}
+.ai-page-num{font-size:.52rem;letter-spacing:.2em;text-transform:uppercase;color:var(--red);margin-bottom:6px}
+.ai-page-title{font-family:"Playfair Display",serif;font-size:1.7rem;font-weight:900;color:var(--text);line-height:1.15;margin-bottom:6px}
+.ai-page-date{font-size:.56rem;color:var(--muted);letter-spacing:.08em}
+
+.ai-meta-row{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:20px}
+.ai-meta{background:rgba(239,83,80,.07);border:1px solid rgba(239,83,80,.2);padding:8px 14px}
+.ai-meta-lbl{font-size:.46rem;letter-spacing:.15em;text-transform:uppercase;color:var(--red);margin-bottom:3px}
+.ai-meta-val{font-family:"Crimson Pro",serif;font-size:.95rem;color:var(--text)}
+
+.ai-section-title{font-size:.56rem;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);margin:20px 0 10px;padding-bottom:6px;border-bottom:1px solid var(--border)}
+.ai-prose{font-family:"Crimson Pro",serif;font-size:1.1rem;line-height:1.85;color:#c9d1d9;margin-bottom:10px}
+
+.ai-powers{display:flex;flex-direction:column;gap:8px;margin-bottom:12px}
+.ai-power{display:flex;gap:12px;align-items:flex-start;padding:10px 14px;background:rgba(239,83,80,.04);border-left:3px solid var(--red)}
+.ai-power-ico{font-size:1rem;flex-shrink:0;margin-top:2px}
+.ai-power-txt{font-family:"Crimson Pro",serif;font-size:1.05rem;line-height:1.65;color:#c9d1d9}
+
+.ai-revog{display:inline-flex;align-items:center;gap:7px;margin-top:14px;font-size:.54rem;letter-spacing:.1em;text-transform:uppercase;padding:7px 14px;border:1px solid rgba(102,187,106,.35);color:var(--green);background:rgba(102,187,106,.06)}
+
+/* modal footer nav */
+.ai-modal-footer{border-top:1px solid var(--border);padding:12px 20px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;background:var(--bg)}
+.ai-foot-nav{display:flex;gap:8px}
+.ai-foot-btn{font-family:"IBM Plex Mono",monospace;font-size:.52rem;letter-spacing:.08em;text-transform:uppercase;padding:8px 16px;border:1.5px solid var(--border);background:transparent;color:var(--muted);cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:6px}
+.ai-foot-btn:hover:not(:disabled){border-color:var(--red);color:var(--red);background:rgba(239,83,80,.07)}
+.ai-foot-btn:disabled{opacity:.3;cursor:default}
+.ai-foot-counter{font-size:.52rem;color:var(--muted);letter-spacing:.08em}
+
 /* BOTTOM BAR */
 .bbar{background:var(--bg2);border-top:1px solid var(--border);padding:6px 20px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;flex-shrink:0;z-index:100}
 .bhint{font-size:.46rem;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;flex-shrink:0}
@@ -165,9 +225,14 @@ header{background:var(--bg2);border-bottom:2px solid var(--gold);padding:10px 20
       <div class="deyebrow" id="deyebrow"></div>
       <div class="dtitle"   id="dtitle"></div>
       <div class="dsub"     id="dsub"></div>
-      <a class="integra-btn" id="integraBtn" href="#" target="_blank" rel="noopener">
-        📄 Ler constituição na íntegra — Planalto.gov.br
-      </a>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:12px">
+        <a class="integra-btn" id="integraBtn" href="#" target="_blank" rel="noopener" style="margin-top:0">
+          📄 Ler constituição na íntegra — Planalto.gov.br
+        </a>
+        <button class="integra-btn" id="aiBtnWrapper" style="display:none;margin-top:0;border-color:var(--red);color:var(--red);background:rgba(239,83,80,.09)" onclick="abrirModalAI()">
+          ⚡ Atos Institucionais — 1964 a 1978
+        </button>
+      </div>
       <button class="dclose" onclick="fechar()">✕</button>
     </div>
     <div class="dtabs" id="dtabs"></div>
@@ -209,6 +274,7 @@ var DATA = [
       "Sufrágio censitário em dois turnos: excluía a maioria absoluta da população.",
       "Senado vitalício nomeado pelo Imperador: tornava o Legislativo dependente da Coroa."
     ],
+    polLeis: null,
     rel:"A Constituição de 1824 concentrou no Imperador o poder de declarar guerra, fazer paz e celebrar tratados. D. Pedro I usou esse poder para negociar o reconhecimento da independência com Portugal (1825) — ao custo de 2 milhões de libras esterlinas — e para envolver o Brasil na Guerra Cisplatina (1825–1828), que resultou na criação do Uruguai. A estrutura monárquica facilitou relações com as potências europeias, mas criou distância com as repúblicas latino-americanas.",
     leg:"Fundou o Estado brasileiro e manteve sua unidade territorial quando a América hispânica se fragmentava em dezenas de repúblicas. O Poder Moderador, apesar de autoritário, foi o mecanismo que evitou a desintegração nacional. O bicameralismo, o Judiciário independente e as garantias individuais foram heranças permanentes. Considerada uma das constituições monárquicas mais sofisticadas do século XIX."
   },
@@ -239,6 +305,7 @@ var DATA = [
       "Revolta da Armada (1893-94) e da Vacina (1904): crises que revelaram a fragilidade das garantias constitucionais.",
       "Emenda de 1926: ampliou os poderes federais de intervenção nos estados — tentativa fracassada de conter o coronelismo."
     ],
+    polLeis: null,
     rel:"O Barão do Rio Branco (ministro 1902–1912) utilizou o novo arcabouço republicano para consolidar as fronteiras em 10 arbitragens: Questão de Palmas/Misiones (1895), Amapá (1900), Acre/Tratado de Petrópolis (1903), entre outras. A 'política externa republicana' de Rio Branco aproximou o Brasil dos EUA ('americanismo') enquanto equilibrava relações com a Europa. A república facilitou o reconhecimento diplomático pelas repúblicas latino-americanas.",
     leg:"Fundou o modelo republicano-federativo que persiste. A separação Igreja-Estado, o presidencialismo e o federalismo tornaram-se pilares permanentes. A valorização dos estados criou, contudo, as condições para o regionalismo oligárquico e a instabilidade que gerou a Revolução de 1930. Com apenas 91 artigos, é a constituição mais concisa da história brasileira."
   },
@@ -268,6 +335,7 @@ var DATA = [
       "Lei de Segurança Nacional (1935): aprovada meses após a Constituição, contradisse seus princípios ao reprimir violentamente a Intentona Comunista.",
       "Intentona Comunista (1935): levante do PCB reprimido brutalmente — Vargas usou a crise para centralizar poderes e preparar o golpe de 1937."
     ],
+    polLeis: null,
     rel:"A Constituição de 1934 foi elaborada no período de ascensão dos fascismos europeus. O Brasil navegou entre Washington e Berlim/Roma. O capítulo sobre relações externas consagrou 'não-intervenção' e 'solução pacífica de conflitos' — princípios que viriam a ser pilares permanentes da diplomacia brasileira. A crise constitucional de 1937 adiou o alinhamento definitivo com os Aliados na 2ª Guerra.",
     leg:"Introduziu o constitucionalismo social no Brasil. O voto feminino, os direitos trabalhistas constitucionalizados, o ensino público gratuito e obrigatório e a Justiça Eleitoral são heranças desta carta. A representação classista influenciou o Estado Novo e a CLT (1943). Sua brevíssima vigência impediu que seu potencial democrático fosse realizado."
   },
@@ -299,6 +367,7 @@ var DATA = [
       "Pena de morte: introduzida pela primeira vez em uma constituição brasileira, para crimes políticos.",
       "Contradição da FEB (1944): Vargas enviou 25.000 soldados para lutar pela democracia na Itália enquanto governava ditatorialmente."
     ],
+    polLeis: null,
     rel:"O Estado Novo manteve ambiguidade estratégica na 2ª Guerra. Vargas negociou com os EUA a construção da Usina de Volta Redonda (1941) em troca de apoio aos Aliados, mas flertou com o Eixo até os afundamentos de navios brasileiros por submarinos alemães (1942). A entrada do Brasil na guerra em 1942 e o envio da FEB à Itália (1944–45) foram atos de política externa que sepultaram a neutralidade. O autoritarismo dificultou o reconhecimento do Brasil como potência democrática no pós-guerra.",
     leg:"Apesar de autoritária, a era do Estado Novo consolidou a industrialização brasileira. A CLT (1943), o IBGE, o DASP, a Companhia Siderúrgica Nacional e as bases do Estado desenvolvimentista são legados desta era. A 'Polaca' tornou-se símbolo do uso instrumental de constituições como fachada para o poder pessoal."
   },
@@ -329,6 +398,7 @@ var DATA = [
       "AI-1 (1964) e AI-2 (1965): cassação de mandatos e extinção de partidos — incompatíveis com a constituição vigente.",
       "Eleições indiretas para presidente a partir de 1964: extinguiram o voto direto enquanto a constituição ainda formalmente vigorava."
     ],
+    polLeis: null,
     rel:"A Constituição de 1946 vigorou durante toda a Guerra Fria brasileira. O art. 4º sobre solução pacífica foi base da 'Política Externa Independente' (1961–64) de Jânio/San Tiago Dantas, que buscou relações com países socialistas e apoiou a descolonização africana. O golpe de 1964, amplamente apoiado pela CIA e pelos EUA (Operação Brother Sam), é o exemplo mais dramático de como a instabilidade constitucional brasileira foi instrumentalizada pela geopolítica da Guerra Fria.",
     leg:"Considerada a mais democrática do Brasil antes de 1988. Estabeleceu a base da 'experiência democrática' de 1946–64 — o único período de democracia liberal antes da Nova República. A erosão progressiva pelos AIs militares é lição definitiva sobre a fragilidade das garantias formais sem uma cultura democrática consolidada."
   },
@@ -359,6 +429,28 @@ var DATA = [
       "Eleições indiretas para presidente: extinguiu o voto direto para o Executivo federal por duas décadas.",
       "Tortura institucionalizada: o DOI-CODI operou sistematicamente enquanto a constituição previa formalmente a 'integridade física do cidadão'.",
       "Lei de Segurança Nacional: tipificou como crime qualquer forma de oposição ao regime."
+    ],
+    polLeis: [
+      {
+        titulo: "Lei de Imprensa — Lei nº 5.250/1967",
+        subtitulo: "Censura institucionalizada sob aparência de regulação",
+        corpo: [
+          "Promulgada em 9 de fevereiro de 1967, a Lei de Imprensa foi editada em perfeita sincronia com a nova Constituição — ambas buscavam substituir a regulação democrática do pós-guerra por um marco legal funcional à ditadura. Formalmente, a lei tratava de liberdade de imprensa, responsabilidade civil e criminal de jornalistas e meios de comunicação. Na prática, foi o instrumento jurídico que deu cobertura legal à censura prévia e à perseguição da imprensa crítica ao regime.",
+          "Seu mecanismo central era a responsabilização civil e criminal amplíssima dos jornalistas e diretores de publicações — qualquer reportagem que o governo classificasse como ofensiva à 'ordem pública', às Forças Armadas ou às autoridades poderia gerar processo criminal com penas de detenção. Isso criava um efeito inibidor poderoso: a autocensura tornou-se norma nas redações. Jornais como O Estado de S. Paulo chegaram a publicar receitas culinárias e poemas de Camões nos espaços censurados, como forma de denúncia silenciosa.",
+          "A lei também criava um sistema de controle sobre a distribuição e impressão, permitindo ao governo suspender a circulação de publicações por via administrativa, sem necessidade de decisão judicial. O Departamento de Censura e Diversões Públicas (DCDP), vinculado ao Ministério da Justiça, exercia a censura prévia sobre televisão, rádio e cinema — e a lei de imprensa complementava esse controle sobre o jornalismo impresso.",
+          "Após a redemocratização, a lei permaneceu vigente por décadas. Só foi declarada inconstitucional pelo STF em 2009 (ADPF 130), que entendeu que ela era incompatível com a liberdade de imprensa garantida pela Constituição de 1988 — um dos casos mais emblemáticos de 'entulho autoritário' formalmente sobrevivendo à transição democrática."
+        ]
+      },
+      {
+        titulo: "Lei de Segurança Nacional — Decreto-Lei nº 314/1967",
+        subtitulo: "A tipificação penal da dissidência política",
+        corpo: [
+          "O Decreto-Lei nº 314, de 13 de março de 1967, foi a primeira versão da Lei de Segurança Nacional (LSN) do regime militar — substituindo a LSN de 1953, considerada insuficientemente repressiva. Sua base ideológica era a Doutrina de Segurança Nacional (DSN), elaborada pela Escola Superior de Guerra (ESG) sob influência direta do pensamento estratégico norte-americano do pós-guerra. A DSN definia o 'inimigo interno' — comunistas, subversivos, 'agentes do caos' — como ameaça tão grave quanto a agressão militar estrangeira, justificando medidas de guerra em tempos de paz.",
+          "A LSN de 1967 tipificava como crimes contra a segurança nacional: a propaganda de ideologias contrárias à 'ordem democrática' (leia-se: ao regime militar), a greve em serviços essenciais, a organização de movimentos contrários às Forças Armadas, qualquer ato que 'provocasse animosidade' entre as classes sociais ou contra os militares, e a divulgação de informações consideradas prejudiciais à 'segurança do Estado'. As penas iam de 1 a 6 anos de reclusão, podendo ser agravadas em contexto de 'guerra revolucionária ou psicológica'.",
+          "A lei foi reformada em 1969 (Decreto-Lei nº 898), sob a Junta Militar, tornando-se ainda mais severa: ampliou o rol de crimes, aumentou as penas — chegando à pena de morte para casos de 'guerra revolucionária' — e criou o conceito de 'guerra psicológica adversa' como categoria criminosa, abrangendo praticamente qualquer forma de crítica ao regime. Era sob esta lei que estudantes, sindicalistas, jornalistas e políticos eram julgados pela Justiça Militar.",
+          "A LSN foi reformada novamente em 1978 e em 1983, já no contexto da abertura. Mesmo após 1988, um resíduo da LSN sobreviveu: a Lei nº 7.170/1983 (LSN da abertura) permaneceu vigente e foi usada em episódios polêmicos já no século XXI — como o indiciamento de manifestantes em 2013 e as ameaças de aplicação durante crises políticas recentes. A LSN de 1983 só foi formalmente revogada e substituída pela Lei de Defesa do Estado Democrático de Direito (Lei nº 14.197/2021), aprovada pelo Congresso no contexto das tensões do governo Bolsonaro."
+        ]
+      }
     ],
     rel:"A constituição de 1967 refletiu a Doutrina de Segurança Nacional de inspiração estadunidense (Escola das Américas). O alinhamento com os EUA na Guerra Fria foi total — Brasil reconheceu imediatamente o golpe de Pinochet no Chile (1973). O 'Pragmatismo Responsável' de Geisel/Azeredo da Silveira (1974–79) rompeu o alinhamento automático: reconheceu Angola marxista (1975), denunciou o acordo militar com os EUA (1977) e apoiou o processo de descolonização — tudo sob esta constituição.",
     leg:"A era 1967/69 produziu o 'milagre econômico' (crescimento de ~10% ao ano de 1968 a 1973) à custa de brutal repressão política. O debate sobre 'desenvolvimento vs. democracia' que ela encarna permanece relevante. A abertura lenta e gradual de Geisel/Golbery (1974–85) terminou com a promulgação da Constituição Cidadã em 1988."
@@ -392,6 +484,7 @@ var DATA = [
       "135+ emendas: o Brasil tem a constituição mais emendada do mundo democrático — sinal de falta de consenso original e de uso da emenda como instrumento de política ordinária.",
       "Reforma tributária: questão não resolvida por 35 anos, finalmente aprovada em 2023 (EC 132/2023)."
     ],
+    polLeis: null,
     rel:"O art. 4º da Constituição de 1988 é o mais elaborado catálogo de princípios de política externa já constitucionalizado no Brasil e influenciou gerações de diplomatas. A 'prevalência dos direitos humanos' e o 'repúdio ao racismo' abriram espaço para diplomacia ativa em fóruns multilaterais. O Itamaraty consolidou o multilateralismo, o Mercosul (1991), a UNASUL (2008), o BRICS (2009) e a candidatura permanente ao Conselho de Segurança da ONU como expressões deste modelo. É o texto mais importante para entender a política externa brasileira contemporânea e o mais cobrado nas provas do CACD.",
     leg:"A 'Constituição Cidadã' transformou o Brasil em um Estado de bem-estar social constitucionalizado. O SUS, o SUAS, o Bolsa Família (base constitucional no art. 203), o reconhecimento indígena e quilombola, o direito ambiental (art. 225) são seus legados mais visíveis. É o alicerce da democracia brasileira contemporânea — e o documento mais estudado e mais cobrado nas provas do Itamaraty."
   }
@@ -476,6 +569,22 @@ function open(id){
       '<div class="ibox" style="grid-column:1/-1"><div class="ilbl">Chefe de Estado / Governo</div><div class="ival">'+c.pres+'</div></div>'+
     '</div>';
 
+  /* polêmicas pane — com leis especiais se existirem */
+  var polHTML = '<div class="stitle">Controvérsias e Polêmicas</div><div class="pollist">'+
+    c.pol.map(function(p){ return '<div class="politem"><p>'+p+'</p></div>'; }).join('')+
+  '</div>';
+
+  if(c.polLeis && c.polLeis.length > 0){
+    polHTML += '<div class="stitle" style="margin-top:28px">Legislação Autoritária do Período</div>';
+    c.polLeis.forEach(function(lei){
+      polHTML += '<div class="lei-card">'+
+        '<div class="lei-card-title">📰 <span>'+lei.titulo+'</span></div>'+
+        '<div class="lei-sub">'+lei.subtitulo+'</div>'+
+        lei.corpo.map(function(par){ return '<p>'+par+'</p>'; }).join('')+
+      '</div>';
+    });
+  }
+
   /* panes */
   var html =
     '<div class="dpane on" id="pane-geral">'+
@@ -496,12 +605,7 @@ function open(id){
         return '<div class="artitem"><div class="artnum">'+a.n+'</div><div class="arttxt">'+a.t+'</div></div>';
       }).join('')+'</div>'+
     '</div>'+
-    '<div class="dpane" id="pane-pol">'+
-      '<div class="stitle">Controvérsias e Polêmicas</div>'+
-      '<div class="pollist">'+c.pol.map(function(p){
-        return '<div class="politem"><p>'+p+'</p></div>';
-      }).join('')+'</div>'+
-    '</div>'+
+    '<div class="dpane" id="pane-pol">'+polHTML+'</div>'+
     '<div class="dpane" id="pane-rel">'+
       '<div class="stitle">Implicações na Política Externa Brasileira</div>'+
       '<p class="prose">'+c.rel+'</p>'+
@@ -555,6 +659,247 @@ function filterTipo(t){
     el.style.display = el.classList.contains(t)?'':'none';
   });
 }
+/* ---- show/hide AI button ---- */
+var _origOpen = open;
+open = function(id){
+  _origOpen(id);
+  var wrapper = document.getElementById('aiBtnWrapper');
+  if(wrapper) wrapper.style.display = (id === 'c1967') ? 'inline-flex' : 'none';
+};
+</script>
+
+<!-- ===== MODAL ATOS INSTITUCIONAIS ===== -->
+<div class="ai-modal-overlay" id="aiModalOverlay" onclick="fecharModalAI(event)">
+  <div class="ai-modal" onclick="event.stopPropagation()">
+
+    <div class="ai-modal-topbar">
+      <div class="ai-modal-eyebrow">🚨 Ditadura Militar · Atos Institucionais · 1964–1978</div>
+      <button class="ai-modal-close" onclick="fecharModalAI()">✕</button>
+    </div>
+
+    <div class="ai-nav" id="aiNav"></div>
+
+    <div class="ai-modal-body" id="aiModalBody"></div>
+
+    <div class="ai-modal-footer">
+      <div class="ai-foot-nav">
+        <button class="ai-foot-btn" id="aiPrev" onclick="navAI(-1)">← Anterior</button>
+        <button class="ai-foot-btn" id="aiNext" onclick="navAI(1)">Próximo →</button>
+      </div>
+      <div class="ai-foot-counter" id="aiCounter"></div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+/* ===== DADOS DOS ATOS INSTITUCIONAIS ===== */
+var AI_DATA = [
+  {
+    num:"AI-1",
+    titulo:"Ato Institucional nº 1",
+    data:"9 de abril de 1964",
+    governo:"Junta Militar (Castelo Branco, a seguir)",
+    vigencia:"9 abr. 1964 – 27 out. 1965",
+    contexto:"Editado apenas 6 dias após o golpe de 31 de março/1º de abril de 1964, o AI-1 foi o documento fundador da ditadura militar. Redigido pelo jurista Francisco Campos — o mesmo que havia redigido a Constituição de 1937 do Estado Novo — o ato foi apresentado como uma revolução vitoriosa que se autoinvestia de poder constituinte. Seu preâmbulo afirmava que 'a revolução vitoriosa se legitima por si mesma', invertendo o princípio de que o poder emana do povo.",
+    descricao:"O AI-1 manteve formalmente a Constituição de 1946, mas sobrepôs a ela poderes excepcionais. Instituiu eleição indireta para Presidente pelo Congresso, suspendeu garantias constitucionais de estabilidade de servidores, permitiu demissão e aposentadoria compulsória de militares e civis, cassou mandatos parlamentares e suspendeu direitos políticos pelo prazo de 10 anos. Nos primeiros meses, mais de 350 mandatos foram cassados e 9.000 funcionários públicos foram expurgados.",
+    poderes:[
+      {ico:"🗳️", txt:"Eleição indireta do Presidente pelo Congresso — extinguiu o voto popular para o Executivo federal"},
+      {ico:"✂️", txt:"Cassação de mandatos de parlamentares sem apreciação judicial — mais de 350 nos primeiros meses"},
+      {ico:"🔇", txt:"Suspensão de direitos políticos por até 10 anos, incluindo Jango, Jânio Quadros e Juscelino Kubitschek"},
+      {ico:"👔", txt:"Demissão e aposentadoria compulsória de militares, juízes e servidores civis — 9.000+ atingidos"},
+      {ico:"⚖️", txt:"Suspensão temporária da garantia de habeas corpus para crimes políticos"},
+      {ico:"🏛️", txt:"Manteve o Congresso em funcionamento — o regime precisava de aparência de legalidade"}
+    ],
+    revogacao:"Substituído pelo AI-2 em outubro de 1965, que aprofundou drasticamente a ditadura após resultados eleitorais indesejados para o regime."
+  },
+  {
+    num:"AI-2",
+    titulo:"Ato Institucional nº 2",
+    data:"27 de outubro de 1965",
+    governo:"Marechal Humberto Castelo Branco",
+    vigencia:"27 out. 1965 – 5 fev. 1966",
+    contexto:"Após as eleições para governador de outubro de 1965 — nas quais a oposição venceu nos estados de Minas Gerais e Guanabara — a linha-dura militar pressionou Castelo Branco a endurecer o regime. O resultado eleitoral inaceitável para os radicais precipitou o AI-2, que redesenhou fundamentalmente o sistema político brasileiro.",
+    descricao:"O AI-2 foi muito além do AI-1. Extinguiu todos os partidos políticos existentes e criou o bipartidarismo forçado — ARENA (situação) e MDB (oposição controlada). Ampliou o número de ministros do STF de 11 para 16 (para ter maioria favorável ao regime) e estabeleceu eleição indireta para presidente como regra permanente. Também criou os decretos-lei, que permitiam ao Executivo legislar em matéria econômica e de segurança sem aprovação do Congresso.",
+    poderes:[
+      {ico:"🎭", txt:"Extinção de todos os partidos políticos — do PTB ao UDN. Criação do bipartidarismo ARENA/MDB"},
+      {ico:"👨‍⚖️", txt:"Ampliação do STF de 11 para 16 ministros — 'packing' para garantir maioria favorável ao regime"},
+      {ico:"🗳️", txt:"Eleição indireta para presidente como regra permanente, não mais exceção"},
+      {ico:"📜", txt:"Decretos-lei: Executivo passou a legislar em matéria de segurança nacional e finanças sem o Congresso"},
+      {ico:"✂️", txt:"Novas cassações em massa — consolidação da exclusão da oposição democrática"},
+      {ico:"🔇", txt:"Ampliação da Justiça Militar para julgamento de civis em crimes políticos"}
+    ],
+    revogacao:"Substituído pelo AI-3 em fevereiro de 1966, que estendeu as eleições indiretas para governadores."
+  },
+  {
+    num:"AI-3",
+    titulo:"Ato Institucional nº 3",
+    data:"5 de fevereiro de 1966",
+    governo:"Marechal Humberto Castelo Branco",
+    vigencia:"5 fev. 1966 – 15 mar. 1967",
+    contexto:"Em sequência ao AI-2, o regime buscou consolidar o controle sobre os estados federados. As eleições diretas para governador — que haviam gerado a crise de outubro de 1965 — eram vistas como risco inaceitável. O AI-3 completou o ciclo de 'fechamento suave' do regime Castelo Branco.",
+    descricao:"O AI-3 estendeu o princípio das eleições indiretas para os governos estaduais: os governadores passariam a ser eleitos pelas Assembleias Legislativas estaduais, e os prefeitos das capitais seriam nomeados pelos governadores. Isso significou que o regime controlava a cadeia de poder do nível federal ao municipal nas principais cidades. Também transferiu a competência para julgamento de crimes políticos à Justiça Militar — mesmo quando os réus eram civis.",
+    poderes:[
+      {ico:"🏛️", txt:"Eleições indiretas para governadores estaduais — eleitos pelas Assembleias Legislativas depuradas"},
+      {ico:"🏙️", txt:"Prefeitos das capitais passaram a ser nomeados pelos governadores (indicados pelo regime)"},
+      {ico:"⚖️", txt:"Civis acusados de crimes políticos julgados pela Justiça Militar — não pelo Judiciário civil"},
+      {ico:"🔗", txt:"Cadeia de controle verticalizada: presidente → governador → prefeito, todos sem voto popular"}
+    ],
+    revogacao:"Incorporado e substituído pela Constituição de 1967, que institucionalizou essas medidas em texto constitucional."
+  },
+  {
+    num:"AI-4",
+    titulo:"Ato Institucional nº 4",
+    data:"7 de dezembro de 1966",
+    governo:"Marechal Humberto Castelo Branco",
+    vigencia:"7 dez. 1966 – 24 jan. 1967",
+    contexto:"Com a nova Constituição pronta para ser imposta, o regime precisava de um mecanismo para convocar o Congresso — que ele mesmo havia depurado — para aprová-la com aparência de legitimidade. O AI-4 foi um ato transitório, de natureza procedimental, para dar verniz constitucional à outorga da Carta de 1967.",
+    descricao:"O AI-4 convocou o Congresso Nacional em sessão extraordinária entre 12 de dezembro de 1966 e 24 de janeiro de 1967 com o único objetivo de 'discutir, votar e promulgar' o projeto de Constituição enviado pelo Executivo militar. O Congresso depurado aprovou o texto em 42 dias — sem poder alterá-lo substantivamente. Foi o teatro de legitimação da Constituição de 1967.",
+    poderes:[
+      {ico:"📋", txt:"Convocação do Congresso em sessão extraordinária para apreciar o projeto constitucional"},
+      {ico:"⏱️", txt:"Prazo de 42 dias para aprovação — impossível para análise substancial de uma constituição inteira"},
+      {ico:"🎭", txt:"Aparência de legitimidade democrática para uma constituição essencialmente outorgada pelo regime"},
+      {ico:"🔒", txt:"Vedação implícita de alterações substantivas ao projeto enviado pelo Executivo"}
+    ],
+    revogacao:"Ato transitório — esgotou seus efeitos com a promulgação da Constituição de 1967 em 24 de janeiro de 1967."
+  },
+  {
+    num:"AI-5",
+    titulo:"Ato Institucional nº 5",
+    data:"13 de dezembro de 1968",
+    governo:"Marechal Arthur da Costa e Silva",
+    vigencia:"13 dez. 1968 – 31 dez. 1978",
+    contexto:"O AI-5 é o ato mais brutal e o mais conhecido da ditadura — e o único que durou uma década. O estopim foi o discurso do deputado Márcio Moreira Alves na Câmara, em setembro de 1968, conclamando as mulheres brasileiras a boicotarem a ditadura. O governo pediu ao Congresso autorização para processar o deputado; o Congresso negou. A resposta do regime foi fechar o Congresso e editar o AI-5.",
+    descricao:"O AI-5 suspendeu o habeas corpus para crimes políticos, fechou o Congresso por prazo indeterminado, cassou centenas de mandatos e direitos políticos, autorizou intervenção federal sem limites nos estados, suspendeu as garantias da magistratura (inamovibilidade e vitaliciedade) e proibiu apreciação judicial de qualquer ato praticado com base no AI-5. Na prática, tornou o país uma ditadura sem qualquer freio legal. Os anos que se seguiram — o governo Médici (1969–74) — foram os mais violentos da ditadura, com tortura sistemática, assassinatos e desaparecimentos.",
+    poderes:[
+      {ico:"⚖️", txt:"Suspensão do habeas corpus para crimes políticos — qualquer pessoa podia ser presa e mantida incomunicável indefinidamente"},
+      {ico:"🏛️", txt:"Fechamento do Congresso Nacional por prazo indeterminado — o regime passou a governar por decretos"},
+      {ico:"✂️", txt:"Cassação em massa de mandatos e suspensão de direitos políticos — centenas de parlamentares, prefeitos e líderes da sociedade civil"},
+      {ico:"👨‍⚖️", txt:"Suspensão das garantias da magistratura (vitaliciedade, inamovibilidade, irredutibilidade) — juízes podiam ser demitidos"},
+      {ico:"🔇", txt:"Proibição de apreciação judicial de qualquer ato praticado com base no AI-5 — impunidade total para o regime"},
+      {ico:"🔦", txt:"Intervenção federal irrestrita em estados e municípios, sem as limitações constitucionais normais"},
+      {ico:"📺", txt:"Base legal para a censura prévia à imprensa, teatro, cinema e música — anos de chumbo culturais"},
+      {ico:"💀", txt:"Cobertura jurídica para o DOI-CODI: tortura sistemática, assassinatos e desaparecimentos de opositores"}
+    ],
+    revogacao:"Revogado pela Emenda Constitucional nº 11, de 31 de dezembro de 1978, no contexto da abertura política de Geisel — o único AI que precisou de emenda constitucional para ser revogado, dada sua profundidade."
+  },
+  {
+    num:"AI-6",
+    titulo:"Ato Institucional nº 6",
+    data:"1º de fevereiro de 1969",
+    governo:"Marechal Arthur da Costa e Silva",
+    vigencia:"1º fev. 1969 – out. 1969 (incorporado à Em. nº 1)",
+    contexto:"Com o AI-5 em vigor e o Congresso fechado, o regime operava por decreto. O AI-6 veio em sequência para remodelar o Supremo Tribunal Federal — que, mesmo reduzido em autonomia, ainda era visto com desconfiança pela linha-dura.",
+    descricao:"O AI-6 reduziu o número de ministros do STF de 16 para 11 — revertendo a ampliação do AI-2, mas agora com uma composição inteiramente moldada pelo regime. Transferiu para a Justiça Militar a competência para julgamento de crimes contra a segurança nacional e a ordem política e social, retirando do STF qualquer papel de última instância para presos políticos. Na prática, esvaziou o Judiciário civil de qualquer função protetiva para opositores do regime.",
+    poderes:[
+      {ico:"👨‍⚖️", txt:"Redução do STF de 16 para 11 ministros — composição totalmente controlada pelo regime"},
+      {ico:"⚖️", txt:"Transferência definitiva dos crimes políticos para a Justiça Militar — civis julgados por militares"},
+      {ico:"🔒", txt:"STF impedido de funcionar como instância de proteção de direitos políticos e civis"}
+    ],
+    revogacao:"Absorvido pela Emenda Constitucional nº 1 de outubro de 1969 (a 'Constituição de 1969')."
+  },
+  {
+    num:"AI-7 a AI-16",
+    titulo:"Atos Institucionais 7 a 16",
+    data:"Fevereiro a setembro de 1969",
+    governo:"Costa e Silva / Junta Militar",
+    vigencia:"Fev. 1969 – out. 1969",
+    contexto:"Com o Congresso fechado, o AI-5 em vigor e a oposição destroçada, o regime editou uma série de atos institucionais e complementares para administrar o país por decreto. O período foi de radicalização interna, sequestros de diplomatas por guerrilheiros e endurecimento crescente. Em agosto de 1969, Costa e Silva foi acometido de derrame cerebral — a Junta Militar assumiu o poder.",
+    descricao:"Os AIs 7 a 16 são em geral menos estudados individualmente porque muitos tinham caráter administrativo ou técnico. Entre os mais relevantes: o AI-12 (1969) atribuiu à Junta Militar os poderes presidenciais após o incapacitamento de Costa e Silva; o AI-13 (1969) instituiu o banimento — permitindo expulsar do país qualquer brasileiro considerado 'inconveniente, nocivo ou perigoso à segurança nacional'; e o AI-14 (1969) introduziu na Constituição a pena de morte e prisão perpétua para crimes de 'guerra psicológica' e terrorismo — as únicas penas desse tipo na história constitucional republicana brasileira.",
+    poderes:[
+      {ico:"🚫", txt:"AI-13: Banimento — qualquer brasileiro podia ser expulso do país por decreto. Usado para expulsar presos trocados por diplomatas sequestrados"},
+      {ico:"💀", txt:"AI-14: Pena de morte e prisão perpétua constitucionalizadas para crimes de 'guerra revolucionária' — única vez na história republicana"},
+      {ico:"🏥", txt:"AI-12: Junta Militar assumiu formalmente os poderes presidenciais com Costa e Silva incapacitado"},
+      {ico:"📜", txt:"Série de atos complementares regulamentando cassações, censura e funcionamento do aparato repressivo"},
+      {ico:"⚖️", txt:"Ampliação dos tipos penais da Lei de Segurança Nacional para abranger praticamente qualquer forma de oposição"}
+    ],
+    revogacao:"Absorvidos pela Emenda Constitucional nº 1 de outubro de 1969, que a doutrina majoritária considera uma nova Constituição."
+  },
+  {
+    num:"AI-17",
+    titulo:"Ato Institucional nº 17",
+    data:"14 de outubro de 1969",
+    governo:"Junta Militar (véspera da posse de Médici)",
+    vigencia:"Out. 1969 – incorporado à Em. nº 1",
+    contexto:"Às vésperas da posse do General Emílio Garrastazu Médici — o presidente do período mais repressivo da ditadura — a Junta Militar editou o AI-17 como medida de transição e consolidação do controle sobre as Forças Armadas.",
+    descricao:"O AI-17 autorizou o Presidente da República a transferir para a reserva, motivadamente ou não, militares que ameaçassem 'a coesão das Forças Armadas'. Era, em essência, um instrumento de purga interna nas próprias forças militares — para garantir que oficiais com simpatias liberais ou democráticas não pudessem resistir à linha-dura. Completou o ciclo de controle total do aparato de segurança.",
+    poderes:[
+      {ico:"🎖️", txt:"Transferência compulsória para a reserva de militares que 'ameaçassem a coesão das Forças Armadas' — purga interna"},
+      {ico:"🔒", txt:"Sem necessidade de motivação ou processo — discricionariedade total do presidente"},
+      {ico:"🔗", txt:"Garantia de que a linha-dura controlaria completamente o aparato militar antes do governo Médici"}
+    ],
+    revogacao:"Incorporado à Emenda Constitucional nº 1 de 17 de outubro de 1969."
+  }
+];
+
+var aiPageAtual = 0;
+
+function renderAI(idx){
+  var ai = AI_DATA[idx];
+  var body = document.getElementById('aiModalBody');
+
+  var podHTML = ai.poderes.map(function(p){
+    return '<div class="ai-power"><div class="ai-power-ico">'+p.ico+'</div><div class="ai-power-txt">'+p.txt+'</div></div>';
+  }).join('');
+
+  body.innerHTML =
+    '<div class="ai-page on">'+
+      '<div class="ai-page-hero">'+
+        '<div class="ai-page-num">'+ai.num+' — Ditadura Militar Brasileira</div>'+
+        '<div class="ai-page-title">'+ai.titulo+'</div>'+
+        '<div class="ai-page-date">'+ai.data+'</div>'+
+      '</div>'+
+      '<div class="ai-meta-row">'+
+        '<div class="ai-meta"><div class="ai-meta-lbl">Governo</div><div class="ai-meta-val">'+ai.governo+'</div></div>'+
+        '<div class="ai-meta"><div class="ai-meta-lbl">Vigência</div><div class="ai-meta-val">'+ai.vigencia+'</div></div>'+
+      '</div>'+
+      '<div class="ai-section-title">Contexto Histórico</div>'+
+      '<p class="ai-prose">'+ai.contexto+'</p>'+
+      '<div class="ai-section-title">O que o ato fez</div>'+
+      '<p class="ai-prose">'+ai.descricao+'</p>'+
+      '<div class="ai-section-title">Poderes conferidos</div>'+
+      '<div class="ai-powers">'+podHTML+'</div>'+
+      '<div class="ai-section-title">Revogação e Legado</div>'+
+      '<p class="ai-prose">'+ai.revogacao+'</p>'+
+    '</div>';
+
+  body.scrollTop = 0;
+
+  /* update nav */
+  document.querySelectorAll('.ai-nav-btn').forEach(function(b,i){
+    b.classList.toggle('on', i===idx);
+  });
+  document.getElementById('aiCounter').textContent = (idx+1)+' de '+AI_DATA.length;
+  document.getElementById('aiPrev').disabled = (idx===0);
+  document.getElementById('aiNext').disabled = (idx===AI_DATA.length-1);
+  aiPageAtual = idx;
+}
+
+function abrirModalAI(){
+  var nav = document.getElementById('aiNav');
+  nav.innerHTML = AI_DATA.map(function(ai,i){
+    return '<button class="ai-nav-btn" onclick="renderAI('+i+')">'+ai.num+'</button>';
+  }).join('');
+  renderAI(0);
+  document.getElementById('aiModalOverlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function fecharModalAI(e){
+  if(e && e.target !== document.getElementById('aiModalOverlay')) return;
+  document.getElementById('aiModalOverlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function navAI(dir){
+  var next = aiPageAtual + dir;
+  if(next >= 0 && next < AI_DATA.length) renderAI(next);
+}
+
+/* fechar com ESC */
+document.addEventListener('keydown', function(e){
+  if(e.key==='Escape') fecharModalAI({target: document.getElementById('aiModalOverlay')});
+});
 </script>
 </body>
 </html>
