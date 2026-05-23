@@ -118,6 +118,7 @@ header h1 em {
 
 /* ── FILTERS ── */
 .filters-bar {
+  -webkit-overflow-scrolling:touch;
   background: var(--bg2);
   border-bottom:1px solid var(--border);
   padding:0 56px;
@@ -248,6 +249,8 @@ header h1 em {
 
 /* ── CARD ── */
 .card {
+  -webkit-tap-highlight-color:transparent;
+  touch-action:manipulation;
   background: var(--surface);
   border:1px solid var(--border);
   padding:26px;
@@ -507,19 +510,120 @@ footer {
   text-transform:uppercase;
 }
 
-@media(max-width:720px){
-  header { padding:40px 20px 36px; }
-  .filters-bar,.legend { padding:0 16px; }
-  .tl { padding:40px 16px 60px; }
-  .tl::before { left:20px; }
-  .entry { grid-template-columns:40px 1fr; }
-  .entry.left .ca,.entry.right .ca { grid-column:2; }
-  .entry.left .dc,.entry.right .dc { grid-column:1; }
-  .entry .em { display:none; }
-  .entry.left .card,.entry.right .card { margin:0; }
-  .entry.left .card .arr,.entry.right .card .arr { left:-7px; right:auto;
-    border-right:7px solid var(--border); border-left:none; }
-  .arts.g3 { grid-template-columns:1fr 1fr; }
+@media(max-width:768px){
+  /* HEADER */
+  header { padding:36px 20px 32px; }
+  header h1 { font-size:38px; letter-spacing:-.5px; }
+  .header-sub { font-size:13px; }
+  .header-stats { gap:24px; margin-top:32px; padding-top:24px; }
+  .stat-n { font-size:28px; }
+
+  /* FILTERS — horizontal scroll, touch friendly */
+  .filters-bar { padding:0 12px; -webkit-overflow-scrolling:touch; }
+  .fbtn { padding:12px 16px; font-size:9px; }
+  .legend { padding:10px 16px; gap:8px; flex-wrap:wrap; }
+  .legend-label { display:none; }
+  .ltag { font-size:9px; padding:2px 6px; }
+
+  /* TIMELINE — single column, line on left */
+  .tl { padding:32px 16px 60px; }
+  .tl::before { left:19px; transform:none; }
+
+  /* ALL ENTRIES: dot on left, card takes rest */
+  .entry {
+    grid-template-columns: 38px 1fr;
+    margin-bottom:32px;
+  }
+  .entry.feat { margin-bottom:48px; }
+
+  /* Left entries */
+  .entry.left .ca  { grid-column:2; grid-row:1; }
+  .entry.left .dc  { grid-column:1; grid-row:1; }
+  .entry.left .em  { display:none; }
+
+  /* Right entries — same layout */
+  .entry.right .ca  { grid-column:2; grid-row:1; }
+  .entry.right .dc  { grid-column:1; grid-row:1; }
+  .entry.right .em  { display:none; }
+
+  /* Dot column alignment */
+  .dc { padding-top:26px; align-items:center; }
+
+  /* Cards — remove side margins, fix arrows */
+  .entry.left  .card { margin-right:0; margin-left:0; }
+  .entry.right .card { margin-left:0; margin-right:0; }
+
+  /* Arrow always points left (from dot to card) */
+  .entry.left  .card .arr,
+  .entry.right .card .arr {
+    left:-7px; right:auto;
+    border-right:7px solid var(--border);
+    border-left:none;
+    border-top:6px solid transparent;
+    border-bottom:6px solid transparent;
+  }
+
+  /* CARD internals */
+  .card { padding:18px 16px; }
+  .card h2 { font-size:18px; }
+  .card p { font-size:13px; }
+  .card-period { font-size:10px; }
+  .card-top { flex-wrap:wrap; gap:8px; }
+  .card-badges { gap:4px; }
+  .badge { font-size:8px; padding:2px 6px; }
+  .cat-icon { font-size:14px; }
+
+  /* IMAGE GRIDS — always 1 or 2 cols max */
+  .arts.g1 { grid-template-columns:1fr; }
+  .arts.g2 { grid-template-columns:1fr 1fr; gap:3px; }
+  .arts.g3 { grid-template-columns:1fr 1fr; gap:3px; }
+  .art { aspect-ratio:4/3; }
+  .art-cap { font-size:8px; padding:3px 5px; opacity:1; transform:none; }
+
+  /* TAGS */
+  .tags { gap:4px; }
+  .tag { font-size:8.5px; padding:2px 7px; }
+
+  /* QUOTE */
+  .qbox { font-size:14px; padding:8px 12px; }
+
+  /* ERA MARKER */
+  .era { margin:48px 0 32px; }
+  .era-num { font-size:22px; }
+  .era-name { font-size:9px; letter-spacing:1.5px; }
+  .era-inner { padding:7px 16px 7px 14px; gap:10px; }
+
+  /* EXPAND BUTTON */
+  .expand-btn { font-size:9px; margin-top:10px; }
+
+  /* EXTRA CONTENT */
+  .info-lbl { font-size:8.5px; }
+  .info-txt { font-size:12px; }
+  .pbox, .lbox { font-size:12px; padding:9px 11px; }
+
+  /* LIGHTBOX */
+  #lb img { max-width:96vw; max-height:75vh; }
+  #lb-cap { font-size:9px; padding:0 12px; }
+  #lb-nav { font-size:9px; bottom:16px; }
+  #lb-close { top:12px; right:16px; font-size:24px; }
+
+  /* FOOTER */
+  footer { padding:36px 20px; }
+  .footer-quote { font-size:16px; }
+}
+
+/* Very small screens */
+@media(max-width:380px){
+  header h1 { font-size:32px; }
+  .arts.g2, .arts.g3 { grid-template-columns:1fr; }
+  .card h2 { font-size:16px; }
+  .era-inner { flex-direction:column; gap:4px; text-align:center; }
+}
+
+/* Touch: always show captions (no hover) */
+@media(hover:none){
+  .art-cap { opacity:1; transform:translateY(0); }
+  .art img { filter:brightness(.85) contrast(1.05) sepia(.1); }
 }
 
 /* ── LIGHTBOX ── */
@@ -748,6 +852,49 @@ footer {
   </div>
   <div class="dc"><div class="dot"></div></div>
   <div class="em"></div>
+</div>
+
+
+<!-- LITERATURA DE CORDEL -->
+<div class="entry right" data-cat="literatura cultura-popular">
+  <div class="em"></div>
+  <div class="dc"><div class="dot"></div></div>
+  <div class="ca">
+    <div class="card c-amber"><div class="arr"></div>
+      <div class="card-top">
+        <div class="card-badges">
+          <span class="badge badge-period">séc. XVIII–hoje</span>
+          <span class="badge badge-br">Brasileiro</span>
+        </div>
+        <span class="cat-icon">📜</span>
+      </div>
+      <h2>Literatura de Cordel — <em>A Voz do Sertão</em></h2>
+      <div class="card-period">Séc. XVIII–presente · Nordeste brasileiro</div>
+      <p>Folhetos rimados vendidos pendurados em cordas nas feiras do Nordeste. Poesia popular com métrica e rima rígidas, xilogravuras nas capas e temas que vão da seca ao cangaço, do amor à política, do sagrado ao absurdo. É a primeira mídia de massa do Brasil rural — e Patrimônio Cultural Imaterial Brasileiro (IPHAN, 2018).</p>
+      <div class="tags">
+        <span class="tag aut">Leandro Gomes de Barros (pioneiro)</span>
+        <span class="tag aut">João Martins de Athayde</span>
+        <span class="tag aut">Patativa do Assaré</span>
+        <span class="tag aut">Rodolfo Coelho Cavalcante</span>
+        <span class="tag mot">✦ Cultura popular nordestina</span><span class="tag mot">✦ Oralidade e memória</span>
+        <span class="tag inf">🌍 Cordel português (séc. XVI)</span>
+        <span class="tag leg">↑ Patrimônio Imaterial IPHAN (2018)</span>
+        <span class="tag conf">⚡ Disputa de direitos autorais Barros × Athayde</span>
+      </div>
+      <button class="expand-btn" onclick="tog(this)"><span class="ch">›</span> ver mais</button>
+      <div class="extra"><div class="extra-inner">
+        <div class="info-block">
+          <div class="info-lbl">A xilogravura como arte autônoma</div>
+          <div class="info-txt">As capas de cordel são ilustradas com xilogravuras — gravuras em madeira — que constituem um sistema visual próprio, reconhecível e poderoso. J. Borges (nascido 1935, PE) levou a xilogravura do cordel para galerias internacionais: suas obras estão no MoMA (Nova York) e em coleções europeias. É o caso mais perfeito de arte popular que migrou para o circuito erudito sem perder a alma.</div>
+        </div>
+        <div class="info-block">
+          <div class="info-lbl">Polêmica dos direitos autorais</div>
+          <div class="info-txt">Leandro Gomes de Barros (1865–1918), considerado o pai do cordel brasileiro, escreveu mais de 240 folhetos. Após sua morte, João Martins de Athayde comprou os direitos e publicou dezenas de obras de Leandro como suas — um dos maiores casos de apropriação intelectual da cultura popular brasileira, só recentemente documentado por pesquisadores.</div>
+        </div>
+        <div class="lbox"><strong>Legado:</strong> Ariano Suassuna, Jorge Amado e João Cabral de Melo Neto foram profundamente influenciados pelo cordel. "Auto da Compadecida" (1955) de Suassuna cita diretamente folhetos de Leandro. O cordel influenciou o movimento Armorial e é hoje estudado em universidades brasileiras e europeias como literatura.</div>
+      </div></div>
+    </div>
+  </div>
 </div>
 
 <!-- LITERATURA COLONIAL / ANCHIETA -->
@@ -994,6 +1141,47 @@ footer {
   <div class="em"></div>
 </div>
 
+
+<!-- PARNASIANISMO / SIMBOLISMO -->
+<div class="entry left" data-cat="literatura">
+  <div class="ca">
+    <div class="card c-blue"><div class="arr"></div>
+      <div class="card-top">
+        <div class="card-badges">
+          <span class="badge badge-period">1882–1920</span>
+          <span class="badge badge-br">Brasileiro</span>
+        </div>
+        <span class="cat-icon">✒️</span>
+      </div>
+      <h2>Parnasianismo e <em>Simbolismo</em> — A Beleza pela Beleza</h2>
+      <div class="card-period">1882–1920 · Rio de Janeiro · A poesia como escultura</div>
+      <p>O Parnasianismo reage ao sentimentalismo romântico com rigor formal: sonetos perfeitos, vocabulário erudito, "arte pela arte". Olavo Bilac, o "Príncipe dos Poetas", domina os salões. Em paralelo, o Simbolismo traz o misticismo, o inconsciente e a musicalidade das palavras — e seu maior nome é Cruz e Sousa, poeta negro em um país escravocrata, um dos maiores da língua portuguesa.</p>
+      <div class="tags">
+        <span class="tag aut">Olavo Bilac</span><span class="tag aut">Alberto de Oliveira</span>
+        <span class="tag aut">Raimundo Correia</span>
+        <span class="tag aut">Cruz e Sousa (Simbolismo)</span>
+        <span class="tag aut">Alphonsus de Guimaraens</span>
+        <span class="tag mot">✦ Arte pela arte</span><span class="tag mot">✦ Perfeição formal</span>
+        <span class="tag inf">🌍 Leconte de Lisle (FR)</span><span class="tag inf">🌍 Baudelaire / Verlaine</span>
+        <span class="tag conf">⚡ Bilac × Cruz e Sousa — racismo literário</span>
+        <span class="tag leg">↑ Base da tradição poética brasileira</span>
+      </div>
+      <button class="expand-btn" onclick="tog(this)"><span class="ch">›</span> ver mais</button>
+      <div class="extra"><div class="extra-inner">
+        <div class="info-block">
+          <div class="info-lbl">Cruz e Sousa — o "Cisne Negro"</div>
+          <div class="info-txt">João da Cruz e Sousa (1861–1898), filho de escravos alforriados de Santa Catarina, foi recusado em concursos literários por ser negro — mesmo sendo tecnicamente superior a seus concorrentes. Publicou "Broquéis" (1893), inaugurando o simbolismo no Brasil. Morreu tuberculoso, pobre e desprestigiado. Só foi reconhecido plenamente após a morte. Machado de Assis foi um dos primeiros a elogiá-lo em público.</div>
+        </div>
+        <div class="qbox">"Formas alvas, brancas, Formas claras / De luares, de neves, de neblinas!"<cite>— Cruz e Sousa, "Antífona" (1893) — a obsessão pelo branco como libertação simbólica do negro</cite></div>
+        <div class="pbox"><strong>Polêmica — racismo literário:</strong> A Academia Brasileira de Letras (fundada 1897 por Machado) foi criada justamente para dar espaço a escritores fora do establishment — mas o Parnasianismo dominante silenciou Cruz e Sousa sistematicamente. Bilac nunca o reconheceu publicamente em vida.</div>
+        <div class="lbox"><strong>Legado:</strong> Olavo Bilac é o patrono do Dia do Exército (foi propagandista do serviço militar obrigatório). Cruz e Sousa é hoje considerado fundador da poesia negra brasileira e patrono da literatura catarinense. O soneto parnasiano ainda é referência de "poesia clássica" no ensino brasileiro.</div>
+      </div></div>
+    </div>
+  </div>
+  <div class="dc"><div class="dot"></div></div>
+  <div class="em"></div>
+</div>
+
 <!-- ════════════ MODERNISMO ════════════ -->
 <div class="era">
   <div class="era-inner">
@@ -1050,6 +1238,49 @@ footer {
   </div>
 </div>
 
+
+<!-- MÚSICA ERUDITA IMPERIAL E REPUBLICANA -->
+<div class="entry left" data-cat="musica">
+  <div class="ca">
+    <div class="card c-teal"><div class="arr"></div>
+      <div class="card-top">
+        <div class="card-badges">
+          <span class="badge badge-period">1808–1930</span>
+          <span class="badge badge-br">Brasileiro</span>
+        </div>
+        <span class="cat-icon">🎼</span>
+      </div>
+      <h2>Música Erudita Imperial — <em>Do Hino ao Choro</em></h2>
+      <div class="card-period">1808–1930 · Rio de Janeiro · Da Corte à República</div>
+      <p>D. João VI traz a Família Real e com ela músicos europeus, fundando a tradição de música de câmara e ópera no Brasil. José Maurício Nunes Garcia — padre, negro, autodidata — é o maior compositor do período colonial e imperial. Carlos Gomes leva a ópera brasileira à Scala de Milão. Chiquinha Gonzaga rompe com tudo e inventa o maxixe.</p>
+      <div class="tags">
+        <span class="tag aut">Pe. José Maurício Nunes Garcia</span>
+        <span class="tag aut">Carlos Gomes (O Guarani, 1870)</span>
+        <span class="tag aut">Chiquinha Gonzaga</span>
+        <span class="tag aut">Ernesto Nazareth</span>
+        <span class="tag mot">✦ Corte e elite imperial</span><span class="tag mot">✦ Ópera e câmara europeia</span>
+        <span class="tag inf">🌍 Verdi / Bellini / Rossini</span>
+        <span class="tag conf">⚡ José Maurício racialmente marginalizado</span>
+        <span class="tag leg">↑ Carlos Gomes — ópera brasileira na Scala</span>
+      </div>
+      <button class="expand-btn" onclick="tog(this)"><span class="ch">›</span> ver mais</button>
+      <div class="extra"><div class="extra-inner">
+        <div class="info-block">
+          <div class="info-lbl">Pe. José Maurício — o maior nome apagado</div>
+          <div class="info-txt">José Maurício Nunes Garcia (1767–1830) era padre, negro e o maior compositor do Brasil colonial — escreveu missas, motetos e peças de câmara de qualidade comparável a Haydn. Quando a Missão Artística Francesa chegou em 1816, seu espaço foi gradualmente ocupado por europeus. Só foi redescoberto no séc. XX. Hoje é considerado o fundador da música erudita brasileira.</div>
+        </div>
+        <div class="info-block">
+          <div class="info-lbl">Carlos Gomes e O Guarani</div>
+          <div class="info-txt">Antônio Carlos Gomes (1836–1896) foi o único compositor latino-americano a ter ópera encenada na Scala de Milão no séc. XIX — "Il Guarany" (1870), baseada no romance de José de Alencar. Foi financiado pelo Imperador Dom Pedro II. A abertura da ópera virou tema da Voz do Brasil (rádio). É o maior símbolo da música erudita brasileira do período imperial.</div>
+        </div>
+        <div class="lbox"><strong>Legado:</strong> Carlos Gomes é o patrono da Ordem do Mérito Cultural brasileira. "O Guarani" ainda é encenada na Europa. Ernesto Nazareth e Chiquinha Gonzaga pavimentaram o caminho que levou ao choro e à bossa nova. Villa-Lobos — o grande modernista musical — é herdeiro direto dessa tradição.</div>
+      </div></div>
+    </div>
+  </div>
+  <div class="dc"><div class="dot"></div></div>
+  <div class="em"></div>
+</div>
+
 <!-- SAMBA / CHORO -->
 <div class="entry left feat" data-cat="musica cultura-popular">
   <div class="ca">
@@ -1087,6 +1318,50 @@ footer {
           <div class="info-txt">Francisca Edwiges Neves Gonzaga (1847–1935): primeira maestrina e regente brasileira, primeiro samba carnavalesco ("Ô Abre Alas", 1899), primeira compositora a viver de música no Brasil. Separou-se do marido numa época em que isso era impensável, teve filhos com homens diferentes, militou pela abolição.</div>
         </div>
         <div class="lbox"><strong>Legado:</strong> O samba é o maior produto do soft power cultural brasileiro. O Carnaval do Rio atrai 1,5 milhão de turistas/ano. O samba de roda do Recôncavo Baiano (UNESCO 2005) e o samba carioca (UNESCO 2016) são Patrimônio Imaterial da Humanidade.</div>
+      </div></div>
+    </div>
+  </div>
+  <div class="dc"><div class="dot"></div></div>
+  <div class="em"></div>
+</div>
+
+
+<!-- MOVIMENTO ARMORIAL -->
+<div class="entry left" data-cat="literatura musica teatro-danca cultura-popular">
+  <div class="ca">
+    <div class="card c-amber"><div class="arr"></div>
+      <div class="card-top">
+        <div class="card-badges">
+          <span class="badge badge-period">1955–2014</span>
+          <span class="badge badge-br">Brasileiro</span>
+        </div>
+        <span class="cat-icon">🦁</span>
+      </div>
+      <h2>Movimento Armorial — <em>Ariano Suassuna</em></h2>
+      <div class="card-period">1970 (formalização) · Recife · O erudito e o popular nordestino</div>
+      <p>Idealizado por Ariano Suassuna, o Armorial une a arte erudita à cultura popular nordestina — cordel, viola, rabeca, xilogravura, bumba-meu-boi — recusando tanto a cópia do estrangeiro quanto o populismo rasteiro. "Auto da Compadecida" (1955, peça) é a obra mais encenada do teatro brasileiro. As "aulas-espetáculo" de Suassuna lotavam auditórios universitários por décadas.</p>
+      <div class="tags">
+        <span class="tag aut">Ariano Suassuna (1927–2014)</span>
+        <span class="tag aut">Quinteto Armorial</span>
+        <span class="tag aut">Antônio Nóbrega</span>
+        <span class="tag aut">Romero Figueiredo</span>
+        <span class="tag mot">✦ Anti-colonialismo cultural</span><span class="tag mot">✦ Nordeste como vanguarda</span>
+        <span class="tag inf">🌍 Cervantes / Gil Vicente</span>
+        <span class="tag conf">⚡ Suassuna × tropicalismo — desentendimento</span>
+        <span class="tag leg">↑ Teatro popular mais encenado do Brasil</span>
+      </div>
+      <div class="qbox">"Não venho do nada. Venho do povo — e o povo é o único artista que nunca copiei."<cite>— Ariano Suassuna</cite></div>
+      <button class="expand-btn" onclick="tog(this)"><span class="ch">›</span> ver mais</button>
+      <div class="extra"><div class="extra-inner">
+        <div class="info-block">
+          <div class="info-lbl">Suassuna × Tropicalismo</div>
+          <div class="info-txt">Ariano Suassuna era visceralmente contrário ao tropicalismo de Caetano e Gil — para ele, misturar Beatles com baião era capitulação ao imperialismo cultural americano. Caetano respondia que Suassuna criava um "nordeste de museu". É o debate mais fértil da cultura brasileira dos anos 60-70: purismo regional vs. antropofagia universal.</div>
+        </div>
+        <div class="info-block">
+          <div class="info-lbl">O Auto da Compadecida</div>
+          <div class="info-txt">Escrita em 1955, encenada pela primeira vez em 1956 no Recife, a peça mistura o teatro medieval europeu, o circo popular nordestino, o cordel (citando Leandro Gomes de Barros) e o catolicismo popular. Foi adaptada para TV (Globo, 1999, com Selton Mello e Matheus Nachtergaele) e para o cinema — sendo um dos maiores sucessos da teledramaturgia brasileira.</div>
+        </div>
+        <div class="lbox"><strong>Legado:</strong> Suassuna foi Secretário de Cultura de Pernambuco (1995-98), onde combateu o axé music e defendeu o frevo e o maracatu. O Quinteto Armorial influenciou toda uma geração de músicos do Nordeste. "A Pedra do Reino" (romance, 1971) é o Quixote brasileiro segundo muitos críticos.</div>
       </div></div>
     </div>
   </div>
@@ -1142,6 +1417,45 @@ footer {
       </div></div>
     </div>
   </div>
+</div>
+
+
+<!-- BAIÃO / FORRÓ -->
+<div class="entry left" data-cat="musica cultura-popular">
+  <div class="ca">
+    <div class="card c-rose"><div class="arr"></div>
+      <div class="card-top">
+        <div class="card-badges">
+          <span class="badge badge-period">1940s–hoje</span>
+          <span class="badge badge-br">Brasileiro</span>
+        </div>
+        <span class="cat-icon">🪗</span>
+      </div>
+      <h2>Baião e Forró — <em>Luiz Gonzaga e o Sertão Sonoro</em></h2>
+      <div class="card-period">1946–presente · Nordeste / Rio de Janeiro</div>
+      <p>Luiz Gonzaga, "O Rei do Baião" (Exu, PE, 1912–1989), chega ao Rio na década de 40 e inventa um som que traduz a seca, a saudade e a esperança do migrante nordestino: sanfona, zabumba e triângulo. "Asa Branca" (1947) é o hino não-oficial do Nordeste. O forró hoje é patrimônio imaterial e os shows de São João em Caruaru e Campina Grande recebem milhões de pessoas.</p>
+      <div class="tags">
+        <span class="tag aut">Luiz Gonzaga</span><span class="tag aut">Humberto Teixeira (letrista)</span>
+        <span class="tag aut">Jackson do Pandeiro</span>
+        <span class="tag aut">Dominguinhos</span><span class="tag aut">Falamansa</span>
+        <span class="tag mot">✦ Identidade nordestina urbana</span>
+        <span class="tag mot">✦ Migração e saudade</span>
+        <span class="tag conf">⚡ Forró eletrônico × forró de raiz</span>
+        <span class="tag leg">↑ Patrimônio Imaterial · São João Nacional</span>
+      </div>
+      <button class="expand-btn" onclick="tog(this)"><span class="ch">›</span> ver mais</button>
+      <div class="extra"><div class="extra-inner">
+        <div class="info-block">
+          <div class="info-lbl">Luiz Gonzaga e a migração</div>
+          <div class="info-txt">Gonzaga chegou ao Rio de Janeiro em 1939, fugindo da seca. Tocava nas rádios e em bailes. Em 1946, ao ser pressionado a tocar "alguma coisa do Norte", criou o baião — mistura de maracatu, coco, quadrilha e xote. "Asa Branca" (1947) tornou-se o símbolo da seca e do retirante. O sociólogo Josué de Castro disse que Gonzaga "fez pela seca o que Portinari fez pelos retirantes".</div>
+        </div>
+        <div class="pbox"><strong>Polêmica — forró eletrônico:</strong> O "forró eletrônico" dos anos 90 (Mastruz com Leite, Calcinha Preta) foi violentamente criticado pela intelectualidade nordestina como "degradação" do forró de raiz. Ariano Suassuna chegou a chamá-lo de "forrobodó". O debate é o mesmo do sertanejo universitário: modernização ou descaracterização?</div>
+        <div class="lbox"><strong>Legado:</strong> O São João de Caruaru (PE) e o de Campina Grande (PB) competem pelo título de "maior São João do mundo" — cada um recebe mais de 2 milhões de visitantes. Luiz Gonzaga foi eleito "o músico do século XX" em pesquisa do Ministério da Cultura (2000). "Asa Branca" é candidata perene a hino nacional alternativo.</div>
+      </div></div>
+    </div>
+  </div>
+  <div class="dc"><div class="dot"></div></div>
+  <div class="em"></div>
 </div>
 
 <!-- CONCRETISMO / NEOCONCRETISMO -->
@@ -1277,6 +1591,54 @@ footer {
   <div class="em"></div>
 </div>
 
+
+<!-- TELEVISÃO / TELENOVELA -->
+<div class="entry right feat" data-cat="cinema cultura-popular">
+  <div class="em"></div>
+  <div class="dc"><div class="dot"></div></div>
+  <div class="ca">
+    <div class="card c-red"><div class="arr"></div>
+      <div class="card-top">
+        <div class="card-badges">
+          <span class="badge badge-period">1950–hoje</span>
+          <span class="badge badge-br">Brasileiro</span>
+        </div>
+        <span class="cat-icon">📺</span>
+      </div>
+      <h2>Televisão e <em>Telenovela Brasileira</em></h2>
+      <div class="card-period">18 set. 1950 (TV Tupi) · São Paulo / Rio · O maior soft power popular</div>
+      <p>A TV Tupi de Assis Chateaubriand inaugura em 1950 a primeira televisão da América do Sul. Em 1951 vai ao ar "Sua Vida me Pertence" — a primeira telenovela do mundo. Em 1965, nasce a TV Globo. Em 1968, "Beto Rockfeller" inventa o linguajar coloquial e o personagem popular. A novela brasileira torna-se o maior produto cultural de exportação do país — vista em mais de 180 países.</p>
+      <div class="tags">
+        <span class="tag aut">Gilberto Braga</span><span class="tag aut">Glória Perez</span>
+        <span class="tag aut">Aguinaldo Silva</span><span class="tag aut">Benedito Ruy Barbosa</span>
+        <span class="tag aut">Ivani Ribeiro</span><span class="tag aut">Walcyr Carrasco</span>
+        <span class="tag aut">Daniel Filho (diretor)</span>
+        <span class="tag mot">✦ Indústria cultural de massa</span>
+        <span class="tag mot">✦ Identidade e pauta nacional</span>
+        <span class="tag conf">⚡ Globo × ditadura — concessão política</span>
+        <span class="tag conf">⚡ Globo × Time-Life (ilegalidade)</span>
+        <span class="tag leg">↑ Exportada para 180 países · Soft power</span>
+      </div>
+      <button class="expand-btn" onclick="tog(this)"><span class="ch">›</span> ver mais</button>
+      <div class="extra"><div class="extra-inner">
+        <div class="info-block">
+          <div class="info-lbl">A novela como agenda setting</div>
+          <div class="info-txt">A telenovela brasileira pautou temas que a política tardou décadas a enfrentar: diversidade racial ("Da Cor do Pecado", 2004), direitos LGBT ("Torre de Babel", 1998 — que quase foi ao ar sem as personagens lésbicas por pressão interna), violência doméstica, racismo, corrupção. Pesquisas mostram que novelas influenciaram taxas de divórcio, natalidade e até comportamento eleitoral no Brasil.</div>
+        </div>
+        <div class="info-block">
+          <div class="info-lbl">A relação com a ditadura</div>
+          <div class="info-txt">A TV Globo se beneficiou do regime militar: recebeu concessão de canal e capital via acordo ilegal com o grupo americano Time-Life (proibido pela constituição). Em troca, apoiou o regime — a cobertura do "Milagre Econômico" de Médici foi acriticamente celebratória. A ditadura usou a Globo para homogeneizar a cultura nacional; a Globo usou a ditadura para eliminar concorrentes.</div>
+        </div>
+        <div class="info-block">
+          <div class="info-lbl">Marcos históricos da telenovela</div>
+          <div class="info-txt">"Beto Rockfeller" (Tupi, 1968) — personagem popular, linguagem coloquial, virada realista. "Roque Santeiro" (Globo, 1985) — censurada em 1975, voltou na redemocratização como alegoria do Brasil. "Vale Tudo" (1988) — corrupção e ética. "O Clone" (2001) — primeiro grande debate televisivo sobre islã e drogas. "Avenida Brasil" (2012) — exportada para 130 países, maior audiência da era digital.</div>
+        </div>
+        <div class="lbox"><strong>Legado diplomático:</strong> A TV Globo exporta novelas para Portugal, Angola, Moçambique, China, Rússia, Itália e mais de 130 países. A novela é o principal veículo de promoção da língua portuguesa e da cultura brasileira no exterior — mais eficaz que qualquer programa governamental de diplomacia cultural.</div>
+      </div></div>
+    </div>
+  </div>
+</div>
+
 <!-- TROPICÁLIA -->
 <div class="entry right feat" data-cat="musica artes-plasticas teatro-danca">
   <div class="em"></div>
@@ -1324,6 +1686,50 @@ footer {
   </div>
 </div>
 
+
+<!-- MPB E FESTIVAIS / CLUBE DA ESQUINA -->
+<div class="entry right" data-cat="musica">
+  <div class="em"></div>
+  <div class="dc"><div class="dot"></div></div>
+  <div class="ca">
+    <div class="card c-green"><div class="arr"></div>
+      <div class="card-top">
+        <div class="card-badges">
+          <span class="badge badge-period">1965–1980</span>
+          <span class="badge badge-br">Brasileiro</span>
+        </div>
+        <span class="cat-icon">🎙️</span>
+      </div>
+      <h2>MPB e Festivais — <em>Clube da Esquina</em></h2>
+      <div class="card-period">1965–1980 · São Paulo, Rio, Belo Horizonte · A canção como manifesto</div>
+      <p>Os festivais de TV (TV Record, Excelsior, Globo) dos anos 60 são o maior laboratório cultural da história brasileira — e campo de batalha político. Elis Regina, Chico Buarque, Edu Lobo: a MPB como resistência sofisticada à ditadura. Em paralelo, em BH, Milton Nascimento e Lô Borges criam o Clube da Esquina — a síncrese mais bela da música brasileira do séc. XX.</p>
+      <div class="tags">
+        <span class="tag aut">Elis Regina</span><span class="tag aut">Chico Buarque</span>
+        <span class="tag aut">Milton Nascimento</span><span class="tag aut">Lô Borges</span>
+        <span class="tag aut">Edu Lobo</span><span class="tag aut">Ivan Lins</span>
+        <span class="tag aut">Djavan</span><span class="tag aut">Maria Bethânia</span>
+        <span class="tag mot">✦ Resistência pela música</span><span class="tag mot">✦ Síncrese regional e erudita</span>
+        <span class="tag conf">⚡ Chico Buarque censurado / exilado</span>
+        <span class="tag conf">⚡ Elis Regina e a ditadura — contradições</span>
+        <span class="tag leg">↑ Cancioneiro mais importante do Brasil</span>
+      </div>
+      <button class="expand-btn" onclick="tog(this)"><span class="ch">›</span> ver mais</button>
+      <div class="extra"><div class="extra-inner">
+        <div class="info-block">
+          <div class="info-lbl">O Clube da Esquina</div>
+          <div class="info-txt">O álbum "Clube da Esquina" (1972, Milton Nascimento e Lô Borges) é frequentemente citado como o maior disco da história da música brasileira. Mistura jazz, folk americano, música mineira, baião e vanguarda de forma que parece natural. Milton Nascimento colaborou com Wayne Shorter, Pat Metheny e Herbie Hancock — levando a música brasileira ao jazz americano de vanguarda.</div>
+        </div>
+        <div class="info-block">
+          <div class="info-lbl">Chico Buarque — o mais censurado</div>
+          <div class="info-txt">Francisco Buarque de Holanda é o compositor mais censurado da ditadura militar brasileira — dezenas de músicas foram proibidas, algumas só liberadas após a redemocratização. Usou pseudônimos (Julinho de Adelaide) para driblar a censura. "Apesar de Você" (1970) — "Amanhã há de ser outro dia" — foi proibida após as primeiras execuções quando a censura percebeu que era uma crítica ao regime.</div>
+        </div>
+        <div class="pbox"><strong>Polêmica — Elis Regina e a ditadura:</strong> Elis Regina cantou em eventos do governo Médici em 1972 — uma das maiores contradições da história da MPB. Artistas como Edu Lobo romperam amizades com ela por isso. Elis se arrependeu publicamente e tornou-se uma das artistas mais combativas nos anos seguintes até sua morte (1982, 36 anos, cocaína).</div>
+        <div class="lbox"><strong>Legado:</strong> O cancioneiro da MPB dos anos 60-80 é o patrimônio musical mais estudado, regravado e exportado da história brasileira. Chico Buarque ganhou o Prêmio Camões (2019). Milton Nascimento é colaborador histórico de Wayne Shorter e está no Hall da Fama do Jazz. Djavan tem mais sucesso nos EUA e Europa do que no Brasil.</div>
+      </div></div>
+    </div>
+  </div>
+</div>
+
 <!-- LITERATURA DITADURA: CLARICE / DRUMMOND -->
 <div class="entry left" data-cat="literatura">
   <div class="ca">
@@ -1359,6 +1765,52 @@ footer {
           <div class="info-txt">João Guimarães Rosa (1908–1967) era diplomata do Itamaraty e criou em "Grande Sertão: Veredas" (1956) uma língua literária inteiramente nova — síncrese de arcaísmos, neologismos, tupi e veredas mineiras. É o romance mais importante da língua portuguesa do séc. XX segundo muitos críticos. Rosa morreu três dias após tomar posse na Academia Brasileira de Letras.</div>
         </div>
         <div class="qbox">"No meio do caminho tinha uma pedra / tinha uma pedra no meio do caminho..."<cite>— Carlos Drummond de Andrade, "No Meio do Caminho" (1928) — o poema mais discutido da modernidade brasileira</cite></div>
+      </div></div>
+    </div>
+  </div>
+  <div class="dc"><div class="dot"></div></div>
+  <div class="em"></div>
+</div>
+
+
+<!-- MÚSICA SERTANEJA -->
+<div class="entry left" data-cat="musica cultura-popular">
+  <div class="ca">
+    <div class="card c-ochre"><div class="arr"></div>
+      <div class="card-top">
+        <div class="card-badges">
+          <span class="badge badge-period">1920s–hoje</span>
+          <span class="badge badge-br">Brasileiro</span>
+        </div>
+        <span class="cat-icon">🤠</span>
+      </div>
+      <h2>Música Caipira e <em>Sertanejo</em></h2>
+      <div class="card-period">1920s–presente · Interior de SP, MG, GO · Do roçado ao estádio</div>
+      <p>Cornélio Pires grava as primeiras modas de viola em 1929 — pagando do próprio bolso, pois as gravadoras achavam música caipira "coisa de interior". Um século depois, o sertanejo é o gênero mais ouvido do Brasil. Do sertanejo de raiz (Tonico e Tinoco, Tião Carreiro) ao romântico (Chitãozinho & Xororó, Zezé di Camargo) ao universitário (Gusttavo Lima, Marília Mendonça): uma metamorfose constante.</p>
+      <div class="tags">
+        <span class="tag aut">Cornélio Pires (fundador)</span>
+        <span class="tag aut">Tonico e Tinoco</span>
+        <span class="tag aut">Milionário &amp; José Rico</span>
+        <span class="tag aut">Chitãozinho &amp; Xororó</span>
+        <span class="tag aut">Zezé di Camargo &amp; Luciano</span>
+        <span class="tag aut">Marília Mendonça</span>
+        <span class="tag mot">✦ Cultura rural do interior</span><span class="tag mot">✦ Identidade caipira</span>
+        <span class="tag inf">🌍 Ranchera mexicana (anos 70)</span><span class="tag inf">🌍 Country americano (anos 90)</span>
+        <span class="tag conf">⚡ Preconceito urbano-paulistano histórico</span>
+        <span class="tag leg">↑ Gênero mais ouvido do Brasil</span>
+      </div>
+      <button class="expand-btn" onclick="tog(this)"><span class="ch">›</span> ver mais</button>
+      <div class="extra"><div class="extra-inner">
+        <div class="info-block">
+          <div class="info-lbl">Da viola ao funk — a cadeia evolutiva</div>
+          <div class="info-txt">Viola caipira (instrumento de 10 cordas, descendente da guitarra portuguesa) → moda de viola → sertanejo de raiz (duplas, terça abaixo) → sertanejo romântico dos anos 80 (sintetizadores, baladas) → universitário dos anos 2000 (influência country e pop) → feminejo (Marília Mendonça, Maiara e Maraisa — protagonismo feminino e "sofrência").</div>
+        </div>
+        <div class="info-block">
+          <div class="info-lbl">Marília Mendonça e o feminejo</div>
+          <div class="info-txt">Marília Mendonça (1995–2021) foi a maior artista feminina do sertanejo universitário — primeira mulher a lotar o Estádio do Maracanã em show solo (2019). Sua morte em acidente aéreo gerou luto nacional. O "feminejo" que ela ajudou a criar (letras de independência feminina e "sofrência") é hoje uma das maiores forças do mercado musical brasileiro.</div>
+        </div>
+        <div class="pbox"><strong>Polêmica:</strong> O sertanejo universitário foi sistematicamente desprezado pela crítica musical especializada e pela imprensa cultural do eixo Rio-SP. A virada de percepção veio quando artistas como Caetano Veloso e Milton Nascimento gravaram com artistas sertanejos — e quando pesquisadores começaram a mapear as letras de Marília Mendonça como "poesia popular".</div>
+        <div class="lbox"><strong>Legado:</strong> O agronegócio e o sertanejo universitário cresceram juntos — o "agro pop" dos anos 2010 tornou o interior do Brasil protagonista cultural pela primeira vez desde Vargas. Michel Teló levou "Ai Se Eu Te Pego" (2011) para o mundo — cantada por Neymar, Cristiano Ronaldo e David Beckham.</div>
       </div></div>
     </div>
   </div>
@@ -1416,6 +1868,91 @@ footer {
   </div>
 </div>
 
+
+<!-- AXÉ MUSIC / PAGODE / BLACK MUSIC -->
+<div class="entry right" data-cat="musica cultura-popular">
+  <div class="em"></div>
+  <div class="dc"><div class="dot"></div></div>
+  <div class="ca">
+    <div class="card c-amber"><div class="arr"></div>
+      <div class="card-top">
+        <div class="card-badges">
+          <span class="badge badge-period">1980s–2000s</span>
+          <span class="badge badge-br">Brasileiro</span>
+        </div>
+        <span class="cat-icon">🎉</span>
+      </div>
+      <h2>Axé, Pagode e <em>Black Music Brasileira</em></h2>
+      <div class="card-period">1986 (axé) · 1980s (pagode) · Salvador e Rio de Janeiro</div>
+      <p>O axé music nasce em Salvador na efervescência do Carnaval dos trios elétricos (Dodô e Osmar, 1950) e explode nos anos 80 com Luiz Caldas, depois Timbalada, Olodum, Ivete Sangalo e Daniela Mercury. Em paralelo, o pagode carioca renova o samba com Zeca Pagodinho, Fundo de Quintal e Beth Carvalho. A black music brasileira cria seus próprios caminhos — funk, samba-reggae, axé.</p>
+      <div class="tags">
+        <span class="tag aut">Luiz Caldas (primeiro axé)</span>
+        <span class="tag aut">Olodum</span><span class="tag aut">Timbalada</span>
+        <span class="tag aut">Ivete Sangalo</span><span class="tag aut">Daniela Mercury</span>
+        <span class="tag aut">Zeca Pagodinho</span><span class="tag aut">Beth Carvalho</span>
+        <span class="tag mot">✦ Afro-baianidade</span><span class="tag mot">✦ Carnaval como laboratório</span>
+        <span class="tag inf">🌍 Reggae jamaicano (samba-reggae)</span>
+        <span class="tag conf">⚡ Axé × Suassuna — guerra cultural</span>
+        <span class="tag leg">↑ Carnaval de Salvador — maior festa do mundo</span>
+      </div>
+      <button class="expand-btn" onclick="tog(this)"><span class="ch">›</span> ver mais</button>
+      <div class="extra"><div class="extra-inner">
+        <div class="info-block">
+          <div class="info-lbl">Olodum e Michael Jackson</div>
+          <div class="info-txt">O Olodum, bloco afro fundado em 1979 no Pelourinho (Salvador), é o mais politicamente engajado do axé — suas músicas tratam de identidade negra, Pan-Africanismo e resistência. Em 1996, Michael Jackson gravou o clipe de "They Don't Care About Us" no Pelourinho com o Olodum — colocando Salvador no centro do mundo pop por alguns dias. O clipe é hoje Patrimônio Cultural de Salvador.</div>
+        </div>
+        <div class="info-block">
+          <div class="info-lbl">Trio elétrico — invenção baiana</div>
+          <div class="info-txt">Dodô e Osmar (1950, Salvador) inventaram o trio elétrico: um caminhão com instrumentos elétricos amplificados que lidera o bloco no Carnaval. É uma das únicas invenções tecnológico-culturais genuinamente brasileiras — e revolucionou o Carnaval mundial. O trio elétrico de Salvador é hoje o modelo para carnavais em todo o mundo.</div>
+        </div>
+        <div class="lbox"><strong>Legado:</strong> O Carnaval de Salvador é o maior Carnaval de rua do mundo (segundo o Guinness, 2 milhões de pessoas/dia). Ivete Sangalo é hoje uma das artistas brasileiras mais reconhecidas internacionalmente. Daniela Mercury foi premiada pela UNESCO por sua contribuição à diversidade cultural.</div>
+      </div></div>
+    </div>
+  </div>
+</div>
+
+
+<!-- FUNK CARIOCA -->
+<div class="entry left" data-cat="musica cultura-popular">
+  <div class="ca">
+    <div class="card c-red"><div class="arr"></div>
+      <div class="card-top">
+        <div class="card-badges">
+          <span class="badge badge-period">1980s–hoje</span>
+          <span class="badge badge-br">Brasileiro</span>
+        </div>
+        <span class="cat-icon">🔊</span>
+      </div>
+      <h2>Funk Carioca — <em>A Favela Dita as Regras</em></h2>
+      <div class="card-period">1980s–presente · Rio de Janeiro · Favelas e bailes</div>
+      <p>O funk brasileiro nasce nas periferias do Rio nos anos 80, influenciado pelo Miami bass e pelo hip-hop americano — mas logo cria uma identidade própria e radicalmente local. Dos bailes charme ao funk proibidão, do MC Júnior e Leonardo ao funk ostentação e ao funk melódico de Anitta: é o gênero musical mais controverso e mais ouvido do Brasil contemporâneo.</p>
+      <div class="tags">
+        <span class="tag aut">DJ Marlboro (pioneiro)</span>
+        <span class="tag aut">MC Bin Laden</span><span class="tag aut">Anitta</span>
+        <span class="tag aut">Ludmilla</span><span class="tag aut">MC Carol</span>
+        <span class="tag mot">✦ Periferia carioca</span><span class="tag mot">✦ Resistência e prazer</span>
+        <span class="tag inf">🌍 Miami Bass / Miami Hip-hop</span>
+        <span class="tag conf">⚡ Criminalização recorrente / Lei do Silêncio</span>
+        <span class="tag leg">↑ Anitta — 1ª artista BR no top 1 Spotify global</span>
+      </div>
+      <button class="expand-btn" onclick="tog(this)"><span class="ch">›</span> ver mais</button>
+      <div class="extra"><div class="extra-inner">
+        <div class="info-block">
+          <div class="info-lbl">A criminalização histórica</div>
+          <div class="info-txt">O funk foi sistematicamente criminalizado no Rio de Janeiro — bailes foram proibidos, MCs presos, letras censuradas. A "Lei da Apologia ao Crime" (estadual, RJ) foi usada para perseguir funkeiros. Pesquisadores como Hermano Vianna e Liv Sovik documentaram como a perseguição ao funk é racializada: é a música dos jovens negros da periferia que incomoda as elites cariocas.</div>
+        </div>
+        <div class="info-block">
+          <div class="info-lbl">Anitta e a internacionalização</div>
+          <div class="info-txt">Anitta (Larissa de Macedo Machado, nascida 1993, Honório Gurgel/RJ) tornou-se a primeira artista brasileira a alcançar o topo do Spotify Global com "Envolver" (2022). Cantou no Super Bowl (2023) e colaborou com J Balvin, Cardi B e Madonna. É hoje a artista pop brasileira com maior alcance internacional desde Carmen Miranda.</div>
+        </div>
+        <div class="lbox"><strong>Legado:</strong> O funk foi declarado Patrimônio Cultural do Rio de Janeiro (Lei 5.543/2009). A "funk diplomacy" informal de Anitta coloca o Brasil no mapa da cultura pop global de uma forma que nenhuma política governamental conseguiu. O funk baiano (com toques regionais) e o funk ostentação paulista são derivações regionais do gênero.</div>
+      </div></div>
+    </div>
+  </div>
+  <div class="dc"><div class="dot"></div></div>
+  <div class="em"></div>
+</div>
+
 <!-- ARTE AFRO-BRASILEIRA CONTEMPORÂNEA -->
 <div class="entry left feat" data-cat="artes-plasticas cultura-popular arte-sacra">
   <div class="ca">
@@ -1460,6 +1997,50 @@ footer {
   <div class="em"></div>
 </div>
 
+
+<!-- CINEMA CONTEMPORÂNEO -->
+<div class="entry right" data-cat="cinema">
+  <div class="em"></div>
+  <div class="dc"><div class="dot"></div></div>
+  <div class="ca">
+    <div class="card c-purple"><div class="arr"></div>
+      <div class="card-top">
+        <div class="card-badges">
+          <span class="badge badge-period">1995–hoje</span>
+          <span class="badge badge-br">Brasileiro</span>
+        </div>
+        <span class="cat-icon">🎥</span>
+      </div>
+      <h2>Cinema Brasileiro Contemporâneo — <em>Retomada e Periferia</em></h2>
+      <div class="card-period">1994 (Lei do Audiovisual) – presente · Rio, SP, Nordeste</div>
+      <p>Após o governo Collor destruir a Embrafilme e o cinema brasileiro (1990), a Lei do Audiovisual (1994) financia a Retomada: "Carlota Joaquina" (1995), "Central do Brasil" (1998, Berlim), "Cidade de Deus" (2002, 4 indicações ao Oscar). O cinema do Nordeste explode nos anos 2010: Kleber Mendonça Filho e "Aquarius" (Cannes), "Bacurau" (Júri em Cannes). O Brasil volta ao topo.</p>
+      <div class="tags">
+        <span class="tag aut">Fernando Meirelles (Cidade de Deus)</span>
+        <span class="tag aut">Walter Salles (Central do Brasil)</span>
+        <span class="tag aut">Kleber Mendonça Filho (Bacurau)</span>
+        <span class="tag aut">Anna Muylaert (Que Horas Ela Volta?)</span>
+        <span class="tag aut">Karim Aïnouz (A Vida Invisível)</span>
+        <span class="tag mot">✦ Retomada pós-Collor</span><span class="tag mot">✦ Cinema periférico e nordestino</span>
+        <span class="tag conf">⚡ Bolsonaro corta Lei Rouanet (2019)</span>
+        <span class="tag leg">↑ Cannes, Berlim, 4 indicações ao Oscar</span>
+      </div>
+      <button class="expand-btn" onclick="tog(this)"><span class="ch">›</span> ver mais</button>
+      <div class="extra"><div class="extra-inner">
+        <div class="info-block">
+          <div class="info-lbl">Cidade de Deus e o impacto internacional</div>
+          <div class="info-txt">"Cidade de Deus" (Fernando Meirelles e Kátia Lund, 2002) foi indicado a 4 Oscars e colocou o cinema brasileiro definitivamente no mapa internacional. Baseado no romance de Paulo Lins (morador da Cidade de Deus), o filme abriu o debate global sobre violência urbana, favela e desigualdade brasileiras. Influenciou diretamente Danny Boyle ("Quem Quer ser um Milionário", 2008).</div>
+        </div>
+        <div class="info-block">
+          <div class="info-lbl">Bacurau e o novo cinema nordestino</div>
+          <div class="info-txt">"Bacurau" (Kleber Mendonça Filho e Juliano Dornelles, 2019, Prêmio do Júri em Cannes) é um faroeste político-alegórico situado no Nordeste. Ganhou o prêmio mais importante do festival mais importante do mundo — e foi lançado poucos meses depois do início do governo Bolsonaro, que o governo tentou ignorar. A recepção internacional foi esmagadora.</div>
+        </div>
+        <div class="pbox"><strong>Polêmica — a destruição Bolsonaro:</strong> O governo Bolsonaro (2019-2022) cortou verbas da Lei Rouanet, da Ancine e da Embrafilme 2.0, tentou censurar filmes com temática LGBT e atacou publicamente diretores e atores. Foi o maior retrocesso da política cultural brasileira desde a ditadura militar — e gerou reação internacional.</div>
+        <div class="lbox"><strong>Legado:</strong> O Brasil tem presença regular nos grandes festivais internacionais (Cannes, Berlim, Veneza). "A Vida Invisível" (Karim Aïnouz, 2019) ganhou o Prêmio de Melhor Filme na Quinzena dos Diretores em Cannes. O cinema brasileiro é hoje um dos mais reconhecidos da América Latina — ao lado do argentino e do mexicano.</div>
+      </div></div>
+    </div>
+  </div>
+</div>
+
 <!-- BIENAL DE SP / ARTE GLOBAL -->
 <div class="entry right feat" data-cat="artes-plasticas">
   <div class="em"></div>
@@ -1496,6 +2077,49 @@ footer {
           <div class="info-txt">O Brasil foi um dos principais articuladores da Convenção sobre Proteção e Promoção da Diversidade das Expressões Culturais (UNESCO, 2005). O objetivo era criar um instrumento jurídico que limitasse os acordos comerciais internacionais sobre bens culturais — protegendo as culturas dos países em desenvolvimento contra o domínio da indústria cultural americana.</div>
         </div>
         <div class="lbox"><strong>Síntese diplomática:</strong> A arte brasileira — sua mestiçagem, sua capacidade de devorar e reinventar culturas externas, sua produção contínua de vanguarda a partir da periferia — é, em si mesma, um argumento diplomático. Posiciona o Brasil como mediador natural entre o Sul Global e o Norte, entre tradição e vanguarda.</div>
+      </div></div>
+    </div>
+  </div>
+</div>
+
+
+<!-- LITERATURA CONTEMPORÂNEA -->
+<div class="entry right" data-cat="literatura">
+  <div class="em"></div>
+  <div class="dc"><div class="dot"></div></div>
+  <div class="ca">
+    <div class="card c-purple"><div class="arr"></div>
+      <div class="card-top">
+        <div class="card-badges">
+          <span class="badge badge-period">1990s–hoje</span>
+          <span class="badge badge-br">Brasileiro</span>
+        </div>
+        <span class="cat-icon">📚</span>
+      </div>
+      <h2>Literatura Contemporânea — <em>Diversidade e Periferia</em></h2>
+      <div class="card-period">1990s–presente · Todo o Brasil</div>
+      <p>A literatura brasileira contemporânea explode em direções múltiplas: a prosa urbana e periférica (Ferréz, Conceição Evaristo), a ficção científica afrofuturista (Itamar Vieira Junior), o novo realismo político (Raduan Nassar), o testemunho da violência (Marcelino Freire). Pela primeira vez, vozes negras, periféricas e indígenas chegam às listas dos maiores prêmios literários do mundo.</p>
+      <div class="tags">
+        <span class="tag aut">Conceição Evaristo</span>
+        <span class="tag aut">Itamar Vieira Junior (Torto Arado)</span>
+        <span class="tag aut">Ferréz</span><span class="tag aut">Raduan Nassar</span>
+        <span class="tag aut">Marcelino Freire</span>
+        <span class="tag aut">Daniel Munduruku (literatura indígena)</span>
+        <span class="tag mot">✦ Vozes periféricas</span><span class="tag mot">✦ Decolonialidade literária</span>
+        <span class="tag leg">↑ Reconhecimento internacional crescente</span>
+        <span class="tag conf">⚡ Debate raça × mercado editorial</span>
+      </div>
+      <button class="expand-btn" onclick="tog(this)"><span class="ch">›</span> ver mais</button>
+      <div class="extra"><div class="extra-inner">
+        <div class="info-block">
+          <div class="info-lbl">Conceição Evaristo e a escrevivência</div>
+          <div class="info-txt">Conceição Evaristo (nascida 1946, MG) — ex-empregada doméstica, professora, escritora — criou o conceito de "escrevivência": a escrita como ato de sobrevivência da experiência negra e feminina. Seus livros são hoje traduzidos em mais de 10 línguas. Concorreu ao prêmio Jabuti 2018 e perdeu em circunstâncias controversas — gerando um dos maiores debates sobre raça e cânone literário da história brasileira.</div>
+        </div>
+        <div class="info-block">
+          <div class="info-lbl">Itamar Vieira Junior e Torto Arado</div>
+          <div class="info-txt">"Torto Arado" (2019) vendeu mais de 700.000 exemplares no Brasil — um recorde para literatura brasileira contemporânea — e foi traduzido para mais de 30 idiomas. A história de duas irmãs negras no sertão baiano pós-abolição ganhou o Prêmio Oceanos e o Jabuti. É o livro que definitivamente colocou a literatura afro-brasileira contemporânea no mapa mundial.</div>
+        </div>
+        <div class="lbox"><strong>Legado:</strong> A literatura periférica e afrobrasileira ganhou o Nobel de discussão nos últimos anos — Conceição Evaristo foi cogitada. O Prêmio Jabuti (maior prêmio literário brasileiro) passou a ter categorias específicas para literatura periférica. A FLIP (Festa Literária de Paraty) tornou-se o maior festival literário da América Latina.</div>
       </div></div>
     </div>
   </div>
