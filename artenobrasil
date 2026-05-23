@@ -1,0 +1,1490 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Arte no Brasil — Linha do Tempo Completa</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0D0B08;
+  --bg2: #141209;
+  --bg3: #1C1810;
+  --bg4: #231E14;
+  --surface: #1A1610;
+  --surface2: #221D13;
+  --border: rgba(255,220,100,0.08);
+  --border2: rgba(255,220,100,0.15);
+  --gold: #C9A84C;
+  --gold2: #E8C97A;
+  --gold-dim: rgba(201,168,76,0.35);
+  --cream: #F2EAD8;
+  --cream2: #C8BFA8;
+  --cream3: #8A8070;
+  --line: rgba(201,168,76,0.2);
+
+  --red:    #C0392B; --red-dim:    rgba(192,57,43,0.15);
+  --amber:  #C67C2A; --amber-dim:  rgba(198,124,42,0.15);
+  --green:  #2A7A4A; --green-dim:  rgba(42,122,74,0.15);
+  --blue:   #1A5FA0; --blue-dim:   rgba(26,95,160,0.15);
+  --purple: #6B2FA0; --purple-dim: rgba(107,47,160,0.15);
+  --teal:   #1A7A7A; --teal-dim:   rgba(26,122,122,0.15);
+  --rose:   #A03060; --rose-dim:   rgba(160,48,96,0.15);
+  --ochre:  #8A6A1A; --ochre-dim:  rgba(138,106,26,0.15);
+}
+
+*{margin:0;padding:0;box-sizing:border-box}
+
+body {
+  background: var(--bg);
+  color: var(--cream);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 15px;
+  line-height: 1.7;
+  min-height: 100vh;
+}
+
+/* ── HEADER ── */
+header {
+  background: var(--bg2);
+  border-bottom: 1px solid var(--border2);
+  padding: 72px 56px 56px;
+  position: relative;
+  overflow: hidden;
+}
+header::before {
+  content:'';
+  position:absolute; top:-120px; right:-80px;
+  width:500px; height:500px;
+  border-radius:50%;
+  background: radial-gradient(circle, rgba(201,168,76,0.06) 0%, transparent 70%);
+  pointer-events:none;
+}
+header::after {
+  content:'';
+  position:absolute; bottom:-100px; left:15%;
+  width:350px; height:350px;
+  border-radius:50%;
+  background: radial-gradient(circle, rgba(201,168,76,0.04) 0%, transparent 70%);
+  pointer-events:none;
+}
+.header-eyebrow {
+  font-family:'DM Mono',monospace;
+  font-size:10px; letter-spacing:3px;
+  text-transform:uppercase;
+  color: var(--gold);
+  margin-bottom:18px;
+  opacity:.8;
+}
+header h1 {
+  font-family:'Cormorant Garamond',serif;
+  font-size: clamp(42px,6vw,88px);
+  font-weight:300;
+  line-height:1.0;
+  letter-spacing:-1px;
+  color: var(--cream);
+}
+header h1 em {
+  font-style:italic;
+  color: var(--gold2);
+}
+.header-sub {
+  margin-top:22px;
+  font-size:14px;
+  color: var(--cream3);
+  max-width:560px;
+  font-weight:300;
+  line-height:1.8;
+}
+.header-stats {
+  display:flex; gap:48px; flex-wrap:wrap;
+  margin-top:48px;
+  padding-top:36px;
+  border-top:1px solid var(--border);
+}
+.stat { display:flex; flex-direction:column; gap:4px; }
+.stat-n {
+  font-family:'Cormorant Garamond',serif;
+  font-size:36px; font-weight:300;
+  color: var(--gold2);
+  line-height:1;
+}
+.stat-d {
+  font-family:'DM Mono',monospace;
+  font-size:10px; letter-spacing:1.5px;
+  text-transform:uppercase;
+  color: var(--cream3);
+}
+
+/* ── FILTERS ── */
+.filters-bar {
+  background: var(--bg2);
+  border-bottom:1px solid var(--border);
+  padding:0 56px;
+  display:flex; gap:0;
+  overflow-x:auto;
+  scrollbar-width:none;
+  position:sticky; top:0; z-index:100;
+}
+.filters-bar::-webkit-scrollbar{display:none}
+.fbtn {
+  padding:14px 22px;
+  font-family:'DM Mono',monospace;
+  font-size:10px; letter-spacing:1.5px;
+  text-transform:uppercase;
+  color: var(--cream3);
+  background:none; border:none;
+  border-bottom:2px solid transparent;
+  cursor:pointer; white-space:nowrap;
+  transition:all .2s;
+}
+.fbtn:hover { color:var(--cream2); }
+.fbtn.on { color:var(--gold); border-bottom-color:var(--gold); }
+
+/* category dot on filter */
+.fbtn .fdot {
+  display:inline-block;
+  width:6px; height:6px; border-radius:50%;
+  margin-right:6px; vertical-align:middle;
+}
+
+/* ── LEGEND ── */
+.legend {
+  background: var(--bg2);
+  border-bottom:1px solid var(--border);
+  padding:14px 56px;
+  display:flex; gap:16px; flex-wrap:wrap; align-items:center;
+}
+.legend-label {
+  font-family:'DM Mono',monospace;
+  font-size:9px; letter-spacing:2px;
+  text-transform:uppercase;
+  color:var(--cream3);
+  margin-right:4px;
+}
+.ltag {
+  display:inline-flex; align-items:center; gap:5px;
+  font-size:10px; font-family:'DM Mono',monospace;
+  padding:2px 8px; border-radius:2px;
+  letter-spacing:.5px;
+}
+
+/* ── TIMELINE WRAP ── */
+.tl {
+  max-width:1120px;
+  margin:0 auto;
+  padding:80px 56px 100px;
+  position:relative;
+}
+.tl::before {
+  content:'';
+  position:absolute;
+  left:50%;
+  top:0; bottom:0;
+  width:1px;
+  background: linear-gradient(to bottom, transparent, var(--line) 4%, var(--line) 96%, transparent);
+  transform:translateX(-50%);
+}
+
+/* ── ERA DIVIDER ── */
+.era {
+  text-align:center;
+  margin:72px 0 48px;
+  position:relative;
+  z-index:2;
+}
+.era-inner {
+  display:inline-flex; align-items:center; gap:16px;
+  background: var(--bg3);
+  border:1px solid var(--border2);
+  padding:8px 24px 8px 20px;
+}
+.era-num {
+  font-family:'Cormorant Garamond',serif;
+  font-size:28px; font-weight:300; font-style:italic;
+  color: var(--gold);
+  line-height:1;
+}
+.era-name {
+  font-family:'DM Mono',monospace;
+  font-size:10px; letter-spacing:2px;
+  text-transform:uppercase;
+  color: var(--cream3);
+}
+
+/* ── ENTRY ── */
+.entry {
+  display:grid;
+  grid-template-columns:1fr 64px 1fr;
+  margin-bottom:56px;
+  position:relative;
+}
+.entry.feat { margin-bottom:80px; }
+.entry.left  .ca { grid-column:1; }
+.entry.left  .dc { grid-column:2; }
+.entry.left  .em { grid-column:3; }
+.entry.right .em { grid-column:1; }
+.entry.right .dc { grid-column:2; }
+.entry.right .ca { grid-column:3; }
+
+.dc {
+  display:flex; flex-direction:column; align-items:center;
+  padding-top:30px;
+}
+.dot {
+  width:12px; height:12px; border-radius:50%;
+  background:var(--bg);
+  border:1.5px solid var(--gold-dim);
+  z-index:2; flex-shrink:0;
+  transition:transform .25s, border-color .25s;
+}
+.entry:hover .dot { transform:scale(1.6); border-color:var(--gold); }
+.entry.feat .dot { width:18px; height:18px; background:var(--gold); border-color:var(--bg2); }
+.dot-cat {
+  width:3px; flex:1;
+  margin-top:6px;
+  opacity:.3;
+}
+
+/* ── CARD ── */
+.card {
+  background: var(--surface);
+  border:1px solid var(--border);
+  padding:26px;
+  position:relative;
+  cursor:pointer;
+  transition:border-color .25s, box-shadow .25s, transform .2s;
+  overflow:hidden;
+}
+.card:hover {
+  border-color: var(--border2);
+  box-shadow:0 0 40px rgba(0,0,0,.5);
+  transform:translateY(-2px);
+}
+
+/* glow on hover */
+.card::before {
+  content:'';
+  position:absolute; top:0; left:0;
+  width:100%; height:2px;
+  opacity:0;
+  transition:opacity .3s;
+}
+.card:hover::before { opacity:1; }
+
+/* side accent */
+.card::after {
+  content:'';
+  position:absolute; top:0; left:0;
+  width:3px; height:100%;
+}
+
+/* arrow connector */
+.entry.left  .card { margin-right:26px; }
+.entry.right .card { margin-left:26px; }
+.entry.left  .card .arr { position:absolute; right:-8px; top:34px; width:0; height:0;
+  border-top:7px solid transparent; border-bottom:7px solid transparent; border-left:8px solid var(--border); }
+.entry.right .card .arr { position:absolute; left:-8px; top:34px; width:0; height:0;
+  border-top:7px solid transparent; border-bottom:7px solid transparent; border-right:8px solid var(--border); }
+
+/* category colors */
+.c-red    ::after, .c-red    { --acc:var(--red); }
+.c-amber  ::after, .c-amber  { --acc:var(--amber); }
+.c-green  ::after, .c-green  { --acc:var(--green); }
+.c-blue   ::after, .c-blue   { --acc:var(--blue); }
+.c-purple ::after, .c-purple { --acc:var(--purple); }
+.c-teal   ::after, .c-teal   { --acc:var(--teal); }
+.c-rose   ::after, .c-rose   { --acc:var(--rose); }
+.c-ochre  ::after, .c-ochre  { --acc:var(--ochre); }
+.c-gold   ::after, .c-gold   { --acc:var(--gold); }
+
+.card.c-red::after    { background:var(--red); }
+.card.c-amber::after  { background:var(--amber); }
+.card.c-green::after  { background:var(--green); }
+.card.c-blue::after   { background:var(--blue); }
+.card.c-purple::after { background:var(--purple); }
+.card.c-teal::after   { background:var(--teal); }
+.card.c-rose::after   { background:var(--rose); }
+.card.c-ochre::after  { background:var(--ochre); }
+.card.c-gold::after   { background:var(--gold); }
+
+.card.c-red::before    { background:var(--red); }
+.card.c-amber::before  { background:var(--amber); }
+.card.c-green::before  { background:var(--green); }
+.card.c-blue::before   { background:var(--blue); }
+.card.c-purple::before { background:var(--purple); }
+.card.c-teal::before   { background:var(--teal); }
+.card.c-rose::before   { background:var(--rose); }
+.card.c-ochre::before  { background:var(--ochre); }
+.card.c-gold::before   { background:var(--gold); }
+
+/* ── CARD INTERNALS ── */
+.card-top {
+  display:flex; align-items:flex-start; justify-content:space-between;
+  gap:12px; margin-bottom:10px;
+}
+.card-badges { display:flex; gap:6px; flex-wrap:wrap; }
+.badge {
+  font-family:'DM Mono',monospace;
+  font-size:9px; letter-spacing:1.5px;
+  text-transform:uppercase;
+  padding:2px 8px; border:1px solid;
+}
+.badge-period { border-color:var(--border2); color:var(--gold); background:rgba(201,168,76,0.06); }
+.badge-br  { border-color:rgba(42,122,74,.35); color:#5abf80; background:rgba(42,122,74,.08); }
+.badge-eu  { border-color:rgba(26,95,160,.35); color:#6aaae0; background:rgba(26,95,160,.08); }
+.badge-int { border-color:rgba(138,106,26,.35); color:#c8a030; background:rgba(138,106,26,.08); }
+.badge-af  { border-color:rgba(192,57,43,.35); color:#e08070; background:rgba(192,57,43,.08); }
+.badge-ind { border-color:rgba(107,47,160,.35); color:#b08ae0; background:rgba(107,47,160,.08); }
+
+.cat-icon {
+  font-size:16px; flex-shrink:0;
+  opacity:.7;
+}
+
+.card h2 {
+  font-family:'Cormorant Garamond',serif;
+  font-size:22px; font-weight:400; line-height:1.2;
+  color: var(--cream);
+  margin-bottom:4px;
+}
+.card h2 em { font-style:italic; color:var(--gold2); }
+
+.card-period {
+  font-family:'DM Mono',monospace;
+  font-size:11px; color:var(--cream3);
+  margin-bottom:12px; letter-spacing:.5px;
+}
+
+.card p {
+  font-size:13.5px; line-height:1.7;
+  color: var(--cream2);
+  margin-bottom:12px;
+}
+
+/* artwork */
+.arts {
+  display:grid; gap:4px;
+  margin:14px 0;
+}
+.arts.g1 { grid-template-columns:1fr; }
+.arts.g2 { grid-template-columns:1fr 1fr; }
+.arts.g3 { grid-template-columns:1fr 1fr 1fr; }
+
+.art {
+  position:relative; overflow:hidden;
+  background: var(--bg4);
+  aspect-ratio:4/3;
+}
+.art img {
+  width:100%; height:100%; object-fit:cover;
+  display:block;
+  transition:transform .4s, filter .4s;
+  filter:brightness(.85) contrast(1.05) sepia(.15);
+}
+.art:hover img { transform:scale(1.06); filter:brightness(.95) contrast(1.05) sepia(.05); }
+.art-cap {
+  position:absolute; bottom:0; left:0; right:0;
+  background:rgba(13,11,8,.8);
+  color:rgba(242,234,216,.6);
+  font-size:9px; font-family:'DM Mono',monospace;
+  letter-spacing:.5px;
+  padding:4px 7px;
+  transform:translateY(100%);
+  transition:transform .2s;
+}
+.art:hover .art-cap { transform:translateY(0); }
+
+/* tags */
+.tags { display:flex; flex-wrap:wrap; gap:5px; margin:10px 0; }
+.tag {
+  font-family:'DM Mono',monospace;
+  font-size:9.5px; letter-spacing:.5px;
+  padding:2px 9px;
+  border:1px solid var(--border);
+  color:var(--cream3);
+  transition:all .2s;
+  cursor:default;
+}
+.tag:hover { border-color:var(--border2); color:var(--cream2); }
+.tag.aut  { border-color:rgba(242,234,216,.2); color:var(--cream2); }
+.tag.mot  { border-color:rgba(201,168,76,.25); color:var(--gold); }
+.tag.conf { border-color:rgba(192,57,43,.3); color:#e08070; }
+.tag.leg  { border-color:rgba(42,122,74,.3); color:#5abf80; }
+.tag.inf  { border-color:rgba(26,95,160,.3); color:#6aaae0; }
+
+/* expand */
+.expand-btn {
+  background:none; border:none;
+  font-family:'DM Mono',monospace;
+  font-size:9.5px; letter-spacing:1.5px;
+  text-transform:uppercase;
+  color:var(--cream3);
+  cursor:pointer; display:flex; align-items:center; gap:5px;
+  margin-top:12px; padding:0;
+  transition:color .2s;
+}
+.expand-btn:hover { color:var(--gold); }
+.expand-btn .ch { transition:transform .3s; display:inline-block; font-size:12px; }
+.expand-btn.open .ch { transform:rotate(90deg); }
+
+.extra {
+  max-height:0; overflow:hidden;
+  transition:max-height .45s ease;
+}
+.extra.open { max-height:1200px; }
+
+.extra-inner {
+  border-top:1px solid var(--border);
+  margin-top:14px; padding-top:14px;
+}
+
+.info-block { margin-bottom:14px; }
+.info-lbl {
+  font-family:'DM Mono',monospace;
+  font-size:9px; letter-spacing:2px;
+  text-transform:uppercase;
+  color:var(--cream3);
+  margin-bottom:5px;
+}
+.info-txt { font-size:13px; color:var(--cream2); line-height:1.65; }
+
+.pbox {
+  background:rgba(192,57,43,.07);
+  border-left:2px solid var(--red);
+  padding:10px 13px;
+  font-size:13px; color:rgba(224,128,112,.9);
+  font-style:italic; margin:10px 0;
+  line-height:1.6;
+}
+.lbox {
+  background:rgba(42,122,74,.07);
+  border-left:2px solid var(--green);
+  padding:10px 13px;
+  font-size:13px; color:rgba(90,191,128,.9);
+  margin:10px 0; line-height:1.6;
+}
+.qbox {
+  border-left:2px solid var(--gold-dim);
+  padding:8px 14px;
+  font-family:'Cormorant Garamond',serif;
+  font-size:16px; font-style:italic;
+  color:var(--cream2); margin:10px 0;
+}
+.qbox cite {
+  display:block; font-style:normal;
+  font-family:'DM Mono',monospace;
+  font-size:9px; letter-spacing:1px;
+  color:var(--cream3); margin-top:5px;
+}
+
+/* hidden */
+.entry.hidden { display:none; }
+
+/* ── FOOTER ── */
+footer {
+  background:var(--bg2);
+  border-top:1px solid var(--border);
+  padding:48px 56px;
+  text-align:center;
+}
+.footer-quote {
+  font-family:'Cormorant Garamond',serif;
+  font-size:20px; font-style:italic; font-weight:300;
+  color:var(--cream2); margin-bottom:12px;
+}
+.footer-attr {
+  font-family:'DM Mono',monospace;
+  font-size:10px; letter-spacing:1.5px;
+  text-transform:uppercase;
+  color:var(--cream3);
+}
+.footer-meta {
+  margin-top:28px;
+  font-family:'DM Mono',monospace;
+  font-size:9px; letter-spacing:1px;
+  color:rgba(138,128,112,.4);
+  text-transform:uppercase;
+}
+
+@media(max-width:720px){
+  header { padding:40px 20px 36px; }
+  .filters-bar,.legend { padding:0 16px; }
+  .tl { padding:40px 16px 60px; }
+  .tl::before { left:20px; }
+  .entry { grid-template-columns:40px 1fr; }
+  .entry.left .ca,.entry.right .ca { grid-column:2; }
+  .entry.left .dc,.entry.right .dc { grid-column:1; }
+  .entry .em { display:none; }
+  .entry.left .card,.entry.right .card { margin:0; }
+  .entry.left .card .arr,.entry.right .card .arr { left:-7px; right:auto;
+    border-right:7px solid var(--border); border-left:none; }
+  .arts.g3 { grid-template-columns:1fr 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <div class="header-eyebrow">Diplomacia Cultural · CACD 2026</div>
+  <h1>Arte no <em>Brasil</em></h1>
+  <p class="header-sub">Das pinturas rupestres ao rap periférico, da arte sacra jesuítica ao tropicalismo — todos os campos de expressão que forjaram a identidade estética de um país-continente. Música, literatura, artes plásticas, arquitetura, cinema, teatro, dança, arte popular.</p>
+  <div class="header-stats">
+    <div class="stat"><span class="stat-n">~12.000</span><span class="stat-d">anos de arte</span></div>
+    <div class="stat"><span class="stat-n">22</span><span class="stat-d">movimentos</span></div>
+    <div class="stat"><span class="stat-n">8</span><span class="stat-d">linguagens artísticas</span></div>
+    <div class="stat"><span class="stat-n">3</span><span class="stat-d">matrizes culturais</span></div>
+  </div>
+</header>
+
+<!-- FILTERS -->
+<div class="filters-bar">
+  <button class="fbtn on" onclick="fAll(this)">Todos</button>
+  <button class="fbtn" onclick="fCat('musica',this)"><span class="fdot" style="background:#C9A84C"></span>Música</button>
+  <button class="fbtn" onclick="fCat('literatura',this)"><span class="fdot" style="background:#6aaae0"></span>Literatura</button>
+  <button class="fbtn" onclick="fCat('artes-plasticas',this)"><span class="fdot" style="background:#5abf80"></span>Artes Plásticas</button>
+  <button class="fbtn" onclick="fCat('arquitetura',this)"><span class="fdot" style="background:#e08070"></span>Arquitetura</button>
+  <button class="fbtn" onclick="fCat('cinema',this)"><span class="fdot" style="background:#b08ae0"></span>Cinema</button>
+  <button class="fbtn" onclick="fCat('arte-sacra',this)"><span class="fdot" style="background:#c8a030"></span>Arte Sacra</button>
+  <button class="fbtn" onclick="fCat('cultura-popular',this)"><span class="fdot" style="background:#c090c0"></span>Cultura Popular</button>
+  <button class="fbtn" onclick="fCat('teatro-danca',this)"><span class="fdot" style="background:#70c0b0"></span>Teatro/Dança</button>
+</div>
+
+<!-- LEGEND -->
+<div class="legend">
+  <span class="legend-label">Origem →</span>
+  <span class="ltag badge-br">● Brasileiro</span>
+  <span class="ltag badge-eu">● Europeu</span>
+  <span class="ltag badge-af">● Africano</span>
+  <span class="ltag badge-ind">● Indígena</span>
+  <span class="ltag badge-int">● Internacional</span>
+  <span style="margin-left:12px" class="legend-label">Tags →</span>
+  <span class="ltag tag aut">Autor</span>
+  <span class="ltag tag mot">Motivação</span>
+  <span class="ltag tag conf">⚡ Polêmica</span>
+  <span class="ltag tag leg">↑ Legado</span>
+  <span class="ltag tag inf">🌍 Influência</span>
+</div>
+
+<!-- TIMELINE -->
+<div class="tl" id="tl">
+
+<!-- ════════════ PRÉ-COLONIAL ════════════ -->
+<div class="era">
+  <div class="era-inner">
+    <span class="era-num">c. 12.000 a.C.</span>
+    <span class="era-name">Pré-Colonial · Raízes Ameríndias</span>
+  </div>
+</div>
+
+<!-- ARTE RUPESTRE -->
+<div class="entry left feat" data-cat="artes-plasticas cultura-popular">
+  <div class="ca">
+    <div class="card c-ochre"><div class="arr"></div>
+      <div class="card-top">
+        <div class="card-badges">
+          <span class="badge badge-period">c.12.000 a.C. – séc. XVI</span>
+          <span class="badge badge-ind">Indígena</span>
+        </div>
+        <span class="cat-icon">🗿</span>
+      </div>
+      <h2>Arte Rupestre &amp; <em>Arte Indígena</em></h2>
+      <div class="card-period">Pré-história · Serra da Capivara (PI) · todo o território</div>
+      <p>A mais antiga expressão artística do território brasileiro. Pinturas rupestres, cerâmicas, plumária, tecelagem, esculturas — um universo visual sofisticado e cosmológico, anterior e independente de qualquer influência europeia ou africana. Não é "primitivo": é outro sistema estético.</p>
+      <div class="arts g2">
+        <div class="art"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA0MDAgMzAwIiB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCI+CiAgPGRlZnM+CiAgICAgICAgICA8cGF0dGVybiBpZD0icCIgeD0iMCIgeT0iMCIgd2lkdGg9IjQwIiBoZWlnaHQ9IjQwIiBwYXR0ZXJuVW5pdHM9InVzZXJTcGFjZU9uVXNlIj4KICAgICAgICAgICAgPHBvbHlnb24gcG9pbnRzPSIyMCw0IDM2LDEyIDM2LDI4IDIwLDM2IDQsMjggNCwxMiIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjQzlBODRDIiBzdHJva2Utd2lkdGg9IjAuNSIgb3BhY2l0eT0iMC4zIi8+CiAgICAgICAgICA8L3BhdHRlcm4+PC9kZWZzPgogIDxyZWN0IHdpZHRoPSI0MDAiIGhlaWdodD0iMzAwIiBmaWxsPSIjMUExNjEwIi8+CiAgPHJlY3Qgd2lkdGg9IjQwMCIgaGVpZ2h0PSIzMDAiIGZpbGw9InVybCgjcCkiLz4KICA8cmVjdCB4PSIxIiB5PSIxIiB3aWR0aD0iMzk4IiBoZWlnaHQ9IjI5OCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjQzlBODRDIiBzdHJva2Utd2lkdGg9IjEiIG9wYWNpdHk9IjAuNCIvPgogIDxyZWN0IHg9IjgiIHk9IjgiIHdpZHRoPSIzODQiIGhlaWdodD0iMjg0IiBmaWxsPSJub25lIiBzdHJva2U9IiNDOUE4NEMiIHN0cm9rZS13aWR0aD0iMC40IiBvcGFjaXR5PSIwLjIiLz4KICA8dGV4dCB4PSIyMDAiIHk9IjEyOCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1mYW1pbHk9Ikdlb3JnaWEsc2VyaWYiIGZvbnQtc2l6ZT0iMTMiIGZpbGw9IiNDOUE4NEMiIG9wYWNpdHk9IjAuNSIgbGV0dGVyLXNwYWNpbmc9IjMiIGZvbnQtc3R5bGU9Iml0YWxpYyI+QXJ0ZSBSdXBlc3RyZTwvdGV4dD4KICA8dGV4dCB4PSIyMDAiIHk9IjE1NSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1mYW1pbHk9Im1vbm9zcGFjZSIgZm9udC1zaXplPSIxMCIgZmlsbD0iI0M5QTg0QyIgb3BhY2l0eT0iMC4zNSIgbGV0dGVyLXNwYWNpbmc9IjEuNSI+U2VycmEgZGEgQ2FwaXZhcmEgwrcgYy4gOS4wMDAgYS5D4oCmPC90ZXh0PgogIDxsaW5lIHgxPSIxNDAiIHkxPSIxNjgiIHgyPSIyNjAiIHkyPSIxNjgiIHN0cm9rZT0iI0M5QTg0QyIgc3Ryb2tlLXdpZHRoPSIwLjUiIG9wYWNpdHk9IjAuMyIvPgo8L3N2Zz4=" alt="Arte rupestre"><div class="art-cap">Serra da Capivara (PI) — c. 9.000 a.C.</div></div>
+        <div class="art"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA0MDAgMzAwIiB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCI+CiAgPGRlZnM+CiAgICAgICAgICA8cGF0dGVybiBpZD0icCIgeD0iMCIgeT0iMCIgd2lkdGg9IjE2IiBoZWlnaHQ9IjE2IiBwYXR0ZXJuVW5pdHM9InVzZXJTcGFjZU9uVXNlIj4KICAgICAgICAgICAgPGNpcmNsZSBjeD0iOCIgY3k9IjgiIHI9IjEiIGZpbGw9IiNDOUE4NEMiIG9wYWNpdHk9IjAuMyIvPgogICAgICAgICAgPC9wYXR0ZXJuPjwvZGVmcz4KICA8cmVjdCB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgZmlsbD0iIzFBMTYxMCIvPgogIDxyZWN0IHdpZHRoPSI0MDAiIGhlaWdodD0iMzAwIiBmaWxsPSJ1cmwoI3ApIi8+CiAgPHJlY3QgeD0iMSIgeT0iMSIgd2lkdGg9IjM5OCIgaGVpZ2h0PSIyOTgiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI0M5QTg0QyIgc3Ryb2tlLXdpZHRoPSIxIiBvcGFjaXR5PSIwLjQiLz4KICA8cmVjdCB4PSI4IiB5PSI4IiB3aWR0aD0iMzg0IiBoZWlnaHQ9IjI4NCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjQzlBODRDIiBzdHJva2Utd2lkdGg9IjAuNCIgb3BhY2l0eT0iMC4yIi8+CiAgPHRleHQgeD0iMjAwIiB5PSIxMjgiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJHZW9yZ2lhLHNlcmlmIiBmb250LXNpemU9IjEzIiBmaWxsPSIjQzlBODRDIiBvcGFjaXR5PSIwLjUiIGxldHRlci1zcGFjaW5nPSIzIiBmb250LXN0eWxlPSJpdGFsaWMiPlBsdW3DoXJpYSBUdXBpbmFtYsOhPC90ZXh0PgogIDx0ZXh0IHg9IjIwMCIgeT0iMTU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LWZhbWlseT0ibW9ub3NwYWNlIiBmb250LXNpemU9IjEwIiBmaWxsPSIjQzlBODRDIiBvcGFjaXR5PSIwLjM1IiBsZXR0ZXItc3BhY2luZz0iMS41Ij5BcnRlIGRlIHBlbmFzIMK3IHPDqWMuIFhWSTwvdGV4dD4KICA8bGluZSB4MT0iMTQwIiB5MT0iMTY4IiB4Mj0iMjYwIiB5Mj0iMTY4IiBzdHJva2U9IiNDOUE4NEMiIHN0cm9rZS13aWR0aD0iMC41IiBvcGFjaXR5PSIwLjMiLz4KPC9zdmc+" alt="Plumária Tupi"><div class="art-cap">Plumária Tupinambá — arte de penas</div></div>
+      </div>
+      <div class="tags">
+        <span class="tag aut">Povos Tupinambá</span><span class="tag aut">Povos Guarani</span><span class="tag aut">Marajoaras</span>
+        <span class="tag mot">✦ Cosmologia xamânica</span><span class="tag mot">✦ Ritual e memória</span>
+        <span class="tag leg">↑ Fundação da identidade visual BR</span>
+        <span class="tag conf">⚡ Acervo em museus europeus</span>
+      </div>
+      <button class="expand-btn" onclick="tog(this)"><span class="ch">›</span> ver mais</button>
+      <div class="extra"><div class="extra-inner">
+        <div class="info-block">
+          <div class="info-lbl">Cerâmica Marajoara</div>
+          <div class="info-txt">Produzida na Ilha de Marajó (PA) entre 400 e 1350 d.C., é considerada um dos mais sofisticados conjuntos cerâmicos das Américas. Padrões geométricos complexos, figuras antropomorfas e zoomorfas revelam uma cosmologia elaborada — e ainda pouco compreendida.</div>
+        </div>
+        <div class="pbox"><strong>Polêmica — repatriação:</strong> Cerca de 30 mantos plumários tupinambás estão no Museu Nacional de Copenhague, levados no séc. XVII. O Museu do Índio (RJ) e o IPHAN demandam repatriação. A Dinamarca resiste, alegando que os mantos são "patrimônio universal". O debate é intenso na UNESCO.</div>
+        <div class="lbox"><strong>Legado:</strong> O movimento modernista de 22 e a Antropofagia de Oswald de Andrade buscaram nessa arte a força subversiva contra o colonialismo cultural. A cerâmica marajoara influenciou o design brasileiro do séc. XX. Os Kuikuro e outros povos mantêm viva a produção até hoje.</div>
+      </div></div>
+    </div>
+  </div>
+  <div class="dc"><div class="dot"></div></div>
+  <div class="em"></div>
+</div>
+
+<!-- MUSICA INDIGENA -->
+<div class="entry right" data-cat="musica cultura-popular">
+  <div class="em"></div>
+  <div class="dc"><div class="dot"></div></div>
+  <div class="ca">
+    <div class="card c-purple"><div class="arr"></div>
+      <div class="card-top">
+        <div class="card-badges">
+          <span class="badge badge-period">Pré-história – presente</span>
+          <span class="badge badge-ind">Indígena</span>
+        </div>
+        <span class="cat-icon">🎵</span>
+      </div>
+      <h2>Música Indígena — <em>Maracá e Canto</em></h2>
+      <div class="card-period">Diversas nações · Todo o território</div>
+      <p>Antes do Brasil, havia centenas de sistemas musicais distintos. O maracá, a flauta de osso, o canto xamânico, os rituais do Kuarup — cada nação com sua linguagem sonora. Não é "música folclórica": é epistemologia sonora. O Jurupari (ritual do Alto Rio Negro) foi declarado Patrimônio Imaterial da UNESCO.</p>
+      <div class="tags">
+        <span class="tag aut">Kuikuro</span><span class="tag aut">Kamayurá</span><span class="tag aut">Yanomami</span>
+        <span class="tag mot">✦ Ritual / Comunicação com o sagrado</span>
+        <span class="tag leg">↑ Villa-Lobos os incorporou ao erudito</span>
+        <span class="tag leg">↑ Patrimônio UNESCO (Jurupari)</span>
+      </div>
+      <button class="expand-btn" onclick="tog(this)"><span class="ch">›</span> ver mais</button>
+      <div class="extra"><div class="extra-inner">
+        <div class="info-block">
+          <div class="info-lbl">Influência na música brasileira</div>
+          <div class="info-txt">Villa-Lobos coletou cantos indígenas e os incorporou às "Bachianas Brasileiras" e ao "Choros". O "Uirapuru" (1917) é uma fantasia sinfônica baseada em lendas amazônicas. Mais recentemente, artistas como Marlui Miranda e o movimento de "música indígena contemporânea" revisitam essas raízes.</div>
+        </div>
+        <div class="pbox"><strong>Polêmica:</strong> Gravações de cantos indígenas feitas por etnomusicólogos europeus e norte-americanos no séc. XX estão em arquivos estrangeiros. Comunidades indígenas demandam o controle sobre seu patrimônio sonoro — questão ainda não resolvida na legislação brasileira.</div>
+      </div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════ COLONIAL ════════════ -->
+<div class="era">
+  <div class="era-inner">
+    <span class="era-num">1500–1808</span>
+    <span class="era-name">Período Colonial · Encontro das Três Raças</span>
+  </div>
+</div>
+
+<!-- ARTE JESUÍTICA / SACRA -->
+<div class="entry left" data-cat="arte-sacra arquitetura">
+  <div class="ca">
+    <div class="card c-ochre"><div class="arr"></div>
+      <div class="card-top">
+        <div class="card-badges">
+          <span class="badge badge-period">séc. XVI – XVII</span>
+          <span class="badge badge-eu">Europeu → Brasil</span>
+        </div>
+        <span class="cat-icon">⛪</span>
+      </div>
+      <h2>Arte Sacra <em>Jesuítica</em> e Missões</h2>
+      <div class="card-period">1549–1759 · Salvador, São Paulo, Rio Grande do Sul, Pará</div>
+      <p>Os jesuítas chegam com Manuel da Nóbrega em 1549. A arte é instrumento de catequese: igrejas, retábulos, esculturas, cantatas religiosas — tudo adaptado para converter os indígenas. As Missões Jesuíticas do Sul (Reduções do Rio da Prata) produzem arte híbrida única: renascença europeia com mãos e olhares guaranis.</p>
+      <div class="arts g2">
+        <div class="art"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA0MDAgMzAwIiB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCI+CiAgPGRlZnM+CiAgICAgICAgICA8cGF0dGVybiBpZD0icCIgeD0iMCIgeT0iMCIgd2lkdGg9IjI0IiBoZWlnaHQ9IjI0IiBwYXR0ZXJuVW5pdHM9InVzZXJTcGFjZU9uVXNlIj4KICAgICAgICAgICAgPGxpbmUgeDE9IjEyIiB5MT0iMCIgeDI9IjEyIiB5Mj0iMjQiIHN0cm9rZT0iI0I4ODYwQiIgc3Ryb2tlLXdpZHRoPSIwLjUiIG9wYWNpdHk9IjAuMiIvPgogICAgICAgICAgICA8bGluZSB4MT0iMCIgeTE9IjEyIiB4Mj0iMjQiIHkyPSIxMiIgc3Ryb2tlPSIjQjg4NjBCIiBzdHJva2Utd2lkdGg9IjAuNSIgb3BhY2l0eT0iMC4yIi8+CiAgICAgICAgICA8L3BhdHRlcm4+PC9kZWZzPgogIDxyZWN0IHdpZHRoPSI0MDAiIGhlaWdodD0iMzAwIiBmaWxsPSIjMUExNjEwIi8+CiAgPHJlY3Qgd2lkdGg9IjQwMCIgaGVpZ2h0PSIzMDAiIGZpbGw9InVybCgjcCkiLz4KICA8cmVjdCB4PSIxIiB5PSIxIiB3aWR0aD0iMzk4IiBoZWlnaHQ9IjI5OCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjQjg4NjBCIiBzdHJva2Utd2lkdGg9IjEiIG9wYWNpdHk9IjAuNCIvPgogIDxyZWN0IHg9IjgiIHk9IjgiIHdpZHRoPSIzODQiIGhlaWdodD0iMjg0IiBmaWxsPSJub25lIiBzdHJva2U9IiNCODg2MEIiIHN0cm9rZS13aWR0aD0iMC40IiBvcGFjaXR5PSIwLjIiLz4KICA8dGV4dCB4PSIyMDAiIHk9IjEyOCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1mYW1pbHk9Ikdlb3JnaWEsc2VyaWYiIGZvbnQtc2l6ZT0iMTMiIGZpbGw9IiNCODg2MEIiIG9wYWNpdHk9IjAuNSIgbGV0dGVyLXNwYWNpbmc9IjMiIGZvbnQtc3R5bGU9Iml0YWxpYyI+Ti4gU3JhLiBkbyBSb3PDoXJpbyBkb3MgUHJldG/igKY8L3RleHQ+CiAgPHRleHQgeD0iMjAwIiB5PSIxNTUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJtb25vc3BhY2UiIGZvbnQtc2l6ZT0iMTAiIGZpbGw9IiNCODg2MEIiIG9wYWNpdHk9IjAuMzUiIGxldHRlci1zcGFjaW5nPSIxLjUiPlBlbG91cmluaG8gwrcgU2FsdmFkb3Igwrcgc8OpYy4gWFZJ4oCmPC90ZXh0PgogIDxsaW5lIHgxPSIxNDAiIHkxPSIxNjgiIHgyPSIyNjAiIHkyPSIxNjgiIHN0cm9rZT0iI0I4ODYwQiIgc3Ryb2tlLXdpZHRoPSIwLjUiIG9wYWNpdHk9IjAuMyIvPgo8L3N2Zz4=" alt="Igreja Pelourinho"><div class="art-cap">N. Sra. do Rosário dos Pretos, Salvador (séc. XVIII)</div></div>
+        <div class="art"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA0MDAgMzAwIiB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCI+CiAgPGRlZnM+CiAgICAgICAgICA8cGF0dGVybiBpZD0icCIgeD0iMCIgeT0iMCIgd2lkdGg9IjQwIiBoZWlnaHQ9IjQwIiBwYXR0ZXJuVW5pdHM9InVzZXJTcGFjZU9uVXNlIj4KICAgICAgICAgICAgPHBvbHlnb24gcG9pbnRzPSIyMCw0IDM2LDEyIDM2LDI4IDIwLDM2IDQsMjggNCwxMiIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjQjg4NjBCIiBzdHJva2Utd2lkdGg9IjAuNSIgb3BhY2l0eT0iMC4zIi8+CiAgICAgICAgICA8L3BhdHRlcm4+PC9kZWZzPgogIDxyZWN0IHdpZHRoPSI0MDAiIGhlaWdodD0iMzAwIiBmaWxsPSIjMUExNjEwIi8+CiAgPHJlY3Qgd2lkdGg9IjQwMCIgaGVpZ2h0PSIzMDAiIGZpbGw9InVybCgjcCkiLz4KICA8cmVjdCB4PSIxIiB5PSIxIiB3aWR0aD0iMzk4IiBoZWlnaHQ9IjI5OCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjQjg4NjBCIiBzdHJva2Utd2lkdGg9IjEiIG9wYWNpdHk9IjAuNCIvPgogIDxyZWN0IHg9IjgiIHk9IjgiIHdpZHRoPSIzODQiIGhlaWdodD0iMjg0IiBmaWxsPSJub25lIiBzdHJva2U9IiNCODg2MEIiIHN0cm9rZS13aWR0aD0iMC40IiBvcGFjaXR5PSIwLjIiLz4KICA8dGV4dCB4PSIyMDAiIHk9IjEyOCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1mYW1pbHk9Ikdlb3JnaWEsc2VyaWYiIGZvbnQtc2l6ZT0iMTMiIGZpbGw9IiNCODg2MEIiIG9wYWNpdHk9IjAuNSIgbGV0dGVyLXNwYWNpbmc9IjMiIGZvbnQtc3R5bGU9Iml0YWxpYyI+UnXDrW5hcyBkZSBTw6NvIE1pZ3VlbDwvdGV4dD4KICA8dGV4dCB4PSIyMDAiIHk9IjE1NSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1mYW1pbHk9Im1vbm9zcGFjZSIgZm9udC1zaXplPSIxMCIgZmlsbD0iI0I4ODYwQiIgb3BhY2l0eT0iMC4zNSIgbGV0dGVyLXNwYWNpbmc9IjEuNSI+TWlzc8O1ZXMgSmVzdcOtdGljYXMgwrcgUlMgwrcgVU5FU0NPPC90ZXh0PgogIDxsaW5lIHgxPSIxNDAiIHkxPSIxNjgiIHgyPSIyNjAiIHkyPSIxNjgiIHN0cm9rZT0iI0I4ODYwQiIgc3Ryb2tlLXdpZHRoPSIwLjUiIG9wYWNpdHk9IjAuMyIvPgo8L3N2Zz4=" alt="Ruínas Missões"><div class="art-cap">Ruínas de São Miguel das Missões (RS) — UNESCO</div></div>
+      </div>
+      <div class="tags">
+        <span class="tag aut">Padre Manuel da Nóbrega</span><span class="tag aut">José de Anchieta</span>
+        <span class="tag mot">✦ Catequese pela arte</span><span class="tag mot">✦ Dominação colonial</span>
+        <span class="tag conf">⚡ Expulsão dos jesuítas (1759 — Pombal)</span>
+        <span class="tag leg">↑ São Miguel das Missões (UNESCO)</span>
+      </div>
+      <button class="expand-btn" onclick="tog(this)"><span class="ch">›</span> ver mais</button>
+      <div class="extra"><div class="extra-inner">
+        <div class="info-block">
+          <div class="info-lbl">Anchieta e o Teatro Colonial</div>
+          <div class="info-txt">José de Anchieta (1534–1597) é o primeiro dramaturgo do Brasil. Escreveu "autos" (peças de teatro religioso) em tupi, português e espanhol para catequizar os indígenas. Suas peças são o marco zero do teatro brasileiro. Foi canonizado em 2014.</div>
+        </div>
+        <div class="info-block">
+          <div class="info-lbl">Música nas Reduções</div>
+          <div class="info-txt">Os jesuítas introduziram instrumentos europeus (órgão, violino, harpa) nas missões guaranis. Criou-se uma escola de música original: indígenas aprenderam contraponto europeu e o reinterpretaram com sua sensibilidade própria. O filme "A Missão" (1986) usa essa música na trilha de Ennio Morricone.</div>
+        </div>
+        <div class="pbox"><strong>Polêmica — Marquês de Pombal (1759):</strong> Pombal expulsou os jesuítas de todo o Império Português, destruindo o sistema de missões. As reduções foram abandonadas, os índios dispersados. Os jesuítas levaram décadas de produção artística consigo. É um dos maiores atos de destruição cultural da história colonial brasileira.</div>
+        <div class="lbox"><strong>Legado:</strong> As ruínas de São Miguel das Missões (RS) são Patrimônio Mundial da UNESCO (1983). A arte sacra jesuítica influenciou o barroco mineiro. A música das reduções é estudada em conservatórios europeus como exemplo de síncrese colonial.</div>
+      </div></div>
+    </div>
+  </div>
+  <div class="dc"><div class="dot"></div></div>
+  <div class="em"></div>
+</div>
+
+<!-- LITERATURA COLONIAL / ANCHIETA -->
+<div class="entry right" data-cat="literatura teatro-danca">
+  <div class="em"></div>
+  <div class="dc"><div class="dot"></div></div>
+  <div class="ca">
+    <div class="card c-blue"><div class="arr"></div>
+      <div class="card-top">
+        <div class="card-badges">
+          <span class="badge badge-period">séc. XVI – XVIII</span>
+          <span class="badge badge-eu">Europeu / Brasil</span>
+        </div>
+        <span class="cat-icon">📜</span>
+      </div>
+      <h2>Literatura Colonial — <em>Barroco das Letras</em></h2>
+      <div class="card-period">1601–1768 · Salvador, Recife, Rio</div>
+      <p>O barroco literário chega ao Brasil pelo mesmo vetor da fé e do poder. Gregório de Matos — "Boca do Inferno" — é o primeiro grande poeta brasileiro. Satírico, obsceno, genial: critica a Coroa, a Igreja, os comerciantes e a hipocrisia colonial com versos que poderiam tê-lo matado. Padre Antônio Vieira é o maior orador do século.</p>
+      <div class="tags">
+        <span class="tag aut">Gregório de Matos (Salvador, 1636–1696)</span>
+        <span class="tag aut">Padre Antônio Vieira</span>
+        <span class="tag aut">Bento Teixeira (Prosopopeia, 1601)</span>
+        <span class="tag mot">✦ Sátira colonial</span><span class="tag mot">✦ Barroco europeu</span>
+        <span class="tag conf">⚡ Exilado para Angola (1683)</span>
+        <span class="tag leg">↑ 1º grande poeta brasileiro</span>
+      </div>
+      <button class="expand-btn" onclick="tog(this)"><span class="ch">›</span> ver mais</button>
+      <div class="extra"><div class="extra-inner">
+        <div class="info-block">
+          <div class="info-lbl">Gregório de Matos — "Boca do Inferno"</div>
+          <div class="info-txt">Nascido em Salvador, filho de português e baiana, Gregório atacou todos: o governador, os comerciantes portugueses, os mestiços arrivistas, as freiras. Seus poemas circulavam manuscritos — a imprensa era proibida na colônia. Foi exilado para Angola em 1683. Seus textos são a mais viva radiografia social do Brasil colonial.</div>
+        </div>
+        <div class="qbox">"Que falta nesta cidade? Verdade. Que mais por sua desonra? Honra. Falta mais que se lhe ponha? Vergonha."<cite>— Gregório de Matos, séc. XVII</cite></div>
+        <div class="info-block">
+          <div class="info-lbl">Padre Antônio Vieira</div>
+          <div class="info-txt">Jesuíta nascido em Lisboa mas criado em Salvador, Vieira é o maior prosador da língua portuguesa do séc. XVII. Seus sermões defendiam os índios contra a escravidão e atacavam a Inquisição. Foi preso pelo Santo Ofício (1665-1667). Seu "Sermão da Sexagésima" é o maior texto em prosa da língua até o séc. XVIII.</div>
+        </div>
+      </div></div>
+    </div>
+  </div>
+</div>
+
+<!-- BARROCO MINEIRO -->
+<div class="entry left feat" data-cat="arte-sacra artes-plasticas arquitetura">
+  <div class="ca">
+    <div class="card c-gold"><div class="arr"></div>
+      <div class="card-top">
+        <div class="card-badges">
+          <span class="badge badge-period">séc. XVIII</span>
+          <span class="badge badge-br">Brasileiro</span>
+        </div>
+        <span class="cat-icon">⛏️</span>
+      </div>
+      <h2>Barroco Mineiro — <em>Aleijadinho</em></h2>
+      <div class="card-period">c. 1700–1800 · Ouro Preto, Congonhas, Sabará, Mariana</div>
+      <p>O ouro de Minas gera o maior florescimento artístico da América colonial. O barroco aqui se mistura com trabalho de artesãos mestiços e negros libertos, gerando algo único: exuberante, tropical, humano. Aleijadinho é o gênio máximo — escultor e arquiteto que trabalhou mesmo com mãos mutiladas pela doença.</p>
+      <div class="arts g3">
+        <div class="art"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA0MDAgMzAwIiB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCI+CiAgPGRlZnM+CiAgICAgICAgICA8cGF0dGVybiBpZD0icCIgeD0iMCIgeT0iMCIgd2lkdGg9IjIwIiBoZWlnaHQ9IjIwIiBwYXR0ZXJuVW5pdHM9InVzZXJTcGFjZU9uVXNlIj4KICAgICAgICAgICAgPGxpbmUgeDE9IjAiIHkxPSIyMCIgeDI9IjIwIiB5Mj0iMCIgc3Ryb2tlPSIjQzlBODRDIiBzdHJva2Utd2lkdGg9IjAuNSIgb3BhY2l0eT0iMC4yNSIvPgogICAgICAgICAgPC9wYXR0ZXJuPjwvZGVmcz4KICA8cmVjdCB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgZmlsbD0iIzFBMTYxMCIvPgogIDxyZWN0IHdpZHRoPSI0MDAiIGhlaWdodD0iMzAwIiBmaWxsPSJ1cmwoI3ApIi8+CiAgPHJlY3QgeD0iMSIgeT0iMSIgd2lkdGg9IjM5OCIgaGVpZ2h0PSIyOTgiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI0M5QTg0QyIgc3Ryb2tlLXdpZHRoPSIxIiBvcGFjaXR5PSIwLjQiLz4KICA8cmVjdCB4PSI4IiB5PSI4IiB3aWR0aD0iMzg0IiBoZWlnaHQ9IjI4NCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjQzlBODRDIiBzdHJva2Utd2lkdGg9IjAuNCIgb3BhY2l0eT0iMC4yIi8+CiAgPHRleHQgeD0iMjAwIiB5PSIxMjgiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJHZW9yZ2lhLHNlcmlmIiBmb250LXNpemU9IjEzIiBmaWxsPSIjQzlBODRDIiBvcGFjaXR5PSIwLjUiIGxldHRlci1zcGFjaW5nPSIzIiBmb250LXN0eWxlPSJpdGFsaWMiPlByb2ZldGEgRGFuaWVsPC90ZXh0PgogIDx0ZXh0IHg9IjIwMCIgeT0iMTU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LWZhbWlseT0ibW9ub3NwYWNlIiBmb250LXNpemU9IjEwIiBmaWxsPSIjQzlBODRDIiBvcGFjaXR5PSIwLjM1IiBsZXR0ZXItc3BhY2luZz0iMS41Ij5BbGVpamFkaW5obyDCtyBDb25nb25oYXMgwrcgYy4gMTgw4oCmPC90ZXh0PgogIDxsaW5lIHgxPSIxNDAiIHkxPSIxNjgiIHgyPSIyNjAiIHkyPSIxNjgiIHN0cm9rZT0iI0M5QTg0QyIgc3Ryb2tlLXdpZHRoPSIwLjUiIG9wYWNpdHk9IjAuMyIvPgo8L3N2Zz4=" alt="Aleijadinho"><div class="art-cap">Profeta Daniel — Aleijadinho, Congonhas</div></div>
+        <div class="art"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA0MDAgMzAwIiB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCI+CiAgPGRlZnM+CiAgICAgICAgICA8cGF0dGVybiBpZD0icCIgeD0iMCIgeT0iMCIgd2lkdGg9IjQwIiBoZWlnaHQ9IjQwIiBwYXR0ZXJuVW5pdHM9InVzZXJTcGFjZU9uVXNlIj4KICAgICAgICAgICAgPHBvbHlnb24gcG9pbnRzPSIyMCw0IDM2LDEyIDM2LDI4IDIwLDM2IDQsMjggNCwxMiIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjQzlBODRDIiBzdHJva2Utd2lkdGg9IjAuNSIgb3BhY2l0eT0iMC4zIi8+CiAgICAgICAgICA8L3BhdHRlcm4+PC9kZWZzPgogIDxyZWN0IHdpZHRoPSI0MDAiIGhlaWdodD0iMzAwIiBmaWxsPSIjMUExNjEwIi8+CiAgPHJlY3Qgd2lkdGg9IjQwMCIgaGVpZ2h0PSIzMDAiIGZpbGw9InVybCgjcCkiLz4KICA8cmVjdCB4PSIxIiB5PSIxIiB3aWR0aD0iMzk4IiBoZWlnaHQ9IjI5OCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjQzlBODRDIiBzdHJva2Utd2lkdGg9IjEiIG9wYWNpdHk9IjAuNCIvPgogIDxyZWN0IHg9IjgiIHk9IjgiIHdpZHRoPSIzODQiIGhlaWdodD0iMjg0IiBmaWxsPSJub25lIiBzdHJva2U9IiNDOUE4NEMiIHN0cm9rZS13aWR0aD0iMC40IiBvcGFjaXR5PSIwLjIiLz4KICA8dGV4dCB4PSIyMDAiIHk9IjEyOCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1mYW1pbHk9Ikdlb3JnaWEsc2VyaWYiIGZvbnQtc2l6ZT0iMTMiIGZpbGw9IiNDOUE4NEMiIG9wYWNpdHk9IjAuNSIgbGV0dGVyLXNwYWNpbmc9IjMiIGZvbnQtc3R5bGU9Iml0YWxpYyI+Qm9tIEplc3VzIGRlIENvbmdvbmhhczwvdGV4dD4KICA8dGV4dCB4PSIyMDAiIHk9IjE1NSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1mYW1pbHk9Im1vbm9zcGFjZSIgZm9udC1zaXplPSIxMCIgZmlsbD0iI0M5QTg0QyIgb3BhY2l0eT0iMC4zNSIgbGV0dGVyLXNwYWNpbmc9IjEuNSI+QWxlaWphZGluaG8gwrcgTWluYXMgR2VyYWlzIMK3IFVOReKApjwvdGV4dD4KICA8bGluZSB4MT0iMTQwIiB5MT0iMTY4IiB4Mj0iMjYwIiB5Mj0iMTY4IiBzdHJva2U9IiNDOUE4NEMiIHN0cm9rZS13aWR0aD0iMC41IiBvcGFjaXR5PSIwLjMiLz4KPC9zdmc+" alt="Congonhas"><div class="art-cap">Santuário do Bom Jesus — Congonhas (UNESCO)</div></div>
+        <div class="art"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA0MDAgMzAwIiB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCI+CiAgPGRlZnM+CiAgICAgICAgICA8cGF0dGVybiBpZD0icCIgeD0iMCIgeT0iMCIgd2lkdGg9IjQwIiBoZWlnaHQ9IjIwIiBwYXR0ZXJuVW5pdHM9InVzZXJTcGFjZU9uVXNlIj4KICAgICAgICAgICAgPHBhdGggZD0iTTAsMTAgUTEwLDAgMjAsMTAgVDQwLDEwIiBmaWxsPSJub25lIiBzdHJva2U9IiNCODg2MEIiIHN0cm9rZS13aWR0aD0iMC42IiBvcGFjaXR5PSIwLjI1Ii8+CiAgICAgICAgICA8L3BhdHRlcm4+PC9kZWZzPgogIDxyZWN0IHdpZHRoPSI0MDAiIGhlaWdodD0iMzAwIiBmaWxsPSIjMUExNjEwIi8+CiAgPHJlY3Qgd2lkdGg9IjQwMCIgaGVpZ2h0PSIzMDAiIGZpbGw9InVybCgjcCkiLz4KICA8cmVjdCB4PSIxIiB5PSIxIiB3aWR0aD0iMzk4IiBoZWlnaHQ9IjI5OCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjQjg4NjBCIiBzdHJva2Utd2lkdGg9IjEiIG9wYWNpdHk9IjAuNCIvPgogIDxyZWN0IHg9IjgiIHk9IjgiIHdpZHRoPSIzODQiIGhlaWdodD0iMjg0IiBmaWxsPSJub25lIiBzdHJva2U9IiNCODg2MEIiIHN0cm9rZS13aWR0aD0iMC40IiBvcGFjaXR5PSIwLjIiLz4KICA8dGV4dCB4PSIyMDAiIHk9IjEyOCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1mYW1pbHk9Ikdlb3JnaWEsc2VyaWYiIGZvbnQtc2l6ZT0iMTMiIGZpbGw9IiNCODg2MEIiIG9wYWNpdHk9IjAuNSIgbGV0dGVyLXNwYWNpbmc9IjMiIGZvbnQtc3R5bGU9Iml0YWxpYyI+SWdyZWphIFMuIEZyYW5jaXNjbyBkZSBBc3NpczwvdGV4dD4KICA8dGV4dCB4PSIyMDAiIHk9IjE1NSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1mYW1pbHk9Im1vbm9zcGFjZSIgZm9udC1zaXplPSIxMCIgZmlsbD0iI0I4ODYwQiIgb3BhY2l0eT0iMC4zNSIgbGV0dGVyLXNwYWNpbmc9IjEuNSI+T3VybyBQcmV0byDCtyBBbGVpamFkaW5obyDCtyBzw6ljLiDigKY8L3RleHQ+CiAgPGxpbmUgeDE9IjE0MCIgeTE9IjE2OCIgeDI9IjI2MCIgeTI9IjE2OCIgc3Ryb2tlPSIjQjg4NjBCIiBzdHJva2Utd2lkdGg9IjAuNSIgb3BhY2l0eT0iMC4zIi8+Cjwvc3ZnPg==" alt="São Francisco Ouro Preto"><div class="art-cap">Igreja S. Francisco de Assis, Ouro Preto</div></div>
+      </div>
+      <div class="tags">
+        <span class="tag aut">Aleijadinho (Antônio Francisco Lisboa, 1738–1814)</span>
+        <span class="tag aut">Mestre Ataíde (pintura)</span>
+        <span class="tag aut">Francisco Xavier de Brito</span>
+        <span class="tag mot">✦ Ouro e poder colonial</span><span class="tag mot">✦ Fé e arte popular</span>
+        <span class="tag inf">🌍 Bernini</span><span class="tag inf">🌍 Borromini</span>
+        <span class="tag conf">⚡ Debate: mito ou genialidade?</span>
+        <span class="tag leg">↑ Patrimônio UNESCO</span>
+      </div>
+      <button class="expand-btn" onclick="tog(this)"><span class="ch">›</span> ver mais</button>
+      <div class="extra"><div class="extra-inner">
+        <div class="info-block">
+          <div class="info-lbl">Quem era Aleijadinho</div>
+          <div class="info-txt">António Francisco Lisboa era filho de um arquiteto português com uma escrava africana. Contraiu uma doença degenerativa (possivelmente hanseníase ou sífilis) que lhe destruiu os dedos. Passou a trabalhar com o cinzel amarrado aos punhos. É o símbolo máximo da arte mestiça brasileira — e de como a criatividade supera a dor.</div>
+        </div>
+        <div class="pbox"><strong>Polêmica:</strong> Pesquisadores como Myriam Andrade Ribeiro de Oliveira questionaram se Aleijadinho executou pessoalmente todas as obras atribuídas, ou se coordenava uma oficina de artesãos. A "lenda do gênio mutilado" pode ser em parte uma construção romântica do séc. XIX (Rodrigo José Ferreira Bretas, 1858).</div>
+        <div class="lbox"><strong>Legado diplomático:</strong> Ouro Preto (UNESCO 1980) e Congonhas (UNESCO 1985) são duas das maiores atrações do turismo cultural brasileiro. Niemeyer admitia a influência das curvas barrocas em sua arquitetura. O barroco mineiro é o argumento mais forte da diplomacia cultural brasileira no circuito Patrimônio Mundial.</div>
+      </div></div>
+    </div>
+  </div>
+  <div class="dc"><div class="dot"></div></div>
+  <div class="em"></div>
+</div>
+
+<!-- MÚSICA AFRICANA / LUNDUN / BATUQUE -->
+<div class="entry right" data-cat="musica cultura-popular">
+  <div class="em"></div>
+  <div class="dc"><div class="dot"></div></div>
+  <div class="ca">
+    <div class="card c-red"><div class="arr"></div>
+      <div class="card-top">
+        <div class="card-badges">
+          <span class="badge badge-period">séc. XVI – XIX</span>
+          <span class="badge badge-af">Africano → Brasil</span>
+        </div>
+        <span class="cat-icon">🥁</span>
+      </div>
+      <h2>Música Africana — <em>Batuque, Lundum e Resistência</em></h2>
+      <div class="card-period">Séculos XVI–XIX · Salvador, Recife, Rio de Janeiro</div>
+      <p>Os africanos escravizados trouxeram consigo uma das mais ricas tradições musicais do mundo. Proibidos de praticar sua religião abertamente, camuflaram seus orixás nos santos católicos — e sua música sobreviveu no batuque, no candomblé, no lundum (ancestral do samba), no jongo e no maracatu.</p>
+      <div class="tags">
+        <span class="tag aut">Povos Yorubá</span><span class="tag aut">Povos Bantu</span><span class="tag aut">Povos Fon</span>
+        <span class="tag mot">✦ Resistência cultural</span><span class="tag mot">✦ Preservação identitária</span>
+        <span class="tag conf">⚡ Proibição / perseguição colonial</span>
+        <span class="tag leg">↑ Raiz do samba, choro, axé, maracatu</span>
+      </div>
+      <button class="expand-btn" onclick="tog(this)"><span class="ch">›</span> ver mais</button>
+      <div class="extra"><div class="extra-inner">
+        <div class="info-block">
+          <div class="info-lbl">Do lundum ao samba</div>
+          <div class="info-txt">O lundum africano, registrado nos documentos coloniais do séc. XVIII, é o ancestral direto do maxixe e do samba. O movimento dos quadris — escandaloso para os europeus — é hoje símbolo nacional. A "umbigada" (toque de barrigas no batuque) foi o gesto original de onde viria toda a ginga brasileira.</div>
+        </div>
+        <div class="info-block">
+          <div class="info-lbl">Candomblé e arte sacra afro-brasileira</div>
+          <div class="info-txt">Os terreiros de candomblé preservaram não apenas a música, mas também esculturas, indumentárias, performances rituais e um sistema estético completo — invisibilizado pela história oficial até recentemente. Mestre Didi (Deoscóredes Maximiliano dos Santos, 1917–2013) foi o maior artista sacro do candomblé, reconhecido internacionalmente.</div>
+        </div>
+        <div class="pbox"><strong>Perseguição:</strong> O candomblé foi criminalizado no Brasil até a Constituição de 1946 (e continuou sendo perseguido na prática). O Código Penal de 1890 criminalizava "praticar o espiritismo, a magia e seus sortilégios". Terreiros eram invadidos pela polícia em Salvador e Rio até os anos 1970.</div>
+      </div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════ IMPERIAL / ACADÊMICO ════════════ -->
+<div class="era">
+  <div class="era-inner">
+    <span class="era-num">1808–1889</span>
+    <span class="era-name">Período Imperial · Academicismo Europeu</span>
+  </div>
+</div>
+
+<!-- MISSÃO FRANCESA -->
+<div class="entry left" data-cat="artes-plasticas arquitetura">
+  <div class="ca">
+    <div class="card c-blue"><div class="arr"></div>
+      <div class="card-top">
+        <div class="card-badges">
+          <span class="badge badge-period">1816</span>
+          <span class="badge badge-eu">França → Brasil</span>
+        </div>
+        <span class="cat-icon">🖼️</span>
+      </div>
+      <h2>Missão Artística Francesa — <em>Debret e o Olhar Colonizador</em></h2>
+      <div class="card-period">1816 · Rio de Janeiro · Fundação da Academia Imperial de Belas Artes</div>
+      <p>D. João VI convida artistas neoclássicos franceses — ex-bonapartistas desempregados após Waterloo — para "civilizar" a corte tropical. Nasce a Academia Imperial de Belas Artes. O Brasil ganha sua primeira instituição artística formal, mas ao preço de apagar o barroco colonial como "arte menor".</p>
+      <div class="arts g2">
+        <div class="art"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA0MDAgMzAwIiB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCI+CiAgPGRlZnM+CiAgICAgICAgICA8cGF0dGVybiBpZD0icCIgeD0iMCIgeT0iMCIgd2lkdGg9IjIwIiBoZWlnaHQ9IjIwIiBwYXR0ZXJuVW5pdHM9InVzZXJTcGFjZU9uVXNlIj4KICAgICAgICAgICAgPGxpbmUgeDE9IjAiIHkxPSIyMCIgeDI9IjIwIiB5Mj0iMCIgc3Ryb2tlPSIjMUE1RkEwIiBzdHJva2Utd2lkdGg9IjAuNSIgb3BhY2l0eT0iMC4yNSIvPgogICAgICAgICAgPC9wYXR0ZXJuPjwvZGVmcz4KICA8cmVjdCB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgZmlsbD0iIzFBMTYxMCIvPgogIDxyZWN0IHdpZHRoPSI0MDAiIGhlaWdodD0iMzAwIiBmaWxsPSJ1cmwoI3ApIi8+CiAgPHJlY3QgeD0iMSIgeT0iMSIgd2lkdGg9IjM5OCIgaGVpZ2h0PSIyOTgiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzFBNUZBMCIgc3Ryb2tlLXdpZHRoPSIxIiBvcGFjaXR5PSIwLjQiLz4KICA8cmVjdCB4PSI4IiB5PSI4IiB3aWR0aD0iMzg0IiBoZWlnaHQ9IjI4NCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMUE1RkEwIiBzdHJva2Utd2lkdGg9IjAuNCIgb3BhY2l0eT0iMC4yIi8+CiAgPHRleHQgeD0iMjAwIiB5PSIxMjgiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJHZW9yZ2lhLHNlcmlmIiBmb250LXNpemU9IjEzIiBmaWxsPSIjMUE1RkEwIiBvcGFjaXR5PSIwLjUiIGxldHRlci1zcGFjaW5nPSIzIiBmb250LXN0eWxlPSJpdGFsaWMiPkJvdXRpcXVlIG5vIFJpbyBkZSBKYW5laXJvPC90ZXh0PgogIDx0ZXh0IHg9IjIwMCIgeT0iMTU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LWZhbWlseT0ibW9ub3NwYWNlIiBmb250LXNpemU9IjEwIiBmaWxsPSIjMUE1RkEwIiBvcGFjaXR5PSIwLjM1IiBsZXR0ZXItc3BhY2luZz0iMS41Ij5KZWFuLUJhcHRpc3RlIERlYnJldCDCtyAxODI3PC90ZXh0PgogIDxsaW5lIHgxPSIxNDAiIHkxPSIxNjgiIHgyPSIyNjAiIHkyPSIxNjgiIHN0cm9rZT0iIzFBNUZBMCIgc3Ryb2tlLXdpZHRoPSIwLjUiIG9wYWNpdHk9IjAuMyIvPgo8L3N2Zz4=" alt="Debret"><div class="art-cap">Debret — Boutique no Rio (1827)</div></div>
+        <div class="art"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA0MDAgMzAwIiB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCI+CiAgPGRlZnM+CiAgICAgICAgICA8cGF0dGVybiBpZD0icCIgeD0iMCIgeT0iMCIgd2lkdGg9IjI0IiBoZWlnaHQ9IjI0IiBwYXR0ZXJuVW5pdHM9InVzZXJTcGFjZU9uVXNlIj4KICAgICAgICAgICAgPGxpbmUgeDE9IjEyIiB5MT0iMCIgeDI9IjEyIiB5Mj0iMjQiIHN0cm9rZT0iIzFBNUZBMCIgc3Ryb2tlLXdpZHRoPSIwLjUiIG9wYWNpdHk9IjAuMiIvPgogICAgICAgICAgICA8bGluZSB4MT0iMCIgeTE9IjEyIiB4Mj0iMjQiIHkyPSIxMiIgc3Ryb2tlPSIjMUE1RkEwIiBzdHJva2Utd2lkdGg9IjAuNSIgb3BhY2l0eT0iMC4yIi8+CiAgICAgICAgICA8L3BhdHRlcm4+PC9kZWZzPgogIDxyZWN0IHdpZHRoPSI0MDAiIGhlaWdodD0iMzAwIiBmaWxsPSIjMUExNjEwIi8+CiAgPHJlY3Qgd2lkdGg9IjQwMCIgaGVpZ2h0PSIzMDAiIGZpbGw9InVybCgjcCkiLz4KICA8cmVjdCB4PSIxIiB5PSIxIiB3aWR0aD0iMzk4IiBoZWlnaHQ9IjI5OCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMUE1RkEwIiBzdHJva2Utd2lkdGg9IjEiIG9wYWNpdHk9IjAuNCIvPgogIDxyZWN0IHg9IjgiIHk9IjgiIHdpZHRoPSIzODQiIGhlaWdodD0iMjg0IiBmaWxsPSJub25lIiBzdHJva2U9IiMxQTVGQTAiIHN0cm9rZS13aWR0aD0iMC40IiBvcGFjaXR5PSIwLjIiLz4KICA8dGV4dCB4PSIyMDAiIHk9IjEyOCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1mYW1pbHk9Ikdlb3JnaWEsc2VyaWYiIGZvbnQtc2l6ZT0iMTMiIGZpbGw9IiMxQTVGQTAiIG9wYWNpdHk9IjAuNSIgbGV0dGVyLXNwYWNpbmc9IjMiIGZvbnQtc3R5bGU9Iml0YWxpYyI+Q2VuYSBkZSBSdWEgQ2FyaW9jYTwvdGV4dD4KICA8dGV4dCB4PSIyMDAiIHk9IjE1NSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1mYW1pbHk9Im1vbm9zcGFjZSIgZm9udC1zaXplPSIxMCIgZmlsbD0iIzFBNUZBMCIgb3BhY2l0eT0iMC4zNSIgbGV0dGVyLXNwYWNpbmc9IjEuNSI+SmVhbi1CYXB0aXN0ZSBEZWJyZXQgwrcgMTgyMHM8L3RleHQ+CiAgPGxpbmUgeDE9IjE0MCIgeTE9IjE2OCIgeDI9IjI2MCIgeTI9IjE2OCIgc3Ryb2tlPSIjMUE1RkEwIiBzdHJva2Utd2lkdGg9IjAuNSIgb3BhY2l0eT0iMC4zIi8+Cjwvc3ZnPg==" alt="Debret cena"><div class="art-cap">Debret — Cena de rua carioca</div></div>
+      </div>
+      <div class="tags">
+        <span class="tag aut">Jean-Baptiste Debret</span><span class="tag aut">Nicolas-Antoine Taunay</span>
+        <span class="tag aut">Grandjean de Montigny (arquitetura)</span>
+        <span class="tag mot">✦ Projeto "civilizatório"</span><span class="tag mot">✦ Neoclassicismo</span>
+        <span class="tag conf">⚡ Apaga o barroco colonial</span>
+        <span class="tag leg">↑ Escola de Belas Artes (UFRJ)</span>
+      </div>
+      <button class="expand-btn" onclick="tog(this)"><span class="ch">›</span> ver mais</button>
+      <div class="extra"><div class="extra-inner">
+        <div class="info-block">
+          <div class="info-lbl">Debret e a escravidão</div>
+          <div class="info-txt">A grande obra de Debret, "Voyage Pittoresque et Historique au Brésil" (1834–39), documenta a escravidão com detalhismo perturbador — torturas, mercados de escravos, punições. É ao mesmo tempo o maior documento visual da escravidão brasileira e o produto de um olhar colonizador europeu que "exotiza" o sofrimento.</div>
+        </div>
+        <div class="pbox"><strong>Polêmica:</strong> O debate sobre Debret é atual: suas imagens são usadas em livros didáticos como "documentação neutra", quando na verdade são construções de um olhar específico — o do cientista europeu que observa o "outro" com distância colonial. Pesquisadores questionam quem representa, como e para quem.</div>
+        <div class="lbox"><strong>Legado:</strong> A AIBA tornou-se a atual Escola de Belas Artes da UFRJ — formou os artistas que depois romperiam com o academicismo em 1922. O Museu Nacional (antes de seu incêndio devastador de 2018) preservava o maior acervo desse período.</div>
+      </div></div>
+    </div>
+  </div>
+  <div class="dc"><div class="dot"></div></div>
+  <div class="em"></div>
+</div>
+
+<!-- ROMANTISMO LITERÁRIO -->
+<div class="entry right" data-cat="literatura">
+  <div class="em"></div>
+  <div class="dc"><div class="dot"></div></div>
+  <div class="ca">
+    <div class="card c-teal"><div class="arr"></div>
+      <div class="card-top">
+        <div class="card-badges">
+          <span class="badge badge-period">1836–1880</span>
+          <span class="badge badge-br">Brasileiro</span>
+        </div>
+        <span class="cat-icon">📖</span>
+      </div>
+      <h2>Romantismo e <em>Indianismo</em> — A Invenção do Brasil</h2>
+      <div class="card-period">1836–1880 · Rio de Janeiro</div>
+      <p>O romantismo brasileiro tem uma missão política: inventar uma identidade nacional para um país recém-independente. A solução de Gonçalves Dias e José de Alencar: o índio como herói nacional — idealizado, "nobre selvagem", limpo de toda a brutalidade colonial real. É a primeira grande ficção identitária do Brasil.</p>
+      <div class="tags">
+        <span class="tag aut">José de Alencar (O Guarani, Iracema)</span>
+        <span class="tag aut">Gonçalves Dias (I-Juca Pirama)</span>
+        <span class="tag aut">Castro Alves (abolicionismo)</span>
+        <span class="tag mot">✦ Construção da nação</span><span class="tag mot">✦ Indianismo idealizado</span>
+        <span class="tag inf">🌍 Victor Hugo</span><span class="tag inf">🌍 Chateaubriand</span>
+        <span class="tag conf">⚡ Índio idealizado ≠ índio real</span>
+        <span class="tag leg">↑ Literatura nacional fundadora</span>
+      </div>
+      <button class="expand-btn" onclick="tog(this)"><span class="ch">›</span> ver mais</button>
+      <div class="extra"><div class="extra-inner">
+        <div class="info-block">
+          <div class="info-lbl">Castro Alves e o abolicionismo</div>
+          <div class="info-txt">O "Poeta dos Escravos" (1847–1871, nascido em Curralinho, BA) escreveu "O Navio Negreiro" (1868) — o poema mais politicamente impactante da literatura brasileira do séc. XIX. Morreu aos 24 anos. Seu abolicionismo radical era exceção num romantismo dominantemente evasivo.</div>
+        </div>
+        <div class="qbox">"Auriverde pendão de minha terra / Que a brisa do Brasil beija e balança, / Estandarte que a luz do sol encerra / E as promessas divinas da esperança..."<cite>— Gonçalves Dias, "Canção do Exílio" (1843) — poema mais famoso da língua portuguesa no Brasil</cite></div>
+        <div class="pbox"><strong>Polêmica:</strong> O "indianismo" literário romantizou e folkorizou o indígena real ao mesmo tempo em que o Estado brasileiro promovia o extermínio das populações nativas. A literatura "protegia" ficcionalmente quem era destruído na prática — uma contradição que o movimento modernista de 22 vai denunciar.</div>
+      </div></div>
+    </div>
+  </div>
+</div>
+
+<!-- MACHADO DE ASSIS -->
+<div class="entry left feat" data-cat="literatura">
+  <div class="ca">
+    <div class="card c-green"><div class="arr"></div>
+      <div class="card-top">
+        <div class="card-badges">
+          <span class="badge badge-period">1880–1908</span>
+          <span class="badge badge-br">Brasileiro</span>
+        </div>
+        <span class="cat-icon">✍️</span>
+      </div>
+      <h2>Realismo — <em>Machado de Assis</em></h2>
+      <div class="card-period">1880–1908 · Rio de Janeiro · O maior escritor brasileiro</div>
+      <p>Machado de Assis (1839–1908) revolucionou a literatura com "Memórias Póstumas de Brás Cubas" (1881) — narrador morto, ironia feroz, crítica social devastadora. Filho de mulato e portuguesa, ex-epilético, gago, autodidata — tornou-se o maior prosador da língua portuguesa e um dos maiores romancistas da história mundial.</p>
+      <div class="tags">
+        <span class="tag aut">Machado de Assis</span><span class="tag aut">Eça de Queirós (Portugal)</span>
+        <span class="tag aut">Aluísio Azevedo (naturalismo)</span>
+        <span class="tag mot">✦ Crítica à burguesia imperial</span><span class="tag mot">✦ Psicologia e ironia</span>
+        <span class="tag inf">🌍 Sterne (Tristram Shandy)</span><span class="tag inf">🌍 Schopenhauer</span>
+        <span class="tag leg">↑ MoMA das letras — reconhecimento mundial tardio</span>
+      </div>
+      <button class="expand-btn" onclick="tog(this)"><span class="ch">›</span> ver mais</button>
+      <div class="extra"><div class="extra-inner">
+        <div class="info-block">
+          <div class="info-lbl">Por que Machado é universal</div>
+          <div class="info-txt">Harold Bloom incluiu Machado no cânone ocidental. Susan Sontag disse que ele era "mais do que brasileiro". Philip Roth o admirava. Mas o reconhecimento internacional veio tarde — décadas após sua morte — em parte porque a língua portuguesa e o local de enunciação (o Rio do séc. XIX) eram vistos como "periféricos".</div>
+        </div>
+        <div class="qbox">"Ao vencedor, as batatas."<cite>— Machado de Assis, Quincas Borba (1891) — síntese do "Humanitismo" e crítica ao darwinismo social</cite></div>
+        <div class="pbox"><strong>Polêmica — raça:</strong> Machado era negro (ou mestiço, de acordo com diferentes fontes) e raramente falava diretamente sobre a escravidão em suas obras — uma omissão que gerou décadas de debate. Para uns, foi capitulação; para outros (como Roberto Schwarz), a ironia machadiana disseca a escravidão de forma oblíqua e mais devastadora.</div>
+        <div class="lbox"><strong>Legado:</strong> A Academia Brasileira de Letras (ABL), que Machado fundou em 1897 e presidiu até a morte, é até hoje o maior fórum literário do país. "Dom Casmurro" (1900) é o livro mais estudado nas universidades brasileiras. Machado antecipou técnicas do modernismo europeu em 30 anos.</div>
+      </div></div>
+    </div>
+  </div>
+  <div class="dc"><div class="dot"></div></div>
+  <div class="em"></div>
+</div>
+
+<!-- ════════════ MODERNISMO ════════════ -->
+<div class="era">
+  <div class="era-inner">
+    <span class="era-num">1922–1945</span>
+    <span class="era-name">Modernismo · Ruptura e Identidade Nacional</span>
+  </div>
+</div>
+
+<!-- SEMANA DE 22 -->
+<div class="entry right feat" data-cat="artes-plasticas literatura musica">
+  <div class="em"></div>
+  <div class="dc"><div class="dot"></div></div>
+  <div class="ca">
+    <div class="card c-green"><div class="arr"></div>
+      <div class="card-top">
+        <div class="card-badges">
+          <span class="badge badge-period">13–17 fev. 1922</span>
+          <span class="badge badge-br">Brasileiro</span>
+        </div>
+        <span class="cat-icon">💥</span>
+      </div>
+      <h2>Semana de Arte Moderna — <em>A Grande Ruptura</em></h2>
+      <div class="card-period">13–17 de fevereiro de 1922 · Teatro Municipal de São Paulo</div>
+      <p>O maior evento cultural da história brasileira. Poesia, pintura, escultura, música e arquitetura explodem contra o academicismo europeu. O Brasil busca sua própria face — e a encontra no indígena, no mestiço, no popular, no sertão. Vaias, escândalos, manifestos: arte como ato político.</p>
+      <div class="arts g3">
+        <div class="art"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA0MDAgMzAwIiB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCI+CiAgPGRlZnM+CiAgICAgICAgICA8cGF0dGVybiBpZD0icCIgeD0iMCIgeT0iMCIgd2lkdGg9IjQwIiBoZWlnaHQ9IjQwIiBwYXR0ZXJuVW5pdHM9InVzZXJTcGFjZU9uVXNlIj4KICAgICAgICAgICAgPHBvbHlnb24gcG9pbnRzPSIyMCw0IDM2LDEyIDM2LDI4IDIwLDM2IDQsMjggNCwxMiIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMkE3QTRBIiBzdHJva2Utd2lkdGg9IjAuNSIgb3BhY2l0eT0iMC4zIi8+CiAgICAgICAgICA8L3BhdHRlcm4+PC9kZWZzPgogIDxyZWN0IHdpZHRoPSI0MDAiIGhlaWdodD0iMzAwIiBmaWxsPSIjMUExNjEwIi8+CiAgPHJlY3Qgd2lkdGg9IjQwMCIgaGVpZ2h0PSIzMDAiIGZpbGw9InVybCgjcCkiLz4KICA8cmVjdCB4PSIxIiB5PSIxIiB3aWR0aD0iMzk4IiBoZWlnaHQ9IjI5OCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMkE3QTRBIiBzdHJva2Utd2lkdGg9IjEiIG9wYWNpdHk9IjAuNCIvPgogIDxyZWN0IHg9IjgiIHk9IjgiIHdpZHRoPSIzODQiIGhlaWdodD0iMjg0IiBmaWxsPSJub25lIiBzdHJva2U9IiMyQTdBNEEiIHN0cm9rZS13aWR0aD0iMC40IiBvcGFjaXR5PSIwLjIiLz4KICA8dGV4dCB4PSIyMDAiIHk9IjEyOCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1mYW1pbHk9Ikdlb3JnaWEsc2VyaWYiIGZvbnQtc2l6ZT0iMTMiIGZpbGw9IiMyQTdBNEEiIG9wYWNpdHk9IjAuNSIgbGV0dGVyLXNwYWNpbmc9IjMiIGZvbnQtc3R5bGU9Iml0YWxpYyI+QSBCb2JhPC90ZXh0PgogIDx0ZXh0IHg9IjIwMCIgeT0iMTU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LWZhbWlseT0ibW9ub3NwYWNlIiBmb250LXNpemU9IjEwIiBmaWxsPSIjMkE3QTRBIiBvcGFjaXR5PSIwLjM1IiBsZXR0ZXItc3BhY2luZz0iMS41Ij5Bbml0YSBNYWxmYXR0aSDCtyAxOTE14oCTMTY8L3RleHQ+CiAgPGxpbmUgeDE9IjE0MCIgeTE9IjE2OCIgeDI9IjI2MCIgeTI9IjE2OCIgc3Ryb2tlPSIjMkE3QTRBIiBzdHJva2Utd2lkdGg9IjAuNSIgb3BhY2l0eT0iMC4zIi8+Cjwvc3ZnPg==" alt="A Boba"><div class="art-cap">Anita Malfatti — A Boba (1915)</div></div>
+        <div class="art"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA0MDAgMzAwIiB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCI+CiAgPGRlZnM+CiAgICAgICAgICA8cGF0dGVybiBpZD0icCIgeD0iMCIgeT0iMCIgd2lkdGg9IjE2IiBoZWlnaHQ9IjE2IiBwYXR0ZXJuVW5pdHM9InVzZXJTcGFjZU9uVXNlIj4KICAgICAgICAgICAgPGNpcmNsZSBjeD0iOCIgY3k9IjgiIHI9IjEiIGZpbGw9IiMyQTdBNEEiIG9wYWNpdHk9IjAuMyIvPgogICAgICAgICAgPC9wYXR0ZXJuPjwvZGVmcz4KICA8cmVjdCB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgZmlsbD0iIzFBMTYxMCIvPgogIDxyZWN0IHdpZHRoPSI0MDAiIGhlaWdodD0iMzAwIiBmaWxsPSJ1cmwoI3ApIi8+CiAgPHJlY3QgeD0iMSIgeT0iMSIgd2lkdGg9IjM5OCIgaGVpZ2h0PSIyOTgiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzJBN0E0QSIgc3Ryb2tlLXdpZHRoPSIxIiBvcGFjaXR5PSIwLjQiLz4KICA8cmVjdCB4PSI4IiB5PSI4IiB3aWR0aD0iMzg0IiBoZWlnaHQ9IjI4NCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMkE3QTRBIiBzdHJva2Utd2lkdGg9IjAuNCIgb3BhY2l0eT0iMC4yIi8+CiAgPHRleHQgeD0iMjAwIiB5PSIxMjgiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJHZW9yZ2lhLHNlcmlmIiBmb250LXNpemU9IjEzIiBmaWxsPSIjMkE3QTRBIiBvcGFjaXR5PSIwLjUiIGxldHRlci1zcGFjaW5nPSIzIiBmb250LXN0eWxlPSJpdGFsaWMiPkFiYXBvcnU8L3RleHQ+CiAgPHRleHQgeD0iMjAwIiB5PSIxNTUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJtb25vc3BhY2UiIGZvbnQtc2l6ZT0iMTAiIGZpbGw9IiMyQTdBNEEiIG9wYWNpdHk9IjAuMzUiIGxldHRlci1zcGFjaW5nPSIxLjUiPlRhcnNpbGEgZG8gQW1hcmFsIMK3IDE5Mjg8L3RleHQ+CiAgPGxpbmUgeDE9IjE0MCIgeTE9IjE2OCIgeDI9IjI2MCIgeTI9IjE2OCIgc3Ryb2tlPSIjMkE3QTRBIiBzdHJva2Utd2lkdGg9IjAuNSIgb3BhY2l0eT0iMC4zIi8+Cjwvc3ZnPg==" alt="Abaporu"><div class="art-cap">Tarsila do Amaral — Abaporu (1928)</div></div>
+        <div class="art"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA0MDAgMzAwIiB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCI+CiAgPGRlZnM+CiAgICAgICAgICA8cGF0dGVybiBpZD0icCIgeD0iMCIgeT0iMCIgd2lkdGg9IjQwIiBoZWlnaHQ9IjIwIiBwYXR0ZXJuVW5pdHM9InVzZXJTcGFjZU9uVXNlIj4KICAgICAgICAgICAgPHBhdGggZD0iTTAsMTAgUTEwLDAgMjAsMTAgVDQwLDEwIiBmaWxsPSJub25lIiBzdHJva2U9IiMyQTdBNEEiIHN0cm9rZS13aWR0aD0iMC42IiBvcGFjaXR5PSIwLjI1Ii8+CiAgICAgICAgICA8L3BhdHRlcm4+PC9kZWZzPgogIDxyZWN0IHdpZHRoPSI0MDAiIGhlaWdodD0iMzAwIiBmaWxsPSIjMUExNjEwIi8+CiAgPHJlY3Qgd2lkdGg9IjQwMCIgaGVpZ2h0PSIzMDAiIGZpbGw9InVybCgjcCkiLz4KICA8cmVjdCB4PSIxIiB5PSIxIiB3aWR0aD0iMzk4IiBoZWlnaHQ9IjI5OCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMkE3QTRBIiBzdHJva2Utd2lkdGg9IjEiIG9wYWNpdHk9IjAuNCIvPgogIDxyZWN0IHg9IjgiIHk9IjgiIHdpZHRoPSIzODQiIGhlaWdodD0iMjg0IiBmaWxsPSJub25lIiBzdHJva2U9IiMyQTdBNEEiIHN0cm9rZS13aWR0aD0iMC40IiBvcGFjaXR5PSIwLjIiLz4KICA8dGV4dCB4PSIyMDAiIHk9IjEyOCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1mYW1pbHk9Ikdlb3JnaWEsc2VyaWYiIGZvbnQtc2l6ZT0iMTMiIGZpbGw9IiMyQTdBNEEiIG9wYWNpdHk9IjAuNSIgbGV0dGVyLXNwYWNpbmc9IjMiIGZvbnQtc3R5bGU9Iml0YWxpYyI+U2FtYmE8L3RleHQ+CiAgPHRleHQgeD0iMjAwIiB5PSIxNTUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJtb25vc3BhY2UiIGZvbnQtc2l6ZT0iMTAiIGZpbGw9IiMyQTdBNEEiIG9wYWNpdHk9IjAuMzUiIGxldHRlci1zcGFjaW5nPSIxLjUiPkVtaWxpYW5vIERpIENhdmFsY2FudGkgwrcgMTkyNTwvdGV4dD4KICA8bGluZSB4MT0iMTQwIiB5MT0iMTY4IiB4Mj0iMjYwIiB5Mj0iMTY4IiBzdHJva2U9IiMyQTdBNEEiIHN0cm9rZS13aWR0aD0iMC41IiBvcGFjaXR5PSIwLjMiLz4KPC9zdmc+" alt="Di Cavalcanti Samba"><div class="art-cap">Di Cavalcanti — Samba (1925)</div></div>
+      </div>
+      <div class="tags">
+        <span class="tag aut">Oswald de Andrade</span><span class="tag aut">Mário de Andrade</span>
+        <span class="tag aut">Tarsila do Amaral</span><span class="tag aut">Anita Malfatti</span>
+        <span class="tag aut">Heitor Villa-Lobos</span><span class="tag aut">Victor Brecheret</span>
+        <span class="tag mot">✦ Ruptura com o academicismo</span><span class="tag mot">✦ Identidade nacional</span>
+        <span class="tag inf">🌍 Cubismo (Picasso)</span><span class="tag inf">🌍 Futurismo</span><span class="tag inf">🌍 Dadaísmo</span>
+        <span class="tag conf">⚡ Vaias / Monteiro Lobato</span>
+        <span class="tag leg">↑ Marco fundador da cultura brasileira moderna</span>
+      </div>
+      <div class="qbox">"Tupi or not Tupi — that is the question."<cite>— Oswald de Andrade, Manifesto Antropófago, 1928</cite></div>
+      <button class="expand-btn" onclick="tog(this)"><span class="ch">›</span> ver mais</button>
+      <div class="extra"><div class="extra-inner">
+        <div class="info-block">
+          <div class="info-lbl">Villa-Lobos e a música na Semana</div>
+          <div class="info-txt">Heitor Villa-Lobos (1887–1959) apresentou peças que mesclavam Bach com cantos indígenas e música caipira — e foi vaiado. Depois, tornou-se o maior compositor brasileiro da história, reconhecido mundialmente. Suas "Bachianas Brasileiras" são a síncrese perfeita do projeto modernista: Bach + Brasil.</div>
+        </div>
+        <div class="info-block">
+          <div class="info-lbl">Macunaíma — o herói sem nenhum caráter</div>
+          <div class="info-txt">O romance de Mário de Andrade (1928) é o texto literário central do modernismo brasileiro. Macunaíma — herói indígena, malandro, preguiçoso, proteico — é a metáfora do brasileiro como síncrese impossível. Anticipou em décadas os debates sobre identidade nacional, raça e mestiçagem.</div>
+        </div>
+        <div class="pbox"><strong>Polêmica — Caso Anita:</strong> Em 1917, Monteiro Lobato publicou no Correio Paulistano que Anita Malfatti pintava com "visão deformada" de uma "paranoia ou mistificação". O maior escritor infantil brasileiro foi o maior oponente do modernismo. A Semana de 22 foi em parte uma resposta a esse ataque brutal.</div>
+        <div class="lbox"><strong>Legado:</strong> A Semana de 22 é o evento cultural mais importante da história brasileira. Fundou a literatura moderna (Drummond, Clarice Lispector), a música erudita nacional (Villa-Lobos), a pintura (Tarsila), a arquitetura (Niemeyer) e influenciou toda a América Latina.</div>
+      </div></div>
+    </div>
+  </div>
+</div>
+
+<!-- SAMBA / CHORO -->
+<div class="entry left feat" data-cat="musica cultura-popular">
+  <div class="ca">
+    <div class="card c-amber"><div class="arr"></div>
+      <div class="card-top">
+        <div class="card-badges">
+          <span class="badge badge-period">1917–1950s</span>
+          <span class="badge badge-br">Brasileiro</span>
+        </div>
+        <span class="cat-icon">🎶</span>
+      </div>
+      <h2>Samba, Choro e <em>A Música do Povo</em></h2>
+      <div class="card-period">1870s (choro) · 1917 (primeiro samba gravado) · Rio de Janeiro</div>
+      <p>Do batuque africano nasce o lundum, do lundum nasce o maxixe, do maxixe nasce o samba. "Pelo Telefone" (1917) é o primeiro samba gravado. O choro — música instrumental proto-jazzística — já existia desde os anos 1870 com Chiquinha Gonzaga e Ernesto Nazareth. Nos anos 30, Vargas institucionaliza o samba como símbolo nacional.</p>
+      <div class="arts g2">
+        <div class="art"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA0MDAgMzAwIiB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCI+CiAgPGRlZnM+CiAgICAgICAgICA8cGF0dGVybiBpZD0icCIgeD0iMCIgeT0iMCIgd2lkdGg9IjQwIiBoZWlnaHQ9IjIwIiBwYXR0ZXJuVW5pdHM9InVzZXJTcGFjZU9uVXNlIj4KICAgICAgICAgICAgPHBhdGggZD0iTTAsMTAgUTEwLDAgMjAsMTAgVDQwLDEwIiBmaWxsPSJub25lIiBzdHJva2U9IiNDMDM5MkIiIHN0cm9rZS13aWR0aD0iMC42IiBvcGFjaXR5PSIwLjI1Ii8+CiAgICAgICAgICA8L3BhdHRlcm4+PC9kZWZzPgogIDxyZWN0IHdpZHRoPSI0MDAiIGhlaWdodD0iMzAwIiBmaWxsPSIjMUExNjEwIi8+CiAgPHJlY3Qgd2lkdGg9IjQwMCIgaGVpZ2h0PSIzMDAiIGZpbGw9InVybCgjcCkiLz4KICA8cmVjdCB4PSIxIiB5PSIxIiB3aWR0aD0iMzk4IiBoZWlnaHQ9IjI5OCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjQzAzOTJCIiBzdHJva2Utd2lkdGg9IjEiIG9wYWNpdHk9IjAuNCIvPgogIDxyZWN0IHg9IjgiIHk9IjgiIHdpZHRoPSIzODQiIGhlaWdodD0iMjg0IiBmaWxsPSJub25lIiBzdHJva2U9IiNDMDM5MkIiIHN0cm9rZS13aWR0aD0iMC40IiBvcGFjaXR5PSIwLjIiLz4KICA8dGV4dCB4PSIyMDAiIHk9IjEyOCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1mYW1pbHk9Ikdlb3JnaWEsc2VyaWYiIGZvbnQtc2l6ZT0iMTMiIGZpbGw9IiNDMDM5MkIiIG9wYWNpdHk9IjAuNSIgbGV0dGVyLXNwYWNpbmc9IjMiIGZvbnQtc3R5bGU9Iml0YWxpYyI+RXNjb2xhIGRlIFNhbWJhIFBvcnRlbGE8L3RleHQ+CiAgPHRleHQgeD0iMjAwIiB5PSIxNTUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJtb25vc3BhY2UiIGZvbnQtc2l6ZT0iMTAiIGZpbGw9IiNDMDM5MkIiIG9wYWNpdHk9IjAuMzUiIGxldHRlci1zcGFjaW5nPSIxLjUiPlJpbyBkZSBKYW5laXJvIMK3IEFub3MgMTk0MDwvdGV4dD4KICA8bGluZSB4MT0iMTQwIiB5MT0iMTY4IiB4Mj0iMjYwIiB5Mj0iMTY4IiBzdHJva2U9IiNDMDM5MkIiIHN0cm9rZS13aWR0aD0iMC41IiBvcGFjaXR5PSIwLjMiLz4KPC9zdmc+" alt="Escola de Samba"><div class="art-cap">Escola de Samba — Rio, anos 1940</div></div>
+        <div class="art"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA0MDAgMzAwIiB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCI+CiAgPGRlZnM+CiAgICAgICAgICA8cGF0dGVybiBpZD0icCIgeD0iMCIgeT0iMCIgd2lkdGg9IjE2IiBoZWlnaHQ9IjE2IiBwYXR0ZXJuVW5pdHM9InVzZXJTcGFjZU9uVXNlIj4KICAgICAgICAgICAgPGNpcmNsZSBjeD0iOCIgY3k9IjgiIHI9IjEiIGZpbGw9IiNDMDM5MkIiIG9wYWNpdHk9IjAuMyIvPgogICAgICAgICAgPC9wYXR0ZXJuPjwvZGVmcz4KICA8cmVjdCB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgZmlsbD0iIzFBMTYxMCIvPgogIDxyZWN0IHdpZHRoPSI0MDAiIGhlaWdodD0iMzAwIiBmaWxsPSJ1cmwoI3ApIi8+CiAgPHJlY3QgeD0iMSIgeT0iMSIgd2lkdGg9IjM5OCIgaGVpZ2h0PSIyOTgiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI0MwMzkyQiIgc3Ryb2tlLXdpZHRoPSIxIiBvcGFjaXR5PSIwLjQiLz4KICA8cmVjdCB4PSI4IiB5PSI4IiB3aWR0aD0iMzg0IiBoZWlnaHQ9IjI4NCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjQzAzOTJCIiBzdHJva2Utd2lkdGg9IjAuNCIgb3BhY2l0eT0iMC4yIi8+CiAgPHRleHQgeD0iMjAwIiB5PSIxMjgiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJHZW9yZ2lhLHNlcmlmIiBmb250LXNpemU9IjEzIiBmaWxsPSIjQzAzOTJCIiBvcGFjaXR5PSIwLjUiIGxldHRlci1zcGFjaW5nPSIzIiBmb250LXN0eWxlPSJpdGFsaWMiPkNoaXF1aW5oYSBHb256YWdhPC90ZXh0PgogIDx0ZXh0IHg9IjIwMCIgeT0iMTU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LWZhbWlseT0ibW9ub3NwYWNlIiBmb250LXNpemU9IjEwIiBmaWxsPSIjQzAzOTJCIiBvcGFjaXR5PSIwLjM1IiBsZXR0ZXItc3BhY2luZz0iMS41Ij4xODQ34oCTMTkzNSDCtyAxwqogbWFlc3RyaW5hIGJyYXNpbGXigKY8L3RleHQ+CiAgPGxpbmUgeDE9IjE0MCIgeTE9IjE2OCIgeDI9IjI2MCIgeTI9IjE2OCIgc3Ryb2tlPSIjQzAzOTJCIiBzdHJva2Utd2lkdGg9IjAuNSIgb3BhY2l0eT0iMC4zIi8+Cjwvc3ZnPg==" alt="Chiquinha Gonzaga"><div class="art-cap">Chiquinha Gonzaga — 1ª maestrina brasileira</div></div>
+      </div>
+      <div class="tags">
+        <span class="tag aut">Ernesto Nazareth (choro)</span><span class="tag aut">Chiquinha Gonzaga</span>
+        <span class="tag aut">Donga (Pelo Telefone, 1917)</span><span class="tag aut">Cartola</span>
+        <span class="tag aut">Noel Rosa</span><span class="tag aut">Sinhô</span>
+        <span class="tag mot">✦ Identidade popular urbana</span><span class="tag mot">✦ Resistência afro-brasileira</span>
+        <span class="tag conf">⚡ Vargas e a domesticação do samba</span>
+        <span class="tag leg">↑ Patrimônio Imaterial UNESCO (2016)</span>
+      </div>
+      <button class="expand-btn" onclick="tog(this)"><span class="ch">›</span> ver mais</button>
+      <div class="extra"><div class="extra-inner">
+        <div class="info-block">
+          <div class="info-lbl">Vargas e a "branquização" do samba</div>
+          <div class="info-txt">O Estado Novo de Vargas (1937-45) usou o rádio para domesticar o samba: saíam os temas de boemia, malandragem e batuque afro; entravam o trabalhador, o civismo, a família. Ary Barroso com "Aquarela do Brasil" (1939) foi o samba que o regime queria. A censura era real: sambas "imorais" eram vetados.</div>
+        </div>
+        <div class="info-block">
+          <div class="info-lbl">Chiquinha Gonzaga — pioneira</div>
+          <div class="info-txt">Francisca Edwiges Neves Gonzaga (1847–1935): primeira maestrina e regente brasileira, primeiro samba carnavalesco ("Ô Abre Alas", 1899), primeira compositora a viver de música no Brasil. Separou-se do marido numa época em que isso era impensável, teve filhos com homens diferentes, militou pela abolição.</div>
+        </div>
+        <div class="lbox"><strong>Legado:</strong> O samba é o maior produto do soft power cultural brasileiro. O Carnaval do Rio atrai 1,5 milhão de turistas/ano. O samba de roda do Recôncavo Baiano (UNESCO 2005) e o samba carioca (UNESCO 2016) são Patrimônio Imaterial da Humanidade.</div>
+      </div></div>
+    </div>
+  </div>
+  <div class="dc"><div class="dot"></div></div>
+  <div class="em"></div>
+</div>
+
+<!-- ════════════ PÓS-GUERRA ════════════ -->
+<div class="era">
+  <div class="era-inner">
+    <span class="era-num">1945–1964</span>
+    <span class="era-name">Democracia · Bossa Nova · Concretismo</span>
+  </div>
+</div>
+
+<!-- BOSSA NOVA -->
+<div class="entry right feat" data-cat="musica">
+  <div class="em"></div>
+  <div class="dc"><div class="dot"></div></div>
+  <div class="ca">
+    <div class="card c-teal"><div class="arr"></div>
+      <div class="card-top">
+        <div class="card-badges">
+          <span class="badge badge-period">1958–1964</span>
+          <span class="badge badge-br">Brasileiro</span>
+        </div>
+        <span class="cat-icon">🎸</span>
+      </div>
+      <h2>Bossa Nova — <em>Saudade Elegante</em></h2>
+      <div class="card-period">1958 · Rio de Janeiro · Zona Sul (Ipanema, Copacabana)</div>
+      <p>"Chega de Saudade" (1958): João Gilberto inventa uma nova forma de tocar violão — batidas off-beat individuais, polirritmia sutil — e cantar, quase sussurrando. Tom Jobim harmoniza com jazz impressionista. Vinícius de Moraes poetiza. Nasce a música brasileira que conquistou o mundo inteiro.</p>
+      <div class="arts g2">
+        <div class="art"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA0MDAgMzAwIiB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCI+CiAgPGRlZnM+CiAgICAgICAgICA8cGF0dGVybiBpZD0icCIgeD0iMCIgeT0iMCIgd2lkdGg9IjIwIiBoZWlnaHQ9IjIwIiBwYXR0ZXJuVW5pdHM9InVzZXJTcGFjZU9uVXNlIj4KICAgICAgICAgICAgPGxpbmUgeDE9IjAiIHkxPSIyMCIgeDI9IjIwIiB5Mj0iMCIgc3Ryb2tlPSIjMUE3QTdBIiBzdHJva2Utd2lkdGg9IjAuNSIgb3BhY2l0eT0iMC4yNSIvPgogICAgICAgICAgPC9wYXR0ZXJuPjwvZGVmcz4KICA8cmVjdCB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgZmlsbD0iIzFBMTYxMCIvPgogIDxyZWN0IHdpZHRoPSI0MDAiIGhlaWdodD0iMzAwIiBmaWxsPSJ1cmwoI3ApIi8+CiAgPHJlY3QgeD0iMSIgeT0iMSIgd2lkdGg9IjM5OCIgaGVpZ2h0PSIyOTgiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzFBN0E3QSIgc3Ryb2tlLXdpZHRoPSIxIiBvcGFjaXR5PSIwLjQiLz4KICA8cmVjdCB4PSI4IiB5PSI4IiB3aWR0aD0iMzg0IiBoZWlnaHQ9IjI4NCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMUE3QTdBIiBzdHJva2Utd2lkdGg9IjAuNCIgb3BhY2l0eT0iMC4yIi8+CiAgPHRleHQgeD0iMjAwIiB5PSIxMjgiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJHZW9yZ2lhLHNlcmlmIiBmb250LXNpemU9IjEzIiBmaWxsPSIjMUE3QTdBIiBvcGFjaXR5PSIwLjUiIGxldHRlci1zcGFjaW5nPSIzIiBmb250LXN0eWxlPSJpdGFsaWMiPlRvbSBKb2JpbTwvdGV4dD4KICA8dGV4dCB4PSIyMDAiIHk9IjE1NSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1mYW1pbHk9Im1vbm9zcGFjZSIgZm9udC1zaXplPSIxMCIgZmlsbD0iIzFBN0E3QSIgb3BhY2l0eT0iMC4zNSIgbGV0dGVyLXNwYWNpbmc9IjEuNSI+QW50w7RuaW8gQ2FybG9zIEpvYmltIMK3IDE5MjfigJMxOTk0PC90ZXh0PgogIDxsaW5lIHgxPSIxNDAiIHkxPSIxNjgiIHgyPSIyNjAiIHkyPSIxNjgiIHN0cm9rZT0iIzFBN0E3QSIgc3Ryb2tlLXdpZHRoPSIwLjUiIG9wYWNpdHk9IjAuMyIvPgo8L3N2Zz4=" alt="Tom Jobim"><div class="art-cap">Antônio Carlos Jobim (Tom Jobim)</div></div>
+        <div class="art"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA0MDAgMzAwIiB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCI+CiAgPGRlZnM+CiAgICAgICAgICA8cGF0dGVybiBpZD0icCIgeD0iMCIgeT0iMCIgd2lkdGg9IjI0IiBoZWlnaHQ9IjI0IiBwYXR0ZXJuVW5pdHM9InVzZXJTcGFjZU9uVXNlIj4KICAgICAgICAgICAgPGxpbmUgeDE9IjEyIiB5MT0iMCIgeDI9IjEyIiB5Mj0iMjQiIHN0cm9rZT0iIzFBN0E3QSIgc3Ryb2tlLXdpZHRoPSIwLjUiIG9wYWNpdHk9IjAuMiIvPgogICAgICAgICAgICA8bGluZSB4MT0iMCIgeTE9IjEyIiB4Mj0iMjQiIHkyPSIxMiIgc3Ryb2tlPSIjMUE3QTdBIiBzdHJva2Utd2lkdGg9IjAuNSIgb3BhY2l0eT0iMC4yIi8+CiAgICAgICAgICA8L3BhdHRlcm4+PC9kZWZzPgogIDxyZWN0IHdpZHRoPSI0MDAiIGhlaWdodD0iMzAwIiBmaWxsPSIjMUExNjEwIi8+CiAgPHJlY3Qgd2lkdGg9IjQwMCIgaGVpZ2h0PSIzMDAiIGZpbGw9InVybCgjcCkiLz4KICA8cmVjdCB4PSIxIiB5PSIxIiB3aWR0aD0iMzk4IiBoZWlnaHQ9IjI5OCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMUE3QTdBIiBzdHJva2Utd2lkdGg9IjEiIG9wYWNpdHk9IjAuNCIvPgogIDxyZWN0IHg9IjgiIHk9IjgiIHdpZHRoPSIzODQiIGhlaWdodD0iMjg0IiBmaWxsPSJub25lIiBzdHJva2U9IiMxQTdBN0EiIHN0cm9rZS13aWR0aD0iMC40IiBvcGFjaXR5PSIwLjIiLz4KICA8dGV4dCB4PSIyMDAiIHk9IjEyOCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1mYW1pbHk9Ikdlb3JnaWEsc2VyaWYiIGZvbnQtc2l6ZT0iMTMiIGZpbGw9IiMxQTdBN0EiIG9wYWNpdHk9IjAuNSIgbGV0dGVyLXNwYWNpbmc9IjMiIGZvbnQtc3R5bGU9Iml0YWxpYyI+R2V0ei9HaWxiZXJ0bzwvdGV4dD4KICA8dGV4dCB4PSIyMDAiIHk9IjE1NSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1mYW1pbHk9Im1vbm9zcGFjZSIgZm9udC1zaXplPSIxMCIgZmlsbD0iIzFBN0E3QSIgb3BhY2l0eT0iMC4zNSIgbGV0dGVyLXNwYWNpbmc9IjEuNSI+QWxidW0gwrcgMTk2MyDCtyBHcmFtbXkgUmVjb3JkIGRvIOKApjwvdGV4dD4KICA8bGluZSB4MT0iMTQwIiB5MT0iMTY4IiB4Mj0iMjYwIiB5Mj0iMTY4IiBzdHJva2U9IiMxQTdBN0EiIHN0cm9rZS13aWR0aD0iMC41IiBvcGFjaXR5PSIwLjMiLz4KPC9zdmc+" alt="Getz Gilberto"><div class="art-cap">Getz/Gilberto (1963) — Grammy, Record do Ano</div></div>
+      </div>
+      <div class="tags">
+        <span class="tag aut">João Gilberto</span><span class="tag aut">Tom Jobim</span>
+        <span class="tag aut">Vinícius de Moraes</span><span class="tag aut">Stan Getz (EUA)</span>
+        <span class="tag aut">Astrud Gilberto</span><span class="tag aut">Nara Leão</span>
+        <span class="tag mot">✦ Modernização do samba</span><span class="tag mot">✦ Cool Jazz + samba</span>
+        <span class="tag inf">🌍 Miles Davis / Cool Jazz</span><span class="tag inf">🌍 Debussy</span>
+        <span class="tag conf">⚡ Disputas de autoria e royalties</span>
+        <span class="tag leg">↑ 1º soft power musical brasileiro</span>
+      </div>
+      <button class="expand-btn" onclick="tog(this)"><span class="ch">›</span> ver mais</button>
+      <div class="extra"><div class="extra-inner">
+        <div class="info-block">
+          <div class="info-lbl">A conquista dos EUA</div>
+          <div class="info-txt">O show histórico no Carnegie Hall (1962) e o álbum Getz/Gilberto (1964, Grammy de Álbum do Ano) levaram a bossa nova ao centro da música mundial. "The Girl from Ipanema" tornou-se o segundo single mais regravado da história (depois de "Yesterday"). Frank Sinatra, Ella Fitzgerald, Miles Davis — todos gravaram bossa nova.</div>
+        </div>
+        <div class="pbox"><strong>Polêmica:</strong> Astrud Gilberto gravou a versão em inglês de "Garota de Ipanema" sem combinação de royalties prévia — e a música virou um fenômeno mundial. Sua disputa com João Gilberto e Jobim sobre créditos durou décadas. A "Garota de Ipanema" real, Helô Pinheiro, também travou batalhas jurídicas sobre direito de imagem.</div>
+        <div class="lbox"><strong>Legado diplomático:</strong> A bossa nova é o primeiro e mais duradouro instrumento de soft power musical do Brasil. É hoje ativo permanente da diplomacia cultural. Vinícius de Moraes — que era diplomata do Itamaraty enquanto compunha — é o caso mais perfeito de artista-diplomata da história brasileira.</div>
+      </div></div>
+    </div>
+  </div>
+</div>
+
+<!-- CONCRETISMO / NEOCONCRETISMO -->
+<div class="entry left" data-cat="artes-plasticas">
+  <div class="ca">
+    <div class="card c-blue"><div class="arr"></div>
+      <div class="card-top">
+        <div class="card-badges">
+          <span class="badge badge-period">1952–1960</span>
+          <span class="badge badge-int">Internacional → Brasil</span>
+        </div>
+        <span class="cat-icon">🔷</span>
+      </div>
+      <h2>Concretismo e <em>Neoconcretismo</em> — SP × RJ</h2>
+      <div class="card-period">1952–1960 · São Paulo e Rio de Janeiro · A "guerra" das vanguardas</div>
+      <p>Arte geométrica pura. O Brasil absorve o Bauhaus e a abstração europeia — e logo se divide: paulistas preferem a racionalidade industrial; cariocas preferem o corpo, o sensível, a participação. Lygia Clark e Hélio Oiticica são os frutos mais radicais do neoconcretismo carioca — e dois dos maiores artistas mundiais do séc. XX.</p>
+      <div class="tags">
+        <span class="tag aut">Waldemar Cordeiro (SP)</span><span class="tag aut">Lygia Clark (RJ)</span>
+        <span class="tag aut">Hélio Oiticica (RJ)</span><span class="tag aut">Lygia Pape</span>
+        <span class="tag aut">Ferreira Gullar</span>
+        <span class="tag inf">🌍 Bauhaus</span><span class="tag inf">🌍 Max Bill</span><span class="tag inf">🌍 Mondrian</span>
+        <span class="tag conf">⚡ "Guerra" SP × RJ</span>
+        <span class="tag leg">↑ Arte participativa / relacional</span>
+      </div>
+      <button class="expand-btn" onclick="tog(this)"><span class="ch">›</span> ver mais</button>
+      <div class="extra"><div class="extra-inner">
+        <div class="info-block">
+          <div class="info-lbl">Hélio Oiticica — o mais radical</div>
+          <div class="info-txt">Oiticica deixou a geometria para dançar samba com passistas do Mangueira — e fez disso arte. Os "Parangolés" (capas de tecido para vestir e dançar) e os "Ninhos" (ambientes para habitar) anteciparam a arte participativa em décadas. Em Nova York (1970–78) mergulhou no underground e nas drogas. "Seja Marginal, Seja Herói" (1968) — faixa dedicada ao bandido Cara de Cavalo morto pela polícia — é um dos gestos mais radicais da arte brasileira.</div>
+        </div>
+        <div class="info-block">
+          <div class="info-lbl">Lygia Clark — arte e clínica</div>
+          <div class="info-txt">Clark desenvolveu uma prática que cruzou arte e psicoterapia. Seus "Objetos Relacionais" (almofadas, plásticos, pedras) eram usados em sessões terapêuticas. Influenciou gerações de artistas e terapeutas. Está hoje nos maiores museus do mundo — Tate, MoMA — cotizando milionariamente.</div>
+        </div>
+        <div class="pbox"><strong>A poesia concreta:</strong> Augusto de Campos, Haroldo de Campos e Décio Pignatari — o "Grupo Noigandres" — levaram o concretismo para a poesia: poemas visuais onde a disposição gráfica das palavras é parte do sentido. Influenciaram toda a vanguarda poética posterior, inclusive a poesia visual e a canção dos tropicalistas.</div>
+      </div></div>
+    </div>
+  </div>
+  <div class="dc"><div class="dot"></div></div>
+  <div class="em"></div>
+</div>
+
+<!-- ARQUITETURA MODERNA -->
+<div class="entry right feat" data-cat="arquitetura">
+  <div class="em"></div>
+  <div class="dc"><div class="dot"></div></div>
+  <div class="ca">
+    <div class="card c-rose"><div class="arr"></div>
+      <div class="card-top">
+        <div class="card-badges">
+          <span class="badge badge-period">1936–1960</span>
+          <span class="badge badge-br">Brasileiro</span>
+        </div>
+        <span class="cat-icon">🏛️</span>
+      </div>
+      <h2>Arquitetura Moderna — <em>Niemeyer e Brasília</em></h2>
+      <div class="card-period">1936–1960 · Rio de Janeiro · Brasília</div>
+      <p>O Brasil produz a escola de arquitetura moderna mais original do mundo. Niemeyer e Lúcio Costa reinterpretam Le Corbusier com curvas tropicais, luz e identidade local. Brasília — capital inventada em 4 anos no cerrado — é o maior manifesto arquitetônico do séc. XX e Patrimônio da Humanidade.</p>
+      <div class="arts g2">
+        <div class="art"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA0MDAgMzAwIiB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCI+CiAgPGRlZnM+CiAgICAgICAgICA8cGF0dGVybiBpZD0icCIgeD0iMCIgeT0iMCIgd2lkdGg9IjQwIiBoZWlnaHQ9IjQwIiBwYXR0ZXJuVW5pdHM9InVzZXJTcGFjZU9uVXNlIj4KICAgICAgICAgICAgPHBvbHlnb24gcG9pbnRzPSIyMCw0IDM2LDEyIDM2LDI4IDIwLDM2IDQsMjggNCwxMiIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjQTAzMDYwIiBzdHJva2Utd2lkdGg9IjAuNSIgb3BhY2l0eT0iMC4zIi8+CiAgICAgICAgICA8L3BhdHRlcm4+PC9kZWZzPgogIDxyZWN0IHdpZHRoPSI0MDAiIGhlaWdodD0iMzAwIiBmaWxsPSIjMUExNjEwIi8+CiAgPHJlY3Qgd2lkdGg9IjQwMCIgaGVpZ2h0PSIzMDAiIGZpbGw9InVybCgjcCkiLz4KICA8cmVjdCB4PSIxIiB5PSIxIiB3aWR0aD0iMzk4IiBoZWlnaHQ9IjI5OCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjQTAzMDYwIiBzdHJva2Utd2lkdGg9IjEiIG9wYWNpdHk9IjAuNCIvPgogIDxyZWN0IHg9IjgiIHk9IjgiIHdpZHRoPSIzODQiIGhlaWdodD0iMjg0IiBmaWxsPSJub25lIiBzdHJva2U9IiNBMDMwNjAiIHN0cm9rZS13aWR0aD0iMC40IiBvcGFjaXR5PSIwLjIiLz4KICA8dGV4dCB4PSIyMDAiIHk9IjEyOCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1mYW1pbHk9Ikdlb3JnaWEsc2VyaWYiIGZvbnQtc2l6ZT0iMTMiIGZpbGw9IiNBMDMwNjAiIG9wYWNpdHk9IjAuNSIgbGV0dGVyLXNwYWNpbmc9IjMiIGZvbnQtc3R5bGU9Iml0YWxpYyI+Q2F0ZWRyYWwgZGUgQnJhc8OtbGlhPC90ZXh0PgogIDx0ZXh0IHg9IjIwMCIgeT0iMTU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LWZhbWlseT0ibW9ub3NwYWNlIiBmb250LXNpemU9IjEwIiBmaWxsPSIjQTAzMDYwIiBvcGFjaXR5PSIwLjM1IiBsZXR0ZXItc3BhY2luZz0iMS41Ij5Pc2NhciBOaWVtZXllciDCtyAxOTcwPC90ZXh0PgogIDxsaW5lIHgxPSIxNDAiIHkxPSIxNjgiIHgyPSIyNjAiIHkyPSIxNjgiIHN0cm9rZT0iI0EwMzA2MCIgc3Ryb2tlLXdpZHRoPSIwLjUiIG9wYWNpdHk9IjAuMyIvPgo8L3N2Zz4=" alt="Catedral Brasilia"><div class="art-cap">Niemeyer — Catedral de Brasília (1970)</div></div>
+        <div class="art"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA0MDAgMzAwIiB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCI+CiAgPGRlZnM+CiAgICAgICAgICA8cGF0dGVybiBpZD0icCIgeD0iMCIgeT0iMCIgd2lkdGg9IjI0IiBoZWlnaHQ9IjI0IiBwYXR0ZXJuVW5pdHM9InVzZXJTcGFjZU9uVXNlIj4KICAgICAgICAgICAgPGxpbmUgeDE9IjEyIiB5MT0iMCIgeDI9IjEyIiB5Mj0iMjQiIHN0cm9rZT0iI0EwMzA2MCIgc3Ryb2tlLXdpZHRoPSIwLjUiIG9wYWNpdHk9IjAuMiIvPgogICAgICAgICAgICA8bGluZSB4MT0iMCIgeTE9IjEyIiB4Mj0iMjQiIHkyPSIxMiIgc3Ryb2tlPSIjQTAzMDYwIiBzdHJva2Utd2lkdGg9IjAuNSIgb3BhY2l0eT0iMC4yIi8+CiAgICAgICAgICA8L3BhdHRlcm4+PC9kZWZzPgogIDxyZWN0IHdpZHRoPSI0MDAiIGhlaWdodD0iMzAwIiBmaWxsPSIjMUExNjEwIi8+CiAgPHJlY3Qgd2lkdGg9IjQwMCIgaGVpZ2h0PSIzMDAiIGZpbGw9InVybCgjcCkiLz4KICA8cmVjdCB4PSIxIiB5PSIxIiB3aWR0aD0iMzk4IiBoZWlnaHQ9IjI5OCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjQTAzMDYwIiBzdHJva2Utd2lkdGg9IjEiIG9wYWNpdHk9IjAuNCIvPgogIDxyZWN0IHg9IjgiIHk9IjgiIHdpZHRoPSIzODQiIGhlaWdodD0iMjg0IiBmaWxsPSJub25lIiBzdHJva2U9IiNBMDMwNjAiIHN0cm9rZS13aWR0aD0iMC40IiBvcGFjaXR5PSIwLjIiLz4KICA8dGV4dCB4PSIyMDAiIHk9IjEyOCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1mYW1pbHk9Ikdlb3JnaWEsc2VyaWYiIGZvbnQtc2l6ZT0iMTMiIGZpbGw9IiNBMDMwNjAiIG9wYWNpdHk9IjAuNSIgbGV0dGVyLXNwYWNpbmc9IjMiIGZvbnQtc3R5bGU9Iml0YWxpYyI+UGxhbm8gUGlsb3RvIGRlIEJyYXPDrWxpYTwvdGV4dD4KICA8dGV4dCB4PSIyMDAiIHk9IjE1NSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1mYW1pbHk9Im1vbm9zcGFjZSIgZm9udC1zaXplPSIxMCIgZmlsbD0iI0EwMzA2MCIgb3BhY2l0eT0iMC4zNSIgbGV0dGVyLXNwYWNpbmc9IjEuNSI+TMO6Y2lvIENvc3RhIMK3IFVORVNDTyAxOTg3PC90ZXh0PgogIDxsaW5lIHgxPSIxNDAiIHkxPSIxNjgiIHgyPSIyNjAiIHkyPSIxNjgiIHN0cm9rZT0iI0EwMzA2MCIgc3Ryb2tlLXdpZHRoPSIwLjUiIG9wYWNpdHk9IjAuMyIvPgo8L3N2Zz4=" alt="Brasília aérea"><div class="art-cap">Plano Piloto (Lúcio Costa) — UNESCO 1987</div></div>
+      </div>
+      <div class="tags">
+        <span class="tag aut">Oscar Niemeyer</span><span class="tag aut">Lúcio Costa</span>
+        <span class="tag aut">Roberto Burle Marx (paisagismo)</span>
+        <span class="tag mot">✦ JK / Desenvolvimentismo</span><span class="tag mot">✦ Utopia moderna</span>
+        <span class="tag inf">🌍 Le Corbusier</span>
+        <span class="tag conf">⚡ Niemeyer comunista projetando palácios do poder</span>
+        <span class="tag leg">↑ UNESCO 1987 · Referência mundial</span>
+      </div>
+      <button class="expand-btn" onclick="tog(this)"><span class="ch">›</span> ver mais</button>
+      <div class="extra"><div class="extra-inner">
+        <div class="info-block">
+          <div class="info-lbl">Niemeyer e a política</div>
+          <div class="info-txt">Militante comunista confesso, Niemeyer projetou palácios do poder brasileiro e ao mesmo tempo a sede do PCF em Paris e o Centro Cultural Le Havre. Viveu até os 104 anos (1907–2012), trabalhando até o fim. A contradição entre sua arte monumental e suas convicções políticas foi tema de crítica constante.</div>
+        </div>
+        <div class="info-block">
+          <div class="info-lbl">Burle Marx — o jardim como arte</div>
+          <div class="info-txt">Roberto Burle Marx (1909–1994) revolucionou o paisagismo mundial usando plantas nativas brasileiras em composições de arte abstrata. O calçadão de Copacabana, o Aterro do Flamengo e jardins em todo o mundo são suas obras. Seu sítio em Guaratiba (RJ) é Patrimônio Mundial UNESCO (2021).</div>
+        </div>
+        <div class="lbox"><strong>Legado diplomático:</strong> Niemeyer projetou em mais de 20 países. Brasília é o argumento mais forte da arquitetura brasileira no mundo — prova de que um país em desenvolvimento pode produzir vanguarda estética universal.</div>
+      </div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════ DITADURA ════════════ -->
+<div class="era">
+  <div class="era-inner">
+    <span class="era-num">1964–1985</span>
+    <span class="era-name">Ditadura Militar · Arte como Resistência</span>
+  </div>
+</div>
+
+<!-- CINEMA NOVO -->
+<div class="entry left" data-cat="cinema">
+  <div class="ca">
+    <div class="card c-purple"><div class="arr"></div>
+      <div class="card-top">
+        <div class="card-badges">
+          <span class="badge badge-period">1960–1972</span>
+          <span class="badge badge-br">Brasileiro</span>
+        </div>
+        <span class="cat-icon">🎬</span>
+      </div>
+      <h2>Cinema Novo — <em>"Uma câmera na mão, uma ideia na cabeça"</em></h2>
+      <div class="card-period">1960–1972 · Rio de Janeiro · Glauber Rocha</div>
+      <p>Glauber Rocha revoluciona o cinema brasileiro com uma estética da fome, da violência e do misticismo sertanejo. Câmera na mão, poucos recursos, verdade bruta. Godard disse: "Glauber Rocha é o cinema". Seus filmes são manifestos políticos visuais — e foram censurados pela ditadura.</p>
+      <div class="arts g2">
+        <div class="art"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA0MDAgMzAwIiB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCI+CiAgPGRlZnM+CiAgICAgICAgICA8cGF0dGVybiBpZD0icCIgeD0iMCIgeT0iMCIgd2lkdGg9IjQwIiBoZWlnaHQ9IjQwIiBwYXR0ZXJuVW5pdHM9InVzZXJTcGFjZU9uVXNlIj4KICAgICAgICAgICAgPHBvbHlnb24gcG9pbnRzPSIyMCw0IDM2LDEyIDM2LDI4IDIwLDM2IDQsMjggNCwxMiIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjNkIyRkEwIiBzdHJva2Utd2lkdGg9IjAuNSIgb3BhY2l0eT0iMC4zIi8+CiAgICAgICAgICA8L3BhdHRlcm4+PC9kZWZzPgogIDxyZWN0IHdpZHRoPSI0MDAiIGhlaWdodD0iMzAwIiBmaWxsPSIjMUExNjEwIi8+CiAgPHJlY3Qgd2lkdGg9IjQwMCIgaGVpZ2h0PSIzMDAiIGZpbGw9InVybCgjcCkiLz4KICA8cmVjdCB4PSIxIiB5PSIxIiB3aWR0aD0iMzk4IiBoZWlnaHQ9IjI5OCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjNkIyRkEwIiBzdHJva2Utd2lkdGg9IjEiIG9wYWNpdHk9IjAuNCIvPgogIDxyZWN0IHg9IjgiIHk9IjgiIHdpZHRoPSIzODQiIGhlaWdodD0iMjg0IiBmaWxsPSJub25lIiBzdHJva2U9IiM2QjJGQTAiIHN0cm9rZS13aWR0aD0iMC40IiBvcGFjaXR5PSIwLjIiLz4KICA8dGV4dCB4PSIyMDAiIHk9IjEyOCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1mYW1pbHk9Ikdlb3JnaWEsc2VyaWYiIGZvbnQtc2l6ZT0iMTMiIGZpbGw9IiM2QjJGQTAiIG9wYWNpdHk9IjAuNSIgbGV0dGVyLXNwYWNpbmc9IjMiIGZvbnQtc3R5bGU9Iml0YWxpYyI+RGV1cyBlIG8gRGlhYm8gbmEgVGVycmEgZG8gU+KApjwvdGV4dD4KICA8dGV4dCB4PSIyMDAiIHk9IjE1NSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1mYW1pbHk9Im1vbm9zcGFjZSIgZm9udC1zaXplPSIxMCIgZmlsbD0iIzZCMkZBMCIgb3BhY2l0eT0iMC4zNSIgbGV0dGVyLXNwYWNpbmc9IjEuNSI+R2xhdWJlciBSb2NoYSDCtyAxOTY0PC90ZXh0PgogIDxsaW5lIHgxPSIxNDAiIHkxPSIxNjgiIHgyPSIyNjAiIHkyPSIxNjgiIHN0cm9rZT0iIzZCMkZBMCIgc3Ryb2tlLXdpZHRoPSIwLjUiIG9wYWNpdHk9IjAuMyIvPgo8L3N2Zz4=" alt="Deus e o Diabo"><div class="art-cap">Deus e o Diabo na Terra do Sol (1964)</div></div>
+        <div class="art"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA0MDAgMzAwIiB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCI+CiAgPGRlZnM+CiAgICAgICAgICA8cGF0dGVybiBpZD0icCIgeD0iMCIgeT0iMCIgd2lkdGg9IjIwIiBoZWlnaHQ9IjIwIiBwYXR0ZXJuVW5pdHM9InVzZXJTcGFjZU9uVXNlIj4KICAgICAgICAgICAgPGxpbmUgeDE9IjAiIHkxPSIyMCIgeDI9IjIwIiB5Mj0iMCIgc3Ryb2tlPSIjNkIyRkEwIiBzdHJva2Utd2lkdGg9IjAuNSIgb3BhY2l0eT0iMC4yNSIvPgogICAgICAgICAgPC9wYXR0ZXJuPjwvZGVmcz4KICA8cmVjdCB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgZmlsbD0iIzFBMTYxMCIvPgogIDxyZWN0IHdpZHRoPSI0MDAiIGhlaWdodD0iMzAwIiBmaWxsPSJ1cmwoI3ApIi8+CiAgPHJlY3QgeD0iMSIgeT0iMSIgd2lkdGg9IjM5OCIgaGVpZ2h0PSIyOTgiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzZCMkZBMCIgc3Ryb2tlLXdpZHRoPSIxIiBvcGFjaXR5PSIwLjQiLz4KICA8cmVjdCB4PSI4IiB5PSI4IiB3aWR0aD0iMzg0IiBoZWlnaHQ9IjI4NCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjNkIyRkEwIiBzdHJva2Utd2lkdGg9IjAuNCIgb3BhY2l0eT0iMC4yIi8+CiAgPHRleHQgeD0iMjAwIiB5PSIxMjgiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJHZW9yZ2lhLHNlcmlmIiBmb250LXNpemU9IjEzIiBmaWxsPSIjNkIyRkEwIiBvcGFjaXR5PSIwLjUiIGxldHRlci1zcGFjaW5nPSIzIiBmb250LXN0eWxlPSJpdGFsaWMiPlRlcnJhIGVtIFRyYW5zZTwvdGV4dD4KICA8dGV4dCB4PSIyMDAiIHk9IjE1NSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1mYW1pbHk9Im1vbm9zcGFjZSIgZm9udC1zaXplPSIxMCIgZmlsbD0iIzZCMkZBMCIgb3BhY2l0eT0iMC4zNSIgbGV0dGVyLXNwYWNpbmc9IjEuNSI+R2xhdWJlciBSb2NoYSDCtyAxOTY3PC90ZXh0PgogIDxsaW5lIHgxPSIxNDAiIHkxPSIxNjgiIHgyPSIyNjAiIHkyPSIxNjgiIHN0cm9rZT0iIzZCMkZBMCIgc3Ryb2tlLXdpZHRoPSIwLjUiIG9wYWNpdHk9IjAuMyIvPgo8L3N2Zz4=" alt="Terra em Transe"><div class="art-cap">Terra em Transe (1967)</div></div>
+      </div>
+      <div class="tags">
+        <span class="tag aut">Glauber Rocha</span><span class="tag aut">Nelson Pereira dos Santos</span>
+        <span class="tag aut">Ruy Guerra</span><span class="tag aut">Carlos Diegues</span>
+        <span class="tag mot">✦ Estética da fome</span><span class="tag mot">✦ Terceiro mundismo</span>
+        <span class="tag inf">🌍 Nouvelle Vague (Godard)</span><span class="tag inf">🌍 Neorrealismo italiano</span>
+        <span class="tag conf">⚡ Exílio / censura</span>
+        <span class="tag leg">↑ Cânone do cinema mundial</span>
+      </div>
+      <button class="expand-btn" onclick="tog(this)"><span class="ch">›</span> ver mais</button>
+      <div class="extra"><div class="extra-inner">
+        <div class="info-block">
+          <div class="info-lbl">A "Estética da Fome" (1965)</div>
+          <div class="info-txt">Glauber escreveu o manifesto "Estética da Fome" (Gênova, 1965): "A fome latino-americana não é somente um sintoma alarmante: é o nervo de sua própria sociedade." O cinema do Terceiro Mundo não devia imitar Hollywood — devia mostrar a violência de sua condição, sem filtros.</div>
+        </div>
+        <div class="pbox"><strong>Polêmica — o "elogio a Médici":</strong> Em 1971, durante o exílio, Glauber fez declarações ambíguas sobre o presidente-general Médici (o mais brutal da ditadura) — o que causou consternação entre seus aliados. Nunca foi totalmente explicado. Morreu em 1981, aos 42 anos, em circunstâncias obscuras.</div>
+        <div class="lbox"><strong>Legado:</strong> "Deus e o Diabo na Terra do Sol" (1964) e "Terra em Transe" (1967) estão entre os maiores filmes da história do cinema, segundo críticos internacionais. O Cinema Novo influenciou o Nuevo Cine Latino-Americano e cineastas como Almodóvar, Coppola e Scorsese.</div>
+      </div></div>
+    </div>
+  </div>
+  <div class="dc"><div class="dot"></div></div>
+  <div class="em"></div>
+</div>
+
+<!-- TROPICÁLIA -->
+<div class="entry right feat" data-cat="musica artes-plasticas teatro-danca">
+  <div class="em"></div>
+  <div class="dc"><div class="dot"></div></div>
+  <div class="ca">
+    <div class="card c-red"><div class="arr"></div>
+      <div class="card-top">
+        <div class="card-badges">
+          <span class="badge badge-period">1967–1968</span>
+          <span class="badge badge-br">Brasileiro</span>
+        </div>
+        <span class="cat-icon">⚡</span>
+      </div>
+      <h2><em>Tropicália</em> — Deglutição Total</h2>
+      <div class="card-period">1967–1968 · São Paulo / Rio · Exílio em Londres (1969)</div>
+      <p>O maior movimento cultural brasileiro do séc. XX. Caetano Veloso e Gilberto Gil releem a Antropofagia oswaldiana no contexto da ditadura e da indústria cultural: devoram Beatles, Roberto Carlos, Jimi Hendrix, candomblé e baião numa explosão irreverente. Arte, música e política como um único gesto estético radical.</p>
+      <div class="arts g2">
+        <div class="art"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA0MDAgMzAwIiB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCI+CiAgPGRlZnM+CiAgICAgICAgICA8cGF0dGVybiBpZD0icCIgeD0iMCIgeT0iMCIgd2lkdGg9IjQwIiBoZWlnaHQ9IjIwIiBwYXR0ZXJuVW5pdHM9InVzZXJTcGFjZU9uVXNlIj4KICAgICAgICAgICAgPHBhdGggZD0iTTAsMTAgUTEwLDAgMjAsMTAgVDQwLDEwIiBmaWxsPSJub25lIiBzdHJva2U9IiNDMDM5MkIiIHN0cm9rZS13aWR0aD0iMC42IiBvcGFjaXR5PSIwLjI1Ii8+CiAgICAgICAgICA8L3BhdHRlcm4+PC9kZWZzPgogIDxyZWN0IHdpZHRoPSI0MDAiIGhlaWdodD0iMzAwIiBmaWxsPSIjMUExNjEwIi8+CiAgPHJlY3Qgd2lkdGg9IjQwMCIgaGVpZ2h0PSIzMDAiIGZpbGw9InVybCgjcCkiLz4KICA8cmVjdCB4PSIxIiB5PSIxIiB3aWR0aD0iMzk4IiBoZWlnaHQ9IjI5OCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjQzAzOTJCIiBzdHJva2Utd2lkdGg9IjEiIG9wYWNpdHk9IjAuNCIvPgogIDxyZWN0IHg9IjgiIHk9IjgiIHdpZHRoPSIzODQiIGhlaWdodD0iMjg0IiBmaWxsPSJub25lIiBzdHJva2U9IiNDMDM5MkIiIHN0cm9rZS13aWR0aD0iMC40IiBvcGFjaXR5PSIwLjIiLz4KICA8dGV4dCB4PSIyMDAiIHk9IjEyOCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1mYW1pbHk9Ikdlb3JnaWEsc2VyaWYiIGZvbnQtc2l6ZT0iMTMiIGZpbGw9IiNDMDM5MkIiIG9wYWNpdHk9IjAuNSIgbGV0dGVyLXNwYWNpbmc9IjMiIGZvbnQtc3R5bGU9Iml0YWxpYyI+Q2FldGFubyBWZWxvc288L3RleHQ+CiAgPHRleHQgeD0iMjAwIiB5PSIxNTUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJtb25vc3BhY2UiIGZvbnQtc2l6ZT0iMTAiIGZpbGw9IiNDMDM5MkIiIG9wYWNpdHk9IjAuMzUiIGxldHRlci1zcGFjaW5nPSIxLjUiPlNhbHZhZG9yLCBCYWhpYSDCtyAxOTQy4oCTPC90ZXh0PgogIDxsaW5lIHgxPSIxNDAiIHkxPSIxNjgiIHgyPSIyNjAiIHkyPSIxNjgiIHN0cm9rZT0iI0MwMzkyQiIgc3Ryb2tlLXdpZHRoPSIwLjUiIG9wYWNpdHk9IjAuMyIvPgo8L3N2Zz4=" alt="Caetano Veloso"><div class="art-cap">Caetano Veloso — Salvador (BA), 1942</div></div>
+        <div class="art"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA0MDAgMzAwIiB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCI+CiAgPGRlZnM+CiAgICAgICAgICA8cGF0dGVybiBpZD0icCIgeD0iMCIgeT0iMCIgd2lkdGg9IjE2IiBoZWlnaHQ9IjE2IiBwYXR0ZXJuVW5pdHM9InVzZXJTcGFjZU9uVXNlIj4KICAgICAgICAgICAgPGNpcmNsZSBjeD0iOCIgY3k9IjgiIHI9IjEiIGZpbGw9IiNDMDM5MkIiIG9wYWNpdHk9IjAuMyIvPgogICAgICAgICAgPC9wYXR0ZXJuPjwvZGVmcz4KICA8cmVjdCB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgZmlsbD0iIzFBMTYxMCIvPgogIDxyZWN0IHdpZHRoPSI0MDAiIGhlaWdodD0iMzAwIiBmaWxsPSJ1cmwoI3ApIi8+CiAgPHJlY3QgeD0iMSIgeT0iMSIgd2lkdGg9IjM5OCIgaGVpZ2h0PSIyOTgiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI0MwMzkyQiIgc3Ryb2tlLXdpZHRoPSIxIiBvcGFjaXR5PSIwLjQiLz4KICA8cmVjdCB4PSI4IiB5PSI4IiB3aWR0aD0iMzg0IiBoZWlnaHQ9IjI4NCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjQzAzOTJCIiBzdHJva2Utd2lkdGg9IjAuNCIgb3BhY2l0eT0iMC4yIi8+CiAgPHRleHQgeD0iMjAwIiB5PSIxMjgiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJHZW9yZ2lhLHNlcmlmIiBmb250LXNpemU9IjEzIiBmaWxsPSIjQzAzOTJCIiBvcGFjaXR5PSIwLjUiIGxldHRlci1zcGFjaW5nPSIzIiBmb250LXN0eWxlPSJpdGFsaWMiPkdpbGJlcnRvIEdpbDwvdGV4dD4KICA8dGV4dCB4PSIyMDAiIHk9IjE1NSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1mYW1pbHk9Im1vbm9zcGFjZSIgZm9udC1zaXplPSIxMCIgZmlsbD0iI0MwMzkyQiIgb3BhY2l0eT0iMC4zNSIgbGV0dGVyLXNwYWNpbmc9IjEuNSI+U2FsdmFkb3IsIEJhaGlhIMK3IDE5NDLigJM8L3RleHQ+CiAgPGxpbmUgeDE9IjE0MCIgeTE9IjE2OCIgeDI9IjI2MCIgeTI9IjE2OCIgc3Ryb2tlPSIjQzAzOTJCIiBzdHJva2Utd2lkdGg9IjAuNSIgb3BhY2l0eT0iMC4zIi8+Cjwvc3ZnPg==" alt="Gilberto Gil"><div class="art-cap">Gilberto Gil — Salvador (BA), 1942</div></div>
+      </div>
+      <div class="tags">
+        <span class="tag aut">Caetano Veloso</span><span class="tag aut">Gilberto Gil</span>
+        <span class="tag aut">Os Mutantes</span><span class="tag aut">Tom Zé</span>
+        <span class="tag aut">Gal Costa</span><span class="tag aut">Hélio Oiticica</span>
+        <span class="tag aut">Glauber Rocha</span><span class="tag aut">Rogério Duprat (arranjos)</span>
+        <span class="tag mot">✦ Anthropofagia relida</span><span class="tag mot">✦ Resistência à ditadura</span>
+        <span class="tag inf">🌍 Beatles</span><span class="tag inf">🌍 Pop Art / Warhol</span><span class="tag inf">🌍 Maio de 68</span>
+        <span class="tag conf">⚡ Vaia da esquerda / Prisão / Exílio</span>
+        <span class="tag leg">↑ Influência global · Gilberto Gil ministro</span>
+      </div>
+      <div class="qbox">"É proibido proibir."<cite>— Caetano Veloso, FIC 1968 — resposta à vaia da esquerda universitária</cite></div>
+      <button class="expand-btn" onclick="tog(this)"><span class="ch">›</span> ver mais</button>
+      <div class="extra"><div class="extra-inner">
+        <div class="info-block">
+          <div class="info-lbl">A dupla polêmica: vaia da esquerda + prisão pela direita</div>
+          <div class="info-txt">No FIC (Festival Internacional da Canção) de 1968, Caetano cantou "É Proibido Proibir" com guitarra elétrica e foi vaiado pela esquerda universitária, que queria MPB "pura" e engajada. Meses depois, com o AI-5, foram presos pela ditadura de direita — que também os considerava subversivos. Foram perseguidos por ambos os lados.</div>
+        </div>
+        <div class="info-block">
+          <div class="info-lbl">Teatro Oficina e o tropicalismo cênico</div>
+          <div class="info-txt">O diretor José Celso Martinez Corrêa levou o tropicalismo ao teatro com "O Rei da Vela" (1967) de Oswald de Andrade — montagem perturbadora que misturava samba, sexo, política e crítica ao imperialismo. Causou escândalo total e foi imediatamente censurada após o AI-5.</div>
+        </div>
+        <div class="lbox"><strong>Legado:</strong> David Byrne (Talking Heads) e Beck citam o tropicalismo como influência central. Animal Collective, Beck, Kurt Cobain — todos conheciam Caetano. Gilberto Gil tornou-se Ministro da Cultura (2003-2008) — a maior síntese de artista-diplomata da história brasileira — e implementou a política de "diversidade cultural" como diretriz diplomática.</div>
+      </div></div>
+    </div>
+  </div>
+</div>
+
+<!-- LITERATURA DITADURA: CLARICE / DRUMMOND -->
+<div class="entry left" data-cat="literatura">
+  <div class="ca">
+    <div class="card c-green"><div class="arr"></div>
+      <div class="card-top">
+        <div class="card-badges">
+          <span class="badge badge-period">1940s–1980s</span>
+          <span class="badge badge-br">Brasileiro</span>
+        </div>
+        <span class="cat-icon">📝</span>
+      </div>
+      <h2>Drummond, Clarice e <em>A Literatura Sob Censura</em></h2>
+      <div class="card-period">1940–1980 · Rio de Janeiro / Minas Gerais · Grande geração</div>
+      <p>Carlos Drummond de Andrade e Clarice Lispector são os dois maiores escritores brasileiros do séc. XX — e dois dos maiores da língua portuguesa. Drummond: poeta da pedra, do tempo, da rosa, da ditadura. Clarice: prosadora do fluxo de consciência, do abismo interior, da náusea existencial. Ambos escreveram sob censura.</p>
+      <div class="tags">
+        <span class="tag aut">Carlos Drummond de Andrade</span>
+        <span class="tag aut">Clarice Lispector</span>
+        <span class="tag aut">João Guimarães Rosa (Grande Sertão: Veredas)</span>
+        <span class="tag aut">Graciliano Ramos (Memórias do Cárcere)</span>
+        <span class="tag mot">✦ Modernismo literário maduro</span><span class="tag mot">✦ Existencialismo</span>
+        <span class="tag inf">🌍 Kafka</span><span class="tag inf">🌍 Virginia Woolf</span>
+        <span class="tag conf">⚡ Graciliano preso por Vargas (1936)</span>
+        <span class="tag leg">↑ Cânone ocidental</span>
+      </div>
+      <button class="expand-btn" onclick="tog(this)"><span class="ch">›</span> ver mais</button>
+      <div class="extra"><div class="extra-inner">
+        <div class="info-block">
+          <div class="info-lbl">Clarice Lispector</div>
+          <div class="info-txt">Nascida na Ucrânia, criada no Recife e no Rio, Clarice (1920–1977) é a mais internacionalmente reconhecida escritora brasileira. "A Paixão Segundo G.H." (1964) e "A Hora da Estrela" (1977) são obras-primas do existencialismo literário. Colm Tóibín, Ben Okri e Orhan Pamuk a citam como influência.</div>
+        </div>
+        <div class="info-block">
+          <div class="info-lbl">Guimarães Rosa e o sertão</div>
+          <div class="info-txt">João Guimarães Rosa (1908–1967) era diplomata do Itamaraty e criou em "Grande Sertão: Veredas" (1956) uma língua literária inteiramente nova — síncrese de arcaísmos, neologismos, tupi e veredas mineiras. É o romance mais importante da língua portuguesa do séc. XX segundo muitos críticos. Rosa morreu três dias após tomar posse na Academia Brasileira de Letras.</div>
+        </div>
+        <div class="qbox">"No meio do caminho tinha uma pedra / tinha uma pedra no meio do caminho..."<cite>— Carlos Drummond de Andrade, "No Meio do Caminho" (1928) — o poema mais discutido da modernidade brasileira</cite></div>
+      </div></div>
+    </div>
+  </div>
+  <div class="dc"><div class="dot"></div></div>
+  <div class="em"></div>
+</div>
+
+<!-- ════════════ CONTEMPORÂNEO ════════════ -->
+<div class="era">
+  <div class="era-inner">
+    <span class="era-num">1985–hoje</span>
+    <span class="era-name">Arte Contemporânea · Democracia · Diversidade</span>
+  </div>
+</div>
+
+<!-- RAP / HIP HOP -->
+<div class="entry right" data-cat="musica cultura-popular">
+  <div class="em"></div>
+  <div class="dc"><div class="dot"></div></div>
+  <div class="ca">
+    <div class="card c-amber"><div class="arr"></div>
+      <div class="card-top">
+        <div class="card-badges">
+          <span class="badge badge-period">1980s–hoje</span>
+          <span class="badge badge-int">EUA → Brasil (reinventado)</span>
+        </div>
+        <span class="cat-icon">🎤</span>
+      </div>
+      <h2>Rap Brasileiro — <em>Periferia como Sujeito</em></h2>
+      <div class="card-period">1988 (primeiro rap gravado no BR) – presente · São Paulo, Rio, Salvador</div>
+      <p>O hip-hop chega ao Brasil pela Estação São Bento (SP) nos anos 80 e é imediatamente adaptado à realidade das periferias brasileiras. Diferente do rap americano, o brasileiro tem forte tradição poética e política — de Racionais MC's ao BaianaSystem, do Criolo à Emicida: a poesia do asfalto, da violência policial e da resistência afro-periférica.</p>
+      <div class="tags">
+        <span class="tag aut">Racionais MC's (Mano Brown, Ice Blue)</span>
+        <span class="tag aut">Criolo</span><span class="tag aut">Emicida</span>
+        <span class="tag aut">BaianaSystem</span><span class="tag aut">Karol Conká</span>
+        <span class="tag mot">✦ Denúncia do racismo e violência policial</span>
+        <span class="tag mot">✦ Voz da periferia</span>
+        <span class="tag inf">🌍 Hip-hop americano (KRS-One, NWA)</span>
+        <span class="tag conf">⚡ Censura de "Sobrevivendo no Inferno"</span>
+        <span class="tag leg">↑ Literatura periférica · Museu na periferia</span>
+      </div>
+      <button class="expand-btn" onclick="tog(this)"><span class="ch">›</span> ver mais</button>
+      <div class="extra"><div class="extra-inner">
+        <div class="info-block">
+          <div class="info-lbl">Racionais MC's e a literatura</div>
+          <div class="info-txt">"Sobrevivendo no Inferno" (1997) é o álbum mais importante do rap brasileiro — e um dos mais importantes da história do gênero. Vendeu mais de 1,5 milhão de cópias sem distribuição das grandes gravadoras. Mano Brown é hoje reconhecido como poeta — seus textos são estudados em universidades brasileiras como literatura.</div>
+        </div>
+        <div class="info-block">
+          <div class="info-lbl">Emicida e a diplomacia cultural periférica</div>
+          <div class="info-txt">Emicida realizou "AmarElo" (2019) no Theatro Municipal de São Paulo — reunindo rap, samba, jazz, forró e artistas de toda a diáspora africana. O documentário no Netflix levou a arte da periferia para o mundo. Emicida é hoje um dos principais embaixadores informais da cultura brasileira.</div>
+        </div>
+        <div class="lbox"><strong>Legado:</strong> O rap brasileiro criou toda uma ecologia cultural: literatura periférica (Ferréz, Sacolinha), cinema (Cidade de Deus, Elite Esquadrão), teatro periférico, museus comunitários. A "Batalha do Passinho" e o funk carioca são derivações dessa mesma matriz.</div>
+      </div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ARTE AFRO-BRASILEIRA CONTEMPORÂNEA -->
+<div class="entry left feat" data-cat="artes-plasticas cultura-popular arte-sacra">
+  <div class="ca">
+    <div class="card c-red"><div class="arr"></div>
+      <div class="card-top">
+        <div class="card-badges">
+          <span class="badge badge-period">séc. XIX–hoje</span>
+          <span class="badge badge-br">Brasileiro</span>
+        </div>
+        <span class="cat-icon">🌿</span>
+      </div>
+      <h2>Arte Afro-Brasileira — <em>Da Invisibilidade à Vanguarda</em></h2>
+      <div class="card-period">Do candomblé às galerias globais · Salvador, Rio, São Paulo</div>
+      <p>Durante séculos sistematicamente invisibilizada, a arte de matriz africana sempre resistiu nos terreiros, nas festas, nas ruas. Hoje, Arthur Bispo do Rosário está no MoMA. Rubem Valentim (baiano) criou síncrese única entre concretismo e símbolos dos orixás. Rosana Paulino disseca o racismo estrutural em imagens poderosas.</p>
+      <div class="arts g3">
+        <div class="art"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA0MDAgMzAwIiB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCI+CiAgPGRlZnM+CiAgICAgICAgICA8cGF0dGVybiBpZD0icCIgeD0iMCIgeT0iMCIgd2lkdGg9IjI0IiBoZWlnaHQ9IjI0IiBwYXR0ZXJuVW5pdHM9InVzZXJTcGFjZU9uVXNlIj4KICAgICAgICAgICAgPGxpbmUgeDE9IjEyIiB5MT0iMCIgeDI9IjEyIiB5Mj0iMjQiIHN0cm9rZT0iI0MwMzkyQiIgc3Ryb2tlLXdpZHRoPSIwLjUiIG9wYWNpdHk9IjAuMiIvPgogICAgICAgICAgICA8bGluZSB4MT0iMCIgeTE9IjEyIiB4Mj0iMjQiIHkyPSIxMiIgc3Ryb2tlPSIjQzAzOTJCIiBzdHJva2Utd2lkdGg9IjAuNSIgb3BhY2l0eT0iMC4yIi8+CiAgICAgICAgICA8L3BhdHRlcm4+PC9kZWZzPgogIDxyZWN0IHdpZHRoPSI0MDAiIGhlaWdodD0iMzAwIiBmaWxsPSIjMUExNjEwIi8+CiAgPHJlY3Qgd2lkdGg9IjQwMCIgaGVpZ2h0PSIzMDAiIGZpbGw9InVybCgjcCkiLz4KICA8cmVjdCB4PSIxIiB5PSIxIiB3aWR0aD0iMzk4IiBoZWlnaHQ9IjI5OCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjQzAzOTJCIiBzdHJva2Utd2lkdGg9IjEiIG9wYWNpdHk9IjAuNCIvPgogIDxyZWN0IHg9IjgiIHk9IjgiIHdpZHRoPSIzODQiIGhlaWdodD0iMjg0IiBmaWxsPSJub25lIiBzdHJva2U9IiNDMDM5MkIiIHN0cm9rZS13aWR0aD0iMC40IiBvcGFjaXR5PSIwLjIiLz4KICA8dGV4dCB4PSIyMDAiIHk9IjEyOCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1mYW1pbHk9Ikdlb3JnaWEsc2VyaWYiIGZvbnQtc2l6ZT0iMTMiIGZpbGw9IiNDMDM5MkIiIG9wYWNpdHk9IjAuNSIgbGV0dGVyLXNwYWNpbmc9IjMiIGZvbnQtc3R5bGU9Iml0YWxpYyI+Q29tcG9zacOnw6NvPC90ZXh0PgogIDx0ZXh0IHg9IjIwMCIgeT0iMTU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LWZhbWlseT0ibW9ub3NwYWNlIiBmb250LXNpemU9IjEwIiBmaWxsPSIjQzAzOTJCIiBvcGFjaXR5PSIwLjM1IiBsZXR0ZXItc3BhY2luZz0iMS41Ij5SdWJlbSBWYWxlbnRpbSDCtyBTYWx2YWRvciDCtyAxOTYw4oCmPC90ZXh0PgogIDxsaW5lIHgxPSIxNDAiIHkxPSIxNjgiIHgyPSIyNjAiIHkyPSIxNjgiIHN0cm9rZT0iI0MwMzkyQiIgc3Ryb2tlLXdpZHRoPSIwLjUiIG9wYWNpdHk9IjAuMyIvPgo8L3N2Zz4=" alt="Rubem Valentim"><div class="art-cap">Rubem Valentim — Composição (Salvador)</div></div>
+        <div class="art"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA0MDAgMzAwIiB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCI+CiAgPGRlZnM+CiAgICAgICAgICA8cGF0dGVybiBpZD0icCIgeD0iMCIgeT0iMCIgd2lkdGg9IjQwIiBoZWlnaHQ9IjQwIiBwYXR0ZXJuVW5pdHM9InVzZXJTcGFjZU9uVXNlIj4KICAgICAgICAgICAgPHBvbHlnb24gcG9pbnRzPSIyMCw0IDM2LDEyIDM2LDI4IDIwLDM2IDQsMjggNCwxMiIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjQzAzOTJCIiBzdHJva2Utd2lkdGg9IjAuNSIgb3BhY2l0eT0iMC4zIi8+CiAgICAgICAgICA8L3BhdHRlcm4+PC9kZWZzPgogIDxyZWN0IHdpZHRoPSI0MDAiIGhlaWdodD0iMzAwIiBmaWxsPSIjMUExNjEwIi8+CiAgPHJlY3Qgd2lkdGg9IjQwMCIgaGVpZ2h0PSIzMDAiIGZpbGw9InVybCgjcCkiLz4KICA8cmVjdCB4PSIxIiB5PSIxIiB3aWR0aD0iMzk4IiBoZWlnaHQ9IjI5OCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjQzAzOTJCIiBzdHJva2Utd2lkdGg9IjEiIG9wYWNpdHk9IjAuNCIvPgogIDxyZWN0IHg9IjgiIHk9IjgiIHdpZHRoPSIzODQiIGhlaWdodD0iMjg0IiBmaWxsPSJub25lIiBzdHJva2U9IiNDMDM5MkIiIHN0cm9rZS13aWR0aD0iMC40IiBvcGFjaXR5PSIwLjIiLz4KICA8dGV4dCB4PSIyMDAiIHk9IjEyOCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1mYW1pbHk9Ikdlb3JnaWEsc2VyaWYiIGZvbnQtc2l6ZT0iMTMiIGZpbGw9IiNDMDM5MkIiIG9wYWNpdHk9IjAuNSIgbGV0dGVyLXNwYWNpbmc9IjMiIGZvbnQtc3R5bGU9Iml0YWxpYyI+TWFudG8gZGEgQXByZXNlbnRhw6fDo288L3RleHQ+CiAgPHRleHQgeD0iMjAwIiB5PSIxNTUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJtb25vc3BhY2UiIGZvbnQtc2l6ZT0iMTAiIGZpbGw9IiNDMDM5MkIiIG9wYWNpdHk9IjAuMzUiIGxldHRlci1zcGFjaW5nPSIxLjUiPkFydGh1ciBCaXNwbyBkbyBSb3PDoXJpbyDCtyBSSiDCtyAx4oCmPC90ZXh0PgogIDxsaW5lIHgxPSIxNDAiIHkxPSIxNjgiIHgyPSIyNjAiIHkyPSIxNjgiIHN0cm9rZT0iI0MwMzkyQiIgc3Ryb2tlLXdpZHRoPSIwLjUiIG9wYWNpdHk9IjAuMyIvPgo8L3N2Zz4=" alt="Arthur Bispo"><div class="art-cap">Arthur Bispo do Rosário — Manto</div></div>
+        <div class="art"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA0MDAgMzAwIiB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCI+CiAgPGRlZnM+CiAgICAgICAgICA8cGF0dGVybiBpZD0icCIgeD0iMCIgeT0iMCIgd2lkdGg9IjQwIiBoZWlnaHQ9IjIwIiBwYXR0ZXJuVW5pdHM9InVzZXJTcGFjZU9uVXNlIj4KICAgICAgICAgICAgPHBhdGggZD0iTTAsMTAgUTEwLDAgMjAsMTAgVDQwLDEwIiBmaWxsPSJub25lIiBzdHJva2U9IiNDNjdDMkEiIHN0cm9rZS13aWR0aD0iMC42IiBvcGFjaXR5PSIwLjI1Ii8+CiAgICAgICAgICA8L3BhdHRlcm4+PC9kZWZzPgogIDxyZWN0IHdpZHRoPSI0MDAiIGhlaWdodD0iMzAwIiBmaWxsPSIjMUExNjEwIi8+CiAgPHJlY3Qgd2lkdGg9IjQwMCIgaGVpZ2h0PSIzMDAiIGZpbGw9InVybCgjcCkiLz4KICA8cmVjdCB4PSIxIiB5PSIxIiB3aWR0aD0iMzk4IiBoZWlnaHQ9IjI5OCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjQzY3QzJBIiBzdHJva2Utd2lkdGg9IjEiIG9wYWNpdHk9IjAuNCIvPgogIDxyZWN0IHg9IjgiIHk9IjgiIHdpZHRoPSIzODQiIGhlaWdodD0iMjg0IiBmaWxsPSJub25lIiBzdHJva2U9IiNDNjdDMkEiIHN0cm9rZS13aWR0aD0iMC40IiBvcGFjaXR5PSIwLjIiLz4KICA8dGV4dCB4PSIyMDAiIHk9IjEyOCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1mYW1pbHk9Ikdlb3JnaWEsc2VyaWYiIGZvbnQtc2l6ZT0iMTMiIGZpbGw9IiNDNjdDMkEiIG9wYWNpdHk9IjAuNSIgbGV0dGVyLXNwYWNpbmc9IjMiIGZvbnQtc3R5bGU9Iml0YWxpYyI+QXJ0ZSBTYWNyYSBBZnJvLUJyYXNpbGVpcmE8L3RleHQ+CiAgPHRleHQgeD0iMjAwIiB5PSIxNTUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJtb25vc3BhY2UiIGZvbnQtc2l6ZT0iMTAiIGZpbGw9IiNDNjdDMkEiIG9wYWNpdHk9IjAuMzUiIGxldHRlci1zcGFjaW5nPSIxLjUiPk9yaXjDoXMgwrcgQ2FuZG9tYmzDqSDCtyBCYWhpYTwvdGV4dD4KICA8bGluZSB4MT0iMTQwIiB5MT0iMTY4IiB4Mj0iMjYwIiB5Mj0iMTY4IiBzdHJva2U9IiNDNjdDMkEiIHN0cm9rZS13aWR0aD0iMC41IiBvcGFjaXR5PSIwLjMiLz4KPC9zdmc+" alt="Candomblé arte"><div class="art-cap">Arte sacra afro-brasileira — Bahia</div></div>
+      </div>
+      <div class="tags">
+        <span class="tag aut">Arthur Bispo do Rosário</span>
+        <span class="tag aut">Rubem Valentim (Salvador)</span>
+        <span class="tag aut">Rosana Paulino</span><span class="tag aut">Mestre Didi</span>
+        <span class="tag aut">Emanoel Araújo</span>
+        <span class="tag mot">✦ Resistência decolonial</span><span class="tag mot">✦ Memória afro</span>
+        <span class="tag conf">⚡ Invisibilização histórica</span>
+        <span class="tag conf">⚡ Racismo religioso — terreiros perseguidos</span>
+        <span class="tag leg">↑ Arte decolonial global</span>
+      </div>
+      <button class="expand-btn" onclick="tog(this)"><span class="ch">›</span> ver mais</button>
+      <div class="extra"><div class="extra-inner">
+        <div class="info-block">
+          <div class="info-lbl">Arthur Bispo do Rosário — o mais radical</div>
+          <div class="info-txt">Internado compulsoriamente na Colônia Juliano Moreira (RJ) por décadas, Bispo construiu um universo obsessivo — bordados, estandartes, objetos — que só foi reconhecido como arte após sua morte (1989). Hoje está no MoMA, na Tate e em grandes coleções. O Museu Bispo do Rosário Arte Contemporânea existe no local onde foi internado.</div>
+        </div>
+        <div class="pbox"><strong>Perseguição histórica:</strong> O candomblé foi criminalizado no Brasil até 1946 (e na prática até muito depois). Terreiros eram invadidos pela polícia com machados para destruir os atabaques. A revalorização da arte afro-brasileira é também um ato de reparação histórica — e de diplomacia cultural decolonial.</div>
+        <div class="lbox"><strong>Legado:</strong> A arte afro-brasileira ganhou espaço crescente nas Bienais de Veneza e São Paulo nos anos 2010-20. O Brasil a usa como argumento de diversidade cultural na UNESCO e nas negociações sobre a Convenção de 2005. Mestre Didi representou o Brasil em exposições internacionais.</div>
+      </div></div>
+    </div>
+  </div>
+  <div class="dc"><div class="dot"></div></div>
+  <div class="em"></div>
+</div>
+
+<!-- BIENAL DE SP / ARTE GLOBAL -->
+<div class="entry right feat" data-cat="artes-plasticas">
+  <div class="em"></div>
+  <div class="dc"><div class="dot"></div></div>
+  <div class="ca">
+    <div class="card c-gold"><div class="arr"></div>
+      <div class="card-top">
+        <div class="card-badges">
+          <span class="badge badge-period">1951–hoje</span>
+          <span class="badge badge-br">Brasileiro</span>
+        </div>
+        <span class="cat-icon">🌍</span>
+      </div>
+      <h2>Bienal de SP e <em>Arte como Soft Power</em></h2>
+      <div class="card-period">1951–presente · Parque Ibirapuera · A 2ª maior bienal do mundo</div>
+      <p>Segunda maior bienal de arte do mundo (atrás de Veneza), a Bienal de São Paulo é o principal instrumento de diplomacia cultural brasileira. Criada em 1951 por Francisco Matarazzo Sobrinho, colocou o Brasil no centro do circuito global de arte contemporânea — e sobreviveu ao boicote internacional de 1969 durante a ditadura.</p>
+      <div class="tags">
+        <span class="tag aut">Cildo Meireles (inserções em circuitos)</span>
+        <span class="tag aut">Adriana Varejão</span><span class="tag aut">Vik Muniz</span>
+        <span class="tag aut">Laura Lima</span><span class="tag aut">Ernesto Neto</span>
+        <span class="tag mot">✦ Diplomacia cultural</span><span class="tag mot">✦ Arte global</span>
+        <span class="tag conf">⚡ Boicote internacional 1969 (AI-5)</span>
+        <span class="tag leg">↑ 600 mil visitantes/edição · Soft power</span>
+      </div>
+      <div class="qbox">"A arte é o quinto elemento do poder — ao lado do econômico, militar, diplomático e político."<cite>— paráfrase da doutrina de política cultural externa brasileira (inspirada em Joseph Nye)</cite></div>
+      <button class="expand-btn" onclick="tog(this)"><span class="ch">›</span> ver mais</button>
+      <div class="extra"><div class="extra-inner">
+        <div class="info-block">
+          <div class="info-lbl">O boicote de 1969–1970</div>
+          <div class="info-txt">Após o AI-5, artistas e instituições de 25 países boicotaram a Bienal em protesto contra as torturas do regime militar. Foi o maior boicote cultural da história do Brasil — e uma derrota diplomática para a ditadura. O episódio prova que a arte tem poder político real no cenário internacional.</div>
+        </div>
+        <div class="info-block">
+          <div class="info-lbl">Convenção da Diversidade Cultural UNESCO (2005)</div>
+          <div class="info-txt">O Brasil foi um dos principais articuladores da Convenção sobre Proteção e Promoção da Diversidade das Expressões Culturais (UNESCO, 2005). O objetivo era criar um instrumento jurídico que limitasse os acordos comerciais internacionais sobre bens culturais — protegendo as culturas dos países em desenvolvimento contra o domínio da indústria cultural americana.</div>
+        </div>
+        <div class="lbox"><strong>Síntese diplomática:</strong> A arte brasileira — sua mestiçagem, sua capacidade de devorar e reinventar culturas externas, sua produção contínua de vanguarda a partir da periferia — é, em si mesma, um argumento diplomático. Posiciona o Brasil como mediador natural entre o Sul Global e o Norte, entre tradição e vanguarda.</div>
+      </div></div>
+    </div>
+  </div>
+</div>
+
+</div><!-- /tl -->
+
+<footer>
+  <div class="footer-quote">"Só a Antropofagia nos une. Socialmente. Economicamente. Filosoficamente."</div>
+  <div class="footer-attr">— Oswald de Andrade · Manifesto Antropófago · 1928</div>
+  <div class="footer-meta">Arte no Brasil · Linha do Tempo Completa · CACD 2026 · Diplomacia Cultural<br>Música · Literatura · Artes Plásticas · Arquitetura · Cinema · Arte Sacra · Cultura Popular · Teatro e Dança</div>
+</footer>
+
+<script>
+function tog(btn) {
+  btn.classList.toggle('open');
+  const ex = btn.nextElementSibling;
+  ex.classList.toggle('open');
+  const ch = btn.querySelector('.ch');
+  ch.style.transform = btn.classList.contains('open') ? 'rotate(90deg)' : 'rotate(0)';
+  btn.lastChild.textContent = btn.classList.contains('open') ? ' ver menos' : ' ver mais';
+}
+
+function fAll(btn) {
+  document.querySelectorAll('.entry').forEach(e => e.classList.remove('hidden'));
+  document.querySelectorAll('.fbtn').forEach(b => b.classList.remove('on'));
+  btn.classList.add('on');
+}
+
+function fCat(cat, btn) {
+  document.querySelectorAll('.entry').forEach(e => {
+    const c = e.dataset.cat || '';
+    e.classList.toggle('hidden', !c.includes(cat));
+  });
+  document.querySelectorAll('.fbtn').forEach(b => b.classList.remove('on'));
+  btn.classList.add('on');
+}
+</script>
+</body>
+</html>
