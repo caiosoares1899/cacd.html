@@ -1,0 +1,4319 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#090d12">
+<title>Economia Brasileira · Formação e Desenvolvimento · CACD</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=IBM+Plex+Mono:wght@300;400;600&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:        #0d1117;
+  --bg2:       #090d12;
+  --panel:     #13191f;
+  --panel2:    #171e26;
+  --border:    #2a3240;
+  --gold:      #c9a84c;
+  --gold-bright: #e8c97a;
+  --gold-dim:  rgba(201,168,76,0.12);
+  --gold-line: rgba(201,168,76,0.3);
+  --text:      #f0ece2;
+  --muted:     #7a8494;
+  --red:       #c0392b;
+  --green:     #5f9a6a;
+  --blue:      #4a7cb5;
+  --teal:      #3a8c84;
+  --purple:    #8e5ea0;
+  --orange:    #c47a35;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg);
+  font-family: "IBM Plex Mono", monospace;
+  color: var(--text);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* HERO */
+.hero {
+  background: linear-gradient(180deg, #050709 0%, #0d1117 70%, transparent 100%);
+  padding: 4.5rem 2rem 3.5rem;
+  text-align: center;
+  position: relative;
+  border-bottom: 1px solid var(--gold-line);
+}
+.hero::before {
+  content: '';
+  position: absolute;
+  bottom: -1px; left: 50%;
+  transform: translateX(-50%);
+  width: 80px; height: 2px;
+  background: var(--gold);
+}
+.hero-label {
+  font-family: "IBM Plex Mono", monospace;
+  font-size: .58rem;
+  letter-spacing: .32em;
+  color: var(--gold);
+  text-transform: uppercase;
+  margin-bottom: 1.4rem;
+}
+.hero-flags {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  margin-bottom: 1.2rem;
+}
+.hflag {
+  width: 60px; height: 42px; border-radius: 3px;
+  border: 1px solid rgba(255,255,255,0.15);
+  overflow: hidden; position: relative;
+  flex-shrink: 0;
+}
+.hflag svg { width: 100%; height: 100%; display: block; }
+.hero h1 {
+  font-family: "Playfair Display", serif;
+  font-size: clamp(2rem, 5vw, 3.2rem);
+  font-weight: 900;
+  line-height: 1.1;
+  margin-bottom: .5rem;
+}
+.hero h1 em { color: var(--gold); font-style: italic; }
+.hero-sub {
+  font-family: "Crimson Pro", serif;
+  font-style: italic;
+  font-size: clamp(.9rem, 2vw, 1.1rem);
+  color: var(--muted);
+  margin-bottom: 2.2rem;
+}
+
+.era-legend {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.era-legend-item {
+  display: flex; align-items: center; gap: 6px;
+  font-size: .48rem; letter-spacing: .07em;
+  text-transform: uppercase; color: var(--muted);
+}
+.era-legend-dot {
+  width: 8px; height: 8px; border-radius: 50%;
+}
+
+/* FILTER BAR */
+.filter-bar {
+  background: var(--bg2);
+  border-bottom: 1px solid var(--border);
+  padding: 12px 20px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+.filter-lbl {
+  font-size: .46rem;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-right: 4px;
+}
+.fbtn {
+  font-family: "IBM Plex Mono", monospace;
+  font-size: .5rem;
+  padding: 5px 14px;
+  letter-spacing: .09em;
+  text-transform: uppercase;
+  cursor: pointer;
+  border: 1.5px solid var(--border);
+  background: transparent;
+  color: var(--muted);
+  border-radius: 2px;
+  transition: all .15s;
+}
+.fbtn:hover, .fbtn.on {
+  border-color: var(--gold);
+  color: var(--gold);
+  background: var(--gold-dim);
+}
+.filter-spacer { flex: 1; }
+.search-box {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  color: var(--text);
+  font-family: "IBM Plex Mono", monospace;
+  font-size: .52rem;
+  padding: 5px 12px;
+  border-radius: 2px;
+  outline: none;
+  width: 180px;
+}
+.search-box:focus { border-color: var(--gold); }
+.search-box::placeholder { color: var(--muted); }
+
+/* MAIN SPLIT */
+.workspace {
+  display: grid;
+  grid-template-columns: 270px 1fr;
+  min-height: calc(100vh - 160px);
+}
+
+/* SIDEBAR */
+.sidebar {
+  background: var(--bg2);
+  border-right: 1px solid var(--border);
+  overflow-y: auto;
+  position: sticky;
+  top: 50px;
+  height: calc(100vh - 50px);
+}
+.sidebar-section {
+  border-bottom: 1px solid var(--border);
+}
+.section-era {
+  padding: 10px 16px 6px;
+  font-size: .58rem;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--gold);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.section-era::after {
+  content: ''; flex: 1; height: 1px;
+  background: var(--gold-line);
+}
+.nav-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 11px 16px;
+  cursor: pointer;
+  border-left: 2px solid transparent;
+  transition: all .15s;
+}
+.nav-item:hover { background: var(--gold-dim); }
+.nav-item.active {
+  background: var(--gold-dim);
+  border-left-color: var(--gold);
+}
+.nav-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%; margin-top: 5px; flex-shrink: 0;
+}
+.nav-info { flex: 1; min-width: 0; }
+.nav-year {
+  font-size: .62rem; font-weight: 600;
+  color: var(--muted); letter-spacing: .04em;
+}
+.nav-item.active .nav-year { color: var(--gold); }
+.nav-title {
+  font-size: .67rem; color: var(--text);
+  line-height: 1.35; margin-top: 2px;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.nav-tag {
+  font-size: .5rem; padding: 2px 7px; border-radius: 2px;
+  text-transform: uppercase; letter-spacing: .06em;
+  margin-top: 4px; display: inline-block;
+}
+
+/* CONTENT AREA */
+.content {
+  overflow-y: auto;
+}
+
+/* TIMELINE CENTRAL */
+.timeline-wrap {
+  padding: 50px 48px 100px;
+  position: relative;
+}
+.tl-line {
+  position: absolute;
+  left: 50%; top: 0; bottom: 0;
+  width: 2px;
+  transform: translateX(-50%);
+  background: linear-gradient(180deg, transparent, var(--border) 5%, var(--border) 95%, transparent);
+}
+
+.era-block {
+  position: relative;
+  text-align: center;
+  margin: 48px 0 32px;
+  z-index: 2;
+}
+.era-block-label {
+  display: inline-block;
+  font-size: .52rem;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  padding: 6px 20px;
+  border: 1px solid var(--gold-line);
+  background: var(--bg);
+  color: var(--gold);
+  position: relative;
+}
+
+.ev-row {
+  display: grid;
+  grid-template-columns: 1fr 40px 1fr;
+  gap: 0;
+  align-items: start;
+  margin-bottom: 32px;
+  position: relative;
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity .4s, transform .4s;
+}
+.ev-row.visible { opacity: 1; transform: translateY(0); }
+.ev-row.hidden { display: none; }
+
+.ev-left, .ev-right { padding: 0; }
+.ev-left { text-align: right; padding-right: 28px; }
+.ev-right { text-align: left; padding-left: 28px; }
+.ev-empty { }
+
+.ev-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 14px;
+  position: relative;
+  z-index: 2;
+}
+.ev-dot {
+  width: 14px; height: 14px;
+  border-radius: 50%;
+  border: 2px solid var(--bg);
+  flex-shrink: 0;
+  cursor: pointer;
+  transition: transform .2s;
+}
+.ev-dot:hover { transform: scale(1.3); }
+
+.ev-card {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  padding: 14px 16px;
+  cursor: pointer;
+  transition: border-color .2s, background .2s;
+  text-align: left;
+}
+.ev-card:hover { border-color: var(--gold); background: var(--panel2); }
+.ev-card.active { border-color: var(--gold); background: var(--panel2); }
+.ev-card-year {
+  font-family: "IBM Plex Mono", monospace;
+  font-size: .56rem; font-weight: 600;
+  letter-spacing: .06em;
+  margin-bottom: 5px;
+}
+.ev-card-tags { display: flex; gap: 4px; flex-wrap: wrap; margin-bottom: 7px; }
+.ev-card-title {
+  font-family: "Playfair Display", serif;
+  font-size: .92rem; font-weight: 700;
+  line-height: 1.3; margin-bottom: 5px;
+}
+.ev-card-sub {
+  font-family: "Crimson Pro", serif;
+  font-size: .82rem; color: var(--muted); line-height: 1.5;
+}
+
+.ev-right .ev-card-tags { justify-content: flex-start; }
+.ev-left .ev-card-tags { justify-content: flex-end; }
+.ev-left .ev-card { text-align: right; }
+
+/* DETAIL PANEL */
+.detail-overlay {
+  display: none;
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(5,7,9,0.7);
+  z-index: 200;
+  align-items: flex-end;
+}
+.detail-overlay.open { display: flex; }
+.detail-drawer {
+  width: 100%;
+  max-height: 82vh;
+  background: var(--panel);
+  border-top: 2px solid var(--gold);
+  display: flex;
+  flex-direction: column;
+  animation: slideUp .25s ease;
+}
+@keyframes slideUp {
+  from { transform: translateY(100%); }
+  to   { transform: translateY(0); }
+}
+.drawer-header {
+  padding: 16px 24px 12px;
+  border-bottom: 1px solid var(--border);
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 16px;
+  align-items: start;
+  flex-shrink: 0;
+}
+.drawer-meta {
+  font-size: .48rem;
+  color: var(--gold);
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+.drawer-title {
+  font-family: "Playfair Display", serif;
+  font-size: clamp(1.2rem, 3vw, 1.8rem);
+  font-weight: 900;
+  line-height: 1.2;
+  margin-bottom: 6px;
+}
+.drawer-sub {
+  font-family: "Crimson Pro", serif;
+  font-style: italic;
+  font-size: .9rem;
+  color: var(--muted);
+  line-height: 1.5;
+}
+.drawer-close {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  color: var(--muted);
+  width: 32px; height: 32px;
+  border-radius: 2px;
+  cursor: pointer;
+  font-size: .8rem;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  transition: border-color .15s;
+}
+.drawer-close:hover { border-color: var(--gold); color: var(--gold); }
+
+.drawer-meta-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+.meta-col {
+  padding: 12px 20px;
+  border-right: 1px solid var(--border);
+}
+.meta-col:last-child { border-right: none; }
+.meta-col-label {
+  font-size: .44rem;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 6px;
+}
+.meta-col-content {
+  font-family: "Crimson Pro", serif;
+  font-size: .84rem;
+  color: var(--text);
+  line-height: 1.6;
+}
+
+.drawer-tabs {
+  display: flex;
+  border-bottom: 1px solid var(--border);
+  overflow-x: auto;
+  scrollbar-width: none;
+  flex-shrink: 0;
+}
+.drawer-tabs::-webkit-scrollbar { display: none; }
+.dtab {
+  font-family: "IBM Plex Mono", monospace;
+  font-size: .5rem;
+  padding: 10px 16px;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--muted);
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  white-space: nowrap;
+  transition: all .15s;
+}
+.dtab:hover { color: var(--text); }
+.dtab.active { color: var(--gold); border-bottom-color: var(--gold); }
+
+.drawer-body {
+  overflow-y: auto;
+  flex: 1;
+}
+.tab-panel { display: none; padding: 20px 24px 32px; }
+.tab-panel.active { display: block; }
+
+.tp-section { margin-bottom: 20px; }
+.tp-label {
+  font-size: .46rem;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 8px;
+}
+.tp-text {
+  font-family: "Crimson Pro", serif;
+  font-size: .9rem;
+  line-height: 1.75;
+  color: var(--text);
+}
+.tp-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 10px;
+  margin-bottom: 20px;
+}
+.tp-stat {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  padding: 12px 14px;
+}
+.tp-stat-val {
+  font-family: "Playfair Display", serif;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--gold);
+  line-height: 1;
+}
+.tp-stat-lbl {
+  font-size: .44rem;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  margin-top: 3px;
+}
+.tp-list { list-style: none; }
+.tp-list li {
+  font-family: "Crimson Pro", serif;
+  font-size: .88rem;
+  color: var(--text);
+  padding: 5px 0;
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: flex-start; gap: 8px; line-height: 1.5;
+}
+.tp-list li::before { content: '›'; color: var(--gold); flex-shrink: 0; }
+.tp-actors { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
+.actor-chip {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  padding: 7px 12px;
+}
+.actor-name { font-size: .56rem; color: var(--text); font-weight: 600; }
+.actor-role { font-size: .46rem; color: var(--muted); margin-top: 2px; }
+.quote-block {
+  background: var(--bg);
+  border-left: 3px solid var(--gold);
+  padding: 14px 18px;
+  margin: 14px 0;
+  border-radius: 0 3px 3px 0;
+}
+.quote-text {
+  font-family: "Crimson Pro", serif;
+  font-style: italic;
+  font-size: .95rem;
+  color: var(--text);
+  line-height: 1.65;
+}
+.quote-author {
+  font-size: .46rem;
+  color: var(--muted);
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  margin-top: 8px;
+}
+
+.tag {
+  font-size: .44rem;
+  padding: 2px 7px;
+  border-radius: 2px;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+}
+.tc { background:rgba(201,168,76,.10);  color:var(--gold);    border:1px solid rgba(201,168,76,.3);  }
+.ti { background:rgba(142,94,160,.12);  color:var(--purple);  border:1px solid rgba(142,94,160,.3);  }
+.tr { background:rgba(74,124,181,.12);  color:var(--blue);    border:1px solid rgba(74,124,181,.3);   }
+.tm { background:rgba(58,140,132,.12);  color:var(--teal);    border:1px solid rgba(58,140,132,.3);   }
+.tk { background:rgba(201,168,76,.14);  color:var(--gold-bright); border:1px solid rgba(201,168,76,.35); }
+.ta { background:rgba(95,154,106,.12);  color:var(--green);   border:1px solid rgba(95,154,106,.3);   }
+.tx { background:rgba(192,57,43,.12);   color:var(--red);     border:1px solid rgba(192,57,43,.3);    }
+.to { background:rgba(196,122,53,.12);  color:var(--orange);  border:1px solid rgba(196,122,53,.3);   }
+
+/* market grid inside "Mercados" tab */
+.mk-grid { display:grid; grid-template-columns: repeat(2,1fr); gap:12px; margin-bottom:18px; }
+.mk-card { background:var(--bg); border:1px solid var(--border); border-radius:3px; padding:12px 14px; border-top:2px solid var(--gold-line); }
+.mk-card-lbl { font-size:.46rem; letter-spacing:.12em; text-transform:uppercase; color:var(--gold); margin-bottom:6px; }
+.mk-card-txt { font-family:"Crimson Pro", serif; font-size:.85rem; line-height:1.65; color:var(--text); }
+
+.footer-note {
+  text-align:center; padding: 28px 20px 90px; font-size:.5rem; letter-spacing:.08em;
+  color: var(--muted); text-transform: uppercase;
+}
+.footer-note a { color: var(--gold); text-decoration:none; }
+
+/* quick-bar */
+.quick-bar {
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  background: var(--bg2);
+  border-top: 1px solid var(--border);
+  padding: 7px 20px;
+  display: flex;
+  gap: 6px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  z-index: 150;
+}
+.quick-bar::-webkit-scrollbar { display: none; }
+.qpill {
+  font-size: .44rem;
+  padding: 4px 10px;
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  color: var(--muted);
+  white-space: nowrap;
+  cursor: pointer;
+  transition: all .15s;
+  font-family: "IBM Plex Mono", monospace;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  background: transparent;
+}
+.qpill:hover { border-color: var(--gold); color: var(--gold); }
+
+@supports (padding-bottom: env(safe-area-inset-bottom)) {
+  .quick-bar {
+    padding-bottom: calc(7px + env(safe-area-inset-bottom));
+  }
+  @media (max-width: 768px) {
+    .detail-drawer {
+      padding-bottom: env(safe-area-inset-bottom);
+    }
+  }
+}
+
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: var(--bg2); }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--muted); }
+
+@media (max-width: 768px) {
+  .hero { padding: 2.2rem 1.2rem 2rem; }
+  .hero-label { font-size: .5rem; letter-spacing: .18em; margin-bottom: 1rem; }
+  .hero h1 { font-size: 2rem; }
+  .hero-sub { font-size: .82rem; margin-bottom: 1.4rem; }
+  .hflag { width: 42px; height: 30px; }
+  .era-legend { gap: 8px; }
+  .era-legend-item { font-size: .42rem; }
+
+  .filter-bar { padding: 8px 12px; gap: 6px; flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; }
+  .filter-bar::-webkit-scrollbar { display: none; }
+  .filter-lbl { display: none; }
+  .fbtn { font-size: .46rem; padding: 5px 10px; flex-shrink: 0; }
+  .filter-spacer { display: none; }
+  .search-box { display: none; }
+
+  .workspace { grid-template-columns: 1fr; }
+  .sidebar { display: none; }
+
+  .timeline-wrap { padding: 20px 14px 100px 44px; }
+  .tl-line { left: 16px; transform: none; }
+  .ev-row { display: flex; flex-direction: row; align-items: flex-start; gap: 0; margin-bottom: 20px; }
+  .ev-left { display: none; }
+  .ev-empty { display: none; }
+  .ev-center { flex-shrink: 0; width: 28px; padding-top: 12px; margin-left: -28px; }
+  .ev-dot { width: 12px; height: 12px; }
+  .ev-right { flex: 1; padding-left: 12px; text-align: left; }
+  .ev-card { padding: 11px 13px; }
+  .ev-card-year { font-size: .58rem; }
+  .ev-card-title { font-size: .82rem; }
+  .ev-card-sub { font-size: .75rem; }
+  .ev-card-tags { margin-bottom: 5px; }
+  .tag { font-size: .42rem; padding: 2px 6px; }
+
+  .era-block-label { font-size: .44rem; padding: 5px 12px; letter-spacing: .12em; }
+
+  .detail-overlay { align-items: flex-start; }
+  .detail-drawer { max-height: 100vh; height: 100dvh; border-top: none; border-bottom: 2px solid var(--gold); display: flex; flex-direction: column; overflow: hidden; }
+
+  .drawer-header { padding: 14px 16px 10px; gap: 10px; }
+  .drawer-title { font-size: 1.1rem; }
+  .drawer-sub { font-size: .78rem; }
+  .drawer-meta { font-size: .42rem; }
+  .drawer-close { width: 28px; height: 28px; font-size: .7rem; flex-shrink: 0; }
+
+  .drawer-meta-row { grid-template-columns: 1fr !important; border-bottom: 1px solid var(--border); }
+  .meta-col { padding: 8px 16px; border-right: none !important; border-bottom: 1px solid var(--border); }
+  .meta-col:last-child { border-bottom: none; }
+  .meta-col-label { font-size: .42rem; }
+  .meta-col-content { font-size: .78rem; }
+
+  .drawer-tabs { flex-shrink: 0; }
+  .dtab { font-size: .46rem; padding: 9px 12px; }
+
+  .drawer-body { flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch; }
+  .tab-panel { padding: 14px 16px 24px; }
+
+  .tp-text { font-size: .82rem; line-height: 1.7; }
+  .tp-label { font-size: .42rem; margin-bottom: 6px; }
+  .tp-grid { grid-template-columns: repeat(2, 1fr); gap: 8px; }
+  .tp-stat-val { font-size: .9rem; }
+  .tp-stat-lbl { font-size: .42rem; }
+  .tp-actors { gap: 6px; }
+  .actor-chip { padding: 6px 10px; }
+  .actor-name { font-size: .52rem; }
+  .actor-role { font-size: .42rem; }
+  .quote-block { padding: 10px 14px; }
+  .quote-text { font-size: .82rem; }
+  .quote-author { font-size: .42rem; }
+  .mk-grid { grid-template-columns: 1fr; }
+
+  .quick-bar { padding: 6px 12px; gap: 5px; }
+  .qpill { font-size: .42rem; padding: 4px 8px; }
+}
+
+@media (max-width: 380px) {
+  .hero h1 { font-size: 1.7rem; }
+  .timeline-wrap { padding: 16px 10px 100px 38px; }
+  .tl-line { left: 12px; }
+  .ev-center { margin-left: -24px; width: 24px; }
+  .ev-card-title { font-size: .78rem; }
+  .tp-grid { grid-template-columns: 1fr 1fr; }
+}
+</style>
+</head>
+<body>
+
+<section class="hero">
+  <div class="hero-label">Linha do Tempo · Economia Brasileira · CACD 2026</div>
+  <div class="hero-flags">
+    <div class="hflag">
+      <svg viewBox="0 0 54 36" xmlns="http://www.w3.org/2000/svg">
+        <rect width="54" height="36" fill="#009c3b"/>
+        <polygon points="27,3 51,18 27,33 3,18" fill="#FFDF00"/>
+        <circle cx="27" cy="18" r="8.5" fill="#002776"/>
+        <path d="M19,16 Q27,13.5 35,16" stroke="white" stroke-width="1.1" fill="none" stroke-linecap="round"/>
+      </svg>
+    </div>
+  </div>
+  <h1>História da Economia <em>Brasileira</em></h1>
+  <p class="hero-sub">Formação e desenvolvimento · Século XIX – hoje · Mercados, planejamento e inserção internacional, década a década</p>
+  <div class="era-legend" id="eraLegend"></div>
+</section>
+
+<div class="filter-bar">
+  <span class="filter-lbl">Era:</span>
+  <button class="fbtn on" data-era="all">Todas</button>
+  <button class="fbtn" data-era="imperio">Império</button>
+  <button class="fbtn" data-era="primeira_republica">1ª República</button>
+  <button class="fbtn" data-era="vargas">Era Vargas</button>
+  <button class="fbtn" data-era="populismo">Populismo</button>
+  <button class="fbtn" data-era="regime_militar">Regime Militar</button>
+  <button class="fbtn" data-era="redemocratizacao">Redemocratização</button>
+  <button class="fbtn" data-era="contemporaneo">Contemporâneo</button>
+  <div class="filter-spacer"></div>
+  <input class="search-box" id="searchInput" type="text" placeholder="buscar década, evento…">
+  <button class="fbtn" id="mobileSearchBtn" style="display:none" aria-label="Buscar">⌕</button>
+</div>
+
+<div class="workspace">
+  <aside class="sidebar" id="sidebar"></aside>
+  <div class="content">
+    <div class="timeline-wrap">
+      <div class="tl-line"></div>
+      <div id="timelineEl"></div>
+      <div class="footer-note">Linha do tempo elaborada para estudos do CACD — Concurso de Admissão à Carreira de Diplomata · Prova de Economia · Baseada em historiografia econômica brasileira (Celso Furtado, Werner Baer, Boris Fausto, IBGE/IPEADATA, Banco Central)</div>
+    </div>
+  </div>
+</div>
+
+<div class="detail-overlay" id="detailOverlay">
+  <div class="detail-drawer" id="detailDrawer">
+    <div class="drawer-header">
+      <div>
+        <div class="drawer-meta" id="dMeta"></div>
+        <div class="drawer-title" id="dTitle"></div>
+        <div class="drawer-sub" id="dSub"></div>
+      </div>
+      <button class="drawer-close" id="drawerClose">✕</button>
+    </div>
+    <div class="drawer-meta-row" id="dMetaRow"></div>
+    <div class="drawer-tabs" id="dTabs"></div>
+    <div class="drawer-body" id="dBody"></div>
+  </div>
+</div>
+
+<div class="quick-bar" id="quickBar"></div>
+
+<script>
+/* ── DATA ── */
+const EVENTS = [
+ {
+  "id": "d1800",
+  "year": "1808–1822",
+  "era": "imperio",
+  "dot": "#c9a84c",
+  "title": "Abertura dos Portos e as Bases da Economia Colonial Tardia",
+  "sub": "A chegada da Corte, a abertura dos portos e a criacao do Banco do Brasil lancam as bases institucionais de uma economia que ainda repousa sobre o trabalho escravo e a monocultura de exportacao.",
+  "tags": [
+   "imperio",
+   "reforma"
+  ],
+  "meta": [
+   {
+    "lbl": "Regime cambial",
+    "val": "Padrao-prata desorganizado, sem conversibilidade estavel"
+   },
+   {
+    "lbl": "Estrutura produtiva",
+    "val": "Acucar, algodao e ouro residual; ascensao do cafe no Vale do Paraiba"
+   },
+   {
+    "lbl": "Populacao escravizada",
+    "val": "Cerca de 30% da populacao total"
+   }
+  ],
+  "tabs": {
+   "Mercados": [
+    {
+     "lbl": "Mercado Monetario",
+     "txt": "Criacao do Banco do Brasil (1808), primeiro banco emissor do pais, autorizado a emitir papel-moeda para financiar a Corte e o comercio; moeda fiduciaria ainda incipiente e sujeita a desconfianca, convivendo com moedas metalicas de diversas procedencias."
+    },
+    {
+     "lbl": "Mercado Cambial",
+     "txt": "Sem padrao-ouro ou cambio fixo; a taxa de cambio flutuava conforme a disponibilidade de metais preciosos e a balanca de pagamentos com a Inglaterra, cujos comerciantes dominavam o credito externo."
+    },
+    {
+     "lbl": "Mercado de Trabalho",
+     "txt": "O trabalho escravo continua sendo a base da producao agricola de exportacao; a Convencao de 1810 com a Inglaterra pressiona (sem efeito imediato) pelo fim do trafico, que na pratica se intensifica."
+    },
+    {
+     "lbl": "Mercado de Credito",
+     "txt": "Credito escasso e informal, concentrado em comerciantes portugueses e ingleses; o Banco do Brasil tenta suprir a lacuna, mas o financiamento agricola continua a depender de relacoes pessoais e hipotecas sobre escravizados e terras."
+    }
+   ],
+   "Planejamento": [
+    {
+     "lbl": "Visao de governo",
+     "txt": "Nao ha politica economica nacional formulada; as decisoes vem da Coroa portuguesa e, apos 1815, do Reino Unido de Portugal, Brasil e Algarves. A Abertura dos Portos (1808) e os Tratados de 1810 sao atos de necessidade geopolitica diante do bloqueio napoleonico, nao de projeto desenvolvimentista deliberado."
+    }
+   ],
+   "Comércio Exterior": [
+    {
+     "lbl": "Parceiros comerciais",
+     "txt": "A Gra-Bretanha domina o comercio exterior brasileiro apos 1810, com tarifas preferenciais de 15%; Portugal perde a exclusividade colonial que mantivera por tres seculos."
+    },
+    {
+     "lbl": "Balanca comercial",
+     "txt": "Deficitaria com a Inglaterra pela entrada macica de manufaturados britanicos, parcialmente compensada pela exportacao de acucar, algodao e, de forma crescente, cafe."
+    },
+    {
+     "lbl": "Economia externa",
+     "txt": "Dependencia quase total do capital mercantil ingles para financiamento, seguros e transporte maritimo; o Brasil funciona como periferia comercial do sistema atlantico britanico."
+    }
+   ],
+   "Problemas": [
+    {
+     "lbl": "Dependencia externa",
+     "txt": "Dependencia tecnologica e financeira da Inglaterra, sem manufatura propria protegida."
+    },
+    {
+     "lbl": "Trafico negreiro",
+     "txt": "Pilar economico moralmente insustentavel a longo prazo e fonte crescente de atrito diplomatico com Londres."
+    },
+    {
+     "lbl": "Financas desorganizadas",
+     "txt": "Heranca de uma administracao fiscal colonial improvisada, sem tesouro nacional estruturado."
+    }
+   ],
+   "Eventos-Chave": [
+    {
+     "lbl": "Abertura dos Portos as Nacoes Amigas (1808)",
+     "txt": "Rompe o pacto colonial que vigorava desde 1500, mas substitui o monopolio comercial portugues pelo predominio comercial britanico, condicionando a nova fase da economia brasileira."
+    },
+    {
+     "lbl": "Tratados de Comercio e Navegacao com a Inglaterra (1810)",
+     "txt": "Impoe tarifas de 15% sobre produtos britanicos, inferiores as pagas pelos proprios portugueses; consolida uma dependencia comercial e financeira que marcaria decadas."
+    },
+    {
+     "lbl": "Criacao do Banco do Brasil (1808)",
+     "txt": "Primeira experiencia de banco emissor do pais, criado para financiar a Corte e o comercio; fecharia falido em 1829 apos financiar a Guerra da Independencia e a Cisplatina."
+    }
+   ],
+   "Governo": [
+    {
+     "lbl": "D. Joao VI",
+     "txt": "Governa como Regente e depois Rei; concentra as decisoes economicas da Corte transferida ao Rio de Janeiro."
+    },
+    {
+     "lbl": "Conde de Linhares (Rodrigo de Sousa Coutinho)",
+     "txt": "Ministro que mais se aproxima de um formulador de politica economica no periodo joanino, idealizador de parte da modernizacao institucional."
+    }
+   ],
+   "Legado": [
+    {
+     "lbl": "Sementes contraditorias",
+     "txt": "O periodo joanino planta as sementes da industrializacao tardia (ao permitir manufaturas antes proibidas) e da abertura comercial assimetrica que marcaria todo o seculo XIX."
+    },
+    {
+     "lbl": "Para o CACD",
+     "txt": "Tema recorrente e a contradicao entre 'modernizacao' institucional (bancos, tratados) e a permanencia da escravidao como base produtiva — ponto de partida obrigatorio para qualquer questao sobre formacao economica do Brasil independente."
+    }
+   ]
+  },
+  "actors": [
+   {
+    "name": "D. Joao VI",
+    "role": "Principe-regente e depois Rei — governou o Imperio a partir do Rio de Janeiro"
+   },
+   {
+    "name": "Conde de Linhares",
+    "role": "Ministro — idealizou parte da estrategia economica da transferencia da Corte"
+   },
+   {
+    "name": "Lord Strangford",
+    "role": "Embaixador britanico — negociou os Tratados de 1810"
+   }
+  ],
+  "stats": [
+   {
+    "val": "15%",
+    "lbl": "Tarifa preferencial britanica (1810)"
+   },
+   {
+    "val": "1808",
+    "lbl": "Criacao do Banco do Brasil"
+   },
+   {
+    "val": "~30%",
+    "lbl": "Populacao escravizada"
+   },
+   {
+    "val": "1815",
+    "lbl": "Elevacao a Reino Unido"
+   }
+  ]
+ },
+ {
+  "id": "d1822",
+  "year": "1822–1830",
+  "era": "imperio",
+  "dot": "#c0392b",
+  "title": "Independencia e as Financas do Primeiro Reinado",
+  "sub": "O jovem Estado assume a divida herdada de Portugal e contrai os primeiros emprestimos externos junto a casa Rothschild, inaugurando um padrao de endividamento que marcaria todo o seculo.",
+  "tags": [
+   "imperio",
+   "crise"
+  ],
+  "meta": [
+   {
+    "lbl": "Primeiro emprestimo externo",
+    "val": "Rothschild, 1824 (£3 milhoes)"
+   },
+   {
+    "lbl": "Cambio",
+    "val": "Mil-reis em depreciacao constante"
+   },
+   {
+    "lbl": "Banco do Brasil",
+    "val": "Liquidado em 1829"
+   }
+  ],
+  "tabs": {
+   "Mercados": [
+    {
+     "lbl": "Mercado Monetario",
+     "txt": "O Banco do Brasil, endividado com o financiamento da Guerra da Independencia e da Cisplatina, perde reservas metalicas e entra em processo de liquidacao, concluido em 1829; o mil-reis papel se desvaloriza continuamente por emissoes sem lastro."
+    },
+    {
+     "lbl": "Mercado Cambial",
+     "txt": "Cambio em depreciacao sistematica; o Brasil recorre a emprestimos externos em libras esterlinas para cobrir deficits, indexando parte da divida publica a uma moeda forte e criando vulnerabilidade cambial estrutural desde o nascimento do pais."
+    },
+    {
+     "lbl": "Mercado de Trabalho",
+     "txt": "O trabalho escravo permanece hegemonico; a Convencao de 1826 com a Inglaterra compromete o Brasil a extinguir o trafico em tres anos — compromisso amplamente descumprido na pratica."
+    },
+    {
+     "lbl": "Mercado de Credito",
+     "txt": "Credito interno escasso apos a falencia do Banco do Brasil; produtores rurais dependem de comissarios e casas comerciais estrangeiras para adiantamentos sobre safras futuras de acucar e cafe."
+    }
+   ],
+   "Planejamento": [
+    {
+     "lbl": "Visao de governo",
+     "txt": "Nao ha planejamento economico formal; a prioridade do Primeiro Reinado e consolidar a soberania e pagar a indenizacao a Portugal (1825), financiada por divida externa — padrao de 'crescimento com endividamento' que se repetiria ao longo da historia brasileira."
+    }
+   ],
+   "Comércio Exterior": [
+    {
+     "lbl": "Parceiros comerciais",
+     "txt": "A Gra-Bretanha continua parceiro dominante, seguida por Estados Unidos e Franca; o cafe do Rio de Janeiro comeca a ganhar mercado nos EUA."
+    },
+    {
+     "lbl": "Balanca comercial",
+     "txt": "Deficit estrutural em conta corrente compensado por emprestimos externos; a pauta exportadora ainda e dominada por acucar e algodao, com o cafe em ascensao."
+    },
+    {
+     "lbl": "Economia externa",
+     "txt": "O reconhecimento da independencia por Portugal (1825), mediado pela Gra-Bretanha, custa £2 milhoes, financiados por novo emprestimo Rothschild — o Brasil nasce Estado soberano, mas financeiramente tutelado."
+    }
+   ],
+   "Problemas": [
+    {
+     "lbl": "Divida externa onerosa",
+     "txt": "Contraida com deságios elevados (cerca de 24%), inaugurando o ciclo de divida soberana brasileira."
+    },
+    {
+     "lbl": "Falencia do banco emissor",
+     "txt": "Fragiliza o sistema monetario nascente e obriga a improvisacoes por decadas."
+    },
+    {
+     "lbl": "Pressao britanica",
+     "txt": "Pelo fim do trafico negreiro, gerando atrito diplomatico recorrente."
+    }
+   ],
+   "Eventos-Chave": [
+    {
+     "lbl": "Emprestimo Rothschild de 1824",
+     "txt": "Primeiro grande emprestimo externo brasileiro, com desagio de cerca de 24%, inaugurando o ciclo de divida soberana que marcaria a insercao financeira internacional do pais."
+    },
+    {
+     "lbl": "Reconhecimento da Independencia por Portugal (1825)",
+     "txt": "Mediado pela Inglaterra, custa indenizacao de £2 milhoes que se soma a divida externa nascente, condicionando a soberania a novo endividamento."
+    },
+    {
+     "lbl": "Guerra da Cisplatina (1825–1828)",
+     "txt": "Conflito com as Provincias Unidas do Rio da Prata pela Banda Oriental drena recursos publicos e forca nova rodada de emprestimos externos."
+    }
+   ],
+   "Governo": [
+    {
+     "lbl": "D. Pedro I",
+     "txt": "Concentra as decisoes economicas do Primeiro Reinado; prioriza a consolidacao da soberania sobre qualquer projeto de desenvolvimento."
+    },
+    {
+     "lbl": "Visconde de Barbacena",
+     "txt": "Atua como negociador financeiro do Imperio na Europa junto aos credores britanicos."
+    }
+   ],
+   "Legado": [
+    {
+     "lbl": "A 'primeira divida externa'",
+     "txt": "Tornou-se simbolo, na historiografia (Celso Furtado, Caio Prado Jr.), da insercao subordinada do Brasil no sistema financeiro internacional desde o nascimento do pais."
+    },
+    {
+     "lbl": "Para o CACD",
+     "txt": "Comparar o padrao de endividamento de 1824 com os ciclos de divida do seculo XX (anos 1970-80) e pergunta classica de prova discursiva de Economia."
+    }
+   ]
+  },
+  "actors": [
+   {
+    "name": "D. Pedro I",
+    "role": "Imperador do Brasil — concentrava as decisoes economicas do Primeiro Reinado"
+   },
+   {
+    "name": "Visconde de Barbacena",
+    "role": "Negociador financeiro do Imperio junto aos credores britanicos"
+   },
+   {
+    "name": "Casa Rothschild",
+    "role": "Banco financiador do primeiro emprestimo externo brasileiro (1824)"
+   }
+  ],
+  "stats": [
+   {
+    "val": "£3 mi",
+    "lbl": "Emprestimo Rothschild 1824"
+   },
+   {
+    "val": "24%",
+    "lbl": "Desagio medio dos emprestimos"
+   },
+   {
+    "val": "£2 mi",
+    "lbl": "Indenizacao a Portugal"
+   },
+   {
+    "val": "1829",
+    "lbl": "Fim do Banco do Brasil"
+   }
+  ]
+ },
+ {
+  "id": "d1830",
+  "year": "1830–1839",
+  "era": "imperio",
+  "dot": "#c9a84c",
+  "title": "Regencia: Descentralizacao Fiscal e a Ascensao do Cafe",
+  "sub": "O Ato Adicional descentraliza receitas para as provincias, o cafe do Vale do Paraiba dispara como novo eixo exportador e o trafico negreiro, ja ilegal, prossegue clandestino em larga escala.",
+  "tags": [
+   "imperio",
+   "reforma"
+  ],
+  "meta": [
+   {
+    "lbl": "Lei Feijo (1831)",
+    "val": "Trafico declarado ilegal, mas ineficaz na pratica"
+   },
+   {
+    "lbl": "Cafe",
+    "val": "Ja cerca de 40% das exportacoes ao final da decada"
+   },
+   {
+    "lbl": "Regime fiscal",
+    "val": "Descentralizado pelo Ato Adicional (1834)"
+   }
+  ],
+  "tabs": {
+   "Mercados": [
+    {
+     "lbl": "Mercado Monetario",
+     "txt": "Sem banco emissor central apos 1829, o pais opera com casas bancarias provinciais e emissoes de tesouro; a ausencia de autoridade monetaria unificada gera instabilidade regional de precos e credito."
+    },
+    {
+     "lbl": "Mercado Cambial",
+     "txt": "Cambio depreciado e volatil, pressionado pelo servico da divida externa em libras; a exportacao cafeeira crescente comeca a gerar as primeiras entradas cambiais mais robustas do Imperio."
+    },
+    {
+     "lbl": "Mercado de Trabalho",
+     "txt": "A Lei Feijo de 1831 declara livre todo escravo entrado apos essa data, mas carece de fiscalizacao — 'lei para ingles ver' — e o trafico para as lavouras de cafe se intensifica clandestinamente."
+    },
+    {
+     "lbl": "Mercado de Credito",
+     "txt": "Credito agricola informal via comissarios do cafe no Rio de Janeiro, que adiantam recursos aos fazendeiros contra a safra futura, moldando um sistema de dependencia financeira do produtor rural."
+    }
+   ],
+   "Planejamento": [
+    {
+     "lbl": "Visao de governo",
+     "txt": "O Ato Adicional de 1834 descentraliza a arrecadacao de impostos para as provincias, refletindo o federalismo turbulento da Regencia; nao ha politica industrial ou de substituicao de importacoes — a pauta e agroexportadora por definicao."
+    }
+   ],
+   "Comércio Exterior": [
+    {
+     "lbl": "Parceiros comerciais",
+     "txt": "A Gra-Bretanha mantem a hegemonia comercial; os Estados Unidos emergem como comprador crescente de cafe brasileiro."
+    },
+    {
+     "lbl": "Balanca comercial",
+     "txt": "Melhora gradual com o crescimento das exportacoes de cafe, ainda insuficiente para equilibrar as importacoes de manufaturados britanicos."
+    },
+    {
+     "lbl": "Economia externa",
+     "txt": "Pressao diplomatica britanica pelo fim do trafico convive com dependencia do capital e do comercio ingles para o financiamento do proprio Estado imperial."
+    }
+   ],
+   "Problemas": [
+    {
+     "lbl": "Instabilidade politica",
+     "txt": "A turbulencia da Regencia contamina a gestao fiscal e a continuidade de qualquer politica economica."
+    },
+    {
+     "lbl": "Legislacao ineficaz",
+     "txt": "A Lei Feijo nao possui mecanismos reais de fiscalizacao do trafico negreiro."
+    },
+    {
+     "lbl": "Revoltas provinciais",
+     "txt": "Cabanagem, Sabinada e Farroupilha oneram o Tesouro e drenam recursos que poderiam ser produtivos."
+    }
+   ],
+   "Eventos-Chave": [
+    {
+     "lbl": "Lei Feijo (1831)",
+     "txt": "Declara ilegal o trafico negreiro, mas sem mecanismos de fiscalizacao, tornando-se simbolo da distancia entre a lei e a pratica no Brasil imperial."
+    },
+    {
+     "lbl": "Ato Adicional (1834)",
+     "txt": "Descentraliza receitas tributarias para as provincias, redesenhando o pacto fiscal do Imperio em meio a disputas regionais de poder."
+    },
+    {
+     "lbl": "Revoltas regenciais",
+     "txt": "Cabanagem, Farroupilha, Sabinada e a Revolta dos Males expressam tensoes sociais e fiscais que consomem recursos publicos e atrasam qualquer projeto nacional coeso."
+    }
+   ],
+   "Governo": [
+    {
+     "lbl": "Diogo Antonio Feijo",
+     "txt": "Destaca-se como Regente e autor da lei antitrafico de 1831, figura central da Regencia Una."
+    }
+   ],
+   "Legado": [
+    {
+     "lbl": "Tensao centralizacao-autonomia",
+     "txt": "A decada da Regencia mostra um Estado fiscalmente fragmentado tentando conciliar centralizacao politica com autonomia provincial — tensao que retorna em debates federativos brasileiros ate hoje."
+    },
+    {
+     "lbl": "Para o CACD",
+     "txt": "Util para discutir a tese de Caio Prado Jr. sobre o 'sentido da colonizacao' ainda operante mesmo apos a independencia politica formal."
+    }
+   ]
+  },
+  "actors": [
+   {
+    "name": "Diogo Antonio Feijo",
+    "role": "Regente — autor da lei antitrafico de 1831"
+   },
+   {
+    "name": "Padre Feijo e liberais moderados",
+    "role": "Conduziram o Ato Adicional de 1834"
+   }
+  ],
+  "stats": [
+   {
+    "val": "1831",
+    "lbl": "Lei Feijo"
+   },
+   {
+    "val": "1834",
+    "lbl": "Ato Adicional"
+   },
+   {
+    "val": "~40%",
+    "lbl": "Participacao do cafe nas exportacoes"
+   },
+   {
+    "val": "4",
+    "lbl": "Principais revoltas regenciais"
+   }
+  ]
+ },
+ {
+  "id": "d1840",
+  "year": "1840–1849",
+  "era": "imperio",
+  "dot": "#c9a84c",
+  "title": "Tarifa Alves Branco e o Inicio da Industrializacao Incipiente",
+  "sub": "A Tarifa Alves Branco eleva direitos de importacao por necessidade fiscal, mas cria protecao acidental a manufatura nascente; o cafe consolida-se como principal produto de exportacao do Imperio.",
+  "tags": [
+   "imperio",
+   "reforma"
+  ],
+  "meta": [
+   {
+    "lbl": "Tarifa Alves Branco (1844)",
+    "val": "Aliquotas de ate 30% sobre importacoes"
+   },
+   {
+    "lbl": "Cafe",
+    "val": "Ja o principal produto de exportacao"
+   },
+   {
+    "lbl": "Industria nascente",
+    "val": "Primeiras fabricas texteis no Rio e em Minas Gerais"
+   }
+  ],
+  "tabs": {
+   "Mercados": [
+    {
+     "lbl": "Mercado Monetario",
+     "txt": "Sistema monetario ainda fragmentado; ganham forca discussoes sobre a criacao de um novo banco emissor nacional, que culminariam na fundacao do segundo Banco do Brasil em 1853."
+    },
+    {
+     "lbl": "Mercado Cambial",
+     "txt": "Cambio pressionado pelas importacoes crescentes de tecidos e bens de consumo britanicos; a entrada de divisas do cafe ameniza parcialmente o desequilibrio externo."
+    },
+    {
+     "lbl": "Mercado de Trabalho",
+     "txt": "O trabalho escravo continua majoritario nas lavouras; a imigracao europeia ainda e incipiente e localizada em colonias de povoamento no Sul, sem impacto significativo na oferta de mao de obra das grandes fazendas."
+    },
+    {
+     "lbl": "Mercado de Credito",
+     "txt": "Credito mercantil concentrado nos comissarios de cafe do Rio de Janeiro e Santos; a ausencia de bancos robustos limita o financiamento de longo prazo para qualquer projeto manufatureiro."
+    }
+   ],
+   "Planejamento": [
+    {
+     "lbl": "Visao de governo",
+     "txt": "A Tarifa Alves Branco (1844) e motivada por necessidade fiscal — aumentar a arrecadacao aduaneira — mas, ao elevar tarifas de importacao a ate 30%, cria protecao nao intencional a manufaturas nacionais nascentes, antecipando debates protecionistas que se tornariam centrais um seculo depois."
+    }
+   ],
+   "Comércio Exterior": [
+    {
+     "lbl": "Parceiros comerciais",
+     "txt": "A Gra-Bretanha permanece parceiro dominante, mas reage a Tarifa Alves Branco como afronta ao livre-comercio que favorecia seus interesses desde o Tratado de 1810 (expirado em 1844)."
+    },
+    {
+     "lbl": "Balanca comercial",
+     "txt": "Superavits pontuais gerados pelo cafe compensam parcialmente o deficit estrutural com a Inglaterra, mas a dependencia de manufaturados importados persiste."
+    },
+    {
+     "lbl": "Economia externa",
+     "txt": "O fim da vigencia dos tratados assimetricos de 1810 permite ao Brasil recuperar autonomia tarifaria pela primeira vez desde a Abertura dos Portos — marco de soberania economica ainda pouco destacado."
+    }
+   ],
+   "Problemas": [
+    {
+     "lbl": "Escravidao como freio",
+     "txt": "A persistencia do trabalho escravo limita a formacao de um mercado consumidor interno amplo."
+    },
+    {
+     "lbl": "Infraestrutura precaria",
+     "txt": "Ausencia de ferrovias encarece o transporte da producao agricola ao litoral."
+    },
+    {
+     "lbl": "Atrito com a Inglaterra",
+     "txt": "A repressao ao trafico negreiro tensiona as relacoes diplomaticas e comerciais bilaterais."
+    }
+   ],
+   "Eventos-Chave": [
+    {
+     "lbl": "Tarifa Alves Branco (1844)",
+     "txt": "Eleva tarifas aduaneiras por motivo fiscal, mas com efeito protecionista lateral sobre manufaturas nacionais nascentes."
+    },
+    {
+     "lbl": "Bill Aberdeen (1845)",
+     "txt": "O Parlamento britanico autoriza a Marinha Real a capturar navios negreiros brasileiros, extraterritorializando a repressao ao trafico e tensionando a soberania brasileira."
+    },
+    {
+     "lbl": "Fundacao de fabricas texteis pioneiras",
+     "txt": "No Rio de Janeiro e em Minas Gerais, embrioes da futura industrializacao, ainda dependentes de maquinas e insumos importados."
+    }
+   ],
+   "Governo": [
+    {
+     "lbl": "Manuel Alves Branco (Visconde de Caravelas)",
+     "txt": "Da nome a tarifa de 1844 como Ministro da Fazenda; D. Pedro II ja reina, consolidando maior estabilidade politica em relacao a Regencia."
+    }
+   ],
+   "Legado": [
+    {
+     "lbl": "Protecao acidental",
+     "txt": "A Tarifa Alves Branco e lembrada como precoce experimento (nao deliberado) de protecao industrial, citado por economistas estruturalistas como prova de que a industrializacao brasileira sempre nasceu de contingencias fiscais, nao de projeto."
+    },
+    {
+     "lbl": "Para o CACD",
+     "txt": "Comparar com a industrializacao 'nao planejada' pos-1930 e chave analitica recorrente em provas de Economia e Historia."
+    }
+   ]
+  },
+  "actors": [
+   {
+    "name": "Manuel Alves Branco (Visconde de Caravelas)",
+    "role": "Ministro da Fazenda — autor da tarifa de 1844"
+   },
+   {
+    "name": "D. Pedro II",
+    "role": "Imperador — inicio do periodo de maior estabilidade politica do Segundo Reinado"
+   }
+  ],
+  "stats": [
+   {
+    "val": "30%",
+    "lbl": "Tarifa maxima Alves Branco"
+   },
+   {
+    "val": "1844",
+    "lbl": "Fim dos tratados de 1810"
+   },
+   {
+    "val": "1845",
+    "lbl": "Bill Aberdeen"
+   },
+   {
+    "val": "1853",
+    "lbl": "Fundacao do 2o Banco do Brasil"
+   }
+  ]
+ },
+ {
+  "id": "d1850",
+  "year": "1850–1859",
+  "era": "imperio",
+  "dot": "#5f9a6a",
+  "title": "Lei Eusebio de Queiros, Lei de Terras e a Era do Cafe",
+  "sub": "O fim efetivo do trafico negreiro, a Lei de Terras e a primeira ferrovia redirecionam capital antes aplicado no trafico para bancos, industria incipiente e infraestrutura — o chamado boom da decada de 1850.",
+  "tags": [
+   "imperio",
+   "reforma"
+  ],
+  "meta": [
+   {
+    "lbl": "Lei Eusebio de Queiros (1850)",
+    "val": "Fim do trafico negreiro atlantico"
+   },
+   {
+    "lbl": "Lei de Terras (1850)",
+    "val": "Fim do acesso livre a terra"
+   },
+   {
+    "lbl": "Primeira ferrovia",
+    "val": "1854, obra do Barao de Maua"
+   }
+  ],
+  "tabs": {
+   "Mercados": [
+    {
+     "lbl": "Mercado Monetario",
+     "txt": "Fundacao do segundo Banco do Brasil (1853) por iniciativa de Irineu Evangelista de Sousa, futuro Barao de Maua, reunificando a emissao monetaria; capitais antes investidos no trafico negreiro migram para bancos, seguros e manufatura."
+    },
+    {
+     "lbl": "Mercado Cambial",
+     "txt": "Cambio relativamente mais estavel na primeira metade da decada gracas as entradas de capital do cafe; a Guerra da Crimeia (1853-56) eleva precos agricolas globais, beneficiando as exportacoes brasileiras."
+    },
+    {
+     "lbl": "Mercado de Trabalho",
+     "txt": "A Lei Eusebio de Queiros (1850) extingue de fato o trafico atlantico sob pressao britanica; sem reposicao externa de mao de obra escrava, os precos dos escravizados ja cativos disparam, redirecionando planteis do Nordeste decadente para o Sudeste cafeeiro."
+    },
+    {
+     "lbl": "Mercado de Credito",
+     "txt": "Expansao bancaria real pela primeira vez, com o Banco do Brasil e bancos privados como a Casa Maua oferecendo credito a projetos de infraestrutura — ferrovias, iluminacao a gas, navegacao a vapor."
+    }
+   ],
+   "Planejamento": [
+    {
+     "lbl": "Visao de governo",
+     "txt": "Embriao de politica desenvolvimentista privada, personificada em Maua, que combina banco, ferrovia, siderurgia e navegacao; o Estado atua mais como regulador (Lei de Terras) do que como planejador direto, mas cria as pre-condicoes legais para a transicao ao trabalho livre."
+    }
+   ],
+   "Comércio Exterior": [
+    {
+     "lbl": "Parceiros comerciais",
+     "txt": "A Gra-Bretanha segue dominante; Estados Unidos e a Europa continental (Franca, Alemanha) aumentam a compra de cafe brasileiro."
+    },
+    {
+     "lbl": "Balanca comercial",
+     "txt": "Superavitaria na maior parte da decada, impulsionada pelos precos elevados do cafe durante a Guerra da Crimeia."
+    },
+    {
+     "lbl": "Economia externa",
+     "txt": "O fim do trafico e o preco politico pago para normalizar de vez as relacoes com Londres; em troca, o Brasil ganha maior margem para atrair capital britanico para ferrovias e bancos."
+    }
+   ],
+   "Problemas": [
+    {
+     "lbl": "Transicao trabalhista tensa",
+     "txt": "A passagem para o trabalho livre ainda e incompleta e gera incerteza entre os fazendeiros."
+    },
+    {
+     "lbl": "Lei de Terras excludente",
+     "txt": "Dificulta o acesso de ex-escravizados e imigrantes pobres a propriedade da terra, fixando-os como mao de obra dependente."
+    },
+    {
+     "lbl": "Epidemias",
+     "txt": "Febre amarela e colera afetam produtividade, comercio e a propria imagem sanitaria do pais no exterior."
+    }
+   ],
+   "Eventos-Chave": [
+    {
+     "lbl": "Lei Eusebio de Queiros (1850)",
+     "txt": "Extingue o trafico negreiro atlantico, redirecionando capital mercantil antes aplicado no trafico para outros setores da economia nacional."
+    },
+    {
+     "lbl": "Lei de Terras (1850)",
+     "txt": "Transforma terra devoluta em mercadoria compravel, dificultando o acesso de libertos e imigrantes e reforcando a concentracao fundiaria que marcaria a estrutura agraria brasileira."
+    },
+    {
+     "lbl": "Inauguracao da primeira ferrovia brasileira (1854)",
+     "txt": "A Estrada de Ferro Maua simboliza a modernizacao de infraestrutura financiada por capital nacional e britanico."
+    }
+   ],
+   "Governo": [
+    {
+     "lbl": "Irineu Evangelista de Sousa (Barao de Maua)",
+     "txt": "Torna-se o principal empreendedor-financista da decada, combinando banco, ferrovia e industria."
+    },
+    {
+     "lbl": "Eusebio de Queiros",
+     "txt": "Da nome a lei abolicionista do trafico como Ministro da Justica do gabinete conservador."
+    }
+   ],
+   "Legado": [
+    {
+     "lbl": "A 'tese Maua'",
+     "txt": "A decada de 1850 e vista pela historiografia (Caio Prado Jr., Celso Furtado) como o momento em que capital mercantil ocioso, liberado pelo fim do trafico, buscou novos investimentos produtivos — processo que Maua personifica e que fracassaria por falta de suporte estatal e de mercado consumidor amplo."
+    },
+    {
+     "lbl": "Para o CACD",
+     "txt": "A tese do capitalismo nacional frustrado por dependencia externa e falta de mercado interno e debate classico de prova discursiva."
+    }
+   ]
+  },
+  "actors": [
+   {
+    "name": "Irineu Evangelista de Sousa (Barao de Maua)",
+    "role": "Empresario e banqueiro — maior empreendedor privado do Imperio"
+   },
+   {
+    "name": "Eusebio de Queiros",
+    "role": "Ministro da Justica — autor da lei que extingue o trafico negreiro"
+   }
+  ],
+  "stats": [
+   {
+    "val": "1850",
+    "lbl": "Fim do trafico negreiro"
+   },
+   {
+    "val": "1854",
+    "lbl": "Primeira ferrovia"
+   },
+   {
+    "val": "1853",
+    "lbl": "Refundacao do Banco do Brasil"
+   },
+   {
+    "val": "1853-56",
+    "lbl": "Guerra da Crimeia — choque de precos favoravel"
+   }
+  ]
+ },
+ {
+  "id": "d1860",
+  "year": "1860–1869",
+  "era": "imperio",
+  "dot": "#c0392b",
+  "title": "Guerra do Paraguai e o Endividamento Externo",
+  "sub": "O maior conflito armado da historia da America do Sul consome parcela enorme do orcamento imperial, dispara a divida externa e a emissao inflacionaria, e faz o Brasil recorrer a emprestimos de guerra em grande escala.",
+  "tags": [
+   "imperio",
+   "crise"
+  ],
+  "meta": [
+   {
+    "lbl": "Guerra do Paraguai (1864-1870)",
+    "val": "Maior gasto publico do Imperio ate entao"
+   },
+   {
+    "lbl": "Divida externa",
+    "val": "Triplica ao longo do periodo"
+   },
+   {
+    "lbl": "Inflacao",
+    "val": "Emissoes de papel-moeda para financiar a guerra"
+   }
+  ],
+  "tabs": {
+   "Mercados": [
+    {
+     "lbl": "Mercado Monetario",
+     "txt": "Emissoes macicas de papel-moeda para financiar o esforco de guerra geram pressao inflacionaria inedita; o Tesouro recorre a apolices da divida interna em escala nunca vista ate entao."
+    },
+    {
+     "lbl": "Mercado Cambial",
+     "txt": "Forte depreciacao cambial pelo aumento das necessidades de importacao de armamentos e pelo desequilibrio fiscal; o mil-reis perde valor de forma persistente ao longo de todo o conflito."
+    },
+    {
+     "lbl": "Mercado de Trabalho",
+     "txt": "O recrutamento forcado, inclusive de escravizados alforriados para servir como soldados, tensiona a oferta de mao de obra nas fazendas; o debate sobre substituir o trabalho escravo ganha urgencia pratica, nao apenas moral."
+    },
+    {
+     "lbl": "Mercado de Credito",
+     "txt": "Bancos e casas comerciais sao chamados a subscrever emprestimos de guerra; o credito privado para outros fins (industria, ferrovias) e parcialmente deslocado pelo apetite do Tesouro por recursos."
+    }
+   ],
+   "Planejamento": [
+    {
+     "lbl": "Visao de governo",
+     "txt": "Toda a politica economica do periodo e subordinada ao esforco de guerra; nao ha espaco para planejamento de desenvolvimento de longo prazo, e o Imperio sacrifica superavits fiscais anteriores para sustentar o front na Triplice Alianca contra o Paraguai."
+    }
+   ],
+   "Comércio Exterior": [
+    {
+     "lbl": "Parceiros comerciais",
+     "txt": "A Gra-Bretanha financia parte da divida de guerra brasileira via novos emprestimos em Londres; Argentina e Uruguai sao aliados militares e parceiros comerciais regionais na Triplice Alianca."
+    },
+    {
+     "lbl": "Balanca comercial",
+     "txt": "Deteriorada pelo aumento das importacoes belicas (armas, navios, equipamentos) sem contrapartida proporcional em exportacoes."
+    },
+    {
+     "lbl": "Economia externa",
+     "txt": "O Brasil contrai sucessivos emprestimos externos entre 1865 e 1871 para financiar a guerra, ampliando substancialmente o estoque de divida publica externa que oneraria as decadas seguintes."
+    }
+   ],
+   "Problemas": [
+    {
+     "lbl": "Endividamento acelerado",
+     "txt": "Sucessivos emprestimos de guerra em Londres praticamente triplicam a divida externa do Imperio."
+    },
+    {
+     "lbl": "Inflacao persistente",
+     "txt": "Emissao monetaria sem lastro para financiar o conflito corroi o poder de compra da moeda."
+    },
+    {
+     "lbl": "Desvio de recursos",
+     "txt": "Capital que poderia financiar infraestrutura ou industria e consumido pelo esforco belico."
+    }
+   ],
+   "Eventos-Chave": [
+    {
+     "lbl": "Eclosao da Guerra do Paraguai (1864)",
+     "txt": "Desencadeada por disputas geopoliticas na Bacia do Prata, redireciona toda a economia de guerra do Imperio por seis anos."
+    },
+    {
+     "lbl": "Emprestimos de guerra em Londres (1865, 1868, 1871)",
+     "txt": "Sucessivas emissoes de titulos da divida externa brasileira para financiar o conflito, comprometendo receitas futuras do Tesouro."
+    },
+    {
+     "lbl": "Fim da guerra e ocupacao de Assuncao (1870)",
+     "txt": "O Brasil emerge vitorioso, mas fiscalmente exaurido, com a divida praticamente triplicada frente ao inicio do conflito."
+    }
+   ],
+   "Governo": [
+    {
+     "lbl": "D. Pedro II",
+     "txt": "Acompanha de perto o esforco de guerra; gabinetes conservadores e liberais alternam-se na conducao das financas de guerra."
+    },
+    {
+     "lbl": "Visconde de Rio Branco (pai)",
+     "txt": "Figura politica de destaque na conducao das financas e da politica do periodo."
+    }
+   ],
+   "Legado": [
+    {
+     "lbl": "Debate historiografico",
+     "txt": "A Guerra do Paraguai e debatida quanto a seu papel: uns a veem como o evento que atrasou a industrializacao brasileira ao consumir capital que poderia ter sido produtivo; outros destacam que acelerou a centralizacao fiscal e militar do Estado imperial."
+    },
+    {
+     "lbl": "Para o CACD",
+     "txt": "Tema classico de Politica Internacional e Economia combinadas — o custo economico da projecao de poder regional."
+    }
+   ]
+  },
+  "actors": [
+   {
+    "name": "D. Pedro II",
+    "role": "Imperador — acompanhou de perto o esforco de guerra"
+   },
+   {
+    "name": "Visconde de Rio Branco (pai)",
+    "role": "Figura politica central na conducao das financas do periodo"
+   },
+   {
+    "name": "Solano Lopez",
+    "role": "Presidente do Paraguai — adversario no conflito"
+   }
+  ],
+  "stats": [
+   {
+    "val": "1864-1870",
+    "lbl": "Duracao da guerra"
+   },
+   {
+    "val": "~3x",
+    "lbl": "Aumento da divida externa"
+   },
+   {
+    "val": "3",
+    "lbl": "Emprestimos de guerra em Londres"
+   },
+   {
+    "val": "1870",
+    "lbl": "Ocupacao de Assuncao"
+   }
+  ]
+ },
+ {
+  "id": "d1870",
+  "year": "1870–1879",
+  "era": "imperio",
+  "dot": "#c9a84c",
+  "title": "Lei do Ventre Livre, Imigracao Europeia e Expansao Cafeeira",
+  "sub": "A Lei do Ventre Livre inicia o fim gradual da escravidao, a imigracao subsidiada europeia comeca a substituir mao de obra cativa em Sao Paulo e o cafe bate recordes de producao e exportacao.",
+  "tags": [
+   "imperio",
+   "reforma"
+  ],
+  "meta": [
+   {
+    "lbl": "Lei do Ventre Livre (1871)",
+    "val": "Liberdade dos filhos de escravizadas nascidos apos a lei"
+   },
+   {
+    "lbl": "Cafe",
+    "val": "Sao Paulo ultrapassa o Rio de Janeiro como maior produtor"
+   },
+   {
+    "lbl": "Imigracao",
+    "val": "Inicio dos fluxos subsidiados para Sao Paulo"
+   }
+  ],
+  "tabs": {
+   "Mercados": [
+    {
+     "lbl": "Mercado Monetario",
+     "txt": "O Encilhamento ainda nao comecou, mas ja se discutem reformas bancarias para ampliar a emissao e o credito diante da necessidade de capitalizar a transicao do trabalho escravo para o assalariado."
+    },
+    {
+     "lbl": "Mercado Cambial",
+     "txt": "Cambio pressionado pela recuperacao dos gastos de guerra e por ciclos de precos internacionais do cafe, ainda vulneravel a choques externos de oferta e demanda."
+    },
+    {
+     "lbl": "Mercado de Trabalho",
+     "txt": "A Lei do Ventre Livre (1871) declara livres os filhos de escravizadas nascidos dali em diante, iniciando juridicamente o fim da escravidao; paralelamente, o governo paulista passa a subsidiar a vinda de imigrantes europeus, sobretudo italianos, para as fazendas de cafe."
+    },
+    {
+     "lbl": "Mercado de Credito",
+     "txt": "Bancos regionais em Sao Paulo comecam a se especializar no financiamento da lavoura cafeeira; o credito hipotecario sobre escravizados comeca a perder importancia relativa diante da desvalorizacao futura do plantel esperada pela abolicao gradual."
+    }
+   ],
+   "Planejamento": [
+    {
+     "lbl": "Visao de governo",
+     "txt": "O Estado imperial adota uma estrategia gradualista para a abolicao (Lei do Ventre Livre) que busca evitar ruptura brusca na oferta de mao de obra, ao mesmo tempo em que fomenta ativamente a imigracao europeia como substituto planejado de longo prazo para o trabalho escravo nas lavouras paulistas."
+    }
+   ],
+   "Comércio Exterior": [
+    {
+     "lbl": "Parceiros comerciais",
+     "txt": "Os Estados Unidos consolidam-se como maior comprador de cafe brasileiro; a Gra-Bretanha mantem papel central em capital e manufaturados."
+    },
+    {
+     "lbl": "Balanca comercial",
+     "txt": "Superavitaria na maior parte da decada gracas ao crescimento continuado das exportacoes cafeeiras, com Sao Paulo ultrapassando o Rio de Janeiro como principal provincia produtora."
+    },
+    {
+     "lbl": "Economia externa",
+     "txt": "O Brasil consolida-se como o maior produtor e exportador mundial de cafe, iniciando uma dependencia estrutural de um unico produto primario que marcaria a economia ate 1930."
+    }
+   ],
+   "Problemas": [
+    {
+     "lbl": "Transicao trabalhista incerta",
+     "txt": "A incerteza sobre o ritmo da abolicao gera resistencia de setores escravistas."
+    },
+    {
+     "lbl": "Infraestrutura insuficiente",
+     "txt": "A malha ferroviaria ainda nao acompanha o crescimento da producao cafeeira do interior paulista."
+    },
+    {
+     "lbl": "Resistencia escravista",
+     "txt": "Setores conservadores reagem contra a Lei do Ventre Livre e qualquer avanco abolicionista adicional."
+    }
+   ],
+   "Eventos-Chave": [
+    {
+     "lbl": "Lei do Ventre Livre (1871)",
+     "txt": "Primeira grande lei abolicionista gradual, sob o Gabinete Rio Branco, inicia juridicamente o fim da escravidao no Brasil."
+    },
+    {
+     "lbl": "Inicio da imigracao subsidiada em Sao Paulo",
+     "txt": "O governo provincial paga passagens para atrair colonos europeus, sobretudo italianos, para substituir o trabalho escravo nas fazendas de cafe."
+    },
+    {
+     "lbl": "Sao Paulo ultrapassa o Rio de Janeiro em producao de cafe",
+     "txt": "Desloca o eixo economico dominante do Imperio para o oeste paulista, redesenhando a geografia do poder economico nacional."
+    }
+   ],
+   "Governo": [
+    {
+     "lbl": "Visconde do Rio Branco (Jose Maria da Silva Paranhos)",
+     "txt": "Lidera o Gabinete que aprova a Lei do Ventre Livre em 1871."
+    },
+    {
+     "lbl": "D. Pedro II",
+     "txt": "Viaja a Europa e aos Estados Unidos (1876-77), simbolizando maior abertura internacional do Imperio."
+    }
+   ],
+   "Legado": [
+    {
+     "lbl": "Cafe com imigracao",
+     "txt": "A decada de 1870 marca o inicio do 'cafe com imigracao' que substituiria o 'cafe com escravos', processo que moldaria a estrutura social e economica de Sao Paulo ate o seculo XX."
+    },
+    {
+     "lbl": "Para o CACD",
+     "txt": "Analisar a Lei do Ventre Livre como resposta simultanea a pressoes internas (abolicionismo) e externas (Inglaterra) e pergunta recorrente em prova."
+    }
+   ]
+  },
+  "actors": [
+   {
+    "name": "Visconde do Rio Branco",
+    "role": "Presidente do Conselho de Ministros — autor da Lei do Ventre Livre"
+   },
+   {
+    "name": "D. Pedro II",
+    "role": "Imperador — realiza viagens internacionais que ampliam a projecao do Brasil"
+   }
+  ],
+  "stats": [
+   {
+    "val": "1871",
+    "lbl": "Lei do Ventre Livre"
+   },
+   {
+    "val": "1o",
+    "lbl": "Posicao do Brasil na producao mundial de cafe"
+   },
+   {
+    "val": "SP",
+    "lbl": "Nova provincia lider cafeeira"
+   },
+   {
+    "val": "1870s",
+    "lbl": "Inicio da imigracao subsidiada"
+   }
+  ]
+ },
+ {
+  "id": "d1880",
+  "year": "1880–1889",
+  "era": "imperio",
+  "dot": "#c0392b",
+  "title": "Abolicao da Escravatura e o Encilhamento",
+  "sub": "A Lei Aurea extingue a escravidao sem indenizacao aos ex-escravizados, o Imperio cai e a nascente Republica mergulha na especulacao desenfreada do Encilhamento, a primeira grande bolha financeira brasileira.",
+  "tags": [
+   "imperio",
+   "crise",
+   "ruptura"
+  ],
+  "meta": [
+   {
+    "lbl": "Lei Aurea (13 de maio de 1888)",
+    "val": "Abolicao sem indenizacao"
+   },
+   {
+    "lbl": "Proclamacao da Republica",
+    "val": "15 de novembro de 1889"
+   },
+   {
+    "lbl": "Encilhamento",
+    "val": "Bolha especulativa entre 1889 e 1891"
+   }
+  ],
+  "tabs": {
+   "Mercados": [
+    {
+     "lbl": "Mercado Monetario",
+     "txt": "Reformas bancarias de Rui Barbosa, ja no inicio da Republica, liberalizam a emissao de moeda por multiplos bancos regionais, alimentando a explosao de credito e especulacao conhecida como Encilhamento."
+    },
+    {
+     "lbl": "Mercado Cambial",
+     "txt": "Cambio em forte deterioracao pela expansao monetaria desenfreada; a especulacao em acoes de empresas ficticias atrai capital que deveria financiar producao, distorcendo os mercados financeiros nascentes."
+    },
+    {
+     "lbl": "Mercado de Trabalho",
+     "txt": "A Lei Aurea (13 de maio de 1888) extingue a escravidao sem qualquer indenizacao aos libertos, gerando exodo rural desorganizado, enquanto fazendeiros aceleram a substituicao por imigrantes europeus subsidiados, sobretudo em Sao Paulo."
+    },
+    {
+     "lbl": "Mercado de Credito",
+     "txt": "Expansao descontrolada do credito bancario sob a politica de Rui Barbosa, Ministro da Fazenda do governo provisorio, gera bolha especulativa em acoes de sociedades anonimas recem-criadas, muitas sem lastro produtivo real."
+    }
+   ],
+   "Planejamento": [
+    {
+     "lbl": "Visao de governo",
+     "txt": "A abolicao e decidida sem plano de transicao ou compensacao aos libertos, diferentemente de outras experiencias abolicionistas, enquanto a jovem Republica adota politica monetaria expansionista deliberada (Rui Barbosa) para estimular a industrializacao — mas que descamba em especulacao desenfreada."
+    }
+   ],
+   "Comércio Exterior": [
+    {
+     "lbl": "Parceiros comerciais",
+     "txt": "Estados Unidos e Gra-Bretanha seguem como principais destinos do cafe; a imigracao europeia (Italia, Portugal, Espanha) intensifica-se, trazendo tambem fluxos de remessas e capital humano."
+    },
+    {
+     "lbl": "Balanca comercial",
+     "txt": "Ainda superavitaria pelo cafe, mas cada vez mais vulneravel a volatilidade de precos internacionais do produto em mercados especulativos."
+    },
+    {
+     "lbl": "Economia externa",
+     "txt": "A queda do Imperio e a instabilidade republicana geram incerteza para investidores estrangeiros, ainda que o novo regime busque, com o Encilhamento, atrair capital para a industrializacao nacional."
+    }
+   ],
+   "Problemas": [
+    {
+     "lbl": "Ausencia de reparacao",
+     "txt": "A falta de indenizacao ou reforma agraria para libertos perpetua a marginalizacao economica da populacao negra."
+    },
+    {
+     "lbl": "Bolha especulativa",
+     "txt": "O Encilhamento gera quebradeira bancaria e crise fiscal aguda no inicio dos anos 1890."
+    },
+    {
+     "lbl": "Transicao institucional abrupta",
+     "txt": "A passagem da Monarquia a Republica gera incerteza jurídica e politica sobre a continuidade de contratos e regras economicas."
+    }
+   ],
+   "Eventos-Chave": [
+    {
+     "lbl": "Lei Aurea (13 de maio de 1888)",
+     "txt": "Extingue a escravidao no Brasil, o ultimo pais das Americas a faze-lo, sem qualquer politica de integracao economica dos libertos."
+    },
+    {
+     "lbl": "Proclamacao da Republica (15 de novembro de 1889)",
+     "txt": "Deposicao de D. Pedro II, abrindo caminho para reformas monetarias liberais e para o Encilhamento."
+    },
+    {
+     "lbl": "O Encilhamento (1889-1891)",
+     "txt": "Politica de Rui Barbosa de multiplicar bancos emissores e facilitar credito gera especulacao desenfreada e a maior crise financeira do Brasil ate entao."
+    }
+   ],
+   "Governo": [
+    {
+     "lbl": "Rui Barbosa",
+     "txt": "Ministro da Fazenda do Governo Provisorio — arquiteto (e depois critico de si mesmo) da politica monetaria expansionista."
+    },
+    {
+     "lbl": "Deodoro da Fonseca",
+     "txt": "Primeiro presidente da Republica, lidera a proclamacao e o governo provisorio."
+    }
+   ],
+   "Legado": [
+    {
+     "lbl": "Desigualdade racial estrutural",
+     "txt": "A Lei Aurea sem reparacao e apontada por historiadores, como Florestan Fernandes, como origem estrutural da desigualdade racial economica brasileira."
+    },
+    {
+     "lbl": "Para o CACD",
+     "txt": "Comparar o Encilhamento com bolhas financeiras posteriores (1929, crises contemporaneas) e exercicio analitico valioso para a prova."
+    }
+   ]
+  },
+  "actors": [
+   {
+    "name": "Rui Barbosa",
+    "role": "Ministro da Fazenda do Governo Provisorio — arquiteto da politica do Encilhamento"
+   },
+   {
+    "name": "Deodoro da Fonseca",
+    "role": "Primeiro presidente da Republica"
+   },
+   {
+    "name": "Princesa Isabel",
+    "role": "Assinou a Lei Aurea em 1888, na Regencia durante viagem de D. Pedro II"
+   }
+  ],
+  "stats": [
+   {
+    "val": "1888",
+    "lbl": "Abolicao da escravatura"
+   },
+   {
+    "val": "1889",
+    "lbl": "Proclamacao da Republica"
+   },
+   {
+    "val": "0",
+    "lbl": "Indenizacao paga a ex-escravizados"
+   },
+   {
+    "val": "1889-91",
+    "lbl": "Encilhamento"
+   }
+  ]
+ },
+ {
+  "id": "d1890",
+  "year": "1890–1899",
+  "era": "primeira_republica",
+  "dot": "#c0392b",
+  "title": "Crise do Encilhamento e a Consolidacao Republicana",
+  "sub": "A ressaca da bolha especulativa provoca falencias bancarias em cadeia, inflacao elevada e desvalorizacao cambial, forcando o jovem governo republicano a negociar o primeiro Funding Loan com credores britanicos.",
+  "tags": [
+   "primeira_republica",
+   "crise"
+  ],
+  "meta": [
+   {
+    "lbl": "Funding Loan (1898)",
+    "val": "Renegociacao da divida externa"
+   },
+   {
+    "lbl": "Inflacao",
+    "val": "Elevada no pos-Encilhamento"
+   },
+   {
+    "lbl": "Cambio",
+    "val": "Forte depreciacao do mil-reis"
+   }
+  ],
+  "tabs": {
+   "Mercados": [
+    {
+     "lbl": "Mercado Monetario",
+     "txt": "A estabilizacao monetaria torna-se prioridade apos o colapso do Encilhamento; sucessivos ministros da Fazenda tentam conter a emissao descontrolada herdada da politica de Rui Barbosa, com resultados apenas parciais ate o final da decada."
+    },
+    {
+     "lbl": "Mercado Cambial",
+     "txt": "O mil-reis sofre forte e persistente depreciacao ao longo da decada, refletindo desequilibrios fiscais cronicos e a fragilidade das reservas apos o estouro da bolha especulativa."
+    },
+    {
+     "lbl": "Mercado de Trabalho",
+     "txt": "A imigracao europeia subsidiada acelera-se, sobretudo para Sao Paulo, consolidando o trabalho assalariado nas lavouras de cafe; tensoes sociais urbanas comecam a emergir nas cidades em crescimento."
+    },
+    {
+     "lbl": "Mercado de Credito",
+     "txt": "Colapso de bancos criados durante o Encilhamento; reestruturacao do sistema bancario sob supervisao mais rigida do Tesouro, ainda sem um banco central propriamente dito."
+    }
+   ],
+   "Planejamento": [
+    {
+     "lbl": "Visao de governo",
+     "txt": "A prioridade do governo de Campos Sales, a partir de 1898, e a chamada 'politica de salvacao', com ajuste fiscal ortodoxo, corte de gastos e negociacao de divida — precursora dos programas de estabilizacao macroeconomica que se repetiriam ao longo do seculo XX."
+    }
+   ],
+   "Comércio Exterior": [
+    {
+     "lbl": "Parceiros comerciais",
+     "txt": "Os Estados Unidos consolidam-se como maior comprador de cafe; a Gra-Bretanha segue como principal credor e fornecedor de capital e manufaturados."
+    },
+    {
+     "lbl": "Balanca comercial",
+     "txt": "Melhora ao final da decada gracas a desvalorizacao cambial, que barateia exportacoes, e a retomada dos precos do cafe nos mercados internacionais."
+    },
+    {
+     "lbl": "Economia externa",
+     "txt": "O Funding Loan de 1898, negociado por Campos Sales e Joaquim Murtinho junto a bancos de Londres, reescalona a divida externa brasileira em troca de rigido ajuste fiscal e monetario — modelo que antecipa acordos com o FMI um seculo depois."
+    }
+   ],
+   "Problemas": [
+    {
+     "lbl": "Heranca inflacionaria",
+     "txt": "O colapso do Encilhamento deixa inflacao e desorganizacao cambial persistentes."
+    },
+    {
+     "lbl": "Divida externa elevada",
+     "txt": "Exige renegociacao sob duras condicionalidades junto a credores britanicos."
+    },
+    {
+     "lbl": "Fragilidade bancaria",
+     "txt": "O sistema financeiro nacional carece de instituicoes solidas apos as falencias do Encilhamento."
+    }
+   ],
+   "Eventos-Chave": [
+    {
+     "lbl": "Colapso final do Encilhamento",
+     "txt": "Falencias bancarias em cadeia e forte inflacao marcam os primeiros anos da Republica, no inicio da decada."
+    },
+    {
+     "lbl": "Funding Loan (1898)",
+     "txt": "Acordo com credores britanicos que reescalona a divida externa mediante ajuste fiscal ortodoxo, sob o governo Campos Sales."
+    },
+    {
+     "lbl": "Primeiros sinais de superproducao cafeeira",
+     "txt": "Ao final da decada, o excesso de oferta de cafe comeca a pressionar precos para baixo, anunciando a crise que levaria ao Convenio de Taubate em 1906."
+    }
+   ],
+   "Governo": [
+    {
+     "lbl": "Prudente de Morais",
+     "txt": "Primeiro presidente civil da Republica."
+    },
+    {
+     "lbl": "Campos Sales e Joaquim Murtinho",
+     "txt": "Presidente e Ministro da Fazenda que implementam a politica de ajuste ortodoxo e o Funding Loan."
+    }
+   ],
+   "Legado": [
+    {
+     "lbl": "Padrao de ajuste sob supervisao externa",
+     "txt": "O Funding Loan de 1898 e o primeiro grande episodio de ajuste ortodoxo sob supervisao de credores estrangeiros na historia republicana, prenunciando padrao que se repetiria com o FMI em 1958, 1983 e na relacao com organismos multilaterais no seculo XXI."
+    },
+    {
+     "lbl": "Para o CACD",
+     "txt": "Excelente ponto de comparacao historica para questoes sobre condicionalidades de credores internacionais."
+    }
+   ]
+  },
+  "actors": [
+   {
+    "name": "Campos Sales",
+    "role": "Presidente da Republica — implementou a politica de salvacao"
+   },
+   {
+    "name": "Joaquim Murtinho",
+    "role": "Ministro da Fazenda — arquiteto do ajuste fiscal e do Funding Loan"
+   }
+  ],
+  "stats": [
+   {
+    "val": "1898",
+    "lbl": "Funding Loan"
+   },
+   {
+    "val": "Joaquim Murtinho",
+    "lbl": "Arquiteto do ajuste fiscal"
+   },
+   {
+    "val": "Forte",
+    "lbl": "Depreciacao do mil-reis na decada"
+   },
+   {
+    "val": "Fim da decada",
+    "lbl": "Primeiros sinais de crise cafeeira"
+   }
+  ]
+ },
+ {
+  "id": "d1900",
+  "year": "1900–1909",
+  "era": "primeira_republica",
+  "dot": "#5f9a6a",
+  "title": "Convenio de Taubate e a Valorizacao do Cafe",
+  "sub": "Diante da superproducao cafeeira, os estados produtores firmam o Convenio de Taubate, criando o primeiro esquema de intervencao estatal em precos de commodity da historia brasileira.",
+  "tags": [
+   "primeira_republica",
+   "reforma"
+  ],
+  "meta": [
+   {
+    "lbl": "Convenio de Taubate (1906)",
+    "val": "Valorizacao do cafe"
+   },
+   {
+    "lbl": "Cambio",
+    "val": "Relativamente estabilizado a partir de 1906"
+   },
+   {
+    "lbl": "Cafe",
+    "val": "Mais de 70% da pauta exportadora"
+   }
+  ],
+  "tabs": {
+   "Mercados": [
+    {
+     "lbl": "Mercado Monetario",
+     "txt": "Relativa estabilizacao monetaria apos os anos de ajuste do Funding Loan; o pais retoma certo crescimento do credito bancario, ainda concentrado no financiamento da lavoura cafeeira."
+    },
+    {
+     "lbl": "Mercado Cambial",
+     "txt": "Cambio estabiliza-se comparativamente a partir de meados da decada, embora o esquema de valorizacao do cafe exija intervencao cambial e monetaria recorrente para sustentar precos artificialmente elevados."
+    },
+    {
+     "lbl": "Mercado de Trabalho",
+     "txt": "A imigracao europeia (italiana, espanhola, portuguesa e, crescentemente, japonesa a partir de 1908) consolida o trabalho assalariado nas fazendas paulistas; incipientes movimentos operarios urbanos surgem nas primeiras fabricas texteis e de calcados."
+    },
+    {
+     "lbl": "Mercado de Credito",
+     "txt": "Bancos estaduais, como o Banco do Estado de Sao Paulo, e bancos estrangeiros financiam o esquema de retencao de estoques de cafe previsto no Convenio de Taubate, com garantias do Tesouro estadual paulista."
+    }
+   ],
+   "Planejamento": [
+    {
+     "lbl": "Visao de governo",
+     "txt": "O Convenio de Taubate (1906), firmado entre Sao Paulo, Minas Gerais e Rio de Janeiro, cria o primeiro grande esquema de intervencao estatal em precos de uma commodity: o governo compra e retem estoques de cafe para sustentar precos internacionais, financiado por emprestimos externos — embriao da futura politica de valorizacao permanente."
+    }
+   ],
+   "Comércio Exterior": [
+    {
+     "lbl": "Parceiros comerciais",
+     "txt": "Os Estados Unidos consolidam-se definitivamente como maior comprador de cafe brasileiro; a Alemanha e outros paises europeus tambem aumentam a demanda."
+    },
+    {
+     "lbl": "Balanca comercial",
+     "txt": "Superavitaria, sustentada pelos precos do cafe artificialmente defendidos pelo esquema de valorizacao, mas dependente de novos emprestimos externos para financiar a retencao de estoques."
+    },
+    {
+     "lbl": "Economia externa",
+     "txt": "Bancos europeus, sobretudo britanicos e alemaes, financiam os emprestimos de valorizacao do cafe, aprofundando a dependencia financeira externa mesmo em um esquema desenhado para 'defender' o produtor nacional."
+    }
+   ],
+   "Problemas": [
+    {
+     "lbl": "Monocultura extrema",
+     "txt": "O cafe responde a mais de 70% da pauta exportadora, tornando a economia extremamente vulneravel a choques de preco."
+    },
+    {
+     "lbl": "Risco moral",
+     "txt": "O esquema de valorizacao incentiva ainda mais plantio, agravando o proprio problema de excesso de oferta no longo prazo."
+    },
+    {
+     "lbl": "Endividamento externo crescente",
+     "txt": "Necessario para sustentar os estoques retidos do Convenio de Taubate."
+    }
+   ],
+   "Eventos-Chave": [
+    {
+     "lbl": "Convenio de Taubate (1906)",
+     "txt": "Sao Paulo, Minas Gerais e Rio de Janeiro acordam a primeira politica de valorizacao do cafe, com compra e retencao de estoques financiada por emprestimo externo."
+    },
+    {
+     "lbl": "Inicio da imigracao japonesa (1908)",
+     "txt": "A chegada do navio Kasato Maru inaugura fluxo migratorio que se tornaria central para a agricultura paulista ao longo do seculo XX."
+    },
+    {
+     "lbl": "Consolidacao da 'politica do cafe com leite'",
+     "txt": "A alternancia informal de poder entre Sao Paulo (cafe) e Minas Gerais (leite e pecuaria) na presidencia da Republica reflete o peso economico desses estados na Primeira Republica."
+    }
+   ],
+   "Governo": [
+    {
+     "lbl": "Rodrigues Alves e Afonso Pena",
+     "txt": "Presidem o periodo (1902-1906 e 1906-1909, respectivamente)."
+    },
+    {
+     "lbl": "Jorge Tibiricá",
+     "txt": "Politico paulista que articula o Convenio de Taubate em nome dos interesses cafeeiros."
+    }
+   ],
+   "Legado": [
+    {
+     "lbl": "Precursor de politicas de sustentacao de precos",
+     "txt": "O Convenio de Taubate e o precursor direto das politicas de sustentacao de precos agricolas que o Brasil manteria, com variacoes, por decadas."
+    },
+    {
+     "lbl": "Para o CACD",
+     "txt": "Caso classico de 'captura do Estado' por interesse setorial, tema recorrente em provas de Economia e Historia do Brasil."
+    }
+   ]
+  },
+  "actors": [
+   {
+    "name": "Jorge Tibiricá",
+    "role": "Presidente de Sao Paulo — articulador do Convenio de Taubate"
+   },
+   {
+    "name": "Rodrigues Alves",
+    "role": "Presidente da Republica (1902-1906)"
+   },
+   {
+    "name": "Afonso Pena",
+    "role": "Presidente da Republica (1906-1909)"
+   }
+  ],
+  "stats": [
+   {
+    "val": "1906",
+    "lbl": "Convenio de Taubate"
+   },
+   {
+    "val": ">70%",
+    "lbl": "Participacao do cafe nas exportacoes"
+   },
+   {
+    "val": "1908",
+    "lbl": "Chegada dos primeiros imigrantes japoneses"
+   },
+   {
+    "val": "3",
+    "lbl": "Estados signatarios do Convenio"
+   }
+  ]
+ },
+ {
+  "id": "d1910",
+  "year": "1910–1919",
+  "era": "primeira_republica",
+  "dot": "#c47a35",
+  "title": "Primeira Guerra Mundial e a Substituicao de Importacoes Incipiente",
+  "sub": "O bloqueio ao comercio internacional durante a Grande Guerra forca, pela primeira vez, um salto real na producao manufatureira domestica, ainda que sem politica industrial deliberada.",
+  "tags": [
+   "primeira_republica",
+   "choque"
+  ],
+  "meta": [
+   {
+    "lbl": "Primeira Guerra Mundial (1914-1918)",
+    "val": "Interrupcao de importacoes"
+   },
+   {
+    "lbl": "Industria",
+    "val": "Primeiro grande salto de producao manufatureira domestica"
+   },
+   {
+    "lbl": "Cafe",
+    "val": "Sofre com a interrupcao do comercio maritimo"
+   }
+  ],
+  "tabs": {
+   "Mercados": [
+    {
+     "lbl": "Mercado Monetario",
+     "txt": "A guerra gera instabilidade monetaria internacional; o Brasil enfrenta dificuldades de acesso a credito externo durante o conflito, forcando maior dependencia de recursos e poupanca internos."
+    },
+    {
+     "lbl": "Mercado Cambial",
+     "txt": "Fortes oscilacoes cambiais pela interrupcao do comercio maritimo internacional durante a guerra; a escassez de navios encarece fretes e dificulta tanto exportacoes quanto importacoes."
+    },
+    {
+     "lbl": "Mercado de Trabalho",
+     "txt": "Reducao do fluxo imigratorio europeu durante a guerra; a industria nascente em Sao Paulo e no Rio de Janeiro absorve mao de obra urbana, e os primeiros sindicatos e greves operarias relevantes ocorrem, com destaque para a Greve Geral de 1917 em Sao Paulo."
+    },
+    {
+     "lbl": "Mercado de Credito",
+     "txt": "Bancos nacionais ganham espaco relativo com a retracao do credito externo durante a guerra; o financiamento a industria textil e de bens de consumo simples cresce, ainda que de forma nao coordenada por politica de Estado."
+    }
+   ],
+   "Planejamento": [
+    {
+     "lbl": "Visao de governo",
+     "txt": "Nao ha politica industrial deliberada, mas a interrupcao do comercio internacional durante a Primeira Guerra Mundial funciona como um 'protecionismo involuntario', permitindo que a industria de bens de consumo leve — texteis, alimentos, calcados — cresca para suprir a demanda interna que nao podia mais ser importada."
+    }
+   ],
+   "Comércio Exterior": [
+    {
+     "lbl": "Parceiros comerciais",
+     "txt": "Gra-Bretanha e Estados Unidos seguem como principais parceiros, mas o comercio com a Alemanha e interrompido pela guerra; os EUA ganham peso relativo como fornecedor."
+    },
+    {
+     "lbl": "Balanca comercial",
+     "txt": "Volatil, pressionada pela escassez de navios mercantes e pela oscilacao de precos internacionais do cafe e da borracha durante o conflito."
+    },
+    {
+     "lbl": "Economia externa",
+     "txt": "A guerra reduz drasticamente o acesso brasileiro a capital e credito europeu, forcando maior autonomia financeira relativa e evidenciando, pela primeira vez de forma pratica, os beneficios de uma base produtiva interna diversificada."
+    }
+   ],
+   "Problemas": [
+    {
+     "lbl": "Colapso da borracha",
+     "txt": "O ciclo da borracha amazonica entra em colapso definitivo pela concorrencia das plantations asiaticas britanicas."
+    },
+    {
+     "lbl": "Desabastecimento pontual",
+     "txt": "A interrupcao do comercio maritimo gera escassez de bens importados essenciais."
+    },
+    {
+     "lbl": "Tensao social urbana",
+     "txt": "Culmina na Greve Geral de 1917 em Sao Paulo, maior mobilizacao operaria ate entao."
+    }
+   ],
+   "Eventos-Chave": [
+    {
+     "lbl": "Eclosao da Primeira Guerra Mundial (1914)",
+     "txt": "Interrompe fluxos normais de comercio e capital, forcando substituicao de importacoes nao planejada na industria de bens de consumo."
+    },
+    {
+     "lbl": "Colapso definitivo do ciclo da borracha amazonica",
+     "txt": "A concorrencia das plantations do Sudeste Asiatico britanico dizima a economia extrativista da Amazonia em meados da decada."
+    },
+    {
+     "lbl": "Greve Geral de Sao Paulo (1917)",
+     "txt": "Maior mobilizacao operaria ate entao, sinaliza o surgimento de uma classe trabalhadora urbana industrial com demandas proprias."
+    }
+   ],
+   "Governo": [
+    {
+     "lbl": "Wenceslau Braz",
+     "txt": "Presidente durante a maior parte da guerra; o Brasil declara guerra a Alemanha em 1917, tornando-se o unico pais da America do Sul a enviar forcas (Marinha) ao conflito europeu."
+    }
+   ],
+   "Legado": [
+    {
+     "lbl": "Choque externo como motor industrial",
+     "txt": "A Primeira Guerra Mundial e citada por economistas estruturalistas, como Celso Furtado, como primeira demonstracao empirica de que choques externos podem impulsionar industrializacao por substituicao de importacoes — tese central para compreender 1930 e as decadas seguintes."
+    },
+    {
+     "lbl": "Para o CACD",
+     "txt": "Otimo exemplo de como eventos de Politica Internacional (a guerra) se conectam diretamente a questoes de Economia na prova."
+    }
+   ]
+  },
+  "actors": [
+   {
+    "name": "Wenceslau Braz",
+    "role": "Presidente da Republica (1914-1918)"
+   },
+   {
+    "name": "Operariado paulista",
+    "role": "Protagonista da Greve Geral de 1917"
+   }
+  ],
+  "stats": [
+   {
+    "val": "1914-1918",
+    "lbl": "Duracao da guerra"
+   },
+   {
+    "val": "1917",
+    "lbl": "Greve Geral de Sao Paulo"
+   },
+   {
+    "val": "1917",
+    "lbl": "Brasil declara guerra a Alemanha"
+   },
+   {
+    "val": "Colapso",
+    "lbl": "Ciclo da borracha amazonica"
+   }
+  ]
+ },
+ {
+  "id": "d1920",
+  "year": "1920–1929",
+  "era": "primeira_republica",
+  "dot": "#c0392b",
+  "title": "Crise do Cafe, Reforma Tarifaria e as Tensoes do Padrao-Ouro",
+  "sub": "O Brasil tenta voltar ao padrao-ouro em meio a volatilidade do pos-guerra, enquanto a superproducao cafeeira e a crise de 1929 no fim da decada expoem os limites do modelo agroexportador.",
+  "tags": [
+   "primeira_republica",
+   "crise"
+  ],
+  "meta": [
+   {
+    "lbl": "Caixa de Estabilizacao (1926)",
+    "val": "Tentativa de padrao-ouro"
+   },
+   {
+    "lbl": "Crise de 1929",
+    "val": "Quebra da Bolsa de Nova York atinge o cafe no fim da decada"
+   },
+   {
+    "lbl": "Tenentismo",
+    "val": "Contestacao politica ao modelo oligarquico"
+   }
+  ],
+  "tabs": {
+   "Mercados": [
+    {
+     "lbl": "Mercado Monetario",
+     "txt": "Criacao da Caixa de Estabilizacao (1926), tentativa de estabelecer um padrao cambio-ouro para dar credibilidade a moeda; experiencia de vida curta, interrompida pela crise de 1929."
+    },
+    {
+     "lbl": "Mercado Cambial",
+     "txt": "Cambio relativamente estabilizado na primeira metade da decada sob a Caixa de Estabilizacao, mas em colapso completo ao final de 1929 com a quebra da Bolsa de Nova York e o despencar dos precos do cafe."
+    },
+    {
+     "lbl": "Mercado de Trabalho",
+     "txt": "O movimento operario urbano se organiza mais, com influencia anarquista e depois comunista apos a fundacao do PCB em 1922; no campo, o trabalho assalariado imigrante consolida-se em Sao Paulo, ainda que a Grande Depressao no fim da decada comece a gerar desemprego."
+    },
+    {
+     "lbl": "Mercado de Credito",
+     "txt": "Expansao de credito bancario na primeira metade da decada, seguida por forte contracao e falencias no bienio 1929-1930 com a repercussao da crise internacional sobre bancos ligados ao financiamento cafeeiro."
+    }
+   ],
+   "Planejamento": [
+    {
+     "lbl": "Visao de governo",
+     "txt": "O governo de Washington Luis tenta uma politica ortodoxa de estabilizacao monetaria, a Caixa de Estabilizacao, inspirada no retorno global ao padrao-ouro do pos-guerra, mas mantem, paradoxalmente, o esquema intervencionista de valorizacao do cafe — contradicao que a crise de 1929 tornaria insustentavel."
+    }
+   ],
+   "Comércio Exterior": [
+    {
+     "lbl": "Parceiros comerciais",
+     "txt": "Os Estados Unidos consolidam-se como parceiro comercial e financeiro dominante, superando definitivamente a Gra-Bretanha em influencia economica sobre o Brasil."
+    },
+    {
+     "lbl": "Balanca comercial",
+     "txt": "Superavitaria ate 1929, quando o colapso dos precos internacionais do cafe, com queda superior a 60% em poucos meses, derruba as receitas de exportacao brasileiras."
+    },
+    {
+     "lbl": "Economia externa",
+     "txt": "A Grande Depressao de 1929, iniciada nos Estados Unidos, propaga-se ao Brasil via colapso do preco do cafe — o pais acumula estoques excedentes que o governo chegaria a incinerar na decada seguinte para conter a oferta."
+    }
+   ],
+   "Problemas": [
+    {
+     "lbl": "Dependencia monocultora",
+     "txt": "A dependencia quase total do cafe torna a economia brasileira extremamente vulneravel a choques externos."
+    },
+    {
+     "lbl": "Resistencia oligarquica",
+     "txt": "As oligarquias regionais de Sao Paulo e Minas Gerais resistem a qualquer diversificacao que ameace seus interesses."
+    },
+    {
+     "lbl": "Contestacao politica",
+     "txt": "O tenentismo (1922, 1924) expressa insatisfacao com o modelo oligarquico vigente, prenunciando a ruptura de 1930."
+    }
+   ],
+   "Eventos-Chave": [
+    {
+     "lbl": "Criacao da Caixa de Estabilizacao (1926)",
+     "txt": "Tentativa malograda de padrao cambio-ouro para dar estabilidade monetaria ao pais."
+    },
+    {
+     "lbl": "Revoltas tenentistas (1922, 1924) e a Coluna Prestes",
+     "txt": "Contestacao armada de jovens oficiais ao arranjo oligarquico do 'cafe com leite', prenunciando a ruptura politica de 1930."
+    },
+    {
+     "lbl": "Quebra da Bolsa de Nova York (outubro de 1929)",
+     "txt": "O colapso dos precos internacionais do cafe expoe de forma dramatica a fragilidade estrutural do modelo agroexportador monocultor."
+    }
+   ],
+   "Governo": [
+    {
+     "lbl": "Artur Bernardes",
+     "txt": "Presidente (1922-1926) que enfrenta as revoltas tenentistas."
+    },
+    {
+     "lbl": "Washington Luis",
+     "txt": "Presidente (1926-1930) que tenta a estabilizacao monetaria e e derrubado pela Revolucao de 1930."
+    }
+   ],
+   "Legado": [
+    {
+     "lbl": "Fim simbolico da Republica Velha",
+     "txt": "A crise de 1929 e a subsequente Revolucao de 1930 marcam o fim simbolico da 'Republica Velha' e da hegemonia cafeeira como eixo organizador da economia e da politica brasileiras."
+    },
+    {
+     "lbl": "Para o CACD",
+     "txt": "Divisor de aguas obrigatorio entre 'Brasil agrario-exportador' e 'Brasil urbano-industrial' nas provas de Historia Economica."
+    }
+   ]
+  },
+  "actors": [
+   {
+    "name": "Washington Luis",
+    "role": "Presidente da Republica — depostro pela Revolucao de 1930"
+   },
+   {
+    "name": "Luis Carlos Prestes",
+    "role": "Lider da Coluna Prestes — expressao do tenentismo contestador"
+   },
+   {
+    "name": "Getulio Vargas",
+    "role": "Candidato derrotado da Alianca Liberal — liderara a Revolucao de 1930"
+   }
+  ],
+  "stats": [
+   {
+    "val": "1926",
+    "lbl": "Caixa de Estabilizacao"
+   },
+   {
+    "val": ">60%",
+    "lbl": "Queda do preco do cafe em 1929"
+   },
+   {
+    "val": "1922",
+    "lbl": "Fundacao do PCB"
+   },
+   {
+    "val": "1930",
+    "lbl": "Revolucao que encerra a Primeira Republica"
+   }
+  ]
+ },
+ {
+  "id": "d1930",
+  "year": "1930–1939",
+  "era": "vargas",
+  "dot": "#8e5ea0",
+  "title": "Revolucao de 1930, a Grande Depressao e a Industrializacao Dirigida",
+  "sub": "Getulio Vargas assume o poder em meio a pior crise internacional do seculo, queima estoques de cafe, desvaloriza o cambio e lanca as bases institucionais do Estado desenvolvimentista brasileiro.",
+  "tags": [
+   "vargas",
+   "crise",
+   "reforma"
+  ],
+  "meta": [
+   {
+    "lbl": "Revolucao de 1930",
+    "val": "Fim da Primeira Republica"
+   },
+   {
+    "lbl": "Queima de estoques de cafe",
+    "val": "Dezenas de milhoes de sacas incineradas"
+   },
+   {
+    "lbl": "Instituto do Cafe (1931)",
+    "val": "Depois transformado no IBC"
+   }
+  ],
+  "tabs": {
+   "Mercados": [
+    {
+     "lbl": "Mercado Monetario",
+     "txt": "O Brasil abandona de vez qualquer pretensao de padrao-ouro; o governo Vargas adota politica monetaria ativa, com desvalorizacao cambial deliberada para proteger o setor exportador em crise e estimular a producao interna substitutiva."
+    },
+    {
+     "lbl": "Mercado Cambial",
+     "txt": "Forte desvalorizacao do mil-reis como resposta a crise internacional; controles cambiais sao introduzidos para administrar a escassez de divisas provocada pelo colapso das exportacoes cafeeiras."
+    },
+    {
+     "lbl": "Mercado de Trabalho",
+     "txt": "Criacao do Ministerio do Trabalho (1930) e das primeiras leis trabalhistas e sindicais, num modelo corporativista que se consolidaria plenamente no Estado Novo (1937), antecedendo a futura CLT de 1943."
+    },
+    {
+     "lbl": "Mercado de Credito",
+     "txt": "Criacao da Carteira de Credito Agricola e Industrial do Banco do Brasil (1937), primeiro grande instrumento de credito direcionado do Estado para financiar a industrializacao e a agricultura nacional."
+    }
+   ],
+   "Planejamento": [
+    {
+     "lbl": "Visao de governo",
+     "txt": "Getulio Vargas inaugura o Estado desenvolvimentista brasileiro: compra e queima de estoques excedentes de cafe para sustentar precos, politica cambial ativa para proteger a industria nascente, e criacao de institutos e conselhos tecnicos que embrionam o planejamento economico estatal moderno."
+    }
+   ],
+   "Comércio Exterior": [
+    {
+     "lbl": "Parceiros comerciais",
+     "txt": "Os Estados Unidos consolidam-se como principal parceiro comercial e financeiro; a Alemanha nazista disputa espaco via acordos de compensacao (marcos-compensados) na segunda metade da decada."
+    },
+    {
+     "lbl": "Balanca comercial",
+     "txt": "Deficitaria no inicio da decada pela queda abrupta do valor das exportacoes cafeeiras, melhorando gradualmente com a diversificacao exportadora e a industrializacao substitutiva de importacoes."
+    },
+    {
+     "lbl": "Economia externa",
+     "txt": "A crise de 1929 forca o Brasil a reduzir drasticamente importacoes por falta de divisas — o resultado inesperado e a industrializacao por substituicao de importacoes, que Celso Furtado batizaria como marco teorico central da economia brasileira do seculo XX."
+    }
+   ],
+   "Problemas": [
+    {
+     "lbl": "Desemprego urbano",
+     "txt": "Crescente pela propagacao da crise internacional aos setores urbanos e industriais."
+    },
+    {
+     "lbl": "Superproducao cafeeira",
+     "txt": "Ainda nao resolvida — o Brasil chega a queimar cerca de 78 milhoes de sacas de cafe entre 1931 e 1944."
+    },
+    {
+     "lbl": "Autoritarismo crescente",
+     "txt": "Culmina no golpe do Estado Novo em 1937, encerrando a experiencia constitucional de 1934."
+    }
+   ],
+   "Eventos-Chave": [
+    {
+     "lbl": "Revolucao de 1930",
+     "txt": "Getulio Vargas assume o poder apos a derrota eleitoral da Alianca Liberal, encerrando a 'politica do cafe com leite' da Primeira Republica."
+    },
+    {
+     "lbl": "Queima de estoques excedentes de cafe (a partir de 1931)",
+     "txt": "Politica emergencial para sustentar precos, financiada por emprestimos e tributos sobre a propria producao cafeeira."
+    },
+    {
+     "lbl": "Golpe do Estado Novo (1937)",
+     "txt": "Vargas outorga nova Constituicao autoritaria e aprofunda o modelo corporativista de intervencao estatal na economia e nas relacoes de trabalho."
+    }
+   ],
+   "Governo": [
+    {
+     "lbl": "Getulio Vargas",
+     "txt": "Domina toda a decada, primeiro como chefe do Governo Provisorio, depois eleito indiretamente em 1934 e por fim como ditador do Estado Novo a partir de 1937."
+    },
+    {
+     "lbl": "Oswaldo Aranha e Artur de Sousa Costa",
+     "txt": "Ocupam papeis-chave nas Relacoes Exteriores e na Fazenda, respectivamente."
+    }
+   ],
+   "Legado": [
+    {
+     "lbl": "Marco fundador do desenvolvimentismo",
+     "txt": "A decada de 1930 e o marco fundador, na historiografia estruturalista de Celso Furtado ('Formacao Economica do Brasil'), da transicao de uma economia agroexportadora para uma economia urbano-industrial dirigida pelo Estado."
+    },
+    {
+     "lbl": "Para o CACD",
+     "txt": "Tema absolutamente central; questoes sobre 'substituicao de importacoes' quase sempre remontam a 1930."
+    }
+   ]
+  },
+  "actors": [
+   {
+    "name": "Getulio Vargas",
+    "role": "Chefe do Governo Provisorio e depois ditador do Estado Novo"
+   },
+   {
+    "name": "Oswaldo Aranha",
+    "role": "Ministro das Relacoes Exteriores e articulador politico de Vargas"
+   },
+   {
+    "name": "Artur de Sousa Costa",
+    "role": "Ministro da Fazenda"
+   }
+  ],
+  "stats": [
+   {
+    "val": "1930",
+    "lbl": "Revolucao varguista"
+   },
+   {
+    "val": "~78 mi",
+    "lbl": "Sacas de cafe queimadas (1931-44)"
+   },
+   {
+    "val": "1930",
+    "lbl": "Criacao do Ministerio do Trabalho"
+   },
+   {
+    "val": "1937",
+    "lbl": "Golpe do Estado Novo"
+   }
+  ]
+ },
+ {
+  "id": "d1940",
+  "year": "1940–1949",
+  "era": "vargas",
+  "dot": "#8e5ea0",
+  "title": "Segunda Guerra Mundial, Estado Novo e a Criacao da CSN",
+  "sub": "O alinhamento com os Estados Unidos na Segunda Guerra rende ao Brasil financiamento para a Companhia Siderurgica Nacional, marco da industrializacao pesada, enquanto a CLT consolida o corporativismo trabalhista do Estado Novo.",
+  "tags": [
+   "vargas",
+   "choque",
+   "reforma"
+  ],
+  "meta": [
+   {
+    "lbl": "Acordos de Washington (1942)",
+    "val": "Financiamento da CSN"
+   },
+   {
+    "lbl": "CLT (1943)",
+    "val": "Consolidacao da legislacao trabalhista"
+   },
+   {
+    "lbl": "Fim do Estado Novo",
+    "val": "1945"
+   }
+  ],
+  "tabs": {
+   "Mercados": [
+    {
+     "lbl": "Mercado Monetario",
+     "txt": "Criacao da SUMOC — Superintendencia da Moeda e do Credito — em 1945, embriao do futuro Banco Central, para organizar a politica monetaria do pos-guerra; substituicao do mil-reis pelo cruzeiro em 1942."
+    },
+    {
+     "lbl": "Mercado Cambial",
+     "txt": "Controles cambiais rigidos durante a guerra pela escassez de divisas e pela necessidade de direcionar recursos estrategicos; acumulo de reservas em libras esterlinas bloqueadas em Londres pelo esforco de guerra britanico."
+    },
+    {
+     "lbl": "Mercado de Trabalho",
+     "txt": "A Consolidacao das Leis do Trabalho (CLT, 1943) unifica e amplia a legislacao trabalhista corporativista iniciada na decada anterior, criando direitos como carteira assinada, ferias e jornada regulada, mas sob forte tutela estatal dos sindicatos."
+    },
+    {
+     "lbl": "Mercado de Credito",
+     "txt": "Expansao do credito direcionado via Banco do Brasil para financiar a industrializacao de base, com destaque para o financiamento da Companhia Siderurgica Nacional, viabilizado pelos Acordos de Washington com os Estados Unidos."
+    }
+   ],
+   "Planejamento": [
+    {
+     "lbl": "Visao de governo",
+     "txt": "Getulio Vargas negocia com os Estados Unidos, em troca do apoio brasileiro na Segunda Guerra Mundial, incluindo o envio da Forca Expedicionaria Brasileira a Italia, financiamento para a criacao da CSN em Volta Redonda — simbolo maior do projeto de industrializacao pesada dirigida pelo Estado."
+    }
+   ],
+   "Comércio Exterior": [
+    {
+     "lbl": "Parceiros comerciais",
+     "txt": "Os Estados Unidos tornam-se parceiro comercial, financeiro e militar dominante durante e apos a guerra, superando definitivamente qualquer influencia alema ou mesmo britanica remanescente."
+    },
+    {
+     "lbl": "Balanca comercial",
+     "txt": "Superavitaria durante a guerra pela demanda aliada por materias-primas estrategicas brasileiras, como borracha, minerio de ferro e algodao, mas com reservas em libras bloqueadas e de dificil conversao."
+    },
+    {
+     "lbl": "Economia externa",
+     "txt": "Os Acordos de Washington (1942) trocam apoio militar brasileiro, com bases no Nordeste e tropas na Italia, por financiamento americano a industrializacao de base — um dos primeiros grandes exemplos de diplomacia economica brasileira bem-sucedida."
+    }
+   ],
+   "Problemas": [
+    {
+     "lbl": "Inflacao em alta",
+     "txt": "Pelo financiamento monetario do esforco de guerra sem lastro fiscal correspondente."
+    },
+    {
+     "lbl": "Reservas de conversibilidade incerta",
+     "txt": "As reservas cambiais acumuladas em libras esterlinas tinham conversibilidade duvidosa no pos-guerra."
+    },
+    {
+     "lbl": "Fim abrupto do Estado Novo",
+     "txt": "Em 1945 gera incerteza sobre a continuidade do modelo economico varguista."
+    }
+   ],
+   "Eventos-Chave": [
+    {
+     "lbl": "Acordos de Washington (1942)",
+     "txt": "O Brasil declara guerra ao Eixo e recebe financiamento estadunidense para construir a Companhia Siderurgica Nacional em Volta Redonda."
+    },
+    {
+     "lbl": "Promulgacao da CLT (1943)",
+     "txt": "Consolida a legislacao trabalhista corporativista, criando o arcabouco juridico do mercado de trabalho brasileiro que perdura, com reformas, ate hoje."
+    },
+    {
+     "lbl": "Queda do Estado Novo (1945)",
+     "txt": "Vargas e deposto por militares, encerrando a ditadura, mas preservando boa parte do arcabouco economico-institucional criado desde 1930."
+    }
+   ],
+   "Governo": [
+    {
+     "lbl": "Getulio Vargas",
+     "txt": "Governa ate outubro de 1945, quando e deposto por militares em meio a transicao democratica."
+    },
+    {
+     "lbl": "Oswaldo Aranha",
+     "txt": "Como Ministro das Relacoes Exteriores, negocia o alinhamento com os Estados Unidos."
+    }
+   ],
+   "Legado": [
+    {
+     "lbl": "Simbolo da industrializacao de base",
+     "txt": "A criacao da CSN e o simbolo maior da industrializacao de base sob comando estatal, modelo que se estenderia a Petrobras em 1953 e a outras estatais estrategicas nas decadas seguintes."
+    },
+    {
+     "lbl": "Para o CACD",
+     "txt": "Os Acordos de Washington sao exemplo primoroso de como alinhamento geopolitico na Segunda Guerra se converteu em ativo de desenvolvimento economico — conexao direta entre Politica Internacional e Economia."
+    }
+   ]
+  },
+  "actors": [
+   {
+    "name": "Getulio Vargas",
+    "role": "Presidente — negociou os Acordos de Washington"
+   },
+   {
+    "name": "Oswaldo Aranha",
+    "role": "Ministro das Relacoes Exteriores — arquiteto do alinhamento com os EUA"
+   },
+   {
+    "name": "Eurico Gaspar Dutra",
+    "role": "General eleito presidente ao final da decada, em transicao democratica"
+   }
+  ],
+  "stats": [
+   {
+    "val": "1942",
+    "lbl": "Acordos de Washington"
+   },
+   {
+    "val": "1943",
+    "lbl": "Promulgacao da CLT"
+   },
+   {
+    "val": "1945",
+    "lbl": "Criacao da SUMOC"
+   },
+   {
+    "val": "1946",
+    "lbl": "Inicio da producao da CSN"
+   }
+  ]
+ },
+ {
+  "id": "d1950",
+  "year": "1950–1959",
+  "era": "populismo",
+  "dot": "#5f9a6a",
+  "title": "Plano de Metas de JK e '50 Anos em 5'",
+  "sub": "Juscelino Kubitschek lanca o Plano de Metas, atrai capital estrangeiro para a industria automobilistica e constroi Brasilia, consolidando o modelo de industrializacao por substituicao de importacoes com forte participacao de multinacionais.",
+  "tags": [
+   "populismo",
+   "plano"
+  ],
+  "meta": [
+   {
+    "lbl": "Plano de Metas (1956-1961)",
+    "val": "31 metas setoriais"
+   },
+   {
+    "lbl": "Instrucao 113 da SUMOC (1955)",
+    "val": "Atrai capital estrangeiro sem conversao cambial"
+   },
+   {
+    "lbl": "Construcao de Brasilia",
+    "val": "1956-1960"
+   }
+  ],
+  "tabs": {
+   "Mercados": [
+    {
+     "lbl": "Mercado Monetario",
+     "txt": "A SUMOC atua como proto-banco central sem plenos poderes; a expansao monetaria para financiar o Plano de Metas e Brasilia gera pressoes inflacionarias crescentes ao longo da decada."
+    },
+    {
+     "lbl": "Mercado Cambial",
+     "txt": "Sistema de taxas cambiais multiplas (cambio livre e cambio de custo) cria incentivos distorcidos; a Instrucao 113 da SUMOC (1955) permite a entrada de equipamentos estrangeiros como investimento direto sem necessidade de cobertura cambial, atraindo montadoras internacionais."
+    },
+    {
+     "lbl": "Mercado de Trabalho",
+     "txt": "Forte migracao campo-cidade acompanha a industrializacao acelerada; o sindicalismo urbano ganha forca sob o populismo trabalhista de Vargas (1951-1954) e depois de Juscelino Kubitschek (1956-1961)."
+    },
+    {
+     "lbl": "Mercado de Credito",
+     "txt": "Criacao do BNDE — Banco Nacional de Desenvolvimento Economico, 1952 — como principal instrumento de financiamento de longo prazo para os setores de infraestrutura e industria de base previstos no Plano de Metas."
+    }
+   ],
+   "Planejamento": [
+    {
+     "lbl": "Visao de governo",
+     "txt": "O Plano de Metas de Juscelino Kubitschek (1956) e o mais ambicioso e sistematico plano de desenvolvimento ate entao formulado no Brasil, com 31 metas em cinco setores — energia, transporte, alimentacao, industria de base e educacao — mais a construcao de Brasilia como 'meta-sintese', sob o lema '50 anos em 5'."
+    }
+   ],
+   "Comércio Exterior": [
+    {
+     "lbl": "Parceiros comerciais",
+     "txt": "Os Estados Unidos permanecem como principal parceiro comercial e fonte de investimento direto; Alemanha Ocidental, Italia e Franca tambem investem fortemente no novo parque industrial automobilistico brasileiro."
+    },
+    {
+     "lbl": "Balanca comercial",
+     "txt": "Deficitaria em conta corrente pela forte importacao de bens de capital para a industrializacao, compensada por investimento direto estrangeiro atraido pela Instrucao 113."
+    },
+    {
+     "lbl": "Economia externa",
+     "txt": "A industria automobilistica nacional nasce na decada, com Volkswagen, Willys, Ford e General Motors ja instaladas ou se instalando, consolidando o Brasil como principal polo industrial da America Latina, ainda que com forte presenca de capital multinacional."
+    }
+   ],
+   "Problemas": [
+    {
+     "lbl": "Inflacao acelerada",
+     "txt": "Pelo financiamento do Plano de Metas e de Brasilia sem ajuste fiscal correspondente."
+    },
+    {
+     "lbl": "Deficit em conta corrente",
+     "txt": "Crescente ao longo da decada, financiado por capital externo de curto e longo prazo."
+    },
+    {
+     "lbl": "Crise politica de 1954",
+     "txt": "O suicidio de Getulio Vargas em meio a tensoes sobre nacionalismo economico versus abertura ao capital estrangeiro."
+    }
+   ],
+   "Eventos-Chave": [
+    {
+     "lbl": "Suicidio de Getulio Vargas (agosto de 1954)",
+     "txt": "Crise politica em meio a tensoes sobre nacionalismo economico, com a criacao da Petrobras em 1953, versus abertura ao capital estrangeiro."
+    },
+    {
+     "lbl": "Lancamento do Plano de Metas (1956)",
+     "txt": "Programa mais abrangente de planejamento economico estatal ate entao, sob Juscelino Kubitschek."
+    },
+    {
+     "lbl": "Inauguracao de Brasilia (21 de abril de 1960)",
+     "txt": "Simbolo maior do otimismo desenvolvimentista, ainda que financiada com forte expansao monetaria inflacionaria."
+    }
+   ],
+   "Governo": [
+    {
+     "lbl": "Getulio Vargas",
+     "txt": "Retorna ao poder por via eleitoral entre 1951 e 1954."
+    },
+    {
+     "lbl": "Juscelino Kubitschek",
+     "txt": "Presidente de 1956 a 1961, implementa o Plano de Metas com o economista Lucas Lopes e o BNDE como braco financeiro."
+    }
+   ],
+   "Legado": [
+    {
+     "lbl": "Referencia de planejamento desenvolvimentista",
+     "txt": "O Plano de Metas e referencia permanente de planejamento estatal desenvolvimentista bem-sucedido em termos de crescimento, com o PIB crescendo a taxas medias superiores a 7% ao ano, mas com custo inflacionario e de endividamento que explodiria na decada seguinte."
+    },
+    {
+     "lbl": "Para o CACD",
+     "txt": "Contrastar o 'nacional-desenvolvimentismo' de Vargas com a 'associacao ao capital estrangeiro' de JK e debate classico de prova."
+    }
+   ]
+  },
+  "actors": [
+   {
+    "name": "Juscelino Kubitschek",
+    "role": "Presidente — arquiteto do Plano de Metas e de Brasilia"
+   },
+   {
+    "name": "Lucas Lopes",
+    "role": "Ministro da Fazenda / Presidente do BNDE — tecnico central do Plano de Metas"
+   },
+   {
+    "name": "Getulio Vargas",
+    "role": "Presidente eleito (1951-1954) — suicida-se em meio a crise politica"
+   }
+  ],
+  "stats": [
+   {
+    "val": "31",
+    "lbl": "Metas do Plano de Metas"
+   },
+   {
+    "val": "~7% a.a.",
+    "lbl": "Crescimento medio do PIB"
+   },
+   {
+    "val": "1953",
+    "lbl": "Criacao da Petrobras"
+   },
+   {
+    "val": "1960",
+    "lbl": "Inauguracao de Brasilia"
+   }
+  ]
+ },
+ {
+  "id": "d1960",
+  "year": "1960–1969",
+  "era": "regime_militar",
+  "dot": "#c0392b",
+  "title": "Crise Pre-64, Golpe Militar e o PAEG",
+  "sub": "A crise economica e politica do inicio da decada culmina no golpe militar de 1964; o novo regime lanca o Plano de Acao Economica do Governo (PAEG), que reduz a inflacao e reorganiza o sistema financeiro nacional.",
+  "tags": [
+   "regime_militar",
+   "reforma",
+   "ruptura"
+  ],
+  "meta": [
+   {
+    "lbl": "Golpe Militar",
+    "val": "1964"
+   },
+   {
+    "lbl": "PAEG (1964-1967)",
+    "val": "Estabilizacao e reformas estruturais"
+   },
+   {
+    "lbl": "Novas instituicoes",
+    "val": "Criacao do Banco Central (1964) e do BNH"
+   }
+  ],
+  "tabs": {
+   "Mercados": [
+    {
+     "lbl": "Mercado Monetario",
+     "txt": "Criacao do Banco Central do Brasil (1964), substituindo a SUMOC, como autoridade monetaria plena; a correcao monetaria, criada pelo PAEG, torna-se instrumento central para conviver com a inflacao sem destruir o credito de longo prazo."
+    },
+    {
+     "lbl": "Mercado Cambial",
+     "txt": "Sistema de minidesvalorizacoes cambiais periodicas (crawling peg), instituido a partir de 1968, substitui as maxidesvalorizacoes bruscas anteriores, reduzindo a incerteza cambial para exportadores e importadores."
+    },
+    {
+     "lbl": "Mercado de Trabalho",
+     "txt": "O regime militar substitui a estabilidade no emprego pelo Fundo de Garantia do Tempo de Servico (FGTS, 1966), facilitando demissoes e criando um novo mecanismo de poupanca compulsoria; sindicatos sao fortemente controlados e liderancas cassadas."
+    },
+    {
+     "lbl": "Mercado de Credito",
+     "txt": "Criacao do Banco Nacional da Habitacao (BNH, 1964) e do Sistema Financeiro da Habitacao, com correcao monetaria, para financiar a construcao civil; a reforma bancaria de 1964 reorganiza todo o sistema financeiro nacional."
+    }
+   ],
+   "Planejamento": [
+    {
+     "lbl": "Visao de governo",
+     "txt": "O Plano de Acao Economica do Governo — PAEG, 1964-1967 — sob Roberto Campos e Otavio Gouveia de Bulhoes, combina ortodoxia fiscal e monetaria, com corte de gastos e contencao salarial, e reformas institucionais profundas, como correcao monetaria, novo sistema financeiro e reforma tributaria, que dariam sustentacao ao crescimento acelerado da decada seguinte."
+    }
+   ],
+   "Comércio Exterior": [
+    {
+     "lbl": "Parceiros comerciais",
+     "txt": "Os Estados Unidos mantem centralidade comercial e geopolitica, apoiando o novo regime militar no contexto da Guerra Fria; Europa Ocidental e Japao ampliam trocas comerciais e investimentos."
+    },
+    {
+     "lbl": "Balanca comercial",
+     "txt": "Melhora ao longo da decada com a reforma cambial e o estimulo as exportacoes manufaturadas, ainda que o pais mantenha deficits em conta corrente financiados por capital externo."
+    },
+    {
+     "lbl": "Economia externa",
+     "txt": "O alinhamento do regime militar com os Estados Unidos no auge da Guerra Fria facilita acesso a financiamento externo e a organismos multilaterais, consolidando um modelo de crescimento com poupanca externa complementar."
+    }
+   ],
+   "Problemas": [
+    {
+     "lbl": "Repressao politica",
+     "txt": "Acompanha o ajuste economico, com cassacoes e perseguicoes que atingem tambem economistas e sindicalistas."
+    },
+    {
+     "lbl": "Inflacao elevada no inicio da decada",
+     "txt": "Superior a 100% ao ano em 1963-64, exigindo ajuste doloroso pelo PAEG."
+    },
+    {
+     "lbl": "Aprofundamento da desigualdade",
+     "txt": "A desigualdade de renda se aprofunda no periodo, com o arrocho salarial como instrumento de politica."
+    }
+   ],
+   "Eventos-Chave": [
+    {
+     "lbl": "Golpe Militar de 1964",
+     "txt": "Deposicao de Joao Goulart, em meio a crise economica e polarizacao politica sobre reformas de base, inaugura 21 anos de regime militar."
+    },
+    {
+     "lbl": "Lancamento do PAEG (1964)",
+     "txt": "Programa de estabilizacao e reformas estruturais que cria o Banco Central, a correcao monetaria e o BNH."
+    },
+    {
+     "lbl": "Instituicao do crawling peg cambial (1968)",
+     "txt": "Substitui as maxidesvalorizacoes erraticas por minidesvalorizacoes frequentes, estabilizando expectativas cambiais e preparando terreno para o boom exportador dos anos 1970."
+    }
+   ],
+   "Governo": [
+    {
+     "lbl": "Joao Goulart",
+     "txt": "Deposto em 1964 apos crise politica sobre reformas de base."
+    },
+    {
+     "lbl": "Castelo Branco e Costa e Silva",
+     "txt": "Generais que presidem o regime militar entre 1964 e 1969."
+    },
+    {
+     "lbl": "Roberto Campos e Otavio Gouveia de Bulhoes",
+     "txt": "Conduzem a Fazenda e o Planejamento do PAEG; Delfim Netto assume a Fazenda a partir de 1967."
+    }
+   ],
+   "Legado": [
+    {
+     "lbl": "Reforma institucional duradoura",
+     "txt": "O PAEG e considerado por economistas de diferentes correntes uma das reformas institucionais mais duradouras da economia brasileira, com o Banco Central e a correcao monetaria sobrevivendo, com adaptacoes, ate os dias atuais."
+    },
+    {
+     "lbl": "Para o CACD",
+     "txt": "Essencial para discutir a relacao entre autoritarismo politico e ortodoxia economica, tema sensivel e recorrente em provas discursivas."
+    }
+   ]
+  },
+  "actors": [
+   {
+    "name": "Joao Goulart",
+    "role": "Presidente deposto pelo golpe de 1964"
+   },
+   {
+    "name": "Roberto Campos",
+    "role": "Ministro do Planejamento — arquiteto do PAEG"
+   },
+   {
+    "name": "Otavio Gouveia de Bulhoes",
+    "role": "Ministro da Fazenda do PAEG"
+   },
+   {
+    "name": "Delfim Netto",
+    "role": "Ministro da Fazenda a partir de 1967"
+   }
+  ],
+  "stats": [
+   {
+    "val": "1964",
+    "lbl": "Criacao do Banco Central"
+   },
+   {
+    "val": "1966",
+    "lbl": "Criacao do FGTS"
+   },
+   {
+    "val": ">100%",
+    "lbl": "Inflacao anual em 1963-64"
+   },
+   {
+    "val": "1968",
+    "lbl": "Inicio do crawling peg cambial"
+   }
+  ]
+ },
+ {
+  "id": "d1970",
+  "year": "1970–1979",
+  "era": "regime_militar",
+  "dot": "#3a8c84",
+  "title": "Milagre Economico, II PND e os Choques do Petroleo",
+  "sub": "O Brasil cresce a taxas recordes no chamado Milagre Economico, mas os choques do petroleo de 1973 e 1979 forcam o governo militar a financiar o ambicioso II Plano Nacional de Desenvolvimento com divida externa crescente.",
+  "tags": [
+   "regime_militar",
+   "milagre",
+   "choque"
+  ],
+  "meta": [
+   {
+    "lbl": "Milagre Economico (1968-1973)",
+    "val": "PIB medio de cerca de 11% ao ano"
+   },
+   {
+    "lbl": "Choques do petroleo",
+    "val": "1973 e 1979"
+   },
+   {
+    "lbl": "II PND (1974-1979)",
+    "val": "Industrializacao pesada financiada por divida externa"
+   }
+  ],
+  "tabs": {
+   "Mercados": [
+    {
+     "lbl": "Mercado Monetario",
+     "txt": "Expansao monetaria e de credito sustentam o boom de consumo do Milagre Economico; a partir de 1974, sob o II PND, o financiamento via emissao e endividamento publico se intensifica para sustentar investimentos em infraestrutura e industria de base."
+    },
+    {
+     "lbl": "Mercado Cambial",
+     "txt": "O crawling peg mantem previsibilidade cambial durante o Milagre, mas o Primeiro Choque do Petroleo (1973) altera drasticamente os termos de troca, exigindo maior endividamento externo para financiar as importacoes de petroleo, das quais o Brasil dependia fortemente."
+    },
+    {
+     "lbl": "Mercado de Trabalho",
+     "txt": "Forte crescimento do emprego industrial urbano durante o Milagre; arrocho salarial deliberado, via manipulacao de indices de correcao salarial, e usado como instrumento de controle inflacionario e de competitividade exportadora, aprofundando a concentracao de renda."
+    },
+    {
+     "lbl": "Mercado de Credito",
+     "txt": "Bancos estatais — BNDES, Banco do Brasil, bancos estaduais de desenvolvimento — e captacao de recursos externos financiam o II PND; o endividamento externo das estatais e do setor privado dispara na segunda metade da decada."
+    }
+   ],
+   "Planejamento": [
+    {
+     "lbl": "Visao de governo",
+     "txt": "O II Plano Nacional de Desenvolvimento (1974-1979), sob o general Ernesto Geisel e o ministro Reis Velloso, aposta na industrializacao pesada — siderurgia, petroquimica, papel e celulose, energia nuclear e hidreletrica — para reduzir a dependencia de importacoes mesmo em meio a crise do petroleo, a maior aposta desenvolvimentista desde o Plano de Metas, financiada majoritariamente por divida externa."
+    }
+   ],
+   "Comércio Exterior": [
+    {
+     "lbl": "Parceiros comerciais",
+     "txt": "Os Estados Unidos permanecem parceiro central, mas o Brasil diversifica com o Oriente Medio (petroleo), o Japao (financiamento e tecnologia) e a America Latina (integracao regional incipiente)."
+    },
+    {
+     "lbl": "Balanca comercial",
+     "txt": "Deficitaria a partir de 1973 pelo encarecimento abrupto do petroleo importado; o II PND busca reverter esse quadro no medio prazo com substituicao de importacoes de insumos basicos e energia, incluindo o Proalcool (1975)."
+    },
+    {
+     "lbl": "Economia externa",
+     "txt": "A reciclagem de 'petrodolares' pelos bancos internacionais torna credito externo abundante e barato na primeira metade da decada, financiando o endividamento brasileiro que se tornaria insustentavel quando os juros americanos dispararam ao final da decada seguinte."
+    }
+   ],
+   "Problemas": [
+    {
+     "lbl": "Dependencia energetica externa",
+     "txt": "Expoe vulnerabilidade estrategica do pais aos choques do petroleo da OPEP."
+    },
+    {
+     "lbl": "Divida externa acelerada",
+     "txt": "Cada vez mais atrelada a juros flutuantes internacionais, tornando-se uma bomba-relogio fiscal."
+    },
+    {
+     "lbl": "Concentracao de renda",
+     "txt": "Aprofunda-se apesar do crescimento elevado — 'o bolo cresce, mas nao se reparte', na frase atribuida a Delfim Netto."
+    }
+   ],
+   "Eventos-Chave": [
+    {
+     "lbl": "Auge do Milagre Economico (1968-1973)",
+     "txt": "O PIB cresce a taxas medias de cerca de 11% ao ano, o maior periodo de crescimento continuo da historia economica brasileira."
+    },
+    {
+     "lbl": "Primeiro Choque do Petroleo (1973)",
+     "txt": "A quadruplicacao dos precos internacionais do petroleo expoe a dependencia energetica externa brasileira e encerra o ciclo de crescimento acelerado sem inflacao."
+    },
+    {
+     "lbl": "Lancamento do II PND e do Proalcool (1974-1975)",
+     "txt": "Resposta desenvolvimentista a crise do petroleo, com aposta em substituicao de importacoes de insumos basicos e em combustivel renovavel (alcool)."
+    }
+   ],
+   "Governo": [
+    {
+     "lbl": "Emilio Garrastazu Medici",
+     "txt": "Preside o auge do Milagre Economico (1969-1974)."
+    },
+    {
+     "lbl": "Ernesto Geisel",
+     "txt": "Lanca o II PND (1974-1979) sob forte oposicao de economistas ortodoxos que preferiam ajuste recessivo."
+    },
+    {
+     "lbl": "Mario Henrique Simonsen e Reis Velloso",
+     "txt": "Conduzem a politica economica, representando as duas visoes em disputa: ajustar versus crescer com endividamento."
+    }
+   ],
+   "Legado": [
+    {
+     "lbl": "Debate ajuste versus endividamento",
+     "txt": "O debate entre 'ajustar' (Simonsen) e 'crescer com endividamento' (Geisel/Velloso) em resposta ao Primeiro Choque do Petroleo e um dos episodios mais estudados da historia economica brasileira, com o II PND avaliado de forma ambivalente: criou capacidade industrial duradoura, mas tambem a divida que explodiria na crise dos anos 1980."
+    },
+    {
+     "lbl": "Para o CACD",
+     "txt": "Tema certo em qualquer prova — conectar diretamente choques de politica internacional (OPEP) a decisoes domesticas de politica economica."
+    }
+   ]
+  },
+  "actors": [
+   {
+    "name": "Emilio Garrastazu Medici",
+    "role": "General-presidente durante o auge do Milagre Economico"
+   },
+   {
+    "name": "Ernesto Geisel",
+    "role": "General-presidente que lanca o II PND"
+   },
+   {
+    "name": "Mario Henrique Simonsen",
+    "role": "Ministro da Fazenda — defensor do ajuste ortodoxo"
+   },
+   {
+    "name": "Joao Paulo dos Reis Velloso",
+    "role": "Ministro do Planejamento — arquiteto do II PND"
+   }
+  ],
+  "stats": [
+   {
+    "val": "~11% a.a.",
+    "lbl": "PIB medio no Milagre (1968-73)"
+   },
+   {
+    "val": "4x",
+    "lbl": "Alta do preco do petroleo em 1973"
+   },
+   {
+    "val": "1975",
+    "lbl": "Lancamento do Proalcool"
+   },
+   {
+    "val": "3x+",
+    "lbl": "Alta da divida externa ao longo da decada"
+   }
+  ]
+ },
+ {
+  "id": "d1980",
+  "year": "1980–1989",
+  "era": "redemocratizacao",
+  "dot": "#c0392b",
+  "title": "A Decada Perdida: Crise da Divida Externa e Hiperinflacao",
+  "sub": "O choque dos juros americanos de Paul Volcker estoura a bolha de endividamento externo brasileiro, a moratoria mexicana de 1982 fecha o credito internacional e sucessivos planos heterodoxos fracassam em conter uma inflacao que chegaria a milhares por cento ao ano.",
+  "tags": [
+   "redemocratizacao",
+   "crise"
+  ],
+  "meta": [
+   {
+    "lbl": "Moratoria e crise da divida",
+    "val": "1982"
+   },
+   {
+    "lbl": "Inflacao",
+    "val": "Supera 1.000% a 2.000% ao ano ao final da decada"
+   },
+   {
+    "lbl": "Planos heterodoxos",
+    "val": "Cruzado, Bresser, Verao"
+   }
+  ],
+  "tabs": {
+   "Mercados": [
+    {
+     "lbl": "Mercado Monetario",
+     "txt": "Sucessivos planos de estabilizacao heterodoxos — Cruzado em 1986, Bresser em 1987, Verao em 1989 — tentam congelar precos e salarios e trocar a moeda (cruzeiro, cruzado, cruzado novo) para debelar uma inflacao inercial cada vez mais fora de controle, todos fracassando em pouco tempo."
+    },
+    {
+     "lbl": "Mercado Cambial",
+     "txt": "Sucessivas e traumaticas desvalorizacoes cambiais respondem a escassez de divisas apos o fechamento do credito externo voluntario em 1982; controles cambiais multiplos e mercado paralelo do dolar tornam-se a norma."
+    },
+    {
+     "lbl": "Mercado de Trabalho",
+     "txt": "Desemprego e informalidade crescem com a estagnacao economica; o salario minimo perde poder de compra continuamente pela inflacao galopante, apesar dos gatilhos salariais criados pelos planos heterodoxos."
+    },
+    {
+     "lbl": "Mercado de Credito",
+     "txt": "Colapso do credito externo voluntario apos a moratoria mexicana (1982) obriga o Brasil a negociar sucessivos acordos com o FMI e o Clube de Paris; o credito interno se retrai fortemente pela inflacao e pelas incertezas dos planos de estabilizacao."
+    }
+   ],
+   "Planejamento": [
+    {
+     "lbl": "Visao de governo",
+     "txt": "A 'decada perdida' e marcada pela ausencia de projeto de desenvolvimento de longo prazo: toda a energia do Estado se volta para tentativas emergenciais de estabilizacao monetaria, os planos heterodoxos, e para a negociacao da divida externa com o FMI e bancos credores, em meio a transicao democratica das Diretas Ja (1984) e da Nova Republica (1985)."
+    }
+   ],
+   "Comércio Exterior": [
+    {
+     "lbl": "Parceiros comerciais",
+     "txt": "Os Estados Unidos seguem como parceiro central, mas o Brasil intensifica esforcos de diversificacao exportadora para gerar superavits comerciais necessarios ao pagamento do servico da divida."
+    },
+    {
+     "lbl": "Balanca comercial",
+     "txt": "Superavitaria de forma forcada — o Brasil precisa gerar grandes superavits comerciais para honrar, ainda que parcialmente, o servico da divida externa, o que implica compressao de importacoes e estimulo agressivo as exportacoes."
+    },
+    {
+     "lbl": "Economia externa",
+     "txt": "O choque de juros do Federal Reserve de Paul Volcker, a partir de 1979, e a moratoria mexicana de 1982 fecham abruptamente o acesso brasileiro a credito externo voluntario, forcando anos de negociacao com o FMI sob duras condicionalidades de ajuste fiscal."
+    }
+   ],
+   "Problemas": [
+    {
+     "lbl": "Hiperinflacao",
+     "txt": "Chega a casa dos milhares por cento ao ano em 1989-90, corroendo salarios e poupanca da populacao."
+    },
+    {
+     "lbl": "Divida externa impagavel",
+     "txt": "Nos termos originais, forcando sucessivas renegociacoes sob supervisao do FMI."
+    },
+    {
+     "lbl": "Fracasso dos planos heterodoxos",
+     "txt": "Corroi a credibilidade das instituicoes economicas justamente durante a fragil transicao democratica."
+    }
+   ],
+   "Eventos-Chave": [
+    {
+     "lbl": "Moratoria mexicana e fechamento do credito externo (1982)",
+     "txt": "Inaugura anos de negociacao da divida brasileira com o FMI e bancos credores internacionais."
+    },
+    {
+     "lbl": "Plano Cruzado (1986)",
+     "txt": "Congelamento de precos e nova moeda, o cruzado, geram euforia inicial e depois fracasso agudo, com retorno acelerado da inflacao."
+    },
+    {
+     "lbl": "Constituicao de 1988",
+     "txt": "Nova Carta democratica amplia direitos sociais e trabalhistas, mas tambem rigidifica o orcamento publico em meio a crise fiscal cronica."
+    }
+   ],
+   "Governo": [
+    {
+     "lbl": "Joao Figueiredo",
+     "txt": "Ultimo presidente do regime militar (1979-1985)."
+    },
+    {
+     "lbl": "Jose Sarney",
+     "txt": "Assume a Nova Republica (1985-1990) apos a morte de Tancredo Neves."
+    },
+    {
+     "lbl": "Dilson Funaro, Bresser-Pereira e Mailson da Nobrega",
+     "txt": "Sucedem-se na Fazenda tentando planos de estabilizacao heterodoxos."
+    }
+   ],
+   "Legado": [
+    {
+     "lbl": "Contraponto ao Milagre",
+     "txt": "A 'decada perdida' entra para a historiografia como o contraponto direto ao 'milagre' da decada anterior, e os fracassos heterodoxos moldariam, por reacao, o desenho mais ortodoxo do Plano Real em 1994."
+    },
+    {
+     "lbl": "Para o CACD",
+     "txt": "Tema centralissimo — dominar a sequencia de planos (Cruzado, Bresser, Verao) e suas razoes de fracasso e obrigatorio."
+    }
+   ]
+  },
+  "actors": [
+   {
+    "name": "Jose Sarney",
+    "role": "Primeiro presidente civil da Nova Republica"
+   },
+   {
+    "name": "Dilson Funaro",
+    "role": "Ministro da Fazenda — arquiteto do Plano Cruzado"
+   },
+   {
+    "name": "Paul Volcker",
+    "role": "Presidente do Federal Reserve — seu choque de juros detona a crise da divida latino-americana"
+   }
+  ],
+  "stats": [
+   {
+    "val": "1982",
+    "lbl": "Moratoria mexicana / fechamento do credito"
+   },
+   {
+    "val": ">1.000%",
+    "lbl": "Inflacao anual ao final da decada"
+   },
+   {
+    "val": "3",
+    "lbl": "Planos heterodoxos (Cruzado, Bresser, Verao)"
+   },
+   {
+    "val": "1988",
+    "lbl": "Nova Constituicao Federal"
+   }
+  ]
+ },
+ {
+  "id": "d1990",
+  "year": "1990–1999",
+  "era": "redemocratizacao",
+  "dot": "#5f9a6a",
+  "title": "Abertura Comercial, Plano Real e a Estabilizacao",
+  "sub": "Collor promove abrupta abertura comercial e confisco de poupanca; apos o fracasso de seu plano, a equipe de Fernando Henrique Cardoso lanca o Plano Real, finalmente domando a inflacao cronica brasileira.",
+  "tags": [
+   "redemocratizacao",
+   "plano",
+   "abertura"
+  ],
+  "meta": [
+   {
+    "lbl": "Plano Real (1994)",
+    "val": "Estabilizacao definitiva da inflacao"
+   },
+   {
+    "lbl": "Abertura comercial (1990-1994)",
+    "val": "Reducao de tarifas e barreiras nao tarifarias"
+   },
+   {
+    "lbl": "Privatizacoes",
+    "val": "Telecomunicacoes, siderurgia, mineracao"
+   }
+  ],
+  "tabs": {
+   "Mercados": [
+    {
+     "lbl": "Mercado Monetario",
+     "txt": "O Plano Real (1994), com a URV — Unidade Real de Valor — como mecanismo de transicao de precos, finalmente rompe a inflacao inercial cronica que resistira a todos os planos anteriores; o Banco Central ganha maior instrumental de politica monetaria com juros como ancora."
+    },
+    {
+     "lbl": "Mercado Cambial",
+     "txt": "Cambio fixo/administrado, a ancora cambial, sustenta a estabilizacao inicial do Plano Real, mas gera sobrevalorizacao do real e deterioracao da conta corrente que culminaria na crise cambial de 1999."
+    },
+    {
+     "lbl": "Mercado de Trabalho",
+     "txt": "A abertura comercial dos anos Collor e a reestruturacao produtiva das privatizacoes geram desemprego industrial significativo em setores expostos a concorrencia internacional; a informalidade cresce como valvula de escape."
+    },
+    {
+     "lbl": "Mercado de Credito",
+     "txt": "Reestruturacao do sistema financeiro nacional pelo PROER (1995-96) apos a estabilizacao expor bancos que dependiam de ganhos inflacionarios; o credito ao consumidor se expande a medida que a estabilidade de precos permite planejamento financeiro das familias."
+    }
+   ],
+   "Planejamento": [
+    {
+     "lbl": "Visao de governo",
+     "txt": "A dupla Collor, com abertura comercial abrupta em 1990, e FHC, com o Plano Real e as privatizacoes a partir de 1994, redesenha o papel do Estado na economia: de produtor direto (estatais) para regulador e garantidor da estabilidade macroeconomica, dentro do que ficou conhecido como o 'Consenso de Washington' aplicado ao Brasil."
+    }
+   ],
+   "Comércio Exterior": [
+    {
+     "lbl": "Parceiros comerciais",
+     "txt": "Os Estados Unidos permanecem parceiro central; a criacao do Mercosul (1991) com Argentina, Paraguai e Uruguai consolida a integracao regional como eixo prioritario da politica comercial brasileira."
+    },
+    {
+     "lbl": "Balanca comercial",
+     "txt": "Deficitaria a partir de 1995 pela sobrevalorizacao cambial do Plano Real, que barateia importacoes e encarece exportacoes — desequilibrio que se tornaria insustentavel ao final da decada."
+    },
+    {
+     "lbl": "Economia externa",
+     "txt": "O real sobrevalorizado, combinado a sucessivas crises internacionais — Mexico em 1994-95, Asia em 1997, Russia em 1998 — forca o Brasil a elevar fortemente os juros para defender o cambio, ate a maxidesvalorizacao e a adocao do cambio flutuante em janeiro de 1999."
+    }
+   ],
+   "Problemas": [
+    {
+     "lbl": "Sobrevalorizacao cambial",
+     "txt": "Gera deficits externos crescentes ao longo da segunda metade da decada."
+    },
+    {
+     "lbl": "Exposicao industrial",
+     "txt": "A abertura comercial expoe a industria nacional pouco preparada para a concorrencia internacional, gerando desemprego setorial."
+    },
+    {
+     "lbl": "Dependencia de capital volatil",
+     "txt": "De curto prazo para financiar o deficit em conta corrente, tornando o pais vulneravel a crises internacionais."
+    }
+   ],
+   "Eventos-Chave": [
+    {
+     "lbl": "Plano Collor (1990)",
+     "txt": "Confisco de poupanca e ativos financeiros e abertura comercial abrupta marcam o inicio turbulento da decada, culminando no impeachment de Fernando Collor em 1992."
+    },
+    {
+     "lbl": "Plano Real (1994)",
+     "txt": "Sob o Ministerio da Fazenda de Fernando Henrique Cardoso, finalmente estabiliza a inflacao cronica atraves da URV e de ancora cambial, criando a moeda mais estavel da historia republicana."
+    },
+    {
+     "lbl": "Crise cambial e adocao do cambio flutuante (janeiro de 1999)",
+     "txt": "O Brasil abandona a ancora cambial sob pressao especulativa, migrando para o regime de metas de inflacao que perdura ate hoje."
+    }
+   ],
+   "Governo": [
+    {
+     "lbl": "Fernando Collor de Mello",
+     "txt": "Presidente entre 1990 e 1992, deposto por impeachment."
+    },
+    {
+     "lbl": "Itamar Franco",
+     "txt": "Presidente entre 1992 e 1994, no governo que lanca o Plano Real."
+    },
+    {
+     "lbl": "Fernando Henrique Cardoso e Pedro Malan",
+     "txt": "Primeiro como Ministro da Fazenda e depois como Presidente (1995-2002), lidera a implementacao e consolidacao do Plano Real com Pedro Malan no Ministerio da Fazenda."
+    }
+   ],
+   "Legado": [
+    {
+     "lbl": "Divisor de aguas macroeconomico",
+     "txt": "O Plano Real e considerado o divisor de aguas definitivo da macroeconomia brasileira contemporanea, ao romper decadas de inflacao cronica; a abertura comercial e as privatizacoes, por sua vez, seguem controversas quanto a seus efeitos distributivos e industriais de longo prazo."
+    },
+    {
+     "lbl": "Para o CACD",
+     "txt": "Dominar a mecanica da URV e a sequencia de crises cambiais de 1994-1999 e essencial para a prova de Economia."
+    }
+   ]
+  },
+  "actors": [
+   {
+    "name": "Fernando Collor de Mello",
+    "role": "Presidente (1990-1992) — deposto por impeachment"
+   },
+   {
+    "name": "Fernando Henrique Cardoso",
+    "role": "Ministro da Fazenda e depois Presidente — arquiteto do Plano Real"
+   },
+   {
+    "name": "Pedro Malan",
+    "role": "Ministro da Fazenda (1995-2002) — gestor da consolidacao do Plano Real"
+   }
+  ],
+  "stats": [
+   {
+    "val": "1994",
+    "lbl": "Lancamento do Plano Real"
+   },
+   {
+    "val": "1991",
+    "lbl": "Criacao do Mercosul"
+   },
+   {
+    "val": "1999",
+    "lbl": "Adocao do cambio flutuante"
+   },
+   {
+    "val": "1992",
+    "lbl": "Impeachment de Collor"
+   }
+  ]
+ },
+ {
+  "id": "d2000",
+  "year": "2000–2009",
+  "era": "contemporaneo",
+  "dot": "#e8c97a",
+  "title": "Boom de Commodities, Lula e Inclusao Social",
+  "sub": "A adocao do tripe macroeconomico (metas de inflacao, cambio flutuante, superavit primario) da credibilidade ao pais, enquanto o boom de commodities puxado pela China e programas sociais como o Bolsa Familia reduzem pobreza e desigualdade.",
+  "tags": [
+   "contemporaneo",
+   "plano"
+  ],
+  "meta": [
+   {
+    "lbl": "Tripe macroeconomico (1999 em diante)",
+    "val": "Metas de inflacao, cambio flutuante, superavit primario"
+   },
+   {
+    "lbl": "Bolsa Familia (2003)",
+    "val": "Maior programa de transferencia de renda do pais"
+   },
+   {
+    "lbl": "Grau de investimento",
+    "val": "Conquistado em 2008"
+   }
+  ],
+  "tabs": {
+   "Mercados": [
+    {
+     "lbl": "Mercado Monetario",
+     "txt": "Consolidacao do regime de metas de inflacao sob o Banco Central, com o Conselho Monetario Nacional definindo metas perseguidas via taxa Selic; a credibilidade monetaria crescente permite gradual reducao dos juros reais ao longo da decada."
+    },
+    {
+     "lbl": "Mercado Cambial",
+     "txt": "Cambio flutuante com acumulo expressivo de reservas internacionais, sobretudo a partir de 2006, blindando o pais contra choques externos como demonstrado na crise financeira global de 2008."
+    },
+    {
+     "lbl": "Mercado de Trabalho",
+     "txt": "Forte geracao de empregos formais impulsionada pelo crescimento economico e pela valorizacao real do salario minimo; a taxa de desemprego cai significativamente ao longo da decada, e o mercado de trabalho se formaliza."
+    },
+    {
+     "lbl": "Mercado de Credito",
+     "txt": "Expansao acelerada do credito ao consumo e habitacional, com destaque para o credito consignado e para o Minha Casa Minha Vida, lancado em 2009; bancos publicos (BNDES, Caixa, Banco do Brasil) ampliam fortemente sua atuacao anticiclica."
+    }
+   ],
+   "Planejamento": [
+    {
+     "lbl": "Visao de governo",
+     "txt": "O governo Lula mantem o tripe macroeconomico herdado de FHC — metas de inflacao, cambio flutuante, superavit primario — somando-o a uma agenda de inclusao social ativa, com Bolsa Familia, valorizacao do salario minimo e expansao do credito popular, combinacao que ficaria conhecida como 'social-liberalismo' ou 'novo-desenvolvimentismo' moderado."
+    }
+   ],
+   "Comércio Exterior": [
+    {
+     "lbl": "Parceiros comerciais",
+     "txt": "A China emerge como parceiro comercial de primeira grandeza, tornando-se o principal destino das exportacoes brasileiras de commodities — minerio de ferro, soja — ao final da decada, superando os Estados Unidos."
+    },
+    {
+     "lbl": "Balanca comercial",
+     "txt": "Superavitaria de forma consistente e crescente, impulsionada pelo boom de precos internacionais de commodities puxado pela demanda chinesa."
+    },
+    {
+     "lbl": "Economia externa",
+     "txt": "O Brasil paga antecipadamente sua divida com o FMI em 2005 e conquista o grau de investimento em 2008, atraindo investimento estrangeiro direto em volume recorde; a crise financeira global de 2008 atinge o pais de forma mais branda que em ciclos anteriores."
+    }
+   ],
+   "Problemas": [
+    {
+     "lbl": "Dependencia de commodities",
+     "txt": "Crescente dependencia da demanda chinesa gera vulnerabilidade a reversoes de ciclo internacional."
+    },
+    {
+     "lbl": "Carga tributaria elevada",
+     "txt": "E complexa, onerando a competitividade da industria nacional."
+    },
+    {
+     "lbl": "Gargalos de infraestrutura",
+     "txt": "A logistica nao acompanha o crescimento da producao agricola e mineral exportadora."
+    }
+   ],
+   "Eventos-Chave": [
+    {
+     "lbl": "Lancamento do Bolsa Familia (2003)",
+     "txt": "Unifica programas de transferencia de renda anteriores, tornando-se o maior programa de combate a pobreza da historia brasileira."
+    },
+    {
+     "lbl": "Pagamento antecipado da divida com o FMI e grau de investimento (2005 e 2008)",
+     "txt": "Simbolizam a nova credibilidade financeira internacional do Brasil."
+    },
+    {
+     "lbl": "Crise financeira global (2008)",
+     "txt": "O Brasil e afetado, mas de forma menos severa que em crises anteriores, gracas as reservas acumuladas e ao sistema bancario mais regulado, reagindo com estimulo fiscal e de credito publico anticiclico."
+    }
+   ],
+   "Governo": [
+    {
+     "lbl": "Luiz Inacio Lula da Silva",
+     "txt": "Preside toda a decada (2003-2010)."
+    },
+    {
+     "lbl": "Antonio Palocci e Guido Mantega",
+     "txt": "Ocupam sucessivamente o Ministerio da Fazenda."
+    },
+    {
+     "lbl": "Henrique Meirelles",
+     "txt": "Preside o Banco Central com mandato de continuidade que reforca a credibilidade da politica monetaria."
+    }
+   ],
+   "Legado": [
+    {
+     "lbl": "Avanco social com dependencia externa renovada",
+     "txt": "A decada de 2000 e vista como o periodo de maior avanco social recente da economia brasileira, com reducao expressiva da pobreza e da desigualdade medida pelo coeficiente de Gini, mas tambem como o auge de um modelo de crescimento fortemente dependente do ciclo de commodities que se reverteria na decada seguinte."
+    },
+    {
+     "lbl": "Para o CACD",
+     "txt": "Essencial equilibrar a narrativa de conquistas sociais com a critica a dependencia externa renovada via commodities."
+    }
+   ]
+  },
+  "actors": [
+   {
+    "name": "Luiz Inacio Lula da Silva",
+    "role": "Presidente (2003-2010)"
+   },
+   {
+    "name": "Antonio Palocci",
+    "role": "Ministro da Fazenda no primeiro mandato — manteve o tripe macroeconomico"
+   },
+   {
+    "name": "Henrique Meirelles",
+    "role": "Presidente do Banco Central — reforcou a credibilidade monetaria"
+   }
+  ],
+  "stats": [
+   {
+    "val": "2008",
+    "lbl": "Conquista do grau de investimento"
+   },
+   {
+    "val": "2003",
+    "lbl": "Lancamento do Bolsa Familia"
+   },
+   {
+    "val": "1o",
+    "lbl": "China torna-se principal parceiro comercial"
+   },
+   {
+    "val": "2005",
+    "lbl": "Quitacao antecipada da divida com o FMI"
+   }
+  ]
+ },
+ {
+  "id": "d2010",
+  "year": "2010–2019",
+  "era": "contemporaneo",
+  "dot": "#c0392b",
+  "title": "Nova Matriz Economica, Crise de 2014-2016 e Recessao",
+  "sub": "A tentativa de estimulo desenvolvimentista da Nova Matriz Economica se choca com o fim do superciclo de commodities, o esgotamento fiscal e o Lava Jato, resultando na pior recessao da historia economica brasileira registrada e no impeachment de Dilma Rousseff.",
+  "tags": [
+   "contemporaneo",
+   "crise"
+  ],
+  "meta": [
+   {
+    "lbl": "Nova Matriz Economica (2011-2014)",
+    "val": "Intervencionismo e desoneracoes"
+   },
+   {
+    "lbl": "Recessao de 2014-2016",
+    "val": "PIB acumula queda superior a 7%"
+   },
+   {
+    "lbl": "Teto de Gastos (2016)",
+    "val": "Regra fiscal de duas decadas"
+   }
+  ],
+  "tabs": {
+   "Mercados": [
+    {
+     "lbl": "Mercado Monetario",
+     "txt": "Apos periodo de juros historicamente baixos sob a Nova Matriz Economica, o Banco Central e forcado a elevar fortemente a Selic a partir de 2015 para conter a inflacao que rompe o teto da meta, em meio a recessao mais severa ja registrada."
+    },
+    {
+     "lbl": "Mercado Cambial",
+     "txt": "Forte desvalorizacao cambial a partir de 2014-2015 com a piora dos fundamentos fiscais e a reversao do ciclo de commodities; o real perde valor expressivo frente ao dolar no periodo."
+    },
+    {
+     "lbl": "Mercado de Trabalho",
+     "txt": "A taxa de desemprego dispara de patamares historicos baixos, cerca de 5% em 2014, para acima de 12-13% em 2016-2017; a Reforma Trabalhista de 2017 busca flexibilizar as relacoes de trabalho em resposta a crise."
+    },
+    {
+     "lbl": "Mercado de Credito",
+     "txt": "Forte contracao do credito bancario privado durante a recessao; bancos publicos, que haviam expandido agressivamente o credito na Nova Matriz Economica, tambem recuam diante da deterioracao da inadimplencia."
+    }
+   ],
+   "Planejamento": [
+    {
+     "lbl": "Visao de governo",
+     "txt": "A Nova Matriz Economica do primeiro governo Dilma Rousseff (2011-2014) tenta reduzir juros e cambio administrativamente, conceder desoneracoes fiscais setoriais e estimular investimento publico, mas o modelo se esgota com a piora fiscal, a perda de credibilidade e o fim do boom de commodities, sendo abandonado em meio ao ajuste fiscal recessivo de 2015 (Joaquim Levy) e substituido pelo Teto de Gastos, Emenda Constitucional 95 de 2016, sob Michel Temer."
+    }
+   ],
+   "Comércio Exterior": [
+    {
+     "lbl": "Parceiros comerciais",
+     "txt": "A China consolida-se definitivamente como principal parceiro comercial do Brasil ao longo da decada, a frente dos Estados Unidos, com a Uniao Europeia como bloco relevante nas negociacoes do futuro acordo UE-Mercosul."
+    },
+    {
+     "lbl": "Balanca comercial",
+     "txt": "Superavitaria na maior parte da decada, sustentada pela desvalorizacao cambial que torna as exportacoes mais competitivas mesmo com a queda nos precos internacionais de commodities."
+    },
+    {
+     "lbl": "Economia externa",
+     "txt": "O fim do superciclo de commodities — queda acentuada do preco do petroleo e do minerio de ferro a partir de 2014 — expoe a vulnerabilidade fiscal e externa acumulada, coincidindo com a crise da Petrobras revelada pela Operacao Lava Jato (2014)."
+    }
+   ],
+   "Problemas": [
+    {
+     "lbl": "Recessao mais severa da serie historica",
+     "txt": "O PIB acumula queda superior a 7% entre 2014 e 2016, segundo o IBGE."
+    },
+    {
+     "lbl": "Operacao Lava Jato",
+     "txt": "Revela esquema de corrupcao na Petrobras que paralisa investimentos e contamina a percepcao de risco-pais."
+    },
+    {
+     "lbl": "Instabilidade politica",
+     "txt": "O impeachment de Dilma Rousseff em 2016 aprofunda a instabilidade politica com repercussoes economicas diretas."
+    }
+   ],
+   "Eventos-Chave": [
+    {
+     "lbl": "Fim do superciclo de commodities (2014)",
+     "txt": "A desaceleracao da economia chinesa derruba os precos do petroleo, minerio de ferro e outras commodities, expondo a vulnerabilidade externa brasileira."
+    },
+    {
+     "lbl": "Operacao Lava Jato (a partir de 2014)",
+     "txt": "A investigacao de corrupcao na Petrobras paralisa a maior estatal do pais, com efeitos em cascata sobre a cadeia de fornecedores e a confianca de investidores."
+    },
+    {
+     "lbl": "Impeachment de Dilma Rousseff e Teto de Gastos (2016)",
+     "txt": "A crise politica se resolve com a ascensao de Michel Temer, que aprova a Emenda Constitucional do Teto de Gastos como resposta ao descontrole fiscal."
+    }
+   ],
+   "Governo": [
+    {
+     "lbl": "Dilma Rousseff",
+     "txt": "Presidente (2011-2016), sofre impeachment em meio a crise fiscal e politica."
+    },
+    {
+     "lbl": "Michel Temer",
+     "txt": "Presidente (2016-2018), implementa o Teto de Gastos e a Reforma Trabalhista."
+    },
+    {
+     "lbl": "Joaquim Levy e Henrique Meirelles",
+     "txt": "Conduzem sucessivamente a Fazenda em tentativas de ajuste fiscal."
+    }
+   ],
+   "Legado": [
+    {
+     "lbl": "Colapso de um modelo intervencionista",
+     "txt": "A crise de 2014-2016 e hoje estudada como o colapso de um modelo de intervencionismo fiscal e monetario sem lastro em ajuste estrutural, e o Teto de Gastos tornou-se a principal ancora, e o principal ponto de disputa politica, da politica fiscal brasileira na decada seguinte."
+    },
+    {
+     "lbl": "Para o CACD",
+     "txt": "Dominar a sequencia causal Nova Matriz, fim do boom de commodities, Lava Jato, impeachment e Teto de Gastos e essencial para questoes discursivas sobre a economia brasileira recente."
+    }
+   ]
+  },
+  "actors": [
+   {
+    "name": "Dilma Rousseff",
+    "role": "Presidente (2011-2016) — sofreu impeachment"
+   },
+   {
+    "name": "Michel Temer",
+    "role": "Presidente (2016-2018) — aprovou o Teto de Gastos"
+   },
+   {
+    "name": "Joaquim Levy",
+    "role": "Ministro da Fazenda — tentou o ajuste fiscal de 2015"
+   }
+  ],
+  "stats": [
+   {
+    "val": ">7%",
+    "lbl": "Queda acumulada do PIB (2014-16)"
+   },
+   {
+    "val": ">13%",
+    "lbl": "Pico da taxa de desemprego (2017)"
+   },
+   {
+    "val": "2016",
+    "lbl": "Emenda Constitucional do Teto de Gastos"
+   },
+   {
+    "val": "2014",
+    "lbl": "Inicio da Operacao Lava Jato"
+   }
+  ]
+ },
+ {
+  "id": "d2020",
+  "year": "2020–2026",
+  "era": "contemporaneo",
+  "dot": "#e8c97a",
+  "title": "Pandemia, Arcabouco Fiscal e a Economia Brasileira Contemporanea",
+  "sub": "A pandemia de Covid-19 provoca a maior intervencao fiscal emergencial da historia recente (Auxilio Emergencial), seguida por forte alta da inflacao e dos juros; o novo arcabouco fiscal do governo Lula III tenta reconciliar responsabilidade fiscal com retomada do investimento social.",
+  "tags": [
+   "contemporaneo",
+   "choque",
+   "reforma"
+  ],
+  "meta": [
+   {
+    "lbl": "Auxilio Emergencial (2020)",
+    "val": "Maior transferencia de renda emergencial da historia"
+   },
+   {
+    "lbl": "Inflacao pos-pandemia",
+    "val": "Pico acima de 10% em 2022"
+   },
+   {
+    "lbl": "Novo Arcabouco Fiscal (2023)",
+    "val": "Substitui o Teto de Gastos"
+   }
+  ],
+  "tabs": {
+   "Mercados": [
+    {
+     "lbl": "Mercado Monetario",
+     "txt": "O Banco Central reduz a Selic a minimas historicas, 2% em 2020, para enfrentar a recessao pandemica, revertendo com um dos ciclos de aperto monetario mais agressivos do mundo, Selic a 13,75% em 2022-23, diante da explosao inflacionaria pos-pandemia, retomando novo ciclo de ajustes em 2024-25 diante de pressoes inflacionarias e fiscais renovadas."
+    },
+    {
+     "lbl": "Mercado Cambial",
+     "txt": "O real sofre forte desvalorizacao em 2020 com a fuga global para ativos seguros e a incerteza fiscal domestica; a volatilidade cambial permanece elevada ao longo da decada, sensivel a percepcoes de risco fiscal."
+    },
+    {
+     "lbl": "Mercado de Trabalho",
+     "txt": "O mercado de trabalho colapsa em 2020 com o isolamento social, mas se recupera com forca a partir de 2021-2022, atingindo minimas historicas de desemprego em 2024-2025, ainda que com elevada informalidade e crescimento do trabalho por aplicativos (plataformas digitais)."
+    },
+    {
+     "lbl": "Mercado de Credito",
+     "txt": "Expansao emergencial do credito via bancos publicos e programas como o Pronampe durante a pandemia; posteriormente, o credito se retrai com o aperto monetario de 2021-2023, voltando a se expandir com a queda gradual dos juros a partir de 2024."
+    }
+   ],
+   "Planejamento": [
+    {
+     "lbl": "Visao de governo",
+     "txt": "O governo Bolsonaro conduz politica fiscal expansionista emergencial durante a pandemia, o Auxilio Emergencial, dentro dos limites — e depois fora — do Teto de Gastos; o governo Lula III, a partir de 2023, aprova o Novo Arcabouco Fiscal, que substitui o Teto de Gastos por regra de crescimento real limitado do gasto atrelado a metas de resultado primario, buscando equilibrar disciplina fiscal com espaco para investimento publico e social."
+    }
+   ],
+   "Comércio Exterior": [
+    {
+     "lbl": "Parceiros comerciais",
+     "txt": "A China permanece de longe o principal parceiro comercial do Brasil; a conclusao tecnica do Acordo UE-Mercosul, em dezembro de 2024, abre nova fronteira de insercao internacional junto a Uniao Europeia; os Estados Unidos seguem como parceiro relevante em investimento e tecnologia."
+    },
+    {
+     "lbl": "Balanca comercial",
+     "txt": "Superavitaria em niveis recordes na decada, sustentada pelo agronegocio (soja, carnes) e pela mineracao, ainda que sujeita a tensoes comerciais globais, como as tarifas dos Estados Unidos sob Trump a partir de 2025, e a volatilidade de precos de commodities."
+    },
+    {
+     "lbl": "Economia externa",
+     "txt": "O Brasil assume a presidencia do G20 em 2024 e sedia a COP30 em Belem em 2025, reforcando protagonismo em governanca climatica e multilateral, ao mesmo tempo em que enfrenta pressoes protecionistas de parceiros como os Estados Unidos."
+    }
+   ],
+   "Problemas": [
+    {
+     "lbl": "Fiscal estruturalmente desafiador",
+     "txt": "A divida publica bruta permanece acima de 75-80% do PIB, limitando o espaco de manobra fiscal."
+    },
+    {
+     "lbl": "Inflacao de servicos persistente",
+     "txt": "Pressiona o Banco Central a manter juros reais elevados por periodos prolongados."
+    },
+    {
+     "lbl": "Produtividade estagnada",
+     "txt": "A Reforma Tributaria, aprovada em 2023 e em fase de regulamentacao, e a principal aposta de medio prazo para destravar o crescimento."
+    }
+   ],
+   "Eventos-Chave": [
+    {
+     "lbl": "Pandemia de Covid-19 e Auxilio Emergencial (2020)",
+     "txt": "Maior programa de transferencia de renda emergencial da historia brasileira, evita colapso social, mas eleva substancialmente a divida publica."
+    },
+    {
+     "lbl": "Reforma Tributaria sobre o consumo (Emenda Constitucional 132, de 2023)",
+     "txt": "Unifica tributos federais, estaduais e municipais sobre bens e servicos em um IVA dual, a mais ampla reforma tributaria desde a Constituicao de 1988."
+    },
+    {
+     "lbl": "Novo Arcabouco Fiscal e conclusao tecnica do Acordo UE-Mercosul (2023 e 2024)",
+     "txt": "Redesenham, respectivamente, a ancora fiscal domestica e a insercao comercial internacional do Brasil para o novo ciclo economico."
+    }
+   ],
+   "Governo": [
+    {
+     "lbl": "Jair Bolsonaro e Paulo Guedes",
+     "txt": "Conduzem agenda liberal (2019-2022) e depois a resposta emergencial a pandemia."
+    },
+    {
+     "lbl": "Luiz Inacio Lula da Silva e Fernando Haddad",
+     "txt": "Conduzem, a partir de 2023, o Novo Arcabouco Fiscal e a Reforma Tributaria, alem da presidencia do G20 (2024) e do BRICS (2025)."
+    }
+   ],
+   "Legado": [
+    {
+     "lbl": "Tentativa de romper o padrao historico",
+     "txt": "A economia brasileira dos anos 2020 tenta romper o padrao historico de 'crescer com endividamento seguido de ajuste recessivo' atraves de reformas estruturais, como a tributaria, combinadas a uma ancora fiscal mais flexivel que o Teto de Gastos, num experimento cujo sucesso ainda esta em aberto."
+    },
+    {
+     "lbl": "Para o CACD",
+     "txt": "Tema mais recente e mutavel do programa — acompanhar a regulamentacao da Reforma Tributaria, o Arcabouco Fiscal e o Acordo UE-Mercosul e indispensavel ate a data da prova."
+    }
+   ]
+  },
+  "actors": [
+   {
+    "name": "Jair Bolsonaro",
+    "role": "Presidente (2019-2022) — conduziu a resposta fiscal a pandemia"
+   },
+   {
+    "name": "Paulo Guedes",
+    "role": "Ministro da Economia (2019-2022) — agenda liberal"
+   },
+   {
+    "name": "Luiz Inacio Lula da Silva",
+    "role": "Presidente (2023-) — Novo Arcabouco Fiscal e Reforma Tributaria"
+   },
+   {
+    "name": "Fernando Haddad",
+    "role": "Ministro da Fazenda (2023-) — arquiteto do Novo Arcabouco Fiscal"
+   }
+  ],
+  "stats": [
+   {
+    "val": "2020",
+    "lbl": "Auxilio Emergencial"
+   },
+   {
+    "val": "2023",
+    "lbl": "Novo Arcabouco Fiscal"
+   },
+   {
+    "val": "2023",
+    "lbl": "Reforma Tributaria (EC 132)"
+   },
+   {
+    "val": "2024",
+    "lbl": "Conclusao tecnica do Acordo UE-Mercosul"
+   }
+  ]
+ }
+];
+
+/* ── ERA CONFIG ── */
+const ERA_LABELS = {
+  imperio:"Império", primeira_republica:"Primeira República", vargas:"Era Vargas",
+  populismo:"Democracia Populista", regime_militar:"Regime Militar",
+  redemocratizacao:"Redemocratização", contemporaneo:"Contemporâneo"
+};
+const ERA_ORDER = ["imperio","primeira_republica","vargas","populismo","regime_militar","redemocratizacao","contemporaneo"];
+const ERA_DOT = {
+  imperio:"#c9a84c", primeira_republica:"#3a8c84", vargas:"#8e5ea0",
+  populismo:"#5f9a6a", regime_militar:"#c0392b", redemocratizacao:"#4a7cb5", contemporaneo:"#e8c97a"
+};
+const TAG_LABELS = {
+  imperio:"Império", primeira_republica:"1ª República", vargas:"Era Vargas", populismo:"Populismo",
+  regime_militar:"Regime Militar", redemocratizacao:"Redemocratização", contemporaneo:"Contemporâneo",
+  crise:"Crise", plano:"Plano Econômico", reforma:"Reforma", choque:"Choque Externo",
+  milagre:"Boom/Milagre", abertura:"Abertura", ruptura:"Ruptura"
+};
+const TAG_CLS = {
+  imperio:"tc", primeira_republica:"tm", vargas:"ti", populismo:"ta",
+  regime_militar:"tx", redemocratizacao:"tr", contemporaneo:"tk",
+  crise:"tx", plano:"ta", reforma:"tr", choque:"to", milagre:"tm", abertura:"ti", ruptura:"tx"
+};
+
+/* render era legend */
+(function renderLegend(){
+  const el = document.getElementById("eraLegend");
+  el.innerHTML = ERA_ORDER.map(e => `<div class="era-legend-item"><div class="era-legend-dot" style="background:${ERA_DOT[e]}"></div>${ERA_LABELS[e]}</div>`).join("");
+})();
+
+/* ── STATE ── */
+let activeEra = "all", activeSearch = "", activeEv = null;
+
+/* ── ELEMENTS ── */
+const sidebar    = document.getElementById("sidebar");
+const timelineEl = document.getElementById("timelineEl");
+const overlay    = document.getElementById("detailOverlay");
+const dTitle     = document.getElementById("dTitle");
+const dMeta      = document.getElementById("dMeta");
+const dSub       = document.getElementById("dSub");
+const dMetaRow   = document.getElementById("dMetaRow");
+const dTabs      = document.getElementById("dTabs");
+const dBody      = document.getElementById("dBody");
+const quickBar   = document.getElementById("quickBar");
+
+/* ── RENDER ── */
+function tagHtml(t) { return `<span class="tag ${TAG_CLS[t]||'tc'}">${TAG_LABELS[t]||t}</span>`; }
+
+function visible(ev) {
+  const eraOk = activeEra === "all" || ev.era === activeEra;
+  const search = activeSearch.toLowerCase();
+  const searchOk = !search || ev.title.toLowerCase().includes(search) || ev.year.includes(search) || ev.sub.toLowerCase().includes(search);
+  return eraOk && searchOk;
+}
+
+function render() {
+  timelineEl.innerHTML = "";
+  sidebar.innerHTML = "";
+  quickBar.innerHTML = "";
+
+  let currentEra = null;
+  let side = 0;
+
+  EVENTS.forEach(ev => {
+    if (!visible(ev)) return;
+
+    const qp = document.createElement("button");
+    qp.className = "qpill";
+    qp.textContent = ev.year + " · " + ev.title.slice(0,26) + (ev.title.length>26?"…":"");
+    qp.onclick = () => openDetail(ev);
+    quickBar.appendChild(qp);
+
+    if (ev.era !== currentEra) {
+      currentEra = ev.era;
+      const sh = document.createElement("div");
+      sh.className = "sidebar-section";
+      sh.innerHTML = `<div class="section-era">${ERA_LABELS[ev.era]}</div>`;
+      sidebar.appendChild(sh);
+    }
+
+    const ni = document.createElement("div");
+    ni.className = "nav-item" + (activeEv === ev.id ? " active" : "");
+    ni.id = "nav-" + ev.id;
+    ni.innerHTML = `
+      <div class="nav-dot" style="background:${ev.dot}"></div>
+      <div class="nav-info">
+        <div class="nav-year">${ev.year}</div>
+        <div class="nav-title">${ev.title}</div>
+        <span class="nav-tag tag ${TAG_CLS[ev.tags[0]]||'tc'}">${TAG_LABELS[ev.tags[0]]||ev.tags[0]}</span>
+      </div>`;
+    ni.onclick = () => { openDetail(ev); scrollToCard(ev.id); };
+    sidebar.appendChild(ni);
+
+    const row = document.createElement("div");
+    row.className = "ev-row visible";
+    row.id = "row-" + ev.id;
+
+    const cardHtml = `
+      <div class="ev-card" data-id="${ev.id}">
+        <div class="ev-card-year" style="color:${ev.dot}">${ev.year}</div>
+        <div class="ev-card-tags">${ev.tags.map(tagHtml).join("")}</div>
+        <div class="ev-card-title">${ev.title}</div>
+        <div class="ev-card-sub">${ev.sub}</div>
+      </div>`;
+
+    if (side % 2 === 0) {
+      row.innerHTML = `
+        <div class="ev-left">${cardHtml}</div>
+        <div class="ev-center"><div class="ev-dot" style="background:${ev.dot}" data-id="${ev.id}"></div></div>
+        <div class="ev-right ev-empty"></div>`;
+    } else {
+      row.innerHTML = `
+        <div class="ev-left ev-empty"></div>
+        <div class="ev-center"><div class="ev-dot" style="background:${ev.dot}" data-id="${ev.id}"></div></div>
+        <div class="ev-right">${cardHtml}</div>`;
+    }
+
+    row.querySelectorAll(".ev-card, .ev-dot").forEach(el => {
+      el.onclick = () => openDetail(ev);
+    });
+
+    timelineEl.appendChild(row);
+    side++;
+  });
+}
+
+function scrollToCard(id) {
+  const el = document.getElementById("row-" + id);
+  el?.scrollIntoView({ behavior: "smooth", block: "center" });
+}
+
+/* ── DETAIL DRAWER ── */
+function openDetail(ev) {
+  activeEv = ev.id;
+  document.querySelectorAll(".nav-item").forEach(n => n.classList.remove("active"));
+  const ni = document.getElementById("nav-" + ev.id);
+  if (ni) ni.classList.add("active");
+
+  dMeta.textContent = ev.year + "  ·  " + ERA_LABELS[ev.era];
+  dTitle.textContent = ev.title;
+  dSub.textContent = ev.sub;
+
+  if (ev.meta && ev.meta.length) {
+    dMetaRow.innerHTML = ev.meta.map(m =>
+      `<div class="meta-col"><div class="meta-col-label">${m.lbl}</div><div class="meta-col-content">${m.val}</div></div>`
+    ).join("");
+    dMetaRow.style.display = "grid";
+  } else {
+    dMetaRow.style.display = "none";
+  }
+
+  const TAB_ORDER = ["Mercados","Planejamento","Comércio Exterior","Problemas","Eventos-Chave","Governo","Legado"];
+  const evTabKeys = Object.keys(ev.tabs);
+  const orderedTabs = TAB_ORDER.filter(t => evTabKeys.includes(t));
+  const remainingTabs = evTabKeys.filter(t => !TAB_ORDER.includes(t));
+  const allTabs = [...orderedTabs, ...remainingTabs];
+
+  dTabs.innerHTML = allTabs.map((t,i) =>
+    `<div class="dtab${i===0?" active":""}" data-tab="${i}">${t}</div>`
+  ).join("");
+
+  dBody.innerHTML = allTabs.map((tabName, i) => {
+    let html = `<div class="tab-panel${i===0?" active":""}" data-panel="${i}">`;
+
+    if (tabName === "Mercados") {
+      if (ev.stats && ev.stats.length) {
+        html += `<div class="tp-grid">${ev.stats.map(s =>
+          `<div class="tp-stat"><div class="tp-stat-val">${s.val}</div><div class="tp-stat-lbl">${s.lbl}</div></div>`
+        ).join("")}</div>`;
+      }
+      const mk = ev.tabs[tabName] || [];
+      html += `<div class="mk-grid">${mk.map(s =>
+        `<div class="mk-card"><div class="mk-card-lbl">${s.lbl}</div><div class="mk-card-txt">${s.txt}</div></div>`
+      ).join("")}</div>`;
+
+    } else if (tabName === "Governo") {
+      if (ev.actors && ev.actors.length) {
+        html += `<div class="tp-section"><div class="tp-label">Figuras-chave do período</div>
+          <div class="tp-actors">${ev.actors.map(a =>
+            `<div class="actor-chip"><div class="actor-name">${a.name}</div><div class="actor-role">${a.role}</div></div>`
+          ).join("")}</div></div>`;
+      }
+      const sections = ev.tabs[tabName] || [];
+      sections.forEach(s => {
+        html += `<div class="tp-section" style="background:var(--bg);border:1px solid var(--border);border-radius:3px;padding:12px 14px;margin-bottom:10px">
+          <div class="tp-label" style="color:var(--purple);font-size:.46rem;margin-bottom:6px">${s.lbl}</div>
+          <div class="tp-text">${s.txt}</div>
+        </div>`;
+      });
+
+    } else if (tabName === "Comércio Exterior") {
+      const sections = ev.tabs[tabName] || [];
+      sections.forEach(s => {
+        html += `<div class="tp-section" style="border-left:2px solid rgba(58,140,132,0.4);padding-left:12px;margin-bottom:14px">
+          <div class="tp-label" style="color:var(--teal);font-size:.44rem">${s.lbl}</div>
+          <div class="tp-text">${s.txt}</div>
+        </div>`;
+      });
+
+    } else if (tabName === "Problemas") {
+      const sections = ev.tabs[tabName] || [];
+      html += `<ul class="tp-list">`;
+      sections.forEach(s => {
+        html += `<li><b style="color:var(--red)">${s.lbl}:</b>&nbsp;${s.txt}</li>`;
+      });
+      html += `</ul>`;
+
+    } else if (tabName === "Eventos-Chave") {
+      const sections = ev.tabs[tabName] || [];
+      sections.forEach((s,idx) => {
+        html += `<div class="tp-section" style="background:var(--bg);border:1px solid var(--border);border-left:2px solid var(--gold);border-radius:0 3px 3px 0;padding:12px 14px;margin-bottom:12px">
+          <div class="tp-label" style="margin-bottom:6px">Evento ${idx+1} · ${s.lbl}</div>
+          <div class="tp-text">${s.txt}</div>
+        </div>`;
+      });
+
+    } else if (tabName === "Legado") {
+      const sections = ev.tabs[tabName] || [];
+      sections.forEach(s => {
+        const isCACD = s.lbl && s.lbl.includes("CACD");
+        html += `<div class="tp-section" style="border-left:2px solid ${isCACD?'var(--gold)':'rgba(201,168,76,0.3)'};padding-left:12px;margin-bottom:14px;${isCACD?'background:var(--gold-dim);padding:10px 12px;border-radius:0 3px 3px 0':''}">
+          ${s.lbl ? `<div class="tp-label" style="color:var(--gold);font-size:.44rem">${s.lbl}</div>` : ''}
+          <div class="tp-text">${s.txt}</div>
+        </div>`;
+      });
+      if (ev.quote) {
+        html += `<div class="quote-block"><div class="quote-text">"${ev.quote.txt}"</div><div class="quote-author">— ${ev.quote.author}</div></div>`;
+      }
+
+    } else {
+      const sections = ev.tabs[tabName] || [];
+      sections.forEach(s => {
+        if (s.lbl) html += `<div class="tp-section"><div class="tp-label">${s.lbl}</div><div class="tp-text">${s.txt}</div></div>`;
+        else if (s.txt) html += `<div class="tp-section"><div class="tp-text">${s.txt}</div></div>`;
+      });
+    }
+
+    html += `</div>`;
+    return html;
+  }).join("");
+
+  dTabs.querySelectorAll(".dtab").forEach(tab => {
+    tab.onclick = () => {
+      const idx = tab.dataset.tab;
+      dTabs.querySelectorAll(".dtab").forEach(t => t.classList.remove("active"));
+      dBody.querySelectorAll(".tab-panel").forEach(p => p.classList.remove("active"));
+      tab.classList.add("active");
+      dBody.querySelector(`[data-panel="${idx}"]`)?.classList.add("active");
+    };
+  });
+
+  overlay.classList.add("open");
+}
+
+function closeDetail() {
+  overlay.classList.remove("open");
+  activeEv = null;
+  document.querySelectorAll(".nav-item").forEach(n => n.classList.remove("active"));
+}
+
+document.getElementById("drawerClose").onclick = closeDetail;
+overlay.onclick = e => { if (e.target === overlay) closeDetail(); };
+
+/* ── FILTERS ── */
+document.querySelectorAll("[data-era]").forEach(btn => {
+  btn.onclick = () => {
+    document.querySelectorAll("[data-era]").forEach(b => b.classList.remove("on"));
+    btn.classList.add("on");
+    activeEra = btn.dataset.era;
+    render();
+  };
+});
+
+document.getElementById("searchInput").oninput = e => {
+  activeSearch = e.target.value;
+  render();
+};
+
+/* ── MOBILE ── */
+const mobileSearchBtn = document.getElementById("mobileSearchBtn");
+const searchInput     = document.getElementById("searchInput");
+
+function applyMobileLayout() {
+  const isMobile = window.innerWidth <= 768;
+  mobileSearchBtn.style.display = isMobile ? "block" : "none";
+  searchInput.style.display     = isMobile ? "none"  : "block";
+}
+applyMobileLayout();
+window.addEventListener("resize", applyMobileLayout);
+
+mobileSearchBtn.onclick = () => {
+  const q = prompt("Buscar década/evento:", activeSearch);
+  if (q !== null) {
+    activeSearch = q;
+    render();
+  }
+};
+
+(function swipeToClose() {
+  const drawer = document.getElementById("detailDrawer");
+  let startY = 0, isDragging = false;
+  drawer.addEventListener("touchstart", e => {
+    if (drawer.querySelector(".drawer-body").scrollTop === 0) {
+      startY = e.touches[0].clientY;
+      isDragging = true;
+    }
+  }, { passive: true });
+  drawer.addEventListener("touchmove", e => {
+    if (!isDragging) return;
+    const dy = e.touches[0].clientY - startY;
+    if (dy > 0) {
+      drawer.style.transform = `translateY(${Math.min(dy, 200)}px)`;
+      drawer.style.transition = "none";
+    }
+  }, { passive: true });
+  drawer.addEventListener("touchend", e => {
+    if (!isDragging) return;
+    isDragging = false;
+    const dy = e.changedTouches[0].clientY - startY;
+    drawer.style.transition = "";
+    if (dy > 90) {
+      closeDetail();
+      drawer.style.transform = "";
+    } else {
+      drawer.style.transform = "";
+    }
+  });
+})();
+
+render();
+</script>
+</body>
+</html>
