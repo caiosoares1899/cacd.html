@@ -93,6 +93,12 @@
   .edu-title { font-weight: 700; font-size: 13.5px; }
   .edu-meta { font-size: 12.5px; color: #555; }
   .lang-line { font-size: 13.5px; }
+  .project-item { margin-bottom: 12px; }
+  .project-item:last-child { margin-bottom: 0; }
+  .project-title { font-weight: 700; font-size: 14.5px; color: #1a1a1a; }
+  .project-title a { color: #14746f; text-decoration: none; font-weight: 600; font-size: 12.5px; }
+  .project-title a:hover { text-decoration: underline; }
+  .project-meta { font-size: 12.5px; color: #555; font-style: italic; margin-bottom: 4px; }
   @media print {
     body { padding: 0; }
   }
@@ -101,7 +107,7 @@
 <body>
 
   <h1>Caio Oliveira dos Santos Soares</h1>
-  <div class="headline">Agilista de Negócios | Agile Coach | Scrum Master</div>
+  <div class="headline">Agilista de Negócios | Agile Coach | Scrum Master | Economista (CORECON-BA)</div>
   <div class="contact">
     <span>Jequié, BA</span>
     <span>+55 71 98476-0129</span>
@@ -109,7 +115,7 @@
   </div>
 
   <h2>Resumo Profissional</h2>
-  <p class="summary">Agilista de negócios com mais de 3 anos de experiência liderando transformação ágil em ambientes multidisciplinares. Especialista em Scrum, OKRs e formação de cultura ágil, com atuação direta na Tribo Digital da Cia. Hering (5 squads, +70 colaboradores). Experiência recente na implementação de soluções de Inteligência Artificial para automação de processos ágeis e no desenvolvimento de ferramentas internas de gestão. Background complementar em Ciências Econômicas, Business Development e liderança de equipes comerciais.</p>
+  <p class="summary">Agilista de negócios com mais de 3 anos de experiência liderando transformação ágil em ambientes multidisciplinares. Especialista em Scrum, OKRs e formação de cultura ágil, com atuação direta na Tribo Digital da Cia. Hering (5 squads, +70 colaboradores). Experiência recente na implementação de soluções de Inteligência Artificial para automação de processos ágeis e no desenvolvimento de ferramentas internas de gestão, com destaque para o Maré Digital, suíte própria de aplicativos usada pelas squads da tribo. Economista registrado no CORECON-BA, com background complementar em Business Development e liderança de equipes comerciais.</p>
 
   <h2>Competências</h2>
   <div class="skills-list">
@@ -135,7 +141,7 @@
     <ul>
       <li>Atua como agilista da Tribo Digital (5 squads ágeis, +70 colaboradores), liderando a transição do modelo tradicional por setores para um modelo multidisciplinar e ágil.</li>
       <li>Lidera a implementação de soluções de Inteligência Artificial para automatizar processos ágeis da tribo (relatórios de OKR, atas e rotinas de acompanhamento) e capacita os times no uso de ferramentas de IA no dia a dia.</li>
-      <li>Desenvolve e mantém ferramenta interna de gestão ágil para acompanhamento de squads e OKRs, além de automações que otimizam rotinas operacionais da tribo.</li>
+      <li>Desenvolve e mantém o <strong>Maré Digital</strong>, suíte própria de PWAs (kanban multi-squad + painel gerencial) para acompanhamento de squads e OKRs, com automações que otimizam rotinas operacionais da tribo.</li>
       <li>Mentora e treina colaboradores nas práticas ágeis; apoia o desenho e o acompanhamento de OKRs.</li>
       <li>Facilita cerimônias ágeis (planejamentos, retrospectivas, reuniões de tribo e progresso de OKR) e multiplica práticas de aprendizagem contínua.</li>
     </ul>
@@ -157,6 +163,17 @@
     <ul>
       <li>Atuou como agilista aplicando Scrum para estruturar o motor comercial da holding, focada em soluções de crédito para consumidores.</li>
       <li>Liderou a revisão e adoção de processos, análises de dados e a organização da equipe comercial.</li>
+    </ul>
+  </div>
+
+  <h2>Projetos</h2>
+  <div class="project-item">
+    <div class="project-title">Maré Digital <a href="https://caiosoares1899.github.io/kanban.html" target="_blank">caiosoares1899.github.io/kanban.html</a></div>
+    <div class="project-meta">Suíte própria de PWAs (kanban multi-squad + painel gerencial) — Cia. Hering, 2025–presente</div>
+    <ul>
+      <li>Desenvolvido e mantido de forma independente para substituir ferramentas externas de kanban e acompanhamento de OKR das squads da Tribo Digital.</li>
+      <li>Recursos: kanban colaborativo em tempo real (Firebase), notificações push, automação de recorrência de cards, relatórios de tempo por tag/etiqueta e painel gerencial com indicadores de fluxo e engajamento.</li>
+      <li>Conduziu auditoria de performance e custo, reduzindo em mais de 90% o consumo de banda do app após otimizações de arquitetura de dados.</li>
     </ul>
   </div>
 
@@ -219,6 +236,7 @@
       <li>PSM I – Professional Scrum Master I — Scrum.org</li>
       <li>Professional Scrum Master — Agile School</li>
       <li>Customer Success — G4 Educação</li>
+      <li>Registro Profissional — CORECON-BA (Economista)</li>
     </ul>
     <ul>
       <li>Python para Iniciantes — Cursonalta</li>
